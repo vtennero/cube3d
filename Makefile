@@ -1,36 +1,72 @@
-CC = gcc
+# Compiler and flags
+CC = gcc -g
 CFLAGS = -Wall -Wextra -Werror
+
+# Directories
+SRC_DIR = src
+LIBFT_DIR = libft
+MLX_DIR = mlx
+OBJ_DIR = obj
+
+# Name of the final executable
 NAME = cube3d
-SRCS = main.c # Add any other source files here
-OBJS = $(SRCS:.c=.o)
+BONUS_NAME = cube3d_bonus
 
-ifeq ($(shell uname), Linux)
-	INCLUDES = -I/usr/include -Imlx
-	MLX_FLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
-else
-	INCLUDES = -I/opt/X11/include -Imlx
-	MLX_FLAGS = -Lmlx -lmlx -L/usr/X11/lib -lXext -lX11 -framework OpenGL -framework AppKit
-endif
+# Main source file variable
+MAIN = main.c
+BONUS_MAIN = main_bonus.c
 
-MLX_DIR = ./mlx
+# Shared source files
+SHARED_SRCS = debug_utils.c \
+render.c \
+initialization.c \
+raycasting.c
+
+SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
+
+# Object files for main and bonus executables
+OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(MAIN:.c=.o)
+BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(BONUS_MAIN:.c=.o)
+
+# Include paths
+INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include
+
+# MLX Flags
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11 -lm
+
+# Libft compilation rule
+LIBFT = $(LIBFT_DIR)/libft.a
+
+# MLX library
 MLX_LIB = $(MLX_DIR)/libmlx_$(shell uname).a
 
-all: $(MLX_LIB) $(NAME)
+.PHONY: all clean fclean re bonus
 
-.c.o:
-	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDES)
+all: $(LIBFT) $(MLX_LIB) $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
 $(MLX_LIB):
-	@make -C $(MLX_DIR)
+	@$(MAKE) -C $(MLX_DIR)
+
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS)
+
+bonus:
+	$(MAKE) MAIN=$(BONUS_MAIN) NAME=$(BONUS_NAME) all
 
 clean:
-	rm -f $(OBJS)
-	@make -C $(MLX_DIR) clean
+	rm -f $(OBJ_DIR)/*.o
+	@$(MAKE) -C $(MLX_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
