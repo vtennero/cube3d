@@ -19,8 +19,9 @@ BONUS_MAIN = main_bonus.c
 # Shared source files
 SHARED_SRCS = debug_utils.c \
 render.c \
-initialization.c \
-raycasting.c
+raycasting.c \
+lodev.c \
+mlx_basic_setup.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

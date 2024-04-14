@@ -3,37 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 18:08:24 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/09 18:51:35 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:26:57 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-void print_map(t_map* map)
-{
-    if (map == NULL || map->tiles == NULL) {
-        printf("Map data is not initialized.\n");
-        return;
-    }
+// void print_map(t_map* map)
+// {
+// 	if (map == NULL || map->tiles == NULL) {
+// 		printf("Map data is not initialized.\n");
+// 		return;
+// 	}
 
-    for (int y = 0; y < map->height; y++) {
-        for (int x = 0; x < map->width; x++) {
-            // Print each tile; '1' for walls and '0' for spaces are printed directly.
-            // Adjust printing characters as needed for different elements.
-            printf("%c ", map->tiles[y][x]);
-        }
-        printf("\n"); // New line after each row
-    }
+// 	for (int y = 0; y < map->height; y++) {
+// 		for (int x = 0; x < map->width; x++) {
+// 			// Print each tile; '1' for walls and '0' for spaces are printed directly.
+// 			// Adjust printing characters as needed for different elements.
+// 			printf("%c ", map->tiles[y][x]);
+// 		}
+// 		printf("\n"); // New line after each row
+// 	}
+// }
+
+// void print_map(t_map* map) {
+//     int y, x;
+//     unsigned char tile;
+    
+//     if (map == NULL || map->tiles == NULL) {
+//         printf("Map data is not initialized.\n");
+//         return;
+//     }
+
+//     y = 0;
+//     while (y < map->height) {
+//         x = 0;
+//         while (x < map->width) {
+//             tile = map->tiles[y][x];
+//             if (tile == TILE_SPACE) {
+//                 printf("0 ");
+//             } else if (tile == TILE_WALL) {
+//                 printf("1 ");
+//             } else {
+//                 printf("%c ", tile); // For player and potentially other special tiles
+//             }
+//             x++;
+//         }
+//         printf("\n"); // New line after each row
+//         y++;
+//     }
+// }
+
+
+void print_vector2d(const t_vector2d *vector) {
+    const char *format;
+
+    format = "Vector2D(x: %.2f, y: %.2f)\n";
+
+    printf(format, vector->x, vector->y);
 }
 
-void list_first_ten_rays(t_ray *rays, int count)
+
+void print_player(const t_player *player)
 {
-    int limit = (count < 10) ? count : 10; // Ensure we don't go out of bounds if less than 10 rays
-    for (int i = 0; i < limit; i++) {
-        printf("Ray %d: Distance = %f, Wall Type = %d\n",
-               i, rays[i].distance, rays[i].hitwalltype);
-    }
+    const char *format_position_direction, *format_plane_pitch;
+
+    format_position_direction = "Player(Position: (%.2f, %.2f), Direction: (%.2f, %.2f))\n";
+    format_plane_pitch = "Plane: (%.2f, %.2f), Pitch: %.2f\n";
+
+    printf(format_position_direction, player->position.x, player->position.y, player->direction.x, player->direction.y);
+    printf(format_plane_pitch, player->plane.x, player->plane.y, player->pitch);
+}
+
+
+void	list_first_ten_rays(t_ray *rays, int count)
+{
+	int	limit;
+	int	i;
+
+	if (count < 10)
+		limit = count;
+	else
+		limit = 10;
+	i = 0;
+	while (i < limit)
+	{
+		printf("Ray %d: Distance = %f, Wall Type = %d\n",
+			i, rays[i].distance, rays[i].hitwalltype);
+		i++;
+	}
+}
+
+void print_ray(const t_ray *ray)
+{
+    const char *format;
+
+    format = "Ray(Direction: (%.2f, %.2f), Distance: %.2f, HitWallType: %d)\n";
+
+    printf(format, ray->dir.x, ray->dir.y, ray->distance, ray->hitwalltype);
 }
