@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 18:49:22 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 01:31:18 by toto             ###   ########.fr       */
+/*   Updated: 2024/04/15 11:07:06 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr)
         for (int y = current->ray.draw_start; y < current->ray.draw_end; y++) {
             mlx_pixel_put(mlx_ptr, win_ptr, current->ray.x, y, current->ray.color);
         }
-        current = current->next;  // Move to the next ray after drawing the current one
+        current = current->next;
     }
 }

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:55:31 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 01:45:37 by toto             ###   ########.fr       */
+/*   Updated: 2024/04/15 14:46:44 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
-
-
 
 int charToEnum(char c)
 {
@@ -126,14 +124,17 @@ int     map_is_valid()
 
 int create_game_struct(t_game **game) {
     *game = calloc(1, sizeof(t_game));
-    if (*game == NULL) return -1; // Memory allocation failed
+    if (*game == NULL)
+        return -1;
+    (*game)->screen_height = DEFAULT_S_HEIGHT;
+    (*game)->screen_width = DEFAULT_S_WIDTH;
     return 0;
 }
 
 int create_map(t_game *game)
 {
     // Implement map creation and initialization
-    create_static_map(game, 640, 480);
+    create_static_map(game, game->screen_width, game->screen_width);
     return 0;
 }
 
@@ -170,37 +171,83 @@ int create_player(t_game *game) {
 //     return 0;
 // }
 
+
+t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
+{
+    int x;
+    t_ray_node* current;
+
+    current = list;
+    x = 0;
+    while (x < game->screen_width)
+    {
+        current = addRay(&list);
+        if (current != NULL)
+        {
+            current->ray.x = x;
+            calc_camera_x(game, current);
+            calc_ray_dir_x(game, current);
+            calc_ray_dir_y(game, current);
+            calc_map_x(game, current);
+            calc_map_y(game, current);
+            calc_side_dist(game, current);
+            calc_delta_dist(game, current);
+            perform_dda(game, current);
+            calc_perp_wall_dist(game, current);
+            calc_line_height(game, current);
+            calc_draw_parameters(game, current);
+        }
+        x++;
+    }
+    return (list);
+}
+
+void    refresh_screen(t_game *game)
+{
+    t_ray_node* list = NULL;
+
+    list = calculate_rays(game, list);
+    render_ray_list(list, game->mlx_ptr, game->win_ptr);
+}
+
 int render_game(t_game *game)
+{
+    game->mlx_ptr = mlx_init();
+    game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
+    refresh_screen(game);
+    set_up_hooks(game);
+    mlx_loop(game->mlx_ptr);
+    return 0;
+}
+
+int render_game2(t_game *game)
 {
     t_ray_node* list = NULL;
     t_ray_node* current;
     int x;
 
     game->mlx_ptr = mlx_init();
-    game->win_ptr = mlx_new_window(game->mlx_ptr, screenWidth, screenHeight, "MLX Window");
+    game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
+    set_up_hooks(game);
     x = 0;
-    while (x < screenWidth)
+    while (x < game->screen_width)
     {
         current = addRay(&list);
-        if (current != NULL) {
-            current->ray.cameraX = get_camera_x();
-            current->ray.rayDirX = get_ray_dir_x();
-            current->ray.rayDirY = get_ray_dir_y();
-            current->ray.mapX = get_map_x();
-            current->ray.mapY = get_map_y();
-            current->ray.sideDistX = get_side_dist_x();
-            current->ray.sideDistY = get_side_dist_y();
-            current->ray.deltaDistX = get_delta_dist_x();
-            current->ray.deltaDistY = get_delta_dist_y();
-            current->ray.perpWallDist = get_perp_wall_dist();
-            current->ray.stepX = get_step_x();
-            current->ray.stepY = get_step_y();
-            current->ray.hit = get_hit();
-            current->ray.side = get_side();
-            current->ray.lineHeight = get_line_height();
-            current->ray.draw_start = get_draw_start();  // Assuming you have these functions defined
-            current->ray.draw_end = get_draw_end();
-            current->ray.color = get_tile_color();
+        if (current != NULL)
+        {
+            current->ray.x = x;
+            calc_camera_x(game, current);
+            calc_ray_dir_x(game, current);
+            calc_ray_dir_y(game, current);
+            calc_map_x(game, current);
+            calc_map_y(game, current);
+            calc_side_dist(game, current);
+            calc_delta_dist(game, current);
+            perform_dda(game, current);
+            calc_perp_wall_dist(game, current);
+            calc_line_height(game, current);
+            calc_draw_parameters(game, current);
+            print_ray(&current->ray);
         }
         x++;
     }
@@ -215,7 +262,6 @@ int     initgame(t_game **game)
     create_game_struct(game);
     create_map(*game);
     create_player(*game);
-    // set_up_hooks(*game);
     render_game(*game);
     return(1);
 }

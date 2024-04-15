@@ -63,7 +63,7 @@ int worldMap[mapWidth][mapHeight]=
     void *win_ptr;
 
     mlx_ptr = mlx_init();
-    win_ptr = mlx_new_window(mlx_ptr, screenWidth, screenHeight, "MLX Window");
+    // win_ptr = mlx_new_window(mlx_ptr, screenWidth, screenHeight, "MLX Window");
 
 // posX and posY represent the position vector of the player. dirX and dirY represent the direction of the player, and planeX and planeY the camera plane of the player.
 
@@ -185,7 +185,7 @@ w = screenWidth;
 			}
 
 			// printf("Color chosen - Red: %d, Green: %d, Blue: %d\n", color.r, color.g, color.b);
-			addRay(&list, x, draw_start, draw_end, color);
+			// addRay(&list, x, draw_start, draw_end, color);
 			// for (int y = draw_start; y < draw_end; y++)
 			// {
 			// 	// mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x00FF00); // 0x00FF00 is the color code for green

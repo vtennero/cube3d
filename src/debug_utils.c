@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 18:08:24 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/14 18:26:57 by toto             ###   ########.fr       */
+/*   Updated: 2024/04/15 12:18:42 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,3 @@ void print_player(const t_player *player)
 }
 
 
-void	list_first_ten_rays(t_ray *rays, int count)
-{
-	int	limit;
-	int	i;
-
-	if (count < 10)
-		limit = count;
-	else
-		limit = 10;
-	i = 0;
-	while (i < limit)
-	{
-		printf("Ray %d: Distance = %f, Wall Type = %d\n",
-			i, rays[i].distance, rays[i].hitwalltype);
-		i++;
-	}
-}
-
-void print_ray(const t_ray *ray)
-{
-    const char *format;
-
-    format = "Ray(Direction: (%.2f, %.2f), Distance: %.2f, HitWallType: %d)\n";
-
-    printf(format, ray->dir.x, ray->dir.y, ray->distance, ray->hitwalltype);
-}
