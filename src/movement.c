@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 12:29:27 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 14:51:41 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:45:08 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static const t_keymap	g_keymap[] = {
 {K_A, &handle_key_a},
 {K_S, &handle_key_s},
 {K_D, &handle_key_d},
+{K_RIGHT, &handle_key_right},
+{K_LEFT, &handle_key_left},
 // {DOWN_ARROW_KEYCODE, &handle_down},
 // {RIGHT_ARROW_KEYCODE, &handle_right},
 // {LEFT_ARROW_KEYCODE, &handle_left},
@@ -24,6 +26,35 @@ static const t_keymap	g_keymap[] = {
 {0, NULL}
 };
 
+void handle_key_left(t_game *game)
+{
+    // Implement what happens when 'Left' is pressed
+    printf("You just pressed Left!\n");
+
+    float angle = 0.0872665;  // 5 degrees in radians
+    float oldX = game->player->direction.x;
+    float oldY = game->player->direction.y;
+
+    game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
+    game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
+    
+    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+}
+
+void handle_key_right(t_game *game)
+{
+    // Implement what happens when 'Right' is pressed
+    printf("You just pressed Right!\n");
+
+    float angle = 0.0872665;  // 5 degrees in radians
+    float oldX = game->player->direction.x;
+    float oldY = game->player->direction.y;
+
+    game->player->direction.x = oldX * cos(angle) + oldY * sin(angle);
+    game->player->direction.y = oldY * cos(angle) - oldX * sin(angle);
+    
+    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+}
 
 void handle_key_w(t_game *game)
 {
@@ -32,7 +63,7 @@ void handle_key_w(t_game *game)
 	printf("You just pressed W!\n");
 
 
-	float speed = 0.1;  // Speed of movement, adjust as necessary
+	float speed = 0.8;  // Speed of movement, adjust as necessary
 	float newX = game->player->position.x + game->player->direction.x * speed;
 	float newY = game->player->position.y + game->player->direction.y * speed;
 	int mapX = (int)newX;
@@ -53,7 +84,7 @@ void handle_key_a(t_game *game)
     (void)game;
     printf("You just pressed A!\n");
 
-    float speed = 0.1;  // Speed of movement, adjust as necessary
+    float speed = 0.8;  // Speed of movement, adjust as necessary
     // Calculate left strafe direction
     float newX = game->player->position.x - game->player->direction.y * speed;
     float newY = game->player->position.y + game->player->direction.x * speed;
@@ -76,7 +107,7 @@ void handle_key_s(t_game *game)
     (void)game;
     printf("You just pressed S!\n");
 
-    float speed = 0.1;  // Speed of movement, adjust as necessary
+    float speed = 0.8;  // Speed of movement, adjust as necessary
     float newX = game->player->position.x - game->player->direction.x * speed;
     float newY = game->player->position.y - game->player->direction.y * speed;
     int mapX = (int)newX;
@@ -96,7 +127,7 @@ void handle_key_d(t_game *game)
     (void)game;
     printf("You just pressed D!\n");
 
-    float speed = 0.1;  // Speed of movement, adjust as necessary
+    float speed = 0.8;  // Speed of movement, adjust as necessary
     float newX = game->player->position.x + game->player->direction.y * speed;
     float newY = game->player->position.y - game->player->direction.x * speed;
     int mapX = (int)newX;

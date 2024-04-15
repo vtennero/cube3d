@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:31:04 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 14:51:03 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:45:27 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,4 +257,7 @@ void handle_key_w(t_game *game);
 void handle_key_a(t_game *game);
 void handle_key_s(t_game *game);
 void handle_key_d(t_game *game);
+void handle_key_left(t_game *game);
+void handle_key_right(t_game *game);
+
 # endif
