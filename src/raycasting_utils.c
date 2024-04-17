@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 11:20:12 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 12:21:31 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:17:51 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,15 @@ void calc_draw_parameters(t_game *game, t_ray_node *ray)
 	ray->ray.draw_end = ray->ray.lineHeight / 2 + game->screen_height / 2;
 	if(ray->ray.draw_end >= game->screen_height)
 		ray->ray.draw_end = game->screen_height - 1;
+}
 
+// void calc_draw_end(t_game *game, t_ray_node *ray)
+// {
 
+// }
+
+void calc_tile_color(t_game *game, t_ray_node *ray)
+{
 	int	tileValue;
 
 	tileValue = game->map->data[ray->ray.mapX][ray->ray.mapY];
@@ -178,13 +185,3 @@ void calc_draw_parameters(t_game *game, t_ray_node *ray)
 		ray->ray.color = RGB_Yellow;
 	}
 }
-
-// void calc_draw_end(t_game *game, t_ray_node *ray)
-// {
-
-// }
-
-// void calc_tile_color(t_game *game, t_ray_node *ray)
-// {
-
-// }

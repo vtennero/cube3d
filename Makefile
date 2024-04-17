@@ -22,7 +22,9 @@ render.c \
 raycasting.c \
 raycasting_utils.c \
 mlx_basic_setup.c \
-movement.c
+movement.c \
+textures.c \
+mlx_tests.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

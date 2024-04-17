@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:31:04 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 17:45:27 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:33:18 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,18 @@ typedef enum e_tiletype {
 // } t_ray;
 
 typedef struct s_texture {
+    char    *path;
     void* img;
     int width, height;
 } t_texture;
+
+typedef enum e_direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+} t_direction;
+
 
 typedef struct s_player {
     t_vector2d position;
@@ -250,6 +259,7 @@ void calc_perp_wall_dist(t_game *game, t_ray_node *ray);
 void calc_line_height(t_game *game, t_ray_node *ray);
 
 void calc_draw_parameters(t_game *game, t_ray_node *ray);
+void calc_tile_color(t_game *game, t_ray_node *ray);
 void set_up_hooks(t_game *game);
 
 void    refresh_screen(t_game *game);
@@ -260,4 +270,14 @@ void handle_key_d(t_game *game);
 void handle_key_left(t_game *game);
 void handle_key_right(t_game *game);
 
+
+void set_texture(t_game *game, t_direction dir);
+
+
+// tests
+int mlx_test_xpm_to_pixels(void);
+int mlx_test_xpm_to_pixels_scaled_to_screen(void);
+int mlx_test_xpm_to_pixels_scaled_w_perspective(void);
+
+void render_ray_list_color_v1(t_ray_node* head, void *mlx_ptr, void *win_ptr);
 # endif

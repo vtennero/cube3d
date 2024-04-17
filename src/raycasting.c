@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 18:49:22 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/15 11:07:06 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:27:19 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,32 @@ void printRayList(t_ray_node* head)
     }
 }
 
+void printRayList_color_v1(t_ray_node* head)
+{
+    t_ray_node* current = head;
+    while (current != NULL) {
+        printf("Ray at x=%d, draw_start=%d, draw_end=%d, color=%d\n",
+               current->ray.x,
+               current->ray.draw_start,
+               current->ray.draw_end,
+               current->ray.color);
+        current = current->next;
+    }
+}
+
 void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr)
+{
+    t_ray_node *current = head;
+
+    while (current != NULL) {
+        for (int y = current->ray.draw_start; y < current->ray.draw_end; y++) {
+            mlx_pixel_put(mlx_ptr, win_ptr, current->ray.x, y, current->ray.color);
+        }
+        current = current->next;
+    }
+}
+
+void render_ray_list_color_v1(t_ray_node* head, void *mlx_ptr, void *win_ptr)
 {
     t_ray_node *current = head;
 
