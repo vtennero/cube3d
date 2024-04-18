@@ -12,6 +12,28 @@
 
 #include "cube3d.h"
 
+unsigned int *texture[10];  // Array of pointers for 10 textures
+
+// unsigned int texture[10][64 * 64];  // Example texture array for 10 textures, each 64x64 pixels
+unsigned int buffer[DEFAULT_S_HEIGHT][DEFAULT_S_WIDTH];  // Screen buffer for the pixels
+void    *mlx;
+void    *win;
+
+unsigned int *load_texture(char *file, int *width, int *height) {
+    void *img;
+    int bpp, sl, endian;
+    unsigned int *data;
+
+    img = mlx_xpm_file_to_image(mlx, file, width, height);
+    if (!img) {
+        fprintf(stderr, "Error loading %s\n", file);
+        exit(1);
+    }
+    data = (unsigned int *)mlx_get_data_addr(img, &bpp, &sl, &endian);
+    // Optionally, you can copy the data to a new buffer if you need to manage multiple textures.
+    return data;
+}
+
 int charToEnum(char c)
 {
     if (c == '0')
@@ -259,6 +281,84 @@ t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
 //     return (list);
 // }
 
+
+void renderFloorAndCeiling(void *mlx, void *win, int screenHeight, int screenWidth)
+{
+    printf("renderFloorAndCeiling START\n");
+    uint32_t floorColor = 0x8B4513;
+    uint32_t ceilingColor = 0x87CEEB;
+
+    for(int y = 0; y < screenHeight; y++) {
+        for(int x = 0; x < screenWidth; ++x) {
+            if (y < screenHeight / 2) {
+                // Apply the ceiling color to the top half of the screen
+                // buffer[y][x] = ceilingColor;
+
+                mlx_pixel_put(mlx, win, x, y, ceilingColor);
+            } else {
+                // Apply the floor color to the bottom half of the screen
+                // buffer[y][x] = floorColor;
+                mlx_pixel_put(mlx, win, x, y, floorColor);
+            }
+        }
+    }
+    printf("renderFloorAndCeiling END\n");
+}
+
+
+
+// void    render_floor_and_ceiling()
+// {
+
+
+//     int texWidth, texHeight;
+//     // unsigned int *textureData;
+
+//     float dirX = 1.0, dirY = 0.0;  // Example player direction
+//     float planeX = 0.0, planeY = 0.66; // Camera plane vector
+//     float posX = 22.0, posY = 12.5; // Example player position
+
+//     // Initialize MiniLibX and create a window
+//     mlx = mlx_init();
+//     win = mlx_new_window(mlx, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT, "Floor Casting Example");
+
+//     // Load the texture
+//     // textureData = load_texture("path/to/your/texture.xpm", &texWidth, &texHeight);
+
+//     // You might want to store this texture data in a globally accessible way
+//     // or modify your rendering functions to accept dynamic texture arrays.
+//     // texture[0] = textureData; // Assuming you have a way to handle this
+//     texture[0] = load_texture("textures/wood.xpm", &texWidth, &texHeight);
+
+//     // Call the rendering function
+//     renderFloorAndCeiling(DEFAULT_S_HEIGHT, DEFAULT_S_WIDTH, dirX, dirY, planeX, planeY, posX, posY, texWidth, texHeight);
+
+//     // Add a loop to keep the window open and handle events, etc.
+//     mlx_loop(mlx);
+// }
+void    render_floor_and_ceiling(t_game *game)
+{
+    // void *mlx = mlx_init();
+    // if (mlx == NULL) {
+    //     fprintf(stderr, "Error initializing MiniLibX.\n");
+    //     return ;
+    // }
+    // void *win = mlx_new_window(mlx, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT, "Simple Floor Ceiling");
+    // if (win == NULL) {
+    //     fprintf(stderr, "Error creating new window.\n");
+    //     return ;
+    // }
+
+    // Call the rendering function
+    renderFloorAndCeiling(game->mlx_ptr, game->win_ptr, DEFAULT_S_HEIGHT, DEFAULT_S_WIDTH);
+
+    // MiniLibX main loop to handle events
+    // mlx_loop(mlx);
+    return ;
+}
+
+
+
 void    refresh_screen(t_game *game)
 {
     t_ray_node* list = NULL;
@@ -266,6 +366,8 @@ void    refresh_screen(t_game *game)
     // floor
 
     // ceiling
+    render_floor_and_ceiling(game);
+    (void)list;
 
     // walls part
     list = calculate_rays(game, list);

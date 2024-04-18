@@ -19,9 +19,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 
 #define DEFAULT_S_WIDTH 800
 #define DEFAULT_S_HEIGHT 600
+#define TEX_WIDTH 64
+#define TEX_HEIGHT 64
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
