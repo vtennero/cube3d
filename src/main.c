@@ -73,11 +73,11 @@ void create_static_map(t_game *game, int screenWidth, int screenHeight)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -85,15 +85,40 @@ void create_static_map(t_game *game, int screenWidth, int screenHeight)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// };
     printf("defined static map data\n");
 
     // Copy the static map to the allocated map
@@ -203,45 +228,48 @@ t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
     return (list);
 }
 
-t_ray_node*    calculate_rays_color_v1(t_game *game, t_ray_node* list)
-{
-    int x;
-    t_ray_node* current;
+// t_ray_node*    calculate_rays_color_v1(t_game *game, t_ray_node* list)
+// {
+//     int x;
+//     t_ray_node* current;
 
-    current = list;
-    x = 0;
-    while (x < game->screen_width)
-    {
-        current = addRay(&list);
-        if (current != NULL)
-        {
-            current->ray.x = x;
-            calc_camera_x(game, current);
-            calc_ray_dir_x(game, current);
-            calc_ray_dir_y(game, current);
-            calc_map_x(game, current);
-            calc_map_y(game, current);
-            calc_side_dist(game, current);
-            calc_delta_dist(game, current);
-            perform_dda(game, current);
-            calc_perp_wall_dist(game, current);
-            calc_line_height(game, current);
-            calc_draw_parameters(game, current);
-            calc_tile_color(game, current);
-        }
-        x++;
-    }
-    return (list);
-}
+//     current = list;
+//     x = 0;
+//     while (x < game->screen_width)
+//     {
+//         current = addRay(&list);
+//         if (current != NULL)
+//         {
+//             current->ray.x = x;
+//             calc_camera_x(game, current);
+//             calc_ray_dir_x(game, current);
+//             calc_ray_dir_y(game, current);
+//             calc_map_x(game, current);
+//             calc_map_y(game, current);
+//             calc_side_dist(game, current);
+//             calc_delta_dist(game, current);
+//             perform_dda(game, current);
+//             calc_perp_wall_dist(game, current);
+//             calc_line_height(game, current);
+//             calc_draw_parameters(game, current);
+//             calc_tile_color(game, current);
+//         }
+//         x++;
+//     }
+//     return (list);
+// }
 
 void    refresh_screen(t_game *game)
 {
     t_ray_node* list = NULL;
 
-    list = calculate_rays_color_v1(game, list);
-    render_ray_list_color_v1(list, game->mlx_ptr, game->win_ptr);
-    // list = calculate_rays(game, list);
-    // render_ray_list(list, game->mlx_ptr, game->win_ptr);
+    // floor
+
+    // ceiling
+
+    // walls part
+    list = calculate_rays(game, list);
+    render_ray_list(list, game->mlx_ptr, game->win_ptr);
 }
 
 int render_game(t_game *game)
@@ -250,43 +278,6 @@ int render_game(t_game *game)
     game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
     refresh_screen(game);
     set_up_hooks(game);
-    mlx_loop(game->mlx_ptr);
-    return 0;
-}
-
-int render_game2(t_game *game)
-{
-    t_ray_node* list = NULL;
-    t_ray_node* current;
-    int x;
-
-    game->mlx_ptr = mlx_init();
-    game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
-    set_up_hooks(game);
-    x = 0;
-    while (x < game->screen_width)
-    {
-        current = addRay(&list);
-        if (current != NULL)
-        {
-            current->ray.x = x;
-            calc_camera_x(game, current);
-            calc_ray_dir_x(game, current);
-            calc_ray_dir_y(game, current);
-            calc_map_x(game, current);
-            calc_map_y(game, current);
-            calc_side_dist(game, current);
-            calc_delta_dist(game, current);
-            perform_dda(game, current);
-            calc_perp_wall_dist(game, current);
-            calc_line_height(game, current);
-            calc_draw_parameters(game, current);
-            print_ray(&current->ray);
-        }
-        x++;
-    }
-
-    render_ray_list(list, game->mlx_ptr, game->win_ptr);
     mlx_loop(game->mlx_ptr);
     return 0;
 }
@@ -306,11 +297,12 @@ int main()
 
     game = NULL;
     // if (map_is_valid)
-        // initgame(&game);
+        initgame(&game);
     // clean_up();
     // mlx_test_xpm_to_pixels();
     // mlx_test_xpm_to_pixels_scaled_to_screen();
-    mlx_test_xpm_to_pixels_scaled_w_perspective();
+    // mlx_test_xpm_to_pixels_scaled_w_perspective();
+    // mlx_test_xpm_to_pixels_scaled_w_perspective_split();
 
     // lodev();
     (void)game;

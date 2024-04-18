@@ -60,6 +60,7 @@ t_ray_node* addRay(t_ray_node** head) {
     newNode->ray.draw_start = 0;
     newNode->ray.draw_end = 0;
     newNode->ray.color = 0;
+    newNode->ray.wall_face = 0;
 
     if (*head == NULL) {
         newNode->next = NULL;
@@ -98,26 +99,5 @@ void printRayList_color_v1(t_ray_node* head)
     }
 }
 
-void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr)
-{
-    t_ray_node *current = head;
 
-    while (current != NULL) {
-        for (int y = current->ray.draw_start; y < current->ray.draw_end; y++) {
-            mlx_pixel_put(mlx_ptr, win_ptr, current->ray.x, y, current->ray.color);
-        }
-        current = current->next;
-    }
-}
 
-void render_ray_list_color_v1(t_ray_node* head, void *mlx_ptr, void *win_ptr)
-{
-    t_ray_node *current = head;
-
-    while (current != NULL) {
-        for (int y = current->ray.draw_start; y < current->ray.draw_end; y++) {
-            mlx_pixel_put(mlx_ptr, win_ptr, current->ray.x, y, current->ray.color);
-        }
-        current = current->next;
-    }
-}

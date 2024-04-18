@@ -78,4 +78,33 @@ void print_player(const t_player *player)
     printf(format_plane_pitch, player->plane.x, player->plane.y, player->pitch);
 }
 
+void print_game_map(t_game *game)
+{
+    if (game == NULL || game->map == NULL) {
+        printf("Game or game map is not initialized.\n");
+        return;
+    }
+
+    t_map *map = game->map;
+    printf("Map dimensions: %dx%d\n", 24, 24);
+    // printf("Map dimensions: %dx%d\n", map->width, map->height);
+
+    // Get the player's position in integer coordinates using floor
+    int playerX = floor(game->player->position.x);
+    int playerY = floor(game->player->position.y);
+
+    printf("Map dimensions: %dx%d\n", map->width, map->height);
+    printf("Player position (floored): %d, %d\n", playerX, playerY);
+
+    for (int y = 0; y < 24; y++) {
+        for (int x = 0; x < 24; x++) {
+            if (y == playerY && x == playerX) {
+                printf("X "); // Print emoji for player's position
+            } else {
+                printf("%d ", map->data[y][x]);
+            }
+        }
+        printf("\n");
+    }
+}
 

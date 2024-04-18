@@ -34,6 +34,7 @@ void print_ray(const t_ray *ray)
     printf("draw_start: %d\n", ray->draw_start);
     printf("draw_end: %d\n", ray->draw_end);
     printf("color: %d\n", ray->color);
+    printf("wall_face: %d\n", ray->wall_face);
 	printf("******************************\n");
 }
 
@@ -123,7 +124,14 @@ void	perform_dda(t_game *game, t_ray_node *ray)
 		}
 		//Check if ray has hit a wall
 		if (game->map->data[ray->ray.mapX][ray->ray.mapY] > 0)
+		{
 			hit = 1;
+			if (ray->ray.side == 0) // EW wall
+                ray->ray.wall_face = (ray->ray.stepX > 0) ? EAST : WEST;
+            else // NS wall
+                ray->ray.wall_face = (ray->ray.stepY > 0) ? SOUTH : NORTH;
+		}
+
 	}
 }
 

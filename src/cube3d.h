@@ -20,8 +20,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define DEFAULT_S_WIDTH 640
-#define DEFAULT_S_HEIGHT 480
+#define DEFAULT_S_WIDTH 800
+#define DEFAULT_S_HEIGHT 600
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 /*
 ** ================== STRUCTURES ==================
@@ -134,6 +138,7 @@ typedef struct s_ray {
     int draw_start;
     int draw_end;
     int color;
+    int wall_face;
 } t_ray;
 
 typedef struct t_ray_node {
@@ -259,7 +264,7 @@ void calc_perp_wall_dist(t_game *game, t_ray_node *ray);
 void calc_line_height(t_game *game, t_ray_node *ray);
 
 void calc_draw_parameters(t_game *game, t_ray_node *ray);
-void calc_tile_color(t_game *game, t_ray_node *ray);
+// void calc_tile_color(t_game *game, t_ray_node *ray);
 void set_up_hooks(t_game *game);
 
 void    refresh_screen(t_game *game);
@@ -278,6 +283,9 @@ void set_texture(t_game *game, t_direction dir);
 int mlx_test_xpm_to_pixels(void);
 int mlx_test_xpm_to_pixels_scaled_to_screen(void);
 int mlx_test_xpm_to_pixels_scaled_w_perspective(void);
+int mlx_test_xpm_to_pixels_scaled_w_perspective_split(void);
 
 void render_ray_list_color_v1(t_ray_node* head, void *mlx_ptr, void *win_ptr);
+
+void print_game_map(t_game *game);
 # endif
