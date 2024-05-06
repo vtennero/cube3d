@@ -44,40 +44,113 @@ const char* get_cardinal_direction(float x, float y) {
     else return "South-East";
 }
 
+// void handle_key_left(t_game *game)
+// {
+//     // Implement what happens when 'Left' is pressed
+//     printf("You just pressed Left!\n");
+
+//     float angle = 0.0872665;  // 5 degrees in radians
+//     float oldX = game->player->direction.x;
+//     float oldY = game->player->direction.y;
+
+//     game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
+//     game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
+    
+//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+//     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+//     printf("Facing direction: %s\n", direction);
+// }
+
 void handle_key_left(t_game *game)
 {
-    // Implement what happens when 'Left' is pressed
     printf("You just pressed Left!\n");
 
     float angle = 0.0872665;  // 5 degrees in radians
-    float oldX = game->player->direction.x;
-    float oldY = game->player->direction.y;
 
-    game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
-    game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
-    
+    // Rotate direction vector counterclockwise
+    float oldDirX = game->player->direction.x;
+    float oldDirY = game->player->direction.y;
+    game->player->direction.x = oldDirX * cos(angle) - oldDirY * sin(angle);
+    game->player->direction.y = oldDirX * sin(angle) + oldDirY * cos(angle);
+
+    // Rotate camera plane vector counterclockwise
+    float oldPlaneX = game->player->plane.x;
+    float oldPlaneY = game->player->plane.y;
+    game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
+    game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
+
     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
     printf("Facing direction: %s\n", direction);
 }
 
 
+
+// void handle_key_right(t_game *game)
+// {
+//     // Implement what happens when 'Right' is pressed
+//     printf("You just pressed Right!\n");
+
+//     float angle = 0.0872665;  // 5 degrees in radians
+//     float oldX = game->player->direction.x;
+//     float oldY = game->player->direction.y;
+
+//     game->player->direction.x = oldX * cos(angle) + oldY * sin(angle);
+//     game->player->direction.y = oldY * cos(angle) - oldX * sin(angle);
+    
+//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+//         const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+//     printf("Facing direction: %s\n", direction);
+// }
+
+// void handle_key_right(t_game *game)
+// {
+//     // Implement what happens when 'Right' is pressed
+//     printf("You just pressed Right!\n");
+
+//     float angle = 0.0872665;  // 5 degrees in radians
+//     float oldX = game->player->direction.x;
+//     float oldY = game->player->direction.y;
+
+//     // Rotate direction vector clockwise
+//     game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
+//     game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
+
+//     // Rotate camera plane vector clockwise
+//     float oldPlaneX = game->player->plane.x;
+//     float oldPlaneY = game->player->plane.y;
+//     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
+//     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
+
+//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+//     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+//     printf("Facing direction: %s\n", direction);
+// }
+
 void handle_key_right(t_game *game)
 {
-    // Implement what happens when 'Right' is pressed
     printf("You just pressed Right!\n");
 
     float angle = 0.0872665;  // 5 degrees in radians
-    float oldX = game->player->direction.x;
-    float oldY = game->player->direction.y;
 
-    game->player->direction.x = oldX * cos(angle) + oldY * sin(angle);
-    game->player->direction.y = oldY * cos(angle) - oldX * sin(angle);
-    
+    // Rotate direction vector clockwise
+    float oldDirX = game->player->direction.x;
+    float oldDirY = game->player->direction.y;
+    game->player->direction.x = oldDirX * cos(angle) + oldDirY * sin(angle);
+    game->player->direction.y = -oldDirX * sin(angle) + oldDirY * cos(angle);
+
+    // Rotate camera plane vector clockwise
+    float oldPlaneX = game->player->plane.x;
+    float oldPlaneY = game->player->plane.y;
+    game->player->plane.x = oldPlaneX * cos(angle) + oldPlaneY * sin(angle);
+    game->player->plane.y = -oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
+
     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-        const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+    const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
     printf("Facing direction: %s\n", direction);
 }
+
+
 
 void handle_key_w(t_game *game)
 {
@@ -173,8 +246,7 @@ void handle_key_s(t_game *game)
     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
         game->player->position.x = newX + game->player->direction.x * buffer; // Revert buffer
         game->player->position.y = newY + game->player->direction.y * buffer; // Revert buffer
-        printf("game->player->position.x = %f\n", game->player->position.x);
-        printf("game->player->position.y = %f\n", game->player->position.y);
+        printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
     } else {
         printf("Collision/Out of Map movement\n");
     }
@@ -220,46 +292,107 @@ float calculate_dynamic_buffer(t_player *player, float base_speed) {
     return dynamic_buffer;
 }
 
+// void handle_key_a(t_game *game)
+// {
+//     printf("You just pressed A!\n");
+
+//     float speed = 0.8;
+//     float buffer = 10;
+//     // float buffer = calculate_dynamic_buffer(game->player, speed);
+
+//     float newX = game->player->position.x - game->player->plane.x * (speed + buffer); // Left perpendicular to direction
+//     float newY = game->player->position.y - game->player->plane.y * (speed + buffer);
+//     int mapX = (int)(newX);
+//     int mapY = (int)(newY);
+
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+//         game->player->position.x = newX + game->player->plane.x * buffer;
+//         game->player->position.y = newY + game->player->plane.y * buffer;
+//         printf("game->player->position.x = %f\n", game->player->position.x);
+//         printf("game->player->position.y = %f\n", game->player->position.y);
+//     } else {
+//         printf("Collision/Out of Map movement\n");
+//     }
+//     print_game_map(game);
+// }
+
 void handle_key_a(t_game *game)
 {
     printf("You just pressed A!\n");
 
     float speed = 0.8;
-    float buffer = 10;
-    // float buffer = calculate_dynamic_buffer(game->player, speed);
 
-    float newX = game->player->position.x - game->player->plane.x * (speed + buffer); // Left perpendicular to direction
-    float newY = game->player->position.y - game->player->plane.y * (speed + buffer);
+    // Derive the perpendicular (left) direction vector manually
+    // Assuming player->direction.x and player->direction.y represent the facing direction
+    // Perpendicular vector to the left: (-dir.y, dir.x)
+    float perpX = -game->player->direction.y;  // Opposite of y component
+    float perpY = game->player->direction.x;   // Same as x component
+
+    // Calculate the new position by moving left to the direction the player is facing
+    float newX = game->player->position.x + perpX * speed;
+    float newY = game->player->position.y + perpY * speed;
     int mapX = (int)(newX);
     int mapY = (int)(newY);
 
+    // Check if the new position is within the map and not blocked by a wall
     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-        game->player->position.x = newX + game->player->plane.x * buffer;
-        game->player->position.y = newY + game->player->plane.y * buffer;
-        printf("game->player->position.x = %f\n", game->player->position.x);
-        printf("game->player->position.y = %f\n", game->player->position.y);
+        game->player->position.x = newX;
+        game->player->position.y = newY;
+        printf("New player position.x = %f\n", game->player->position.x);
+        printf("New player position.y = %f\n", game->player->position.y);
     } else {
         printf("Collision/Out of Map movement\n");
     }
     print_game_map(game);
 }
 
+
+// void handle_key_d(t_game *game)
+// {
+//     printf("You just pressed D!\n");
+
+//     float speed = 0.8;
+//     float buffer = 5;
+//     float newX = game->player->position.x + game->player->plane.x * (speed + buffer); // Right perpendicular to direction
+//     float newY = game->player->position.y + game->player->plane.y * (speed + buffer);
+//     int mapX = (int)(newX);
+//     int mapY = (int)(newY);
+
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+//         game->player->position.x = newX - game->player->plane.x * buffer;
+//         game->player->position.y = newY - game->player->plane.y * buffer;
+//         printf("game->player->position.x = %f\n", game->player->position.x);
+//         printf("game->player->position.y = %f\n", game->player->position.y);
+//     } else {
+//         printf("Collision/Out of Map movement\n");
+//     }
+//     print_game_map(game);
+// }
+
 void handle_key_d(t_game *game)
 {
     printf("You just pressed D!\n");
 
     float speed = 0.8;
-    float buffer = 5;
-    float newX = game->player->position.x + game->player->plane.x * (speed + buffer); // Right perpendicular to direction
-    float newY = game->player->position.y + game->player->plane.y * (speed + buffer);
+
+    // Derive the perpendicular (right) direction vector manually
+    // Assuming player->direction.x and player->direction.y represent the facing direction
+    // Perpendicular vector to the right: (dir.y, -dir.x)
+    float perpX = game->player->direction.y;  // Same as y component, opposite sign
+    float perpY = -game->player->direction.x; // Opposite of x component
+
+    // Calculate the new position by moving right to the direction the player is facing
+    float newX = game->player->position.x + perpX * speed;
+    float newY = game->player->position.y + perpY * speed;
     int mapX = (int)(newX);
     int mapY = (int)(newY);
 
+    // Check if the new position is within the map and not blocked by a wall
     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-        game->player->position.x = newX - game->player->plane.x * buffer;
-        game->player->position.y = newY - game->player->plane.y * buffer;
-        printf("game->player->position.x = %f\n", game->player->position.x);
-        printf("game->player->position.y = %f\n", game->player->position.y);
+        game->player->position.x = newX;
+        game->player->position.y = newY;
+        printf("New player position.x = %f\n", game->player->position.x);
+        printf("New player position.y = %f\n", game->player->position.y);
     } else {
         printf("Collision/Out of Map movement\n");
     }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/18 12:05:34 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/06 15:03:41 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr)
 
 	current_image = -1;
     // Load an XPM file as an image
-
 
     // Example linked list of rays (normally you would populate this list)
     // t_ray_node *head = NULL; // Populate this list with real data in practice

@@ -145,10 +145,6 @@ void calc_perp_wall_dist(t_game *game, t_ray_node *ray)
 		ray->ray.perpWallDist = (ray->ray.sideDistY - ray->ray.deltaDistY);
 }
 
-// void calc_side(t_game *game, t_ray_node *ray)
-// {
-
-// }
 
 void calc_line_height(t_game *game, t_ray_node *ray)
 {
@@ -166,10 +162,7 @@ void calc_draw_parameters(t_game *game, t_ray_node *ray)
 		ray->ray.draw_end = game->screen_height - 1;
 }
 
-// void calc_draw_end(t_game *game, t_ray_node *ray)
-// {
 
-// }
 
 void calc_tile_color(t_game *game, t_ray_node *ray)
 {
