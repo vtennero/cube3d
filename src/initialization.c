@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:55:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/04/14 18:30:51 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:04:37 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void initialize_player(t_player *player) {
 // }
 
 
-
+// unused
 void initialize_game(t_game* game, int screen_width, int screen_height, char* title)
 {
     // Initialize game components...
@@ -140,6 +140,7 @@ void initialize_game(t_game* game, int screen_width, int screen_height, char* ti
         printf("Failed to allocate memory for player.\n");
         exit(1);
     }
+
 
     initialize_player(game->player);
     print_player(game->player);

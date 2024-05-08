@@ -102,6 +102,13 @@ typedef struct s_map {
     int **data;
 } t_map;
 
+typedef struct s_img {
+	void	*mlx_img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_img;
 
 typedef struct s_game {
 	void* mlx_ptr;
@@ -119,6 +126,7 @@ typedef struct s_game {
     int screen_height;
     int screen_width;
 	int	bonus;
+    t_img	img;
 } t_game;
 
 typedef struct s_ray {
@@ -140,9 +148,11 @@ typedef struct s_ray {
     int lineHeight;
     int draw_start;
     int draw_end;
-    int color;
+    // int color;
     int wall_face;
 } t_ray;
+
+
 
 typedef struct t_ray_node {
     t_ray ray;
@@ -223,7 +233,7 @@ void mainloop(t_game *game);
 
 // init
 void initialize_game(t_game* game, int screen_width, int screen_height, char* title);
-
+void preload_textures(t_game *game);
 // raycasting
 // void calculate_rays(t_game *game, int screenWidth);
 
@@ -236,7 +246,8 @@ void print_ray(const t_ray *ray);
 void print_vector2d(const t_vector2d *vector);
 // void addRay(t_ray_node** head, int x, int draw_start, int draw_end, int color);
 void printRayList(t_ray_node* head);
-void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr);
+// void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr);
+// void render_ray_list(t_ray_node* head, t_game *game);
 t_ray_node  *addRay(t_ray_node** head);
 
 // temp
@@ -291,4 +302,10 @@ int mlx_test_xpm_to_pixels_scaled_w_perspective_split(void);
 void render_ray_list_color_v1(t_ray_node* head, void *mlx_ptr, void *win_ptr);
 
 void print_game_map(t_game *game);
+
+int	brabant(void);
+
+int	setup_game_mlx(t_game *game);
+
+t_ray_node*    calculate_rays(t_game *game, t_ray_node* list);
 # endif

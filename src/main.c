@@ -359,6 +359,21 @@ void    render_floor_and_ceiling(t_game *game)
 
 
 
+void    refresh_screenv1(t_game *game)
+{
+    t_ray_node* list = NULL;
+
+    // floor
+
+    // ceiling
+    // render_floor_and_ceiling(game);
+    (void)list;
+
+    // walls part
+    list = calculate_rays(game, list);
+    // render_ray_list(list, game);
+}
+
 void    refresh_screen(t_game *game)
 {
     t_ray_node* list = NULL;
@@ -366,18 +381,16 @@ void    refresh_screen(t_game *game)
     // floor
 
     // ceiling
-    render_floor_and_ceiling(game);
     (void)list;
 
     // walls part
     list = calculate_rays(game, list);
-    render_ray_list(list, game->mlx_ptr, game->win_ptr);
 }
 
-int render_game(t_game *game)
+int render_gamev1(t_game *game)
 {
-    game->mlx_ptr = mlx_init();
-    game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
+    // game->mlx_ptr = mlx_init();
+    // game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
     refresh_screen(game);
     set_up_hooks(game);
     mlx_loop(game->mlx_ptr);
@@ -386,10 +399,15 @@ int render_game(t_game *game)
 
 int     initgame(t_game **game)
 {
+    printf("initgame\n");
     create_game_struct(game);
     create_map(*game);
     create_player(*game);
-    render_game(*game);
+    preload_textures(*game);
+    setup_game_mlx(*game);
+    
+    // render_game(*game);
+    // brabant();
     return(1);
 }
 
