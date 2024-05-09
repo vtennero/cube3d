@@ -387,15 +387,15 @@ void    refresh_screen(t_game *game)
     list = calculate_rays(game, list);
 }
 
-int render_gamev1(t_game *game)
-{
-    // game->mlx_ptr = mlx_init();
-    // game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
-    refresh_screen(game);
-    set_up_hooks(game);
-    mlx_loop(game->mlx_ptr);
-    return 0;
-}
+// int render_gamev1(t_game *game)
+// {
+//     // game->mlx_ptr = mlx_init();
+//     // game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
+//     refresh_screen(game);
+//     set_up_hooks(game);
+//     mlx_loop(game->mlx_ptr);
+//     return 0;
+// }
 
 int     initgame(t_game **game)
 {

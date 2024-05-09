@@ -137,3 +137,48 @@ void print_game_map(t_game *game)
         printf("\n");
     }
 }
+
+void debug_print_rays(t_ray_node *head)
+{
+    // Step 1: Calculate the length of the linked list
+    int count = 0;
+    t_ray_node *temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+
+    // Step 2: Print the first 10 and last 10 rays if possible
+    int first_count = (count < 10) ? count : 10;
+    int last_count = (count < 20) ? (count - first_count) : 10;
+    int idx = 0;
+
+    temp = head;
+
+    // Print the first `first_count` rays
+    printf("First %d rays:\n", first_count);
+    while (temp != NULL && idx < first_count) {
+        printf("Ray %d: x = %d, cameraX = %f, rayDirX = %f, rayDirY = %f\n",
+               idx, temp->ray.x, temp->ray.cameraX, temp->ray.rayDirX, temp->ray.rayDirY);
+        // Add more properties as needed
+        temp = temp->next;
+        idx++;
+    }
+
+    // Skip intermediate rays if the total count is greater than 20
+    int skip_count = count - (first_count + last_count);
+    while (skip_count-- > 0 && temp != NULL) {
+        temp = temp->next;
+    }
+
+    // Print the last `last_count` rays
+    printf("\nLast %d rays:\n", last_count);
+    idx = count - last_count;
+    while (temp != NULL && idx < count) {
+        printf("Ray %d: x = %d, cameraX = %f, rayDirX = %f, rayDirY = %f\n",
+               idx, temp->ray.x, temp->ray.cameraX, temp->ray.rayDirX, temp->ray.rayDirY);
+        // Add more properties as needed
+        temp = temp->next;
+        idx++;
+    }
+}

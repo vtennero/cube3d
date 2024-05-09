@@ -25,7 +25,8 @@ mlx_basic_setup.c \
 movement.c \
 textures.c \
 mlx_tests.c \
-test_keyhold.c
+test_keyhold.c \
+movement_player_reloc.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

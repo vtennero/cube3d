@@ -27,7 +27,7 @@
 #define DEFAULT_S_HEIGHT 600
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
-
+#define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -134,6 +134,7 @@ typedef struct s_game {
     int screen_width;
 	int	bonus;
     t_img	img;
+    int key_state[MAX_KEY_CODE];
 } t_game;
 
 typedef struct s_ray {
@@ -195,6 +196,7 @@ typedef enum {
     K_X = 120,
     K_Y = 121,
     K_Z = 122,
+    K_SHIFT = 65505,
     K_LEFT = 65361,
     K_RIGHT = 65363
 } KeyCodes;
@@ -319,4 +321,19 @@ int	setup_game_mlx(t_game *game);
 t_ray_node*    calculate_rays(t_game *game, t_ray_node* list);
 
 int test_keyhold(void);
+int ft_key_press(int keycode, t_game *game);
+int ft_key_release(int keycode, t_game *game);
+
+
+
+void handle_movement_left(t_game *game);
+void handle_movement_right(t_game *game);
+void handle_movement_forward(t_game *game);
+void handle_movement_backward(t_game *game);
+void handle_movement_strafe_left(t_game *game);
+void handle_movement_strafe_right(t_game *game);
+void handle_movement_dash(t_game *game);
+
+void debug_print_rays(t_ray_node *head);
+
 # endif

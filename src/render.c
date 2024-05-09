@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/05/09 17:08:53 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/09 22:43:37 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,48 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 	}
 }
 
-// void render_ray(t_img *img, t_ray ray)
-// {
+
+
+// void render_ray(t_img *img, t_ray ray, t_texture *texture) {
+
+// 	// printf("Screen bpp: %d, Texture bpp: %d\n", img->bpp, texture->tex_bpp);
+// 	// printf("Screen endian: %d, Texture endian: %d\n", img->endian, texture->tex_endian);
+
+//     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
+//         fprintf(stderr, "Error: Texture and screen format mismatch\n");
+//         exit(EXIT_FAILURE);
+//     }
+
+
+
+//     // printf("Rendering ray at screen position X: %d\n", ray.x);
+
 //     int y = ray.draw_start;
-//     while (y < ray.draw_end)
-//     {
-//         img_pix_put(img, ray.x, y, ray.color);
+//     while (y < ray.draw_end) {
+//         // printf("Rendering pixel at Y: %d\n", y);
+//         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
+//         int color = get_texture_color(texture, ray.texX, texY);
+//         img_pix_put(img, ray.x, y, color);
 //         y++;
 //     }
 // }
 
-void render_ray(t_img *img, t_ray ray, t_texture *texture) {
-
-	// printf("Screen bpp: %d, Texture bpp: %d\n", img->bpp, texture->tex_bpp);
-	// printf("Screen endian: %d, Texture endian: %d\n", img->endian, texture->tex_endian);
-
+void render_ray(t_img *img, t_ray ray, t_texture *texture, int rayIndex, int totalRays) {
     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
         fprintf(stderr, "Error: Texture and screen format mismatch\n");
         exit(EXIT_FAILURE);
     }
 
-
-
-    printf("Rendering ray at screen position X: %d\n", ray.x);
+    // Calculate texture X coordinate for the ray
+    // Assuming texture should wrap around completely for all rays across the screen
+    int texX = (rayIndex * texture->width) / totalRays;
+    texX %= texture->width;  // Wrap around by using modulo operation
 
     int y = ray.draw_start;
     while (y < ray.draw_end) {
-        printf("Rendering pixel at Y: %d\n", y);
         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
-        int color = get_texture_color(texture, ray.texX, texY);
+        texY %= texture->height;  // Optionally ensure texY also wraps around if needed
+        int color = get_texture_color(texture, texX, texY);
         img_pix_put(img, ray.x, y, color);
         y++;
     }
@@ -103,38 +116,48 @@ void render_floor(t_img *img, int floor_color) {
     }
 }
 
+
+
 // void render_ray_list(t_game *game)
 // {
+// 	int	i = 0;
 //     // Initialize the list and calculate rays
+// 	printf("render ray list STARTS\n");
 //     t_ray_node* ray_list = NULL;
 //     ray_list = calculate_rays(game, ray_list);
 
-//     // Traverse through the linked list and render each ray
-//     t_ray_node* current = ray_list;
-//     while (current != NULL)
-//     {
-//         render_ray(&game->img, current->ray);
-//         current = current->next;
-//     }
+// 	debug_print_rays(ray_list);
 
+//     t_ray_node* current = ray_list;
+//     // printf("Starting to render ray list.\n");
+//     while (current != NULL)
+// 	{
+// 		// printf("i = %d\n", i);
+//         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
+
+
+//         render_ray(&game->img, current->ray, used_texture);
+//         current = current->next;
+// 		i++;
+// }
+// 	printf("render ray list ENDS\n");
 // }
 
-void render_ray_list(t_game *game)
-{
-    // Initialize the list and calculate rays
+
+void render_ray_list(t_game *game) {
+    int i = 0;
+	// printf("render ray list STARTS\n");
     t_ray_node* ray_list = NULL;
     ray_list = calculate_rays(game, ray_list);
-
     t_ray_node* current = ray_list;
-    // printf("Starting to render ray list.\n");
+    int totalRays = 800;  // Or however many rays you are calculating
+
     while (current != NULL) {
-        // printf("Rendering ray node.\n");
         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
-
-
-        render_ray(&game->img, current->ray, used_texture);
+        render_ray(&game->img, current->ray, used_texture, i, totalRays);
         current = current->next;
-}
+        i++;
+    }
 }
 
 
@@ -142,12 +165,22 @@ int	render(t_game *game)
 {
 	if (game->win_ptr == NULL)
 		return (1);
+	
+	handle_movement_left(game);
+	handle_movement_right(game);
+	handle_movement_forward(game);
+	handle_movement_backward(game);
+	handle_movement_strafe_left(game);
+	handle_movement_strafe_right(game);
+	handle_movement_dash(game);
+	// printf("RENDERING STARTS\n");
 	render_sky(&game->img, 0x87CEEB);
 	render_floor(&game->img, 0x8B4513);
-	// render_ray_list(game);
+	render_ray_list(game);
 
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
+	// printf("RENDERING ENDS\n");
 	return (0);
 }
 
@@ -172,22 +205,21 @@ int	setup_game_mlx(t_game *game)
 	}
     preload_textures(game);
 
-	/* Setup hooks */
-    mlx_do_key_autorepeaton(game->mlx_ptr);
-    set_up_hooks(game);
 
 	game->img.mlx_img = mlx_new_image(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT);
 	game->img.addr = mlx_get_data_addr(game->img.mlx_img, &game->img.bpp,
 			&game->img.line_len, &game->img.endian);
 
+	// mlx_hook(recup->data.mlx_win, 33, 1L << 17, ft_exit, recup);
+	mlx_hook(game->win_ptr, 2, 1L << 0, ft_key_press, game);
 	mlx_loop_hook(game->mlx_ptr, &render, game);
-
+	mlx_hook(game->win_ptr, 3, 1L << 1, ft_key_release, game);
 	mlx_loop(game->mlx_ptr);
 
 	/* we will exit the loop if there's no window left, and execute this code */
-	mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
-	mlx_destroy_display(game->mlx_ptr);
-	free(game->mlx_ptr);
+	// mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
+	// mlx_destroy_display(game->mlx_ptr);
+	// free(game->mlx_ptr);
 
 	return (0);
 }
