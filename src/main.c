@@ -403,11 +403,8 @@ int     initgame(t_game **game)
     create_game_struct(game);
     create_map(*game);
     create_player(*game);
-    preload_textures(*game);
     setup_game_mlx(*game);
-    
-    // render_game(*game);
-    // brabant();
+
     return(1);
 }
 
@@ -418,14 +415,10 @@ int main()
     game = NULL;
     // if (map_is_valid)
         initgame(&game);
-    // clean_up();
-    // mlx_test_xpm_to_pixels();
-    // mlx_test_xpm_to_pixels_scaled_to_screen();
-    // mlx_test_xpm_to_pixels_scaled_w_perspective();
-    // mlx_test_xpm_to_pixels_scaled_w_perspective_split();
 
-    // lodev();
+    // test_keyhold();
+
+
     (void)game;
-    // mlx_basic_setup();
     return (0);
 }

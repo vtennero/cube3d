@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
+#include <X11/X.h>
+#include <X11/keysym.h>
 
 #define DEFAULT_S_WIDTH 800
 #define DEFAULT_S_HEIGHT 600
@@ -73,8 +75,13 @@ typedef enum e_tiletype {
 typedef struct s_texture {
     char    *path;
     void* img;
+    char* data;   // Pixel data
     int width, height;
+    int tex_bpp;
+    int tex_line_len;
+    int tex_endian;
 } t_texture;
+
 
 typedef enum e_direction {
     NORTH,
@@ -148,8 +155,10 @@ typedef struct s_ray {
     int lineHeight;
     int draw_start;
     int draw_end;
-    // int color;
     int wall_face;
+    int color;
+    int texX; // Texture X coordinate
+
 } t_ray;
 
 
@@ -308,4 +317,6 @@ int	brabant(void);
 int	setup_game_mlx(t_game *game);
 
 t_ray_node*    calculate_rays(t_game *game, t_ray_node* list);
+
+int test_keyhold(void);
 # endif

@@ -44,22 +44,6 @@ const char* get_cardinal_direction(float x, float y) {
     else return "South-East";
 }
 
-// void handle_key_left(t_game *game)
-// {
-//     // Implement what happens when 'Left' is pressed
-//     printf("You just pressed Left!\n");
-
-//     float angle = 0.0872665;  // 5 degrees in radians
-//     float oldX = game->player->direction.x;
-//     float oldY = game->player->direction.y;
-
-//     game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
-//     game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
-    
-//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-//     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-//     printf("Facing direction: %s\n", direction);
-// }
 
 void handle_key_left(t_game *game)
 {
@@ -84,48 +68,6 @@ void handle_key_left(t_game *game)
     printf("Facing direction: %s\n", direction);
 }
 
-
-
-// void handle_key_right(t_game *game)
-// {
-//     // Implement what happens when 'Right' is pressed
-//     printf("You just pressed Right!\n");
-
-//     float angle = 0.0872665;  // 5 degrees in radians
-//     float oldX = game->player->direction.x;
-//     float oldY = game->player->direction.y;
-
-//     game->player->direction.x = oldX * cos(angle) + oldY * sin(angle);
-//     game->player->direction.y = oldY * cos(angle) - oldX * sin(angle);
-    
-//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-//         const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-//     printf("Facing direction: %s\n", direction);
-// }
-
-// void handle_key_right(t_game *game)
-// {
-//     // Implement what happens when 'Right' is pressed
-//     printf("You just pressed Right!\n");
-
-//     float angle = 0.0872665;  // 5 degrees in radians
-//     float oldX = game->player->direction.x;
-//     float oldY = game->player->direction.y;
-
-//     // Rotate direction vector clockwise
-//     game->player->direction.x = oldX * cos(angle) - oldY * sin(angle);
-//     game->player->direction.y = oldX * sin(angle) + oldY * cos(angle);
-
-//     // Rotate camera plane vector clockwise
-//     float oldPlaneX = game->player->plane.x;
-//     float oldPlaneY = game->player->plane.y;
-//     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
-//     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
-
-//     printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-//     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-//     printf("Facing direction: %s\n", direction);
-// }
 
 void handle_key_right(t_game *game)
 {
@@ -177,60 +119,6 @@ void handle_key_w(t_game *game)
 }
 
 
-// void handle_key_a(t_game *game)
-// {
-//     // Implement what happens when 'A' is pressed
-//     printf("You just pressed A!\n");
-
-//     float speed = 0.8;  // Speed of movement, adjust as necessary
-//     float buffer = 0.8; // Buffer distance to prevent entering into a wall
-//     // Calculate left strafe direction
-//     float newX = game->player->position.x - game->player->direction.y * speed;
-//     float newY = game->player->position.y + game->player->direction.x * speed;
-//     int mapX = (int)newX;
-//     int mapY = (int)newY;
-
-//     // Check collision using the buffer for more predictive collision detection
-//     int mapX = (int)(newX + game->player->direction.x * buffer);
-//     int mapY = (int)(newY + game->player->direction.y * buffer);
-
-//     // Check if the new position is within the bounds of the map and not a wall
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX;
-//         game->player->position.y = newY;
-//         printf("game->player->position.x = %f\n", game->player->position.x);
-//         printf("game->player->position.y = %f\n", game->player->position.y);
-//     }
-//     else
-//         printf("Collision/Out of Map movement\n");
-// }
-
-
-// void handle_key_s(t_game *game)
-// {
-//     // Implement what happens when 'S' is pressed
-//     printf("You just pressed S!\n");
-
-//     float speed = 0.8;  // Speed of movement, adjust as necessary
-//     float buffer = 0.8; // Buffer distance to prevent entering into a wall
-//     float newX = game->player->position.x - game->player->direction.x * speed;
-//     float newY = game->player->position.y - game->player->direction.y * speed;
-//     int mapX = (int)newX;
-//     int mapY = (int)newY;
-
-//     // Check collision using the buffer for more predictive collision detection
-
-
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX;
-//         game->player->position.y = newY;
-//         printf("game->player->position.x = %f\n", game->player->position.x);
-//         printf("game->player->position.y = %f\n", game->player->position.y);
-//     }
-//     else
-//         printf("Collision/Out of Map movement\n");
-// }
-
 void handle_key_s(t_game *game)
 {
     printf("You just pressed S!\n");
@@ -254,32 +142,6 @@ void handle_key_s(t_game *game)
 }
 
 
-// void handle_key_d(t_game *game)
-// {
-//     // Implement what happens when 'D' is pressed
-//     (void)game;
-//     printf("You just pressed D!\n");
-
-//     float speed = 0.8;  // Speed of movement, adjust as necessary
-//     float buffer = 0.8; // Buffer distance to prevent entering into a wall
-//     float newX = game->player->position.x + game->player->direction.y * speed;
-//     float newY = game->player->position.y - game->player->direction.x * speed;
-//     int mapX = (int)newX;
-//     int mapY = (int)newY;
-
-
-
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX;
-//         game->player->position.y = newY;
-//         printf("game->player->position.x = %f\n", game->player->position.x);
-//         printf("game->player->position.y = %f\n", game->player->position.y);
-//     }
-//     else
-//         printf("Collision/Out of Map movement\n");
-// }
-
-
 float calculate_dynamic_buffer(t_player *player, float base_speed) {
     // Calculate buffer based on the dot product of direction and plane vectors
     float dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
@@ -292,29 +154,6 @@ float calculate_dynamic_buffer(t_player *player, float base_speed) {
     return dynamic_buffer;
 }
 
-// void handle_key_a(t_game *game)
-// {
-//     printf("You just pressed A!\n");
-
-//     float speed = 0.8;
-//     float buffer = 10;
-//     // float buffer = calculate_dynamic_buffer(game->player, speed);
-
-//     float newX = game->player->position.x - game->player->plane.x * (speed + buffer); // Left perpendicular to direction
-//     float newY = game->player->position.y - game->player->plane.y * (speed + buffer);
-//     int mapX = (int)(newX);
-//     int mapY = (int)(newY);
-
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX + game->player->plane.x * buffer;
-//         game->player->position.y = newY + game->player->plane.y * buffer;
-//         printf("game->player->position.x = %f\n", game->player->position.x);
-//         printf("game->player->position.y = %f\n", game->player->position.y);
-//     } else {
-//         printf("Collision/Out of Map movement\n");
-//     }
-//     print_game_map(game);
-// }
 
 void handle_key_a(t_game *game)
 {
@@ -345,29 +184,6 @@ void handle_key_a(t_game *game)
     }
     print_game_map(game);
 }
-
-
-// void handle_key_d(t_game *game)
-// {
-//     printf("You just pressed D!\n");
-
-//     float speed = 0.8;
-//     float buffer = 5;
-//     float newX = game->player->position.x + game->player->plane.x * (speed + buffer); // Right perpendicular to direction
-//     float newY = game->player->position.y + game->player->plane.y * (speed + buffer);
-//     int mapX = (int)(newX);
-//     int mapY = (int)(newY);
-
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX - game->player->plane.x * buffer;
-//         game->player->position.y = newY - game->player->plane.y * buffer;
-//         printf("game->player->position.x = %f\n", game->player->position.x);
-//         printf("game->player->position.y = %f\n", game->player->position.y);
-//     } else {
-//         printf("Collision/Out of Map movement\n");
-//     }
-//     print_game_map(game);
-// }
 
 void handle_key_d(t_game *game)
 {
@@ -400,22 +216,15 @@ void handle_key_d(t_game *game)
 }
 
 
-
-// int key_hook(int keycode, t_game *game)
-// {
-// 	// printf("Hello from key_hook! %d\n", keycode);
-// 	(void)game;
-//     if (keycode == K_W) {
-//         handle_key_w(game);
-//     } else if (keycode == K_A) {
-//         handle_key_a(game);
-//     } else if (keycode == K_S) {
-//         handle_key_s(game);
-//     } else if (keycode == K_D) {
-//         handle_key_d(game);
-//     }
-//     return 0;
-// }
+int	close_hook(t_game *game_state)
+{
+	ft_printf("Close button clicked, exiting...\n");
+	// clear_mlx_resources(game_state);
+	// clear_game_state(game_state);
+	(void)game_state;
+	exit(0);
+	return (0);
+}
 
 int	handle_key(int keycode, t_game *game_state)
 {
@@ -438,28 +247,112 @@ int	handle_key(int keycode, t_game *game_state)
 	return (0);
 }
 
-int	close_hook(t_game *game_state)
+
+int handle_keypress(int keysym, t_game *game)
 {
-	ft_printf("Close button clicked, exiting...\n");
-	// clear_mlx_resources(game_state);
-	// clear_game_state(game_state);
-	(void)game_state;
-	exit(0);
-	return (0);
+    printf("handle_keypress\n");
+    // if (!game) {
+    //     printf("Error: Game object is NULL\n");
+    //     return -1;
+    // }
+
+    // if (keysym == XK_Escape) {
+    //     printf("Exiting: Escape key pressed\n");
+    //     mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+    //     return (0);  // Exit the function after destroying the window
+    // }
+
+    // if (keysym == XK_d) {
+    //     printf("handle_keypress: d\n");
+    //     printf("handle_keypress You just pressed D!\n");
+
+    //     if (!game->player) {
+    //         printf("Error: Player object is NULL\n");
+    //         return -1;
+    //     }
+
+    //     // Log current direction and position
+    //     printf("Current position: x=%f, y=%f\n", game->player->position.x, game->player->position.y);
+    //     printf("Current direction: x=%f, y=%f\n", game->player->direction.x, game->player->direction.y);
+
+    //     float speed = 0.8;
+    //     float perpX = game->player->direction.y;  // Same as y component, opposite sign
+    //     float perpY = -game->player->direction.x; // Opposite of x component
+
+    //     float newX = game->player->position.x + perpX * speed;
+    //     float newY = game->player->position.y + perpY * speed;
+    //     int mapX = (int)(newX);
+    //     int mapY = (int)(newY);
+
+    //     printf("handle_keypress allocated newxy mapxy: newX=%f, newY=%f, mapX=%d, mapY=%d\n", newX, newY, mapX, mapY);
+
+    //     if (!game->map) {
+    //         printf("Error: Map object is NULL\n");
+    //         return -1;
+    //     }
+
+    //     if (mapX < 0 || mapX >= game->map->width || mapY < 0 || mapY >= game->map->height) {
+    //         printf("Error: New coordinates are out of map bounds\n");
+    //         return -1;
+    //     }
+
+    //     if (!game->map->data) {
+    //         printf("Error: Map data is NULL\n");
+    //         return -1;
+    //     }
+
+    //     if (game->map->data[mapY][mapX] != TILE_WALL) {
+    //         printf("handle_keypress changing player position\n");
+    //         game->player->position.x = newX;
+    //         game->player->position.y = newY;
+    //         printf("New player position.x = %f\n", game->player->position.x);
+    //         printf("New player position.y = %f\n", game->player->position.y);
+    //     } else {
+    //         printf("Collision/Out of Map movement\n");
+    //     }
+    // }
+
+    // printf("handle_keypress END\n");
+    (void)game;
+    (void)keysym;
+    return (0);
 }
+
+
+
+int handle_keyrelease(int keysym, t_game *game)
+{
+    printf("Keyrelease: %d\n", keysym);
+    // You can add logic here if needed to handle when keys are released.
+    (void)game;
+    return (0);
+}
+
+// int	handle_no_event(t_game *game)
+// {
+//     /* This function needs to exist, but it is useless for the moment */
+//     (void)game;
+//     return (0);
+// }
 
 void set_up_hooks(t_game *game)
 {
-	// // so long
-	// mlx_key_hook(game_state->win_ptr, handle_key, game_state);
-	// mlx_hook(game_state->win_ptr, 17, 0, close_hook, game_state);
+    printf("set_up_hooks\n");
+	// mlx_key_hook(game->win_ptr, handle_key, game);
+	// mlx_hook(game->win_ptr, 17, 0, close_hook, game);
+    printf("Current position: x=%f, y=%f\n", game->player->position.x, game->player->position.y);
+    printf("Current direction: x=%f, y=%f\n", game->player->direction.x, game->player->direction.y);
 
-	// // working v1
-	// mlx_key_hook(game->win_ptr, key_hook, game);
+        /* Setup hooks */ 
+    // mlx_hook(game->win_ptr, KeyPress, KeyPressMask, handle_keypress, game);
+    // mlx_hook(game->win_ptr, KeyRelease, KeyReleaseMask, handle_keyrelease, game);
 
-	// v2
-	mlx_key_hook(game->win_ptr, handle_key, game);
-	mlx_hook(game->win_ptr, 17, 0, close_hook, game);
+    mlx_hook(game->win_ptr, 2, 1L << 0, handle_keypress, game);
+    mlx_hook(game->win_ptr, 3, 1L << 1, handle_keyrelease, game);
+
+    // mlx_loop_hook(game->mlx_ptr, handle_no_event, game);
+    // mlx_hook(game->win_ptr, KeyPress, KeyPressMask, handle_keypress, game); /* ADDED */
+    // mlx_hook(game->win_ptr, KeyRelease, KeyReleaseMask, handle_keyrelease, game); /* CHANGED */
 }
 
 
