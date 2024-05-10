@@ -128,7 +128,7 @@ typedef struct s_game {
     t_player *player;
     t_map *map;
     t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
-    t_texture *floortexture;
+    t_texture floortexture[1];
     t_texture skytexture[1];
     int screen_height;
     int screen_width;
@@ -337,5 +337,8 @@ void debug_print_rays(t_ray_node *head);
 void calc_texture_x(t_game *game, t_ray_node *ray, int textureWidth);
 void calc_wall_hit(t_game *game, t_ray_node *ray);
 
+void render_floor(t_game *game);
+void	img_pix_put(t_img *img, int x, int y, int color);
+int get_texture_color(t_texture *texture, int x, int y);
 
 # endif

@@ -46,12 +46,21 @@
 // }
 
 void preload_textures(t_game *game) {
-    char *texture_paths[] = {
-        "textures/bluestone.xpm",   // NORTH
-        "textures/eagle.xpm",       // EAST
-        "textures/greystone.xpm",   // SOUTH
-        "textures/wood.xpm",         // WEST
-        "textures/sky02.xpm"
+    // char *texture_paths[] = {
+    //     "textures/bluestone.xpm",   // NORTH
+    //     "textures/eagle.xpm",       // EAST
+    //     "textures/greystone.xpm",   // SOUTH
+    //     "textures/wood.xpm",         // WEST
+    //     "textures/sky02.xpm"
+    // };
+
+        char *texture_paths[] = {
+        "textures/foilagewall01.xpm",   // NORTH
+        "textures/dmgwall07.xpm",       // EAST
+        "textures/dmgwall01.xpm",   // SOUTH
+        "textures/dmgwall06.xpm",         // WEST
+        "textures/sky02.xpm",
+        "textures/floor/vertopal.com_half03.xpm"  
     };
 
     printf("preload_textures START\n");
@@ -92,6 +101,21 @@ void preload_textures(t_game *game) {
         &game->skytexture[0].tex_endian
     );
     printf("Loaded sky texture, bpp: %d, size: %dx%d\n", game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
+
+        // Load the floor texture
+    game->floortexture[0].img = mlx_xpm_file_to_image(
+        game->mlx_ptr, 
+        texture_paths[5], 
+        &game->floortexture[0].width, 
+        &game->floortexture[0].height
+    );
+    game->floortexture[0].data = mlx_get_data_addr(
+        game->floortexture[0].img,
+        &game->floortexture[0].tex_bpp,
+        &game->floortexture[0].tex_line_len,
+        &game->floortexture[0].tex_endian
+    );
+    printf("Loaded floor texture, bpp: %d, size: %dx%d\n", game->floortexture[0].tex_bpp, game->floortexture[0].width, game->floortexture[0].height);
 
     printf("preload_textures END\n");
 }

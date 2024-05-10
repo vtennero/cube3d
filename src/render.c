@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/05/10 12:22:38 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/10 16:27:11 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #define WHITE_PIXEL 0xFFFFFF
 
 
-int get_texture_color(t_texture *texture, int x, int y) {
+int get_texture_color(t_texture *texture, int x, int y)
+{
     // printf("Getting texture color at (X: %d, Y: %d)\n", x, y);
     int pixel_pos = y * texture->tex_line_len + x * (texture->tex_bpp / 8);
     int color = *(int *)(texture->data + pixel_pos);
@@ -32,6 +33,11 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 {
 	char    *pixel;
 	int		i;
+
+    if (x < 0 || x >= DEFAULT_S_WIDTH || y < 0 || y >= DEFAULT_S_HEIGHT) {
+        fprintf(stderr, "Attempted to write pixel out of bounds: x=%d, y=%d\n", x, y);
+        return; // Skip drawing for invalid coordinates
+    }
 
 	i = img->bpp - 8;
     pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
@@ -86,6 +92,7 @@ void render_ray(t_img *img, t_ray ray, t_texture *texture) {
         texY %= texture->height;  // Wrap around if necessary (usually not needed unless texture is shorter than the wall segment)
 
         int color = get_texture_color(texture, texX, texY);
+        // printf("render_ray: calling img_pix_put\n");
         img_pix_put(img, ray.x, y, color);
         y++;
     }
@@ -124,6 +131,7 @@ void render_sky(t_img *img, void *mlx_ptr, char *sky_texture_path) {
             int color = *((int *)(sky_data + ty * line_len + tx * (bpp / 8)));
 
             // Put the color into the main image
+        // printf("render_sky: calling img_pix_put\n");
             img_pix_put(img, j, i, color);
         }
     }
@@ -151,31 +159,22 @@ void render_sky(t_img *img, void *mlx_ptr, char *sky_texture_path) {
 
 
 
-// Function to render the floor (lower half)
-void render_floor(t_img *img, int floor_color) {
-    int i, j;
-    for (i = DEFAULT_S_HEIGHT / 2; i < DEFAULT_S_HEIGHT; ++i) {
-        for (j = 0; j < DEFAULT_S_WIDTH; ++j) {
-            img_pix_put(img, j, i, floor_color);
-        }
-    }
-}
+
+
+
 
 
 
 
 void render_ray_list(t_game *game) {
     int i = 0;
-	// printf("render ray list STARTS\n");
     t_ray_node* ray_list = NULL;
     ray_list = calculate_rays(game, ray_list);
     t_ray_node* current = ray_list;
-    // int totalRays = 800;  // Or however many rays you are calculating
 
     while (current != NULL) {
         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
         render_ray(&game->img, current->ray, used_texture);
-        // render_ray(&game->img, current->ray, used_texture, i, totalRays);
         current = current->next;
         i++;
     }
@@ -194,16 +193,11 @@ int	render(t_game *game)
 	handle_movement_strafe_left(game);
 	handle_movement_strafe_right(game);
 	handle_movement_dash(game);
-	// printf("RENDERING STARTS\n");
-	// render_sky(&game->img, 0x87CEEB);
-	// render_sky(game);
 	render_sky(&game->img, game->mlx_ptr, "textures/sky02.xpm");
-	render_floor(&game->img, 0x8B4513);
+    render_floor(game);
 	render_ray_list(game);
-
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
-	// printf("RENDERING ENDS\n");
 	return (0);
 }
 
