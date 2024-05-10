@@ -61,6 +61,7 @@ t_ray_node* addRay(t_ray_node** head) {
     newNode->ray.draw_end = 0;
     newNode->ray.color = 0;
     newNode->ray.wall_face = 0;
+    newNode->ray.wallX = 0;
 
     if (*head == NULL) {
         newNode->next = NULL;

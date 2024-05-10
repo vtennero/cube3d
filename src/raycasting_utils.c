@@ -163,26 +163,43 @@ void calc_draw_parameters(t_game *game, t_ray_node *ray)
 }
 
 
-
-void calc_tile_color(t_game *game, t_ray_node *ray)
+void calc_texture_x(t_game *game, t_ray_node *ray, int textureWidth)
 {
-	int	tileValue;
-
-	tileValue = game->map->data[ray->ray.mapX][ray->ray.mapY];
-	int RGB_Red = 0xFF0000;  // Hexadecimal for {255, 0, 0}
-	int RGB_Green = 0x00FF00;  // Hexadecimal for {0, 255, 0}
-	int RGB_Blue = 0x0000FF;  // Hexadecimal for {0, 0, 255}
-	int RGB_White = 0xFFFFFF;  // Hexadecimal for {255, 255, 255}
-	int RGB_Yellow = 0xFFFF00;  // Hexadecimal for {255, 255, 0}
-	if (tileValue == 1) {
-		ray->ray.color = RGB_Red;
-	} else if (tileValue == 2) {
-		ray->ray.color = RGB_Green;
-	} else if (tileValue == 3) {
-		ray->ray.color = RGB_Blue;
-	} else if (tileValue == 4) {
-		ray->ray.color = RGB_White;
-	} else {
-		ray->ray.color = RGB_Yellow;
-	}
+	(void)game;
+    // Use wallX to determine the texture x-coordinate
+    ray->ray.texX = (int)(ray->ray.wallX * (double)textureWidth);
+    if (ray->ray.side == 0 && ray->ray.rayDirX > 0)
+        ray->ray.texX = textureWidth - ray->ray.texX - 1;
+    if (ray->ray.side == 1 && ray->ray.rayDirY < 0)
+        ray->ray.texX = textureWidth - ray->ray.texX - 1;
 }
+
+// void calc_wall_hit(t_game *game, t_ray_node *ray) {
+//     // printf("Starting calc_wall_hit\n");
+//     // printf("Player Position: (%f, %f)\n", game->player->position.x, game->player->position.y);
+
+//     if (ray->ray.side == 0) {  // If a horizontal (east/west) wall was hit
+//         ray->ray.wallX = game->player->position.y + ray->ray.perpWallDist * ray->ray.rayDirY;
+//         // printf("Horizontal Wall Hit at wallX: %f\n", ray->ray.wallX);
+//     } else {  // If a vertical (north/south) wall was hit
+//         ray->ray.wallX = game->player->position.x + ray->ray.perpWallDist * ray->ray.rayDirX;
+//         // printf("Vertical Wall Hit at wallX: %f\n", ray->ray.wallX);
+//     }
+
+//     ray->ray.wallX -= floor(ray->ray.wallX);  // Normalize to [0, 1]
+//     // printf("Normalized wallX: %f\n", ray->ray.wallX);
+// }
+
+void calc_wall_hit(t_game *game, t_ray_node *ray) {
+    double wallImpact;  // point of impact along the wall, normalized to [0, 1]
+    // Assuming a perpendicular hit, calculate where along the wall the ray hits
+    if (ray->ray.side == 0) {  // Horizontal hit
+        wallImpact = game->player->position.y + ray->ray.perpWallDist * ray->ray.rayDirY;
+    } else {  // Vertical hit
+        wallImpact = game->player->position.x + ray->ray.perpWallDist * ray->ray.rayDirX;
+    }
+
+    wallImpact -= floor(wallImpact); // Normalize the impact point
+    ray->ray.wallX = wallImpact;
+}
+

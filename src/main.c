@@ -241,6 +241,8 @@ t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
             calc_delta_dist(game, current);
             perform_dda(game, current);
             calc_perp_wall_dist(game, current);
+            calc_wall_hit(game, current);
+            calc_texture_x(game, current, 64); // Assuming textureWidth = 64 for wolf3d assets
             calc_line_height(game, current);
             calc_draw_parameters(game, current);
             // calc_tile_color(game, current);
@@ -249,37 +251,6 @@ t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
     }
     return (list);
 }
-
-// t_ray_node*    calculate_rays_color_v1(t_game *game, t_ray_node* list)
-// {
-//     int x;
-//     t_ray_node* current;
-
-//     current = list;
-//     x = 0;
-//     while (x < game->screen_width)
-//     {
-//         current = addRay(&list);
-//         if (current != NULL)
-//         {
-//             current->ray.x = x;
-//             calc_camera_x(game, current);
-//             calc_ray_dir_x(game, current);
-//             calc_ray_dir_y(game, current);
-//             calc_map_x(game, current);
-//             calc_map_y(game, current);
-//             calc_side_dist(game, current);
-//             calc_delta_dist(game, current);
-//             perform_dda(game, current);
-//             calc_perp_wall_dist(game, current);
-//             calc_line_height(game, current);
-//             calc_draw_parameters(game, current);
-//             calc_tile_color(game, current);
-//         }
-//         x++;
-//     }
-//     return (list);
-// }
 
 
 void renderFloorAndCeiling(void *mlx, void *win, int screenHeight, int screenWidth)

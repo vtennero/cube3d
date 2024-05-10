@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/05/09 22:43:37 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/10 12:22:38 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,45 +49,42 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 
 
 
-// void render_ray(t_img *img, t_ray ray, t_texture *texture) {
-
-// 	// printf("Screen bpp: %d, Texture bpp: %d\n", img->bpp, texture->tex_bpp);
-// 	// printf("Screen endian: %d, Texture endian: %d\n", img->endian, texture->tex_endian);
-
+// void render_ray(t_img *img, t_ray ray, t_texture *texture, int rayIndex, int totalRays) {
 //     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
 //         fprintf(stderr, "Error: Texture and screen format mismatch\n");
 //         exit(EXIT_FAILURE);
 //     }
 
-
-
-//     // printf("Rendering ray at screen position X: %d\n", ray.x);
+//     // Calculate texture X coordinate for the ray
+//     // Assuming texture should wrap around completely for all rays across the screen
+//     int texX = (rayIndex * texture->width) / totalRays;
+//     texX %= texture->width;  // Wrap around by using modulo operation
 
 //     int y = ray.draw_start;
 //     while (y < ray.draw_end) {
-//         // printf("Rendering pixel at Y: %d\n", y);
 //         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
-//         int color = get_texture_color(texture, ray.texX, texY);
+//         texY %= texture->height;  // Optionally ensure texY also wraps around if needed
+//         int color = get_texture_color(texture, texX, texY);
 //         img_pix_put(img, ray.x, y, color);
 //         y++;
 //     }
 // }
 
-void render_ray(t_img *img, t_ray ray, t_texture *texture, int rayIndex, int totalRays) {
+void render_ray(t_img *img, t_ray ray, t_texture *texture) {
     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
         fprintf(stderr, "Error: Texture and screen format mismatch\n");
         exit(EXIT_FAILURE);
     }
 
-    // Calculate texture X coordinate for the ray
-    // Assuming texture should wrap around completely for all rays across the screen
-    int texX = (rayIndex * texture->width) / totalRays;
-    texX %= texture->width;  // Wrap around by using modulo operation
+    // Use the pre-calculated texX for the ray
+    int texX = ray.texX;  // This value is already calculated and should be valid for the texture width
 
     int y = ray.draw_start;
     while (y < ray.draw_end) {
+        // Calculate texY based on the proportion of the wall's visible height
         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
-        texY %= texture->height;  // Optionally ensure texY also wraps around if needed
+        texY %= texture->height;  // Wrap around if necessary (usually not needed unless texture is shorter than the wall segment)
+
         int color = get_texture_color(texture, texX, texY);
         img_pix_put(img, ray.x, y, color);
         y++;
@@ -96,15 +93,63 @@ void render_ray(t_img *img, t_ray ray, t_texture *texture, int rayIndex, int tot
 
 
 
+
 // Function to render the sky (upper half)
-void render_sky(t_img *img, int sky_color) {
-    int i, j;
-    for (i = 0; i < DEFAULT_S_HEIGHT / 2; ++i) {
-        for (j = 0; j < DEFAULT_S_WIDTH; ++j) {
-            img_pix_put(img, j, i, sky_color);
+// void render_sky(t_img *img, int sky_color) {
+//     int i, j;
+//     for (i = 0; i < DEFAULT_S_HEIGHT / 2; ++i) {
+//         for (j = 0; j < DEFAULT_S_WIDTH; ++j) {
+//             img_pix_put(img, j, i, sky_color);
+//         }
+//     }
+// }
+
+void render_sky(t_img *img, void *mlx_ptr, char *sky_texture_path) {
+    int sky_width, sky_height;
+    void *sky_texture;
+    char *sky_data;
+    int bpp, line_len, endian;
+
+    // Load the sky texture
+    sky_texture = mlx_xpm_file_to_image(mlx_ptr, sky_texture_path, &sky_width, &sky_height);
+    sky_data = mlx_get_data_addr(sky_texture, &bpp, &line_len, &endian);
+
+    for (int i = 0; i < DEFAULT_S_HEIGHT / 2; i++) {
+        for (int j = 0; j < DEFAULT_S_WIDTH; j++) {
+            // Calculate pixel position in the texture
+            int tx = (j * sky_width) / DEFAULT_S_WIDTH; // repeat texture if needed
+            int ty = (i * sky_height) / (DEFAULT_S_HEIGHT / 2); // repeat texture vertically
+
+            // Get the color from the texture
+            int color = *((int *)(sky_data + ty * line_len + tx * (bpp / 8)));
+
+            // Put the color into the main image
+            img_pix_put(img, j, i, color);
         }
     }
+
+    // Clean up the texture
+    mlx_destroy_image(mlx_ptr, sky_texture);
 }
+
+// void render_sky(t_game *game) {
+//     t_texture *sky = game->skytexture;
+
+//     for (int i = 0; i < game->screen_height / 2; i++) {
+//         for (int j = 0; j < game->screen_width; j++) {
+//             int tx = (j * sky->width) / game->screen_width;  // Repeat texture if needed
+//             int ty = (i * sky->height) / (game->screen_height / 2);  // Repeat texture vertically
+
+//             // Get the color from the texture
+//             int color = *((int *)(sky->data + ty * sky->tex_line_len + tx * (sky->tex_bpp / 8)));
+
+//             // Put the color into the main image
+//             img_pix_put(&game->img, j, i, color);
+//         }
+//     }
+// }
+
+
 
 // Function to render the floor (lower half)
 void render_floor(t_img *img, int floor_color) {
@@ -118,31 +163,6 @@ void render_floor(t_img *img, int floor_color) {
 
 
 
-// void render_ray_list(t_game *game)
-// {
-// 	int	i = 0;
-//     // Initialize the list and calculate rays
-// 	printf("render ray list STARTS\n");
-//     t_ray_node* ray_list = NULL;
-//     ray_list = calculate_rays(game, ray_list);
-
-// 	debug_print_rays(ray_list);
-
-//     t_ray_node* current = ray_list;
-//     // printf("Starting to render ray list.\n");
-//     while (current != NULL)
-// 	{
-// 		// printf("i = %d\n", i);
-//         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
-
-
-//         render_ray(&game->img, current->ray, used_texture);
-//         current = current->next;
-// 		i++;
-// }
-// 	printf("render ray list ENDS\n");
-// }
-
 
 void render_ray_list(t_game *game) {
     int i = 0;
@@ -150,11 +170,12 @@ void render_ray_list(t_game *game) {
     t_ray_node* ray_list = NULL;
     ray_list = calculate_rays(game, ray_list);
     t_ray_node* current = ray_list;
-    int totalRays = 800;  // Or however many rays you are calculating
+    // int totalRays = 800;  // Or however many rays you are calculating
 
     while (current != NULL) {
         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
-        render_ray(&game->img, current->ray, used_texture, i, totalRays);
+        render_ray(&game->img, current->ray, used_texture);
+        // render_ray(&game->img, current->ray, used_texture, i, totalRays);
         current = current->next;
         i++;
     }
@@ -174,7 +195,9 @@ int	render(t_game *game)
 	handle_movement_strafe_right(game);
 	handle_movement_dash(game);
 	// printf("RENDERING STARTS\n");
-	render_sky(&game->img, 0x87CEEB);
+	// render_sky(&game->img, 0x87CEEB);
+	// render_sky(game);
+	render_sky(&game->img, game->mlx_ptr, "textures/sky02.xpm");
 	render_floor(&game->img, 0x8B4513);
 	render_ray_list(game);
 

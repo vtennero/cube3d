@@ -50,23 +50,11 @@ void preload_textures(t_game *game) {
         "textures/bluestone.xpm",   // NORTH
         "textures/eagle.xpm",       // EAST
         "textures/greystone.xpm",   // SOUTH
-        "textures/wood.xpm"         // WEST
+        "textures/wood.xpm",         // WEST
+        "textures/sky02.xpm"
     };
 
     printf("preload_textures START\n");
-//     game->mlx_ptr = mlx_init();
-
-//     if (game->mlx_ptr == NULL) {
-//     fprintf(stderr, "Failed to initialize MLX\n");
-//     exit(EXIT_FAILURE);
-// }
-
-
-//     game->win_ptr = mlx_new_window(game->mlx_ptr, game->screen_width, game->screen_height, "MLX Window");
-//     if (game->win_ptr == NULL) {
-//         fprintf(stderr, "Failed to create window\n");
-//         exit(EXIT_FAILURE);
-//     }
     for (int i = NORTH; i <= WEST; i++)
     {
         printf("preload_textures for (int i = NORTH; i <= WEST; i++)\n");
@@ -90,6 +78,21 @@ void preload_textures(t_game *game) {
             printf("Loaded texture: %s, bpp: %d, size: %dx%d\n", texture_paths[i], game->walltextures[i].tex_bpp, game->walltextures[i].width, game->walltextures[i].height);
         }
     }
+    // Load the sky texture directly into the array
+    game->skytexture[0].img = mlx_xpm_file_to_image(
+        game->mlx_ptr, 
+        texture_paths[4], 
+        &game->skytexture[0].width, 
+        &game->skytexture[0].height
+    );
+    game->skytexture[0].data = mlx_get_data_addr(
+        game->skytexture[0].img,
+        &game->skytexture[0].tex_bpp,
+        &game->skytexture[0].tex_line_len,
+        &game->skytexture[0].tex_endian
+    );
+    printf("Loaded sky texture, bpp: %d, size: %dx%d\n", game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
+
     printf("preload_textures END\n");
 }
 

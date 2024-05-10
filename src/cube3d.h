@@ -129,7 +129,7 @@ typedef struct s_game {
     t_map *map;
     t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
     t_texture *floortexture;
-    t_texture *ceilingtexture;
+    t_texture skytexture[1];
     int screen_height;
     int screen_width;
 	int	bonus;
@@ -159,10 +159,8 @@ typedef struct s_ray {
     int wall_face;
     int color;
     int texX; // Texture X coordinate
-
+    double wallX; // Exact horizontal position on the wall where the ray hits
 } t_ray;
-
-
 
 typedef struct t_ray_node {
     t_ray ray;
@@ -335,5 +333,9 @@ void handle_movement_strafe_right(t_game *game);
 void handle_movement_dash(t_game *game);
 
 void debug_print_rays(t_ray_node *head);
+
+void calc_texture_x(t_game *game, t_ray_node *ray, int textureWidth);
+void calc_wall_hit(t_game *game, t_ray_node *ray);
+
 
 # endif
