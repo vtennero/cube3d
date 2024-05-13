@@ -242,7 +242,7 @@ t_ray_node*    calculate_rays(t_game *game, t_ray_node* list)
             perform_dda(game, current);
             calc_perp_wall_dist(game, current);
             calc_wall_hit(game, current);
-            calc_texture_x(game, current, 64); // Assuming textureWidth = 64 for wolf3d assets
+            calc_texture_x(game, current);
             calc_line_height(game, current);
             calc_draw_parameters(game, current);
             // calc_tile_color(game, current);

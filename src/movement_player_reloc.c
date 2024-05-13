@@ -141,35 +141,69 @@ float calculate_dynamic_buffer(t_player *player, float base_speed) {
 }
 
 
+// void handle_key_a(t_game *game)
+// {
+//     printf("You just pressed A!\n");
+
+//     float speed = 0.1;
+
+//     // Derive the perpendicular (left) direction vector manually
+//     // Assuming player->direction.x and player->direction.y represent the facing direction
+//     // Perpendicular vector to the left: (-dir.y, dir.x)
+//     float perpX = -game->player->direction.y;  // Opposite of y component
+//     float perpY = game->player->direction.x;   // Same as x component
+
+//     // Calculate the new position by moving left to the direction the player is facing
+//     float newX = game->player->position.x + perpX * speed;
+//     float newY = game->player->position.y + perpY * speed;
+//     int mapX = (int)(newX);
+//     int mapY = (int)(newY);
+
+//     // Check if the new position is within the map and not blocked by a wall
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+//         game->player->position.x = newX;
+//         game->player->position.y = newY;
+//         printf("New player position.x = %f\n", game->player->position.x);
+//         printf("New player position.y = %f\n", game->player->position.y);
+//     } else {
+//         printf("Collision/Out of Map movement\n");
+//     }
+//     print_game_map(game);
+// }
+
 void handle_key_a(t_game *game)
 {
     printf("You just pressed A!\n");
 
-    float speed = 0.1;
+    float speed = 0.1;  // Control the speed of strafing
 
-    // Derive the perpendicular (left) direction vector manually
-    // Assuming player->direction.x and player->direction.y represent the facing direction
-    // Perpendicular vector to the left: (-dir.y, dir.x)
-    float perpX = -game->player->direction.y;  // Opposite of y component
-    float perpY = game->player->direction.x;   // Same as x component
+    // Calculate the left perpendicular vector relative to the player's direction
+    // This vector is perpendicular on the left side of the player's current direction
+    float perpX = -game->player->direction.y;  // Use negative y component of the direction
+    float perpY = game->player->direction.x;   // Use x component of the direction
 
-    // Calculate the new position by moving left to the direction the player is facing
+    // Calculate the new position by moving left relative to the current facing direction
     float newX = game->player->position.x + perpX * speed;
     float newY = game->player->position.y + perpY * speed;
+
     int mapX = (int)(newX);
     int mapY = (int)(newY);
 
-    // Check if the new position is within the map and not blocked by a wall
+    // Collision detection: Check if the new position is within map bounds and not blocked
     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
         game->player->position.x = newX;
         game->player->position.y = newY;
         printf("New player position.x = %f\n", game->player->position.x);
         printf("New player position.y = %f\n", game->player->position.y);
     } else {
-        printf("Collision/Out of Map movement\n");
+        printf("Collision detected or Out of Map movement\n");
     }
-    print_game_map(game);
+
+    // Optionally add visual feedback or further debugging information if needed
+    print_game_map(game);  // Assuming this function prints the current game map for debugging
 }
+
+
 
 void handle_key_d(t_game *game)
 {

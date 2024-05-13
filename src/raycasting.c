@@ -12,27 +12,7 @@
 
 #include "cube3d.h"
 
-// void addRay(t_ray_node** head, int x, int draw_start, int draw_end, int color)
-// {
-//     t_ray_node* newNode = malloc(sizeof(t_ray_node));
-//     if (newNode == NULL) {
-//         fprintf(stderr, "Error allocating memory for new node.\n");
-//         return;
-//     }
 
-//     newNode->ray.x = x;
-//     newNode->ray.draw_start = draw_start;
-//     newNode->ray.draw_end = draw_end;
-//     newNode->ray.color = color;
-
-//     if (*head == NULL) { // List does not exist, create the first node
-//         newNode->next = NULL;
-//         *head = newNode;
-//     } else { // List exists, add the new node to the front
-//         newNode->next = *head;
-//         *head = newNode;
-//     }
-// }
 
 t_ray_node* addRay(t_ray_node** head) {
     t_ray_node* newNode = malloc(sizeof(t_ray_node));
@@ -87,18 +67,6 @@ void printRayList(t_ray_node* head)
     }
 }
 
-void printRayList_color_v1(t_ray_node* head)
-{
-    t_ray_node* current = head;
-    while (current != NULL) {
-        printf("Ray at x=%d, draw_start=%d, draw_end=%d, color=%d\n",
-               current->ray.x,
-               current->ray.draw_start,
-               current->ray.draw_end,
-               current->ray.color);
-        current = current->next;
-    }
-}
 
 
 

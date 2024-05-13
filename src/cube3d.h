@@ -334,7 +334,7 @@ void handle_movement_dash(t_game *game);
 
 void debug_print_rays(t_ray_node *head);
 
-void calc_texture_x(t_game *game, t_ray_node *ray, int textureWidth);
+void calc_texture_x(t_game *game, t_ray_node *ray);
 void calc_wall_hit(t_game *game, t_ray_node *ray);
 
 void render_floor(t_game *game);

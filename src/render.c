@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/05/10 16:27:11 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/13 16:47:25 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,6 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 	}
 }
 
-
-
-// void render_ray(t_img *img, t_ray ray, t_texture *texture, int rayIndex, int totalRays) {
-//     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
-//         fprintf(stderr, "Error: Texture and screen format mismatch\n");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Calculate texture X coordinate for the ray
-//     // Assuming texture should wrap around completely for all rays across the screen
-//     int texX = (rayIndex * texture->width) / totalRays;
-//     texX %= texture->width;  // Wrap around by using modulo operation
-
-//     int y = ray.draw_start;
-//     while (y < ray.draw_end) {
-//         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
-//         texY %= texture->height;  // Optionally ensure texY also wraps around if needed
-//         int color = get_texture_color(texture, texX, texY);
-//         img_pix_put(img, ray.x, y, color);
-//         y++;
-//     }
-// }
-
 void render_ray(t_img *img, t_ray ray, t_texture *texture) {
     if (img->bpp != texture->tex_bpp || img->endian != texture->tex_endian) {
         fprintf(stderr, "Error: Texture and screen format mismatch\n");
@@ -88,28 +65,14 @@ void render_ray(t_img *img, t_ray ray, t_texture *texture) {
     int y = ray.draw_start;
     while (y < ray.draw_end) {
         // Calculate texY based on the proportion of the wall's visible height
+        // printf("renderray: texture dimensions width %d x height %d", texture->width, texture->height);
         int texY = ((y - ray.draw_start) * texture->height) / ray.lineHeight;
-        texY %= texture->height;  // Wrap around if necessary (usually not needed unless texture is shorter than the wall segment)
-
+        texY %= texture->height;  // Wrap around if necessary
         int color = get_texture_color(texture, texX, texY);
-        // printf("render_ray: calling img_pix_put\n");
         img_pix_put(img, ray.x, y, color);
         y++;
     }
 }
-
-
-
-
-// Function to render the sky (upper half)
-// void render_sky(t_img *img, int sky_color) {
-//     int i, j;
-//     for (i = 0; i < DEFAULT_S_HEIGHT / 2; ++i) {
-//         for (j = 0; j < DEFAULT_S_WIDTH; ++j) {
-//             img_pix_put(img, j, i, sky_color);
-//         }
-//     }
-// }
 
 void render_sky(t_img *img, void *mlx_ptr, char *sky_texture_path) {
     int sky_width, sky_height;
@@ -140,32 +103,6 @@ void render_sky(t_img *img, void *mlx_ptr, char *sky_texture_path) {
     mlx_destroy_image(mlx_ptr, sky_texture);
 }
 
-// void render_sky(t_game *game) {
-//     t_texture *sky = game->skytexture;
-
-//     for (int i = 0; i < game->screen_height / 2; i++) {
-//         for (int j = 0; j < game->screen_width; j++) {
-//             int tx = (j * sky->width) / game->screen_width;  // Repeat texture if needed
-//             int ty = (i * sky->height) / (game->screen_height / 2);  // Repeat texture vertically
-
-//             // Get the color from the texture
-//             int color = *((int *)(sky->data + ty * sky->tex_line_len + tx * (sky->tex_bpp / 8)));
-
-//             // Put the color into the main image
-//             img_pix_put(&game->img, j, i, color);
-//         }
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
 void render_ray_list(t_game *game) {
     int i = 0;
     t_ray_node* ray_list = NULL;
@@ -173,7 +110,10 @@ void render_ray_list(t_game *game) {
     t_ray_node* current = ray_list;
 
     while (current != NULL) {
+
         t_texture *used_texture = &game->walltextures[current->ray.wall_face];
+        if (i == 400 || i == 399 || i == 401)
+            printf(" Ray #%d - texX: %d,  lineHeight: %d, perpWallDist: %f\n", i, current->ray.texX, current->ray.lineHeight, current->ray.perpWallDist);
         render_ray(&game->img, current->ray, used_texture);
         current = current->next;
         i++;
