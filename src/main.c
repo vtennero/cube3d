@@ -368,6 +368,8 @@ void    refresh_screen(t_game *game)
 //     return 0;
 // }
 
+#define CELL_SIZE 10
+
 int     initgame(t_game **game)
 {
     printf("initgame\n");
@@ -379,6 +381,8 @@ int     initgame(t_game **game)
     return(1);
 }
 
+#define WIN_WIDTH 500
+#define WIN_HEIGHT 500
 int main()
 {
     t_game     *game;
@@ -390,6 +394,7 @@ int main()
     // test_keyhold();
 
 
+    return 0;
     (void)game;
     return (0);
 }

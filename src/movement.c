@@ -45,6 +45,10 @@ int ft_key_release(int keycode, t_game *game)
     if (keycode < MAX_KEY_CODE) {
         game->key_state[keycode] = 0;
     }
+    printf("ft_key_release %d\n", keycode);
+
+	// draw_minimap(game,game->minimap_img_ptr ,game->map->data, game->map->height, game->map->width);
+    // mlx_put_image_to_window(game->mlx_ptr, game->minimap_win_ptr, game->minimap_img_ptr, 0, 0);
     return (0);
 }
 

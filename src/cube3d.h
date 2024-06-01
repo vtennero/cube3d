@@ -121,6 +121,10 @@ typedef struct s_game {
 	void* mlx_ptr;
     void* win_ptr;
     void* img_ptr;
+
+	void* minimap_win_ptr;
+    void* minimap_img_ptr;
+
     char* img_data;
     int bits_per_pixel;
     int size_line;
@@ -315,6 +319,11 @@ void print_game_map(t_game *game);
 int	brabant(void);
 
 int	setup_game_mlx(t_game *game);
+
+
+void draw_minimap(t_game *game,void *minimap_img, int **map, int rows, int cols);
+
+
 
 t_ray_node*    calculate_rays(t_game *game, t_ray_node* list);
 

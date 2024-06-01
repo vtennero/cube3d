@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:19:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/05/13 16:47:25 by toto             ###   ########.fr       */
+/*   Updated: 2024/05/18 23:35:22 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,166 @@ void render_ray_list(t_game *game) {
     }
 }
 
+void my_mlx_pixel_put(char *data_addr, int x, int y, int color, int size_line, int bits_per_pixel) {
+    
+	// int pixel;
+	char *pixel;
+    // Ensure x and y are within the bounds of the image dimensions
+    if (x < 0 || y < 0 || x >= size_line / (bits_per_pixel / 8) || y >= size_line / (bits_per_pixel / 8)) {
+        return;
+    }
+
+    pixel = data_addr + (y * size_line + x * (bits_per_pixel / 8));
+    *(unsigned int*)pixel = color;
+	    // pixel =  (y * size_line + x * (bits_per_pixel / 8));
+
+	//    data_addr[pixel + 0] = (color >> 24);
+    // 	data_addr[pixel + 1] = (color >> 16) & 0xFF;
+    //     data_addr[pixel + 2] = (color >> 8) & 0xFF;
+    //     data_addr[pixel + 3] = (color) & 0xFF;
+
+	    // data_addr[pixel + 0] = (color) & 0xFF;
+        // data_addr[pixel + 1] = (color >> 8) & 0xFF;
+        // data_addr[pixel + 2] = (color >> 16) & 0xFF;
+        // data_addr[pixel + 3] = (color >> 24);
+}
+
+
+
+// void my_mlx_pixel_put(char *data_addr, int x, int y, int color, int size_line, int bits_per_pixel) {
+//     char *pixel;
+//     unsigned char alpha;
+
+//     // Extract the alpha value (most significant byte of color) and convert to integer
+//     alpha = (color >> (bits_per_pixel - 8)) & 0xFF;
+
+//     // Ensure x and y are within the bounds of the image dimensions
+//     if (x < 0 || y < 0 || x >= size_line / (bits_per_pixel / 8) || y >= size_line / (bits_per_pixel / 8)) {
+//         return;
+//     }
+
+//     pixel = data_addr + (y * size_line + x * (bits_per_pixel / 8));
+
+//     // Apply alpha blending
+//     unsigned int original_color = *(unsigned int*)pixel;
+//     unsigned char original_alpha = (original_color >> (bits_per_pixel - 8)) & 0xFF;
+//     unsigned char final_alpha = alpha + (original_alpha * (255 - alpha)) / 255;
+//     unsigned int final_color = ((color & 0x00FFFFFF) * alpha + (original_color & 0x00FFFFFF) * original_alpha * (255 - alpha)) / (255 * 255) & 0x00FFFFFF;
+//     final_color |= (final_alpha << (bits_per_pixel - 8));
+
+//     // Write the final color to the pixel
+//     *(unsigned int*)pixel = final_color;
+// }
+
+
+// void my_mlx_pixel_put(char *data_addr, int x, int y, int color, int size_line, int bits_per_pixel) {
+//     char *pixel;
+//     unsigned char alpha;
+
+//     // Extract the alpha value (first two characters of color) and convert to integer
+//     alpha = (color >> 24) & 0xFF;
+
+//     // Ensure x and y are within the bounds of the image dimensions
+//     if (x < 0 || y < 0 || x >= size_line / (bits_per_pixel / 8) || y >= size_line / (bits_per_pixel / 8)) {
+//         return;
+//     }
+
+//     pixel = data_addr + (y * size_line + x * (bits_per_pixel / 8));
+
+//     // Apply alpha blending
+//     unsigned int original_color = *(unsigned int*)pixel;
+//     unsigned char original_alpha = (original_color >> 24) & 0xFF;
+//     unsigned char final_alpha = alpha + (original_alpha * (255 - alpha)) / 255;
+//     unsigned int final_color = ((color & 0x00FFFFFF) * alpha + (original_color & 0x00FFFFFF) * original_alpha * (255 - alpha)) / (255 * 255) & 0x00FFFFFF;
+//     final_color |= (final_alpha << 24);
+
+//     // Write the final color to the pixel
+//     *(unsigned int*)pixel = final_color;
+// }
+
+// void put_pixel_to_image(char *image_data, int width, int x, int y, int color) {
+//     int pixel_offset = (y * width + x) * 4; // Each pixel is represented by 4 bytes (RGBA)
+//     *((int*)(image_data + pixel_offset)) = color; // Set the pixel color
+// }
+
+
+// void put_pixel_to_window(void *mlx_ptr, void *win_ptr, int x, int y, int color) {
+//     // Create a small image (1x1 pixel) with the desired color
+//     void *pixel_img = mlx_new_image(mlx_ptr, 1, 1);
+//     int *img_data = (int *)mlx_get_data_addr(pixel_img, NULL, NULL, NULL);
+//     *img_data = color;
+
+//     // Put the image (pixel) at the specified position in the window
+//     mlx_put_image_to_window(mlx_ptr, win_ptr, pixel_img, x, y);
+
+//     // Destroy the pixel image to avoid memory leaks
+//     mlx_destroy_image(mlx_ptr, pixel_img);
+// }
+
+void draw_player_pos(t_game *game,int CELL_SIZE)
+{
+	int start_x=game->player->position.x*CELL_SIZE;
+	int end_x = start_x + CELL_SIZE;
+	int start_y=game->player->position.y*CELL_SIZE;
+	int end_y = start_y + CELL_SIZE;
+	// while (start_x < end_x && start_y < end_y)
+	// {
+    // 	mlx_pixel_put(game->mlx_ptr, game->minimap_win_ptr, start_y, start_x, 0xFF0000);
+    // 	mlx_pixel_put(game->mlx_ptr, game->minimap_win_ptr, start_y+15, start_x-15, 0xFF0000);
+	// 	start_x++;
+	// 	start_y++;
+	// }
+	for (int x = start_x; x < end_x; x++) {
+		// Iterate over each y-coordinate within the range
+		for (int y = start_y; y < end_y; y++) {
+			// Draw a pixel at the current position
+			mlx_pixel_put(game->mlx_ptr, game->win_ptr, y, 350+x, 0xFF0000);
+		}
+	}
+}
+				
+
+
+
+void draw_minimap(t_game *game,void *minimap_img, int **map, int rows, int cols) {
+    char *data_addr;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
+	(void)game;
+    data_addr = mlx_get_data_addr(minimap_img, &bits_per_pixel, &size_line, &endian);
+    int CELL_SIZE = 10;
+    int x, y;
+
+    for (y = 0; y < rows; y++) {
+        for (x = 0; x < cols; x++) {
+            int color = (map[y][x] == 1) ? 0x00FFFFFF :  0xFFDCDCDC; // White for 1, Black for 0
+            int start_x = x * CELL_SIZE-1;
+            int start_y = y * CELL_SIZE-1;
+            int end_x = start_x + CELL_SIZE-1;
+            int end_y = start_y + CELL_SIZE-1;
+
+            for (int i = start_x; i < end_x; i++) {
+                for (int j = start_y; j < end_y; j++) {
+					
+				// if (round(game->player->position.x) == j/CELL_SIZE  &&  round(game->player->position.y) == i/CELL_SIZE) 
+				// 					color = 0xFF0000; 
+				
+                   	my_mlx_pixel_put(data_addr, i, j, color, size_line, bits_per_pixel);
+
+                }
+            }
+        }
+    }
+    printf("draw end!\n");
+}
 
 int	render(t_game *game)
 {
 	if (game->win_ptr == NULL)
 		return (1);
+	// if (game->minimap_win_ptr == NULL)
+	// 	return (1);
 	
 	handle_movement_left(game);
 	handle_movement_right(game);
@@ -138,8 +293,18 @@ int	render(t_game *game)
 	render_ray_list(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
+
+//    mlx_clear_window(game->mlx_ptr, game->minimap_win_ptr);
+
+    mlx_put_image_to_window(game->mlx_ptr,  game->win_ptr, game->minimap_img_ptr, 0, 350);
+	draw_player_pos(game,10);
+    // mlx_clear_window(game->mlx_ptr, game->minimap_win_ptr);
+
+    // mlx_put_image_to_window(game->mlx_ptr, game->minimap_win_ptr, game->minimap_img_ptr, 0, 0);
+	// draw_player_pos(game,15);
 	return (0);
 }
+
 
 
 
@@ -167,10 +332,32 @@ int	setup_game_mlx(t_game *game)
 	game->img.addr = mlx_get_data_addr(game->img.mlx_img, &game->img.bpp,
 			&game->img.line_len, &game->img.endian);
 
+
+
+	// Minimap sectopn
+	// Declare new window
+
+	
+    // void* win_minimap = mlx_new_window(game->mlx_ptr,500, 500, "2D Minimap");
+	// game->minimap_win_ptr = mlx_new_window(game->mlx_ptr,300, 300, "2D Minimap");
+
+	// Declare new image
+	// void    *mini_map_img_ptr;
+	int     img_width = 250;
+	int     img_height = 250;
+
+	game->minimap_img_ptr = mlx_new_image(game->mlx_ptr, img_width, img_height);
+    draw_minimap(game,game->minimap_img_ptr ,game->map->data, game->map->height, game->map->width);
+
+    mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->minimap_img_ptr, 0,350);
+    // mlx_put_image_to_window(game->mlx_ptr, game->minimap_win_ptr, game->minimap_img_ptr, 0, 0);
+
 	// mlx_hook(recup->data.mlx_win, 33, 1L << 17, ft_exit, recup);
 	mlx_hook(game->win_ptr, 2, 1L << 0, ft_key_press, game);
+
 	mlx_loop_hook(game->mlx_ptr, &render, game);
 	mlx_hook(game->win_ptr, 3, 1L << 1, ft_key_release, game);
+
 	mlx_loop(game->mlx_ptr);
 
 	/* we will exit the loop if there's no window left, and execute this code */
