@@ -52,8 +52,117 @@ int charToEnum(char c)
         return Empty;  // Default case to handle unexpected characters or treat them as empty spaces
 }
 
-void create_static_map(t_game *game, int screenWidth, int screenHeight)
+// void create_static_map(t_game *game, int screenWidth, int screenHeight)
+// {
+//     // Allocate memory for the map structure
+//     t_map *map = malloc(sizeof(t_map));
+//     if (map == NULL) {
+//         fprintf(stderr, "Memory allocation failed for map structure.\n");
+//         exit(1);
+//     }
+//     printf("Allocated memory for the map structure\n");
+//     // Set the dimensions
+//     map->width = screenWidth;
+//     map->height = screenHeight;
+//     printf("Set the dimensions\n");
+
+//     // Allocate memory for the map data
+//     map->data = malloc(screenHeight * sizeof(int *));
+//     if (map->data == NULL) {
+//         fprintf(stderr, "Memory allocation failed for map data.\n");
+//         free(map); // Clean up previously allocated map
+//         exit(1);
+//     }
+//     printf("Allocated memory for the map data\n");
+
+//     for (int i = 0; i < screenHeight; i++) {
+//         map->data[i] = malloc(screenWidth * sizeof(int));
+//         if (map->data[i] == NULL) {
+//             fprintf(stderr, "Memory allocation failed for map row.\n");
+//             // Clean up previously allocated rows and map structure
+//             for (int j = 0; j < i; j++) {
+//                 free(map->data[j]);
+//             }
+//             free(map->data);
+//             free(map);
+//             exit(1);
+//         }
+//     }
+    
+//     // Static map data to copy into the newly allocated map
+//     int staticMap[24][24] = {
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+// 	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+// 	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// };
+// // 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// // 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+// // 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// // 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// // };
+//     printf("defined static map data\n");
+
+//     // Copy the static map to the allocated map
+//     for (int y = 0; y < 24; y++)
+//     {
+//         // printf("for (int y = %d; y < screenHeight; y++)\n", y);
+//         for (int x = 0; x < 24; x++) {
+//             // printf("for int x = %d; x < screenWidth; x++\n", x);
+//             map->data[y][x] = staticMap[y][x];
+//         }
+//     }
+//     printf("copied the static map to the allocated map\n");
+
+//     // Link the map to the game structure
+//     game->map = map;
+// }
+
+
+
+void create_map_from_cub(t_game *game, int screenWidth, int screenHeight)
 {
+	
     // Allocate memory for the map structure
     t_map *map = malloc(sizeof(t_map));
     if (map == NULL) {
@@ -116,31 +225,7 @@ void create_static_map(t_game *game, int screenWidth, int screenHeight)
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-// };
+
     printf("defined static map data\n");
 
     // Copy the static map to the allocated map
@@ -178,10 +263,184 @@ int create_game_struct(t_game **game) {
     return 0;
 }
 
+
+int count_words_from_array(char **words) {
+    int count = 0;
+    while (words[count] != NULL) {
+        count++;
+    }
+    return count;
+}
+
+
+int check_valid_rgb(char* word)
+{
+	char ** words;
+	int count;
+	int value;
+
+	count=0;
+	words=ft_split(word, ',');
+    while (words[count] != NULL) {
+		value=ft_atoi(words[count]);
+		if ((value <0) || (value > 255))
+			return 1;
+        count++;
+    }
+	if (count!=3)
+		return 1;
+	return 0;
+}
+
+
+int check_line(char* line,int (*man_info)[6])
+{
+ 	char** words;
+	int word_count;
+
+	words = ft_split(line, ' ');
+	word_count=count_words_from_array(words);
+	// printf("word count is %d !\n",word_count);
+	// printf("words[0] is %s!\n",words[0]);
+	// printf("words[1]] is %s!\n",words[1]);
+	// printf("Access to sky02.xpm is %d",access("textures/sky02.xpm", R_OK));
+	// printf("Access to words[1] is %d",access(words[1], R_OK));
+
+	if (word_count!=2 && ft_strcmp(words[0],"\n"))
+		return -1;
+    // ensure_null_terminated(str1, sizeof(str1));
+
+	// To remove trailing new line
+	// printf("%ld",ft_strlen(words[1]));
+	// printf("%d",words[1][ft_strlen(words[1]) -1]);
+	if ((words[1]) && (strlen(words[1]) > 0) && (words[1][strlen(words[1]) -1] == '\n') )
+		words[1][strlen(words[1])-1] = '\0';
+	if (strcmp(words[0],"NO")==0 && (access(words[1], R_OK) == 0)) 
+		(*man_info[0])=1;
+	else if (strcmp(words[0],"SO")==0 && (access(words[1], R_OK) == 0))
+		(*man_info)[1]=1;
+	else if (strcmp(words[0],"WE")==0 && (access(words[1], R_OK) == 0))
+		(*man_info)[2]=1;
+	else if (strcmp(words[0],"EA")==0 && (access(words[1], R_OK) == 0))
+		(*man_info)[3]=1;
+	else if (strcmp(words[0],"F")==0 && (check_valid_rgb(words[1]) == 0))
+		(*man_info)[4]=1;
+	else if (strcmp(words[0],"C")==0 &&  (check_valid_rgb(words[1]) == 0))
+		(*man_info)[5]=1;
+	return 0;
+	
+
+}
+
+char *strjoin_odd(const char *str) {
+    if (str == NULL) {
+        return NULL;
+    }
+    
+    size_t len = strlen(str);
+    char *result = (char *)malloc(len + 1); // Allocate memory for the result
+    if (result == NULL) {
+        return NULL; // Memory allocation failed
+    }
+    
+    size_t i = 0;
+    size_t result_index = 0;
+    while (i < len) {
+        if ((i % 2 == 0) ) { // Include spaces as well
+            result[result_index++] = str[i];
+        }
+        i++;
+    }
+    result[result_index] = '\0'; // Null-terminate the result string
+    
+    return result;
+}
+
+// int parse_map(char*line,int fd, t_game *game)
+// {
+// 	char *new_line;
+// 	char *parsed_line;
+// 	char *combined_line;
+// 	(void)game;
+
+// 	if (strchr(line, '1') != NULL)
+// 		parsed_line=strjoin_odd(new_line);
+// 		combined_line=parsed_line;
+// 		free(parsed_line);
+// 	else {
+// 		printf("hello");
+// 		combined_line=" ds";
+// 	}
+
+// 	while ((new_line = get_next_line(fd)) != NULL)
+// 	{
+// 		parsed_line=strjoin_odd(new_line);
+// 		combined_line=ft_strjoin;
+
+// 		printf("parsed_line is %s\n",parsed_line);
+// 	}
+// 	return 0;
+// }
+
+int read_cub(t_game *game)
+{
+	int fd;
+	char *line;
+	int man_info[6];
+
+	    // Initialize the array to 0 using ft_memset
+    ft_memset(man_info, 0, 6 * sizeof(int));
+
+    // Print the array to verify
+    // printf("Array after initialization:\n");
+    // for (int i = 0; i < 6; i++) {
+    //     printf("%d ", man_info[i]);
+    // }
+    // printf("\n");
+
+    fd = open(game->cub_filepath, O_RDONLY);
+    if (fd < 0) {
+        perror("Could not open file");
+        return -1;
+    }
+	
+    while ((line = get_next_line(fd)) != NULL) 
+	{
+	
+		if (check_line(line,&man_info)==-1)
+			break;  // Break is needed here, to indicate end of the first 6 elements, else we wont know
+        // printf("words count = %d\n", words);
+        free(line);
+    }
+	
+		//Print the array to verify
+	printf("Array after initialization:\n");
+	for (int i = 0; i < 6; i++) {
+		printf("%d ", man_info[i]);
+	}
+	printf("\n");
+    // Start parsing map
+	parse_map(line,fd,game);
+	
+	close(fd);
+    return 0;
+
+}
+
 int create_map(t_game *game)
 {
+	if (read_cub(game)<0)
+	{
+		printf("invalid map!, EXITING\n");
+		// free game memory
+		exit(1);
+	}
     // Implement map creation and initialization
-    create_static_map(game, game->screen_width, game->screen_width);
+    create_map_from_cub(game, game->screen_width, game->screen_width);
+	// map parsing
+	// set game->map->player->position.x,y,direction.x,y
+	// set game->map->walltextures[4] - 0 to 3, NESW
+	// set game->map->floortexture,skytexture
     return 0;
 }
 
@@ -370,10 +629,11 @@ void    refresh_screen(t_game *game)
 
 #define CELL_SIZE 10
 
-int     initgame(t_game **game)
+int     initgame(t_game **game,char *cub_filepath)
 {
     printf("initgame\n");
     create_game_struct(game);
+	(*game)->cub_filepath=cub_filepath;
     create_map(*game);
     create_player(*game);
     setup_game_mlx(*game);
@@ -383,14 +643,17 @@ int     initgame(t_game **game)
 
 #define WIN_WIDTH 500
 #define WIN_HEIGHT 500
-int main()
+int main(int argc, char** argv)
 {
     t_game     *game;
 
     game = NULL;
     // if (map_is_valid)
-        initgame(&game);
-
+	if (argc==2)
+	{
+	
+        initgame(&game,argv[1]);
+	}
     // test_keyhold();
 
 

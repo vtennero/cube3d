@@ -107,6 +107,10 @@ typedef struct s_map {
     int width;
     int height;
     int **data;
+	t_player *player;
+	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
+    t_texture floortexture[1];
+    t_texture skytexture[1];
 } t_map;
 
 typedef struct s_img {
@@ -124,6 +128,7 @@ typedef struct s_game {
 
 	void* minimap_win_ptr;
     void* minimap_img_ptr;
+	char *cub_filepath;
 
     char* img_data;
     int bits_per_pixel;
