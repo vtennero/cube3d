@@ -260,6 +260,7 @@ int create_game_struct(t_game **game) {
         return -1;
     (*game)->screen_height = DEFAULT_S_HEIGHT;
     (*game)->screen_width = DEFAULT_S_WIDTH;
+	(*game)->cub_line_count = 0;
     return 0;
 }
 
@@ -381,13 +382,20 @@ char *strjoin_odd(const char *str) {
 // 	}
 // 	return 0;
 // }
+int parse_map(char*line,int fd, t_game *game)
+{
+	
+	return 0;
+}
 
+int parse_map_size()
 int read_cub(t_game *game)
 {
+	int fd1;
 	int fd;
 	char *line;
 	int man_info[6];
-
+	
 	    // Initialize the array to 0 using ft_memset
     ft_memset(man_info, 0, 6 * sizeof(int));
 
@@ -398,12 +406,26 @@ int read_cub(t_game *game)
     // }
     // printf("\n");
 
+    fd1 = open(game->cub_filepath, O_RDONLY);
+    if (fd1 < 0) {
+        perror("Could not open file");
+        return -1;
+    }
+	while ((line = get_next_line(fd1)) != NULL) 
+	{
+		game->cub_line_count++;
+        free(line);
+		close(fd1);
+	}
+
+	printf("cub_line count is %d",game->cub_line_count);
     fd = open(game->cub_filepath, O_RDONLY);
     if (fd < 0) {
         perror("Could not open file");
         return -1;
     }
-	
+
+
     while ((line = get_next_line(fd)) != NULL) 
 	{
 	

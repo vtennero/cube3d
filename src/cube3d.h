@@ -129,6 +129,8 @@ typedef struct s_game {
 	void* minimap_win_ptr;
     void* minimap_img_ptr;
 	char *cub_filepath;
+	int  cub_line_count;
+	char *cub_map_array
 
     char* img_data;
     int bits_per_pixel;
