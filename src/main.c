@@ -323,45 +323,6 @@ int check_valid_rgb(char* word)
 }
 
 ///// Check only, we want to try to do assign
-// int check_line(char* line,int (*man_info)[6])
-// {
-//  	char** words;
-// 	int word_count;
-
-// 	words = ft_split(line, ' ');
-// 	word_count=count_words_from_array(words);
-// 	// printf("word count is %d !\n",word_count);
-// 	// printf("words[0] is %s!\n",words[0]);
-// 	// printf("words[1]] is %s!\n",words[1]);
-// 	// printf("Access to sky02.xpm is %d",access("textures/sky02.xpm", R_OK));
-// 	// printf("Access to words[1] is %d",access(words[1], R_OK));
-
-// 	if (word_count!=2 && ft_strcmp(words[0],"\n"))  // Change to or?
-// 		return -1;
-//     // ensure_null_terminated(str1, sizeof(str1));
-
-// 	// To remove trailing new line
-// 	// printf("%ld",ft_strlen(words[1]));
-// 	// printf("%d",words[1][ft_strlen(words[1]) -1]);
-// 	if ((words[1]) && (strlen(words[1]) > 0) && (words[1][strlen(words[1]) -1] == '\n') )
-// 		words[1][strlen(words[1])-1] = '\0';
-// 	if (strcmp(words[0],"NO")==0 && (access(words[1], R_OK) == 0)) 
-// 		(*man_info[0])=1;
-// 	else if (strcmp(words[0],"SO")==0 && (access(words[1], R_OK) == 0))
-// 		(*man_info)[1]=1;
-// 	else if (strcmp(words[0],"WE")==0 && (access(words[1], R_OK) == 0))
-// 		(*man_info)[2]=1;
-// 	else if (strcmp(words[0],"EA")==0 && (access(words[1], R_OK) == 0))
-// 		(*man_info)[3]=1;
-// 	else if (strcmp(words[0],"F")==0 && (check_valid_rgb(words[1]) == 0))
-// 		(*man_info)[4]=1;
-// 	else if (strcmp(words[0],"C")==0 &&  (check_valid_rgb(words[1]) == 0))
-// 		(*man_info)[5]=1;
-// 	return 0;
-	
-// }
-
-///// Check only, we want to try to do assign
 int check_line(t_game *game, char* line,int (*man_info)[6])
 {
  	char** words;
@@ -553,7 +514,7 @@ char* read_cub_texture(t_game *game)
     game->cub_fd = open(game->cub_filepath, O_RDONLY);
     if (game->cub_fd  < 0) {
         perror("Could not open file");
-        return -1;
+        return NULL;
     }
 
 
@@ -598,15 +559,49 @@ char* read_cub_texture(t_game *game)
 
 }
 
+int texture_error_handling(t_game* game)
+{
+	if (!game->walltextures[0].path)
+		perror("Failed to parse North wall texture");
+	if (!game->walltextures[1].path)
+		perror("Failed to parse East wall texture");
+	if (!game->walltextures[2].path)
+		perror("Failed to parse South wall texture");
+	if (!game->walltextures[3].path)
+		perror("Failed to parse West wall texture");
+	if (!game->floortexture[0].path)
+		perror("Failed to parse Floor texture");
+	if (!game->skytexture[0].path)
+		perror("Failed to parse Sky texture");
+	if ((game->walltextures[0].path) && (game->walltextures[1].path) && (game->walltextures[2].path) && (game->walltextures[3].path) && (game->floortexture[0].path) && (game->skytexture[0].path))
+		return 0;
+	// if (ft_strcmp(game->walltextures[0].path,"(null)")==0)
+	// 	perror("Failed to parse North wall texture");
+	// if (ft_strcmp(game->walltextures[1].path,"(null)")==0)
+	// 	perror("Failed to parse East wall texture");
+	// if (ft_strcmp(game->walltextures[2].path,"(null)")==0)
+	// 	perror("Failed to parse South wall texture");
+	// if (ft_strcmp(game->walltextures[3].path,"(null)")==0)
+	// 	perror("Failed to parse West wall texture");
+	// if (ft_strcmp(game->floortexture[0].path,"(null)")==0)
+	// 	perror("Failed to parse Floor texture");
+	// if (ft_strcmp(game->skytexture[0].path,"(null)")==0)
+	// 	perror("Failed to parse Sky texture");
+	return -1;
+}
+
 int create_map(t_game *game)
 {
 	char* map_line;
 
 	map_line=read_cub_texture(game);
-	texture_error_handling(game);
-	analyze_map_structure(game,map_line);
-	map_error_handling(game);
-	parse_cub_map(game);
+	if (!map_line)
+		return -1;
+	if (texture_error_handling(game) == -1)
+		return -1;
+	// analyze_map_structure(game,map_line);
+	// map_error_handling(game);
+	// parse_cub_map(game);
 	// if (read_cub(game)<0)
 	// {
 	// 	printf("invalid map!, EXITING\n");
@@ -812,7 +807,11 @@ int     initgame(t_game **game,char *cub_filepath)
     printf("initgame\n");
     create_game_struct(game);
 	(*game)->cub_filepath=cub_filepath;
-    create_map(*game);
+    if (create_map(*game))
+	{
+		// free memory
+		exit(-1);
+	}
     create_player(*game);
     setup_game_mlx(*game);
 
