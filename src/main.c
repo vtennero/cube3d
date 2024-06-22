@@ -261,10 +261,39 @@ int create_game_struct(t_game **game) {
     (*game)->screen_height = DEFAULT_S_HEIGHT;
     (*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->cub_line_count = 0;
+
+	// for (int i = 0; i < 4; i++) {
+    //     // Assuming you have a valid way to initialize your walltextures
+    //     // (*game)->walltextures[i] = initialize_texture(); 
+    //     // For now, let's just set them to NULL or some default value
+    //     // (*game)->walltextures[i] = (t_texture){0}; // Assuming t_texture can be zero-initialized
+    //     printf("index is %d and value is %s\n", i, ((*game)->walltextures[i]).path);
+    // }
     return 0;
 }
 
+char* trim_whitespace(char* str) {
+    char* end;
 
+    // Trim leading space by moving the str pointer to the first non-whitespace character
+    while (ft_isspace((unsigned char)*str)) str++;
+
+    if (*str == 0)  // All spaces, return an empty string
+        return str;
+
+    // Find the end of the string
+    end = str + ft_strlen(str) - 1;
+
+    // Move backwards from the end, skipping whitespace characters
+    while (end > str && ft_isspace((unsigned char)*end)) {
+        end--;
+    }
+
+    // Set the new null terminator character after the last non-whitespace character
+    end[1] = '\0';
+
+    return str;
+}
 int count_words_from_array(char **words) {
     int count = 0;
     while (words[count] != NULL) {
@@ -293,22 +322,65 @@ int check_valid_rgb(char* word)
 	return 0;
 }
 
+///// Check only, we want to try to do assign
+// int check_line(char* line,int (*man_info)[6])
+// {
+//  	char** words;
+// 	int word_count;
 
-int check_line(char* line,int (*man_info)[6])
+// 	words = ft_split(line, ' ');
+// 	word_count=count_words_from_array(words);
+// 	// printf("word count is %d !\n",word_count);
+// 	// printf("words[0] is %s!\n",words[0]);
+// 	// printf("words[1]] is %s!\n",words[1]);
+// 	// printf("Access to sky02.xpm is %d",access("textures/sky02.xpm", R_OK));
+// 	// printf("Access to words[1] is %d",access(words[1], R_OK));
+
+// 	if (word_count!=2 && ft_strcmp(words[0],"\n"))  // Change to or?
+// 		return -1;
+//     // ensure_null_terminated(str1, sizeof(str1));
+
+// 	// To remove trailing new line
+// 	// printf("%ld",ft_strlen(words[1]));
+// 	// printf("%d",words[1][ft_strlen(words[1]) -1]);
+// 	if ((words[1]) && (strlen(words[1]) > 0) && (words[1][strlen(words[1]) -1] == '\n') )
+// 		words[1][strlen(words[1])-1] = '\0';
+// 	if (strcmp(words[0],"NO")==0 && (access(words[1], R_OK) == 0)) 
+// 		(*man_info[0])=1;
+// 	else if (strcmp(words[0],"SO")==0 && (access(words[1], R_OK) == 0))
+// 		(*man_info)[1]=1;
+// 	else if (strcmp(words[0],"WE")==0 && (access(words[1], R_OK) == 0))
+// 		(*man_info)[2]=1;
+// 	else if (strcmp(words[0],"EA")==0 && (access(words[1], R_OK) == 0))
+// 		(*man_info)[3]=1;
+// 	else if (strcmp(words[0],"F")==0 && (check_valid_rgb(words[1]) == 0))
+// 		(*man_info)[4]=1;
+// 	else if (strcmp(words[0],"C")==0 &&  (check_valid_rgb(words[1]) == 0))
+// 		(*man_info)[5]=1;
+// 	return 0;
+	
+// }
+
+///// Check only, we want to try to do assign
+int check_line(t_game *game, char* line,int (*man_info)[6])
 {
  	char** words;
 	int word_count;
-
+	line=trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count=count_words_from_array(words);
-	// printf("word count is %d !\n",word_count);
-	// printf("words[0] is %s!\n",words[0]);
-	// printf("words[1]] is %s!\n",words[1]);
+	printf("word count is %d !\n",word_count);
+	printf("words[0] is %s!\n",words[0]);
+	printf("words[1]] is %s!\n",words[1]);
 	// printf("Access to sky02.xpm is %d",access("textures/sky02.xpm", R_OK));
 	// printf("Access to words[1] is %d",access(words[1], R_OK));
 
-	if (word_count!=2 && ft_strcmp(words[0],"\n"))
+	// if (word_count!=2 && ft_strcmp(words[0],"\n"))  // Change to or?
+	// 	return -1;
+	if (word_count>2 )  // Change to or?
 		return -1;
+	if (word_count<2)
+		return 0;
     // ensure_null_terminated(str1, sizeof(str1));
 
 	// To remove trailing new line
@@ -316,22 +388,36 @@ int check_line(char* line,int (*man_info)[6])
 	// printf("%d",words[1][ft_strlen(words[1]) -1]);
 	if ((words[1]) && (strlen(words[1]) > 0) && (words[1][strlen(words[1]) -1] == '\n') )
 		words[1][strlen(words[1])-1] = '\0';
-	if (strcmp(words[0],"NO")==0 && (access(words[1], R_OK) == 0)) 
+	if (strcmp(words[0],"NO")==0 && (access(words[1], R_OK) == 0)){
+		game->walltextures[0].path=words[1];
 		(*man_info[0])=1;
-	else if (strcmp(words[0],"SO")==0 && (access(words[1], R_OK) == 0))
+	}
+	else if (strcmp(words[0],"EA")==0 && (access(words[1], R_OK) == 0)){
+		game->walltextures[1].path=words[1];
 		(*man_info)[1]=1;
-	else if (strcmp(words[0],"WE")==0 && (access(words[1], R_OK) == 0))
+	}
+	else if (strcmp(words[0],"SO")==0 && (access(words[1], R_OK) == 0)){
+		game->walltextures[2].path=words[1];
 		(*man_info)[2]=1;
-	else if (strcmp(words[0],"EA")==0 && (access(words[1], R_OK) == 0))
+	}
+	else if (strcmp(words[0],"WE")==0 && (access(words[1], R_OK) == 0)){
+		game->walltextures[3].path=words[1];
 		(*man_info)[3]=1;
-	else if (strcmp(words[0],"F")==0 && (check_valid_rgb(words[1]) == 0))
+	}
+	else if (strcmp(words[0],"F")==0 && (check_valid_rgb(words[1]) == 0)){
+		game->floortexture[0].path=words[1];
 		(*man_info)[4]=1;
-	else if (strcmp(words[0],"C")==0 &&  (check_valid_rgb(words[1]) == 0))
+	}	
+	else if (strcmp(words[0],"C")==0 &&  (check_valid_rgb(words[1]) == 0)){
+		game->skytexture[0].path=words[1];
 		(*man_info)[5]=1;
+	}
 	return 0;
 	
-
 }
+
+
+
 
 char *strjoin_odd(const char *str) {
     if (str == NULL) {
@@ -382,81 +468,151 @@ char *strjoin_odd(const char *str) {
 // 	}
 // 	return 0;
 // }
-int parse_map(char*line,int fd, t_game *game)
-{
-	
-	return 0;
-}
 
-int parse_map_size()
-int read_cub(t_game *game)
+// int parse_map(char*line,int fd, t_game *game)
+// {
+	
+// 	return 0;
+// }
+
+// int parse_map_size()
+// int read_cub(t_game *game)
+// {
+// 	int fd1;
+// 	int fd;
+// 	char *line;
+// 	int man_info[6];
+
+// 	// Initialize the array to 0 using ft_memset
+//     ft_memset(man_info, 0, 6 * sizeof(int));
+	
+//     // Print the array to verify
+//     // printf("Array after initialization:\n");
+//     // for (int i = 0; i < 6; i++) {
+//     //     printf("%d ", man_info[i]);
+//     // }
+//     // printf("\n");
+
+//     fd = open(game->cub_filepath, O_RDONLY);
+//     if (fd < 0) {
+//         perror("Could not open file");
+//         return -1;
+//     }
+
+
+//     while ((line = get_next_line(fd)) != NULL) 
+// 	{
+	
+// 		if (check_line(line,&man_info)==-1)
+// 			break;  // Break is needed here, to indicate end of the first 6 elements, else we wont know
+//         // printf("words count = %d\n", words);
+//         free(line);
+//     }
+	
+// 		//Print the array to verify
+// 	printf("Array after initialization:\n");
+// 	for (int i = 0; i < 6; i++) {
+// 		printf("%d ", man_info[i]);
+// 	}
+
+// 	/////// GET CUB_LINE_COUNT
+// 	// fd1 = open(game->cub_filepath, O_RDONLY);
+//     // if (fd1 < 0) {
+//     //     perror("Could not open file");
+//     //     return -1;
+//     // }
+// 	// while ((line = get_next_line(fd1)) != NULL) 
+// 	// {
+// 	// 	game->cub_line_count++;
+//     //     free(line);
+// 	// 	close(fd1);
+// 	// }
+// 	// printf("cub_line count is %d",game->cub_line_count);
+
+	
+// 	printf("\n");
+//     // Start parsing map
+// 	// parse_map(line,fd,game);
+	
+// 	close(fd);
+//     return 0;
+
+// }
+
+
+char* read_cub_texture(t_game *game)
 {
-	int fd1;
-	int fd;
+	// int fd1;
+	// int fd;
 	char *line;
 	int man_info[6];
-	
-	    // Initialize the array to 0 using ft_memset
+
+	// Initialize the array to 0 using ft_memset
     ft_memset(man_info, 0, 6 * sizeof(int));
-
-    // Print the array to verify
-    // printf("Array after initialization:\n");
-    // for (int i = 0; i < 6; i++) {
-    //     printf("%d ", man_info[i]);
-    // }
-    // printf("\n");
-
-    fd1 = open(game->cub_filepath, O_RDONLY);
-    if (fd1 < 0) {
-        perror("Could not open file");
-        return -1;
-    }
-	while ((line = get_next_line(fd1)) != NULL) 
-	{
-		game->cub_line_count++;
-        free(line);
-		close(fd1);
-	}
-
-	printf("cub_line count is %d",game->cub_line_count);
-    fd = open(game->cub_filepath, O_RDONLY);
-    if (fd < 0) {
+	
+    game->cub_fd = open(game->cub_filepath, O_RDONLY);
+    if (game->cub_fd  < 0) {
         perror("Could not open file");
         return -1;
     }
 
 
-    while ((line = get_next_line(fd)) != NULL) 
+    while ((line = get_next_line(game->cub_fd )) != NULL) 
 	{
 	
-		if (check_line(line,&man_info)==-1)
+		if (check_line(game,line,&man_info)==-1)
 			break;  // Break is needed here, to indicate end of the first 6 elements, else we wont know
         // printf("words count = %d\n", words);
         free(line);
     }
 	
-		//Print the array to verify
+	//Print the array to verify
 	printf("Array after initialization:\n");
 	for (int i = 0; i < 6; i++) {
 		printf("%d ", man_info[i]);
 	}
+	printf("line is now:\n%s",line); /// This should be the first line of the map
+
+	
+	/////// GET CUB_LINE_COUNT
+	// fd1 = open(game->cub_filepath, O_RDONLY);
+    // if (fd1 < 0) {
+    //     perror("Could not open file");
+    //     return -1;
+    // }
+	// while ((line = get_next_line(fd1)) != NULL) 
+	// {
+	// 	game->cub_line_count++;
+    //     free(line);
+	// 	close(fd1);
+	// }
+	// printf("cub_line count is %d",game->cub_line_count);
+
+	
 	printf("\n");
     // Start parsing map
-	parse_map(line,fd,game);
+	// parse_map(line,fd,game);
 	
-	close(fd);
-    return 0;
+	// close(fd);
+    return line;
 
 }
 
 int create_map(t_game *game)
 {
-	if (read_cub(game)<0)
-	{
-		printf("invalid map!, EXITING\n");
-		// free game memory
-		exit(1);
-	}
+	char* map_line;
+
+	map_line=read_cub_texture(game);
+	texture_error_handling(game);
+	analyze_map_structure(game,map_line);
+	map_error_handling(game);
+	parse_cub_map(game);
+	// if (read_cub(game)<0)
+	// {
+	// 	printf("invalid map!, EXITING\n");
+	// 	// free game memory
+	// 	exit(1);
+	// }
     // Implement map creation and initialization
     create_map_from_cub(game, game->screen_width, game->screen_width);
 	// map parsing

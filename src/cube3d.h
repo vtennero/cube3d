@@ -126,11 +126,21 @@ typedef struct s_game {
     void* win_ptr;
     void* img_ptr;
 
+	// Minimap
 	void* minimap_win_ptr;
     void* minimap_img_ptr;
+
+	// Cub parsing
 	char *cub_filepath;
+	int  cub_fd;
 	int  cub_line_count;
-	char *cub_map_array
+	int  cub_map_row_count;
+	int  cub_map_col_count;
+	char *cub_map_array;
+	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
+    t_texture floortexture[1];
+    t_texture skytexture[1];
+
 
     char* img_data;
     int bits_per_pixel;
@@ -138,9 +148,7 @@ typedef struct s_game {
     int endian;
     t_player *player;
     t_map *map;
-    t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
-    t_texture floortexture[1];
-    t_texture skytexture[1];
+
     int screen_height;
     int screen_width;
 	int	bonus;
