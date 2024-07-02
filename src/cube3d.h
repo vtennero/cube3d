@@ -133,6 +133,7 @@ typedef struct s_game {
 	// Cub parsing
 	char *cub_filepath;
 	int  cub_fd;
+	
 	int  cub_line_count;
 	int  cub_map_row_count;
 	int  cub_map_col_count;
