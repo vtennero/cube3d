@@ -12,30 +12,39 @@
 
 #include "cube3d.h"
 
-const char* get_cardinal_direction(float x, float y) {
+const char *get_cardinal_direction(float x, float y)
+{
     float angle = atan2(y, x); // Get angle in radians from x-axis
-    if (angle < 0) {
+    if (angle < 0)
+    {
         angle += 2 * M_PI; // Normalize angle to be between 0 and 2*pi
     }
 
     // Define angle thresholds for cardinal directions
     const float pi_8 = M_PI / 8; // Pi divided by 8 (22.5 degrees in radians)
-    if (angle < pi_8 || angle > 15 * pi_8) return "East";
-    else if (angle < 3 * pi_8) return "North-East";
-    else if (angle < 5 * pi_8) return "North";
-    else if (angle < 7 * pi_8) return "North-West";
-    else if (angle < 9 * pi_8) return "West";
-    else if (angle < 11 * pi_8) return "South-West";
-    else if (angle < 13 * pi_8) return "South";
-    else return "South-East";
+    if (angle < pi_8 || angle > 15 * pi_8)
+        return "East";
+    else if (angle < 3 * pi_8)
+        return "North-East";
+    else if (angle < 5 * pi_8)
+        return "North";
+    else if (angle < 7 * pi_8)
+        return "North-West";
+    else if (angle < 9 * pi_8)
+        return "West";
+    else if (angle < 11 * pi_8)
+        return "South-West";
+    else if (angle < 13 * pi_8)
+        return "South";
+    else
+        return "South-East";
 }
-
 
 void handle_key_left(t_game *game)
 {
     printf("You just pressed Left!\n");
 
-    float angle = 0.0872665;  // 5 degrees in radians
+    float angle = 0.0872665; // 5 degrees in radians
 
     // Rotate direction vector counterclockwise
     float oldDirX = game->player->direction.x;
@@ -54,12 +63,11 @@ void handle_key_left(t_game *game)
     printf("Facing direction: %s\n", direction);
 }
 
-
 void handle_key_right(t_game *game)
 {
     printf("You just pressed Right!\n");
 
-    float angle = 0.0872665;  // 5 degrees in radians
+    float angle = 0.0872665; // 5 degrees in radians
 
     // Rotate direction vector clockwise
     float oldDirX = game->player->direction.x;
@@ -78,8 +86,6 @@ void handle_key_right(t_game *game)
     printf("Facing direction: %s\n", direction);
 }
 
-
-
 void handle_key_w(t_game *game)
 {
     printf("You just pressed W!\n");
@@ -94,16 +100,56 @@ void handle_key_w(t_game *game)
     int mapY = (int)(newY + game->player->direction.y * buffer);
 
     // Ensure within map bounds and not a wall tile
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    {
         game->player->position.x = newX;
         game->player->position.y = newY;
         printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
-    } else {
+    }
+    else
+    {
         printf("Collision detected! Close to a wall.\n");
     }
     print_game_map(game);
 }
 
+// // Add this helper function for wall collision detection
+// int is_wall(t_game *game, double x, double y)
+// {
+//     int mapX = (int)x;
+//     int mapY = (int)y;
+
+//     // Check map bounds
+//     if (mapX < 0 || mapX >= game->map->width || mapY < 0 || mapY >= game->map->height)
+//     {
+//         return 1; // Treat out of bounds as a wall
+//     }
+
+//     // Check if the tile is a wall
+//     return (game->map->data[mapY][mapX] == TILE_WALL);
+// }
+
+// void handle_key_w(t_game *game)
+// {
+//     printf("You just pressed W!\n");
+
+//     double speed = 0.1; // Reduced speed for smoother movement
+//     double newX = game->player->position.x + game->player->direction.x * speed;
+//     double newY = game->player->position.y + game->player->direction.y * speed;
+
+//     // Check collision for both X and Y separately
+//     if (!is_wall(game, newX, game->player->position.y))
+//     {
+//         game->player->position.x = newX;
+//     }
+//     if (!is_wall(game, game->player->position.x, newY))
+//     {
+//         game->player->position.y = newY;
+//     }
+
+//     printf("New player position: x = %.4f, y = %.4f\n", game->player->position.x, game->player->position.y);
+//     print_game_map(game);
+// }
 
 void handle_key_s(t_game *game)
 {
@@ -117,29 +163,31 @@ void handle_key_s(t_game *game)
     int mapY = (int)(newY);
 
     // Check collision with buffered coordinates
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    {
         game->player->position.x = newX + game->player->direction.x * buffer; // Revert buffer
         game->player->position.y = newY + game->player->direction.y * buffer; // Revert buffer
         printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
-    } else {
+    }
+    else
+    {
         printf("Collision/Out of Map movement\n");
     }
     print_game_map(game);
 }
 
-
-float calculate_dynamic_buffer(t_player *player, float base_speed) {
+float calculate_dynamic_buffer(t_player *player, float base_speed)
+{
     // Calculate buffer based on the dot product of direction and plane vectors
     float dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
     float plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y * player->plane.y);
     float dot_product = player->direction.x * player->plane.x + player->direction.y * player->plane.y;
-    
+
     float cosine_angle = dot_product / (dir_mag * plane_mag);
     float dynamic_buffer = base_speed * (1 - fabs(cosine_angle)); // Reduce buffer as angle approaches 90 degrees
     printf("dynamic buffer %f\n", dynamic_buffer);
     return dynamic_buffer;
 }
-
 
 // void handle_key_a(t_game *game)
 // {
@@ -175,12 +223,12 @@ void handle_key_a(t_game *game)
 {
     printf("You just pressed A!\n");
 
-    float speed = 0.1;  // Control the speed of strafing
+    float speed = 0.1; // Control the speed of strafing
 
     // Calculate the left perpendicular vector relative to the player's direction
     // This vector is perpendicular on the left side of the player's current direction
-    float perpX = -game->player->direction.y;  // Use negative y component of the direction
-    float perpY = game->player->direction.x;   // Use x component of the direction
+    float perpX = -game->player->direction.y; // Use negative y component of the direction
+    float perpY = game->player->direction.x;  // Use x component of the direction
 
     // Calculate the new position by moving left relative to the current facing direction
     float newX = game->player->position.x + perpX * speed;
@@ -190,20 +238,21 @@ void handle_key_a(t_game *game)
     int mapY = (int)(newY);
 
     // Collision detection: Check if the new position is within map bounds and not blocked
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    {
         game->player->position.x = newX;
         game->player->position.y = newY;
         printf("New player position.x = %f\n", game->player->position.x);
         printf("New player position.y = %f\n", game->player->position.y);
-    } else {
+    }
+    else
+    {
         printf("Collision detected or Out of Map movement\n");
     }
 
     // Optionally add visual feedback or further debugging information if needed
-    print_game_map(game);  // Assuming this function prints the current game map for debugging
+    print_game_map(game); // Assuming this function prints the current game map for debugging
 }
-
-
 
 void handle_key_d(t_game *game)
 {
@@ -224,25 +273,26 @@ void handle_key_d(t_game *game)
     int mapY = (int)(newY);
 
     // Check if the new position is within the map and not blocked by a wall
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    {
         game->player->position.x = newX;
         game->player->position.y = newY;
         printf("New player position.x = %f\n", game->player->position.x);
         printf("New player position.y = %f\n", game->player->position.y);
-    } else {
+    }
+    else
+    {
         printf("Collision/Out of Map movement\n");
     }
     print_game_map(game);
 }
 
-
-int	close_hook(t_game *game_state)
+int close_hook(t_game *game_state)
 {
-	ft_printf("Close button clicked, exiting...\n");
-	// clear_mlx_resources(game_state);
-	// clear_game_state(game_state);
-	(void)game_state;
-	exit(0);
-	return (0);
+    ft_printf("Close button clicked, exiting...\n");
+    // clear_mlx_resources(game_state);
+    // clear_game_state(game_state);
+    (void)game_state;
+    exit(0);
+    return (0);
 }
-

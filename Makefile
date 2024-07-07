@@ -27,7 +27,9 @@ textures.c \
 mlx_tests.c \
 test_keyhold.c \
 movement_player_reloc.c \
-render_floor.c
+render_floor.c \
+randomizer.c \
+floor_randomizer.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
