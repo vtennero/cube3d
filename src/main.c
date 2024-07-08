@@ -621,10 +621,75 @@ int texture_error_handling(t_game* game)
 	// Then we can make an array, pass every odd number(even  -> [0],[2],...) into array
 	// Then we loop thru the array, make sue the array only consists of 1,0,space, 1 count of either NSEW
 	
+void initializeArray(t_game *game,int x, int y) {
+	int i;
+	// int j;
+
+	i=0;
+	// j=0;
+    game->cub_map_array = (int **)malloc(x * sizeof(int *));
+    if (game->cub_map_array == NULL) {
+        // Handle memory allocation failure
+        exit(1);
+    }
+    
+    while (i < x) {
+        game->cub_map_array[i] = (int *)calloc(y ,sizeof(int));
+        if (game->cub_map_array[i] == NULL) {
+            // Handle memory allocation failure
+            exit(1);
+        }
+        ++i;
+    }
 
 
-// parse_map_to_array(t_game *game)
-// {}
+}
+
+	int print_2d_array(t_game *game)
+{
+	int x;
+	int y;
+	x =game->cub_map_row_count;
+	y=((game->cub_map_col_count + 1) / 2);
+
+	printf("\n GAME MAP ARRAY \n _________________________________ \n");
+
+    for (int i = 0; i < x; ++i) {
+        for (int j = 0; j < y; ++j) {
+            printf("%d ", game->cub_map_array[i][j]);
+        }
+        printf("\n");
+    }
+	return 1;
+}
+	int parse_map_to_array(t_game *game)
+
+	{       
+		int result = (game->cub_map_col_count + 1) / 2;
+
+		printf("\nThe result of rounding up %d / %d is %d\n", game->cub_map_col_count, 2, result);
+		initializeArray(game,game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
+		print_2d_array(game);
+		
+		int fd = open(game->cub_filepath, O_RDONLY);
+		int fd2 = open(game->cub_filepath, O_RDONLY);
+		int fd3 = open(game->cub_filepath, O_RDONLY);
+
+			printf("fd1 is: %d \n",fd);
+			printf("fd2 is: %d \n",fd2);
+			printf("fd3 is: %d \n",fd3);
+    	if (fd  < 0) {
+        	perror("Error \nCould not open file");
+        	return -1;
+    	}
+		char* line;
+    	while ((line = get_next_line(fd3)) != NULL) 
+		{
+			printf("line is now:\n%s",line); /// This should be the first line of the map
+		}
+	
+		return 1;
+	}
 int create_map(t_game *game)
 {
 
@@ -635,7 +700,7 @@ int create_map(t_game *game)
 	printf("\nTotal Cub line count is %d",game->cub_line_count);
 	printf("\nTotal Map line count is %d",game->cub_map_row_count);
 	printf("\nTotal Map col count is %d",game->cub_map_col_count);
-	// parse_map_to_array(game);
+	parse_map_to_array(game);
 
 	// check_map_constraint(game,map_line);
 
@@ -852,7 +917,7 @@ int     initgame(t_game **game,char *cub_filepath)
 		exit(-1);
 	}
     create_player(*game);
-    setup_game_mlx(*game);
+    // setup_game_mlx(*game);
 
     return(1);
 }
