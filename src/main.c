@@ -623,19 +623,19 @@ int texture_error_handling(t_game* game)
 	
 
 
-parse_map_to_array(t_game *game)
-{}
+// parse_map_to_array(t_game *game)
+// {}
 int create_map(t_game *game)
 {
 
-	if (!read_cub_texture_and_analyze_map(game))
+	if (read_cub_texture_and_analyze_map(game)==-1)
 		return -1;
 	if (texture_error_handling(game) == -1)
 		return -1;
 	printf("\nTotal Cub line count is %d",game->cub_line_count);
 	printf("\nTotal Map line count is %d",game->cub_map_row_count);
 	printf("\nTotal Map col count is %d",game->cub_map_col_count);
-	parse_map_to_array(game);
+	// parse_map_to_array(game);
 
 	// check_map_constraint(game,map_line);
 
