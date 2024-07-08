@@ -662,31 +662,90 @@ void initializeArray(t_game *game,int x, int y) {
     }
 	return 1;
 }
-	int parse_map_to_array(t_game *game)
 
-	{       
-		int result = (game->cub_map_col_count + 1) / 2;
+	int parse_char_to_int(char chars)
+	{
+		if (chars==48)
+			return 0;
+		if (chars==49)
+			return 1;
+		if (chars==32)
+			return 9;
+		if (chars=='N')
+			return 2;
+		if (chars=='E')
+			return 3;
+		if (chars=='S')
+			return 4;
+		if (chars=='W')
+			return 5;
+		return -1;
+	}
+	int parse_line_to_map_array(char* line, t_game *game,int map_line)
+	{	
+		int j;
+		int i;
 
-		printf("\nThe result of rounding up %d / %d is %d\n", game->cub_map_col_count, 2, result);
-		initializeArray(game,game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
-		print_2d_array(game);
-		
-		int fd = open(game->cub_filepath, O_RDONLY);
-		int fd2 = open(game->cub_filepath, O_RDONLY);
-		int fd3 = open(game->cub_filepath, O_RDONLY);
+		i=0;
+		j=0;
+		while (line[i] != '\0') {
+    	if (i % 2 == 0) {
+        	game->cub_map_array[map_line][j] = parse_char_to_int(line[i]);
+        	j++;
+    		}
+    	i++;
+		}
 
-			printf("fd1 is: %d \n",fd);
-			printf("fd2 is: %d \n",fd2);
-			printf("fd3 is: %d \n",fd3);
+		while (i <= game->cub_map_col_count) {
+    	if (i % 2 == 0) {
+        	game->cub_map_array[map_line][j] = 9;
+        	j++;
+    		}
+    	i++;
+		}
+	return 1;
+
+	}
+	int loop_thru_line_in_map_array(t_game *game)
+	{		
+		int fd;
+		int line_count;
+		int map_line;
+		char* line;
+
+		map_line=0;
+		line_count=0; 
+		fd = open(game->cub_filepath, O_RDONLY);
+
+	
     	if (fd  < 0) {
         	perror("Error \nCould not open file");
         	return -1;
     	}
-		char* line;
-    	while ((line = get_next_line(fd3)) != NULL) 
+    	while ((line = get_next_line(fd)) != NULL) 
 		{
-			printf("line is now:\n%s",line); /// This should be the first line of the map
+			if ((line_count>=game->cub_line_count-game->cub_map_row_count) && (map_line<=game->cub_map_col_count))
+			{
+				// printf("line is now:\n%s",line); /// This should be the first line of the map
+				parse_line_to_map_array(line,game,map_line);
+				map_line++;
+
+			}
+			line_count++;
 		}
+		return 1;
+	}
+
+
+	int parse_map_to_array(t_game *game)
+
+	{       
+
+		initializeArray(game,game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
+		print_2d_array(game);
+		loop_thru_line_in_map_array(game);
+		print_2d_array(game);
+
 	
 		return 1;
 	}
