@@ -18,18 +18,18 @@ BONUS_MAIN = main_bonus.c
 
 # Shared source files
 SHARED_SRCS = debug_utils.c \
+initialization.c \
 render.c \
+render_floor.c \
+render_walls.c \
+render_sky.c \
 raycasting.c \
 raycasting_utils.c \
-mlx_basic_setup.c \
 movement.c \
 textures.c \
-mlx_tests.c \
-test_keyhold.c \
 movement_player_reloc.c \
-render_floor.c \
 randomizer.c \
-floor_randomizer.c
+tmp_staticmap.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

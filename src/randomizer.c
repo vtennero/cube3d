@@ -6,11 +6,21 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:54:31 by root              #+#    #+#             */
-/*   Updated: 2024/07/07 18:24:16 by root             ###   ########.fr       */
+/*   Updated: 2024/07/09 18:49:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+unsigned long long xorshift64(unsigned long long *state)
+{
+    unsigned long long x = *state;
+    x ^= x << 13;
+    x ^= x >> 7;
+    x ^= x << 17;
+    *state = x;
+    return x;
+}
 
 void initialize_game_seed(t_game *game)
 {

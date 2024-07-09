@@ -270,19 +270,13 @@ void mainloop(t_game *game);
 void initialize_game(t_game *game, int screen_width, int screen_height, char *title);
 void preload_textures(t_game *game);
 // raycasting
-// void calculate_rays(t_game *game, int screenWidth);
 
 // debug
 void print_map(t_map *map);
-// t_map *create_static_map(void);
-void list_first_ten_rays(t_ray *rays, int count);
 void print_player(const t_player *player);
 void print_ray(const t_ray *ray);
 void print_vector2d(const t_vector2d *vector);
-// void addRay(t_ray_node** head, int x, int draw_start, int draw_end, int color);
 void printRayList(t_ray_node *head);
-// void render_ray_list(t_ray_node* head, void *mlx_ptr, void *win_ptr);
-// void render_ray_list(t_ray_node* head, t_game *game);
 t_ray_node *addRay(t_ray_node **head);
 
 // temp
@@ -325,17 +319,7 @@ void handle_key_right(t_game *game);
 
 void set_texture(t_game *game, t_direction dir);
 
-// tests
-int mlx_test_xpm_to_pixels(void);
-int mlx_test_xpm_to_pixels_scaled_to_screen(void);
-int mlx_test_xpm_to_pixels_scaled_w_perspective(void);
-int mlx_test_xpm_to_pixels_scaled_w_perspective_split(void);
-
-void render_ray_list_color_v1(t_ray_node *head, void *mlx_ptr, void *win_ptr);
-
 void print_game_map(t_game *game);
-
-int brabant(void);
 
 int setup_game_mlx(t_game *game);
 
@@ -369,5 +353,13 @@ unsigned long long next_random(t_game *game);
 void initialize_game_seed(t_game *game);
 void initialize_floor_texture_weights(t_game *game);
 int select_weighted_texture(t_game *game);
+void render_ray(t_img *img, t_ray ray, t_texture *texture);
+void render_sky(t_game *game, char *sky_texture_path);
+void render_ray_list(t_game *game);
+int render(t_game *game);
+void create_static_map(t_game *game);
+int create_game_struct(t_game **game);
+int create_map(t_game *game);
+int create_player(t_game *game);
 
 #endif

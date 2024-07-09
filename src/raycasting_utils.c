@@ -43,50 +43,6 @@ void calc_camera_x(t_game *game, t_ray_node *ray)
 	ray->ray.cameraX = 2 * ray->ray.x / (double)(game->screen_width) - 1;
 }
 
-// void calc_ray_dir_x(t_game *game, t_ray_node *ray)
-// {
-// 	ray->ray.rayDirX = game->player->direction.x + game->player->plane.x * ray->ray.cameraX;
-// }
-
-// void calc_ray_dir_y(t_game *game, t_ray_node *ray)
-// {
-// 	ray->ray.rayDirY = game->player->direction.y + game->player->plane.y * ray->ray.cameraX;
-// }
-
-// void calc_map_x(t_game *game, t_ray_node *ray)
-// {
-// 	ray->ray.mapX = game->player->position.x;
-// }
-
-// void calc_map_y(t_game *game, t_ray_node *ray)
-// {
-// 	ray->ray.mapY = game->player->position.y;
-// }
-
-// void calc_side_dist(t_game *game, t_ray_node *ray)
-// {
-// 	if (ray->ray.rayDirX < 0)
-// 	{
-// 		ray->ray.stepX = -1;
-// 		ray->ray.sideDistX = (game->player->position.x - ray->ray.mapX) * ray->ray.deltaDistX;
-// 	}
-// 	else
-// 	{
-// 		ray->ray.stepX = 1;
-// 		ray->ray.sideDistX = (ray->ray.mapX + 1.0 - game->player->position.x) * ray->ray.deltaDistX;
-// 	}
-// 	if (ray->ray.rayDirY < 0)
-// 	{
-// 		ray->ray.stepY = -1;
-// 		ray->ray.sideDistY = (game->player->position.y - ray->ray.mapY) * ray->ray.deltaDistY;
-// 	}
-// 	else
-// 	{
-// 		ray->ray.stepY = 1;
-// 		ray->ray.sideDistY = (ray->ray.mapY + 1.0 - game->player->position.y) * ray->ray.deltaDistY;
-// 	}
-// }
-
 void calc_ray_dir_x(t_game *game, t_ray_node *ray)
 {
 	ray->ray.rayDirX = game->player->direction.x + game->player->plane.x * ray->ray.cameraX;
@@ -188,14 +144,6 @@ void calc_perp_wall_dist(t_game *game, t_ray_node *ray)
 	else
 		ray->ray.perpWallDist = (ray->ray.sideDistY - ray->ray.deltaDistY);
 }
-
-// void calc_perp_wall_dist(t_game *game, t_ray_node *ray)
-// {
-// 	if (ray->ray.side == 0)
-// 		ray->ray.perpWallDist = (ray->ray.mapX - game->player->position.x + (1 - ray->ray.stepX) / 2) / ray->ray.rayDirX;
-// 	else
-// 		ray->ray.perpWallDist = (ray->ray.mapY - game->player->position.y + (1 - ray->ray.stepY) / 2) / ray->ray.rayDirY;
-// }
 
 void calc_line_height(t_game *game, t_ray_node *ray)
 {

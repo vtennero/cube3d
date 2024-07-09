@@ -12,11 +12,11 @@
 
 #include "cube3d.h"
 
-
-
-t_ray_node* addRay(t_ray_node** head) {
-    t_ray_node* newNode = malloc(sizeof(t_ray_node));
-    if (newNode == NULL) {
+t_ray_node *addRay(t_ray_node **head)
+{
+    t_ray_node *newNode = malloc(sizeof(t_ray_node));
+    if (newNode == NULL)
+    {
         fprintf(stderr, "Error allocating memory for new node.\n");
         return NULL;
     }
@@ -43,10 +43,13 @@ t_ray_node* addRay(t_ray_node** head) {
     newNode->ray.wall_face = 0;
     newNode->ray.wallX = 0;
 
-    if (*head == NULL) {
+    if (*head == NULL)
+    {
         newNode->next = NULL;
         *head = newNode;
-    } else {
+    }
+    else
+    {
         newNode->next = *head;
         *head = newNode;
     }
@@ -54,10 +57,11 @@ t_ray_node* addRay(t_ray_node** head) {
     return newNode;
 }
 
-void printRayList(t_ray_node* head)
+void printRayList(t_ray_node *head)
 {
-    t_ray_node* current = head;
-    while (current != NULL) {
+    t_ray_node *current = head;
+    while (current != NULL)
+    {
         printf("Ray at x=%d, draw_start=%d, draw_end=%d, color=%d\n",
                current->ray.x,
                current->ray.draw_start,
@@ -67,6 +71,35 @@ void printRayList(t_ray_node* head)
     }
 }
 
+t_ray_node *calculate_rays(t_game *game, t_ray_node *list)
+{
+    int x;
+    t_ray_node *current;
 
-
-
+    current = list;
+    x = 0;
+    while (x < game->screen_width)
+    {
+        current = addRay(&list);
+        if (current != NULL)
+        {
+            current->ray.x = x;
+            calc_camera_x(game, current);
+            calc_ray_dir_x(game, current);
+            calc_ray_dir_y(game, current);
+            calc_map_x(game, current);
+            calc_map_y(game, current);
+            calc_side_dist(game, current);
+            calc_delta_dist(game, current);
+            perform_dda(game, current);
+            calc_perp_wall_dist(game, current);
+            calc_wall_hit(game, current);
+            calc_texture_x(game, current);
+            calc_line_height(game, current);
+            calc_draw_parameters(game, current);
+            // calc_tile_color(game, current);
+        }
+        x++;
+    }
+    return (list);
+}
