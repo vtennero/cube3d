@@ -110,6 +110,7 @@ void handle_key_w(t_game *game)
     {
         printf("Collision detected! Close to a wall.\n");
     }
+    update_gun_frame(game);
     print_game_map(game);
 }
 
@@ -173,6 +174,7 @@ void handle_key_s(t_game *game)
     {
         printf("Collision/Out of Map movement\n");
     }
+    update_gun_frame(game);
     print_game_map(game);
 }
 

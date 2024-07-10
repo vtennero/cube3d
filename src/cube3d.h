@@ -158,6 +158,9 @@ typedef struct s_game
     int **floor_texture_map;
     t_texture_weight floor_texture_weights[MAX_FLOOR_TEXTURES];
     int num_floor_textures;
+    t_texture *gun_textures;
+    int num_gun_frames;
+    int current_gun_frame;
 } t_game;
 
 typedef struct s_ray
@@ -361,5 +364,10 @@ void create_static_map(t_game *game);
 int create_game_struct(t_game **game);
 int create_map(t_game *game);
 int create_player(t_game *game);
+void render_gun(t_game *game);
+void scale_gun_texture(t_game *game);
+void update_gun_frame(t_game *game);
+void load_gun_textures(t_game *game, char *path_format, int num_frames);
+void scale_gun_textures(t_game *game);
 
 #endif

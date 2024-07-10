@@ -12,6 +12,26 @@
 
 #include "cube3d.h"
 
+void load_gun_textures(t_game *game, char *path_format, int num_frames)
+{
+    game->gun_textures = malloc(sizeof(t_texture) * num_frames);
+    game->num_gun_frames = num_frames;
+
+    for (int i = 0; i < num_frames; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i + 1);
+
+        game->gun_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->gun_textures[i].width, &game->gun_textures[i].height);
+        if (game->gun_textures[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load gun texture: %s\n", path);
+            exit(1);
+        }
+        game->gun_textures[i].data = mlx_get_data_addr(game->gun_textures[i].img, &game->gun_textures[i].tex_bpp, &game->gun_textures[i].tex_line_len, &game->gun_textures[i].tex_endian);
+    }
+}
+
 void load_floor_texture(t_game *game, int index, char *path)
 {
     game->floortextures[index].img = mlx_xpm_file_to_image(
@@ -66,79 +86,6 @@ void load_floor_textures(t_game *game)
                game->floortextures[i].width, game->floortextures[i].height);
     }
 }
-
-// void preload_textures(t_game *game)
-// {
-
-//     char *texture_paths[] = {
-//         "textures/foilagewall01.xpm", // NORTH
-//         "textures/dmgwall07.xpm",     // EAST
-//         "textures/dmgwall01.xpm",     // SOUTH
-//         "textures/dmgwall06.xpm",     // WEST
-//         "textures/sky02.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         "textures/floor/main01.xpm",
-//         // "textures/floor/main02.xpm",
-//         // "textures/floor/main03.xpm",
-//         // "textures/floor/main04.xpm",
-//         // "textures/floor/metal01.xpm",
-//         // "textures/floor/metal02.xpm",
-//         // "textures/floor/sand01.xpm",
-//         // "textures/floor/sand02.xpm"
-//     };
-
-//     printf("preload_textures START\n");
-//     for (int i = NORTH; i <= WEST; i++)
-//     {
-//         printf("preload_textures for (int i = NORTH; i <= WEST; i++)\n");
-//         game->walltextures[i].img = mlx_xpm_file_to_image(
-//             game->mlx_ptr,
-//             texture_paths[i],
-//             &game->walltextures[i].width,
-//             &game->walltextures[i].height);
-
-//         if (!game->walltextures[i].img)
-//         {
-//             fprintf(stderr, "Failed to load texture: %s\n", texture_paths[i]);
-//             exit(EXIT_FAILURE);
-//         }
-//         else
-//         {
-//             game->walltextures[i].data = mlx_get_data_addr(
-//                 game->walltextures[i].img,
-//                 &game->walltextures[i].tex_bpp,
-//                 &game->walltextures[i].tex_line_len,
-//                 &game->walltextures[i].tex_endian);
-//             printf("Loaded texture: %s, bpp: %d, size: %dx%d\n", texture_paths[i], game->walltextures[i].tex_bpp, game->walltextures[i].width, game->walltextures[i].height);
-//         }
-//     }
-//     // Load the sky texture directly into the array
-//     game->skytexture[0].img = mlx_xpm_file_to_image(
-//         game->mlx_ptr,
-//         texture_paths[4],
-//         &game->skytexture[0].width,
-//         &game->skytexture[0].height);
-//     game->skytexture[0].data = mlx_get_data_addr(
-//         game->skytexture[0].img,
-//         &game->skytexture[0].tex_bpp,
-//         &game->skytexture[0].tex_line_len,
-//         &game->skytexture[0].tex_endian);
-//     printf("Loaded sky texture, bpp: %d, size: %dx%d\n", game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
-
-//     // Load the floor texture
-//     for (int i = 0; i < MAX_FLOOR_TEXTURES; i++)
-//     {
-//         load_floor_texture(game, i, texture_paths[i + 5]);
-//     }
-
-//     printf("preload_textures END\n");
-// }
 
 void preload_textures(t_game *game)
 {
@@ -201,6 +148,10 @@ void preload_textures(t_game *game)
 
     // Load floor textures
     load_floor_textures(game);
+    // load_gun_texture(game, "textures/gun/frame01.xpm");
+    load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
+
+    scale_gun_textures(game);
 
     printf("preload_textures END\n");
 }

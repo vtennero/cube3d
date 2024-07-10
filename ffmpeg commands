@@ -1,0 +1,8 @@
+imagemagick commands
+
+
+
+
+for i in {1..12}; do
+  convert "frame$(printf '%02d' "$i").png" "frame$(printf '%02d' "$i").xpm"
+done

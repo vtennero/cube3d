@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 18:42:48 by root              #+#    #+#             */
-/*   Updated: 2024/07/09 18:47:51 by root             ###   ########.fr       */
+/*   Updated: 2024/07/10 12:52:45 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void render_sky(t_game *game, char *sky_texture_path)
     float rotation_speed = 0.25; // Adjust this value to change rotation speed
 
     // Calculate the pixel offset in the texture
-    int texture_offset = (int)(fmodf(angle / (2 * M_PI) * rotation_speed * sky_width + sky_width, sky_width));
-
+    // int texture_offset = (int)(fmodf(angle / (2 * M_PI) * rotation_speed * sky_width + sky_width, sky_width));
+    int texture_offset = (int)(fmodf(sky_width - angle / (2 * M_PI) * rotation_speed * sky_width, sky_width));
     for (int i = 0; i < game->screen_height / 2; i++)
     {
         for (int j = 0; j < game->screen_width; j++)

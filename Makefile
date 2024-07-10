@@ -23,6 +23,7 @@ render.c \
 render_floor.c \
 render_walls.c \
 render_sky.c \
+render_gun.c \
 raycasting.c \
 raycasting_utils.c \
 movement.c \
