@@ -1,0 +1,16 @@
+NO textures/sky01.xpm
+SO textures/sky02.xpm
+S textures/sprite_1.xpm
+   F     184,113,39
+ C   51,198,227
+EA textures/sky02.xpm
+    
+	 WE textures/sky02.xpm	 
+
+
+0 1 1 1
+1 S 0 1
+1 0 0 1
+1 0 0 0 1 0 1 0 1 0 1
+1 0 0 1
+1 1 1 
