@@ -139,6 +139,10 @@ typedef struct s_game {
 	int  cub_map_col_count;
 
 	int **cub_map_array;
+	int cub_player_x;
+	int cub_player_y;
+	int cub_player_o;
+	
 	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
     t_texture floortexture[1];
     t_texture skytexture[1];

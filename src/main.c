@@ -656,6 +656,7 @@ void initializeArray(t_game *game,int x, int y) {
 
     for (int i = 0; i < x; ++i) {
         for (int j = 0; j < y; ++j) {
+	
             printf("%d ", game->cub_map_array[i][j]);
         }
         printf("\n");
@@ -695,7 +696,7 @@ void initializeArray(t_game *game,int x, int y) {
     		}
     	i++;
 		}
-
+		// To parse empty space after \0
 		while (i <= game->cub_map_col_count) {
     	if (i % 2 == 0) {
         	game->cub_map_array[map_line][j] = 9;
@@ -724,7 +725,7 @@ void initializeArray(t_game *game,int x, int y) {
     	}
     	while ((line = get_next_line(fd)) != NULL) 
 		{
-			if ((line_count>=game->cub_line_count-game->cub_map_row_count) && (map_line<=game->cub_map_col_count))
+			if ((line_count>=game->cub_line_count-game->cub_map_row_count) && (map_line<=game->cub_map_row_count))
 			{
 				// printf("line is now:\n%s",line); /// This should be the first line of the map
 				parse_line_to_map_array(line,game,map_line);
@@ -736,7 +737,52 @@ void initializeArray(t_game *game,int x, int y) {
 		return 1;
 	}
 
+	int check_player_position_helper(t_game *game,int i,int j,int *player_found)
+	{
+		if (game->cub_map_array[i][j]==2 || game->cub_map_array[i][j]==3 || game->cub_map_array[i][j]==4 || game->cub_map_array[i][j]==5 )
+			{
+				if (*player_found==0)
+					{
+						printf("i is %d and j is %d \n",i,j);
+						*player_found=1;
+						game->cub_player_x=i;
+						game->cub_player_y=j;
+						game->cub_player_o=game->cub_map_array[i][j];
+					}
+					else
+						return -1;
+				}
+		return 1;
+	}
+				
+	int check_player_postion_and_map_char(t_game *game)
+	{
+		int i;
+		int j;
+		int player_found=0;
 
+		i=0;
+		j=0;
+		player_found=0;
+		while (i < game->cub_map_row_count)
+		{
+			while (j < (game->cub_map_col_count+1)/2)
+			{
+				// printf("\n%d,%d,%d",i,j,game->cub_map_array[i][j]);
+				if (check_player_position_helper(game,i,j,&player_found)==-1)
+					return -1; 
+				if (game->cub_map_array[i][j] ==-1)
+					return -2;
+				j++;
+			}
+			j=0;
+			i++;
+		}
+
+		if (player_found==0)
+			return 0;
+		return 1;
+	}
 	int parse_map_to_array(t_game *game)
 
 	{       
@@ -745,10 +791,55 @@ void initializeArray(t_game *game,int x, int y) {
 		print_2d_array(game);
 		loop_thru_line_in_map_array(game);
 		print_2d_array(game);
+		if (check_player_postion_and_map_char(game)==-1)
+		{
+			printf("2 Player postion detected!");
+			return -1;
+		}
+		if (check_player_postion_and_map_char(game)==0)
+		{
+			printf("No player postion is detected!");
+			return (-1);
+		}
 
+		if (check_player_postion_and_map_char(game)==-2)
+		{
+			printf("Invalid character in map detected!");
+			return (-1);
+		}
+		printf("player position is %d,%d and the orientation is %d\n",game->cub_player_x,game->cub_player_y,game->cub_player_o);
 	
 		return 1;
 	}
+
+int			check_map_boundaries(t_game *game)
+{
+	int		x;
+	int		y;
+	int		i;
+	bool	**filled_map;
+	bool	is_surrounded;
+
+	x = game->cub_player_x;
+	y = game->cub_player_y;
+	filled_map = ft_calloc(game->map_row + 1, sizeof(bool*));
+	i = 0;
+	while (i < game->map_row)
+	{
+		filled_map[i] = ft_calloc(game->map_col, sizeof(bool));
+		if (!filled_map[i])
+		{
+			free_ptrarr((void**)filled_map);
+			return (put_and_return_err("Malloc is failed"));
+		}
+		i++;
+	}
+	is_surrounded = floodfill(game, filled_map, y, x);
+	free_ptrarr((void**)filled_map);
+	if (!is_surrounded)
+		return (put_and_return_err("Map isn't surrounded by wall"));
+	return (
+
 int create_map(t_game *game)
 {
 
@@ -759,8 +850,9 @@ int create_map(t_game *game)
 	printf("\nTotal Cub line count is %d",game->cub_line_count);
 	printf("\nTotal Map line count is %d",game->cub_map_row_count);
 	printf("\nTotal Map col count is %d",game->cub_map_col_count);
-	parse_map_to_array(game);
-
+	if (parse_map_to_array(game) == -1);
+		return -1;
+	check_map_boundaries()
 	// check_map_constraint(game,map_line);
 
 	// map_error_handling(game);
