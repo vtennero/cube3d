@@ -27,7 +27,11 @@ textures.c \
 mlx_tests.c \
 test_keyhold.c \
 movement_player_reloc.c \
-render_floor.c
+render_floor.c \
+check_map_boundaries.c \
+map_parse_utility.c \
+parse_map.c  \
+texture_parse.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
