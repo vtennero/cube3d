@@ -39,6 +39,7 @@ int get_floor_texture_color(t_texture *texture, int x, int y)
 
 void initialize_floor_texture_weights(t_game *game)
 {
+    // float weights[] = {0.5, 0, 0, 0, 0, 0, 0.5, 0};
     float weights[] = {0.20, 0.20, 0.20, 0.20, 0.05, 0.05, 0.05, 0.05};
     game->num_floor_textures = MAX_FLOOR_TEXTURES;
 
