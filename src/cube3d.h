@@ -112,6 +112,7 @@ typedef struct s_player
     t_vector2d direction;
     t_vector2d plane;
     float pitch;
+    float height;
 } t_player;
 
 // typedef struct s_map {
@@ -147,7 +148,7 @@ typedef struct s_game
     t_player *player;
     t_map *map;
     t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
-    t_texture floortextures[1];
+    t_texture floortextures[8];
     t_texture skytexture[1];
     int screen_height;
     int screen_width;
@@ -186,6 +187,7 @@ typedef struct s_ray
     int wall_face;
     int color;
     int texX;     // Texture X coordinate
+    int texY;     // New: Texture Y coordinate for vertical texture mapping
     double wallX; // Exact horizontal position on the wall where the ray hits
 } t_ray;
 
@@ -225,7 +227,9 @@ typedef enum
     K_Z = 122,
     K_SHIFT = 65505,
     K_LEFT = 65361,
-    K_RIGHT = 65363
+    K_RIGHT = 65363,
+    K_UP = 65362,
+    K_DOWN = 65364
 } KeyCodes;
 
 typedef void (*t_key_func)(t_game *);
@@ -319,6 +323,8 @@ void handle_key_s(t_game *game);
 void handle_key_d(t_game *game);
 void handle_key_left(t_game *game);
 void handle_key_right(t_game *game);
+void handle_key_down(t_game *game);
+void handle_key_up(t_game *game);
 
 void set_texture(t_game *game, t_direction dir);
 
@@ -334,6 +340,8 @@ int ft_key_release(int keycode, t_game *game);
 
 void handle_movement_left(t_game *game);
 void handle_movement_right(t_game *game);
+void handle_movement_up(t_game *game);
+void handle_movement_down(t_game *game);
 void handle_movement_forward(t_game *game);
 void handle_movement_backward(t_game *game);
 void handle_movement_strafe_left(t_game *game);
@@ -356,7 +364,7 @@ unsigned long long next_random(t_game *game);
 void initialize_game_seed(t_game *game);
 void initialize_floor_texture_weights(t_game *game);
 int select_weighted_texture(t_game *game);
-void render_ray(t_img *img, t_ray ray, t_texture *texture);
+// void render_ray(t_img *img, t_ray ray, t_texture *texture);
 void render_sky(t_game *game, char *sky_texture_path);
 void render_ray_list(t_game *game);
 int render(t_game *game);
@@ -369,5 +377,12 @@ void scale_gun_texture(t_game *game);
 void update_gun_frame(t_game *game);
 void load_gun_textures(t_game *game, char *path_format, int num_frames);
 void scale_gun_textures(t_game *game);
+
+
+void debug_texture(t_texture *texture, int x, int y);
+
+int handle_mouse_move(int x, int y, t_game *game);
+
+const char *get_cardinal_direction(float x, float y);
 
 #endif

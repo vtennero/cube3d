@@ -38,31 +38,21 @@ void render_sky(t_game *game, char *sky_texture_path)
     float rotation_speed = 0.25; // Adjust this value to change rotation speed
 
     // Calculate the pixel offset in the texture
+    // int texture_offset = (int)(fmodf(angle / (2 * M_PI) * rotation_speed * sky_width + sky_width, sky_width));
     int texture_offset = (int)(fmodf(sky_width - angle / (2 * M_PI) * rotation_speed * sky_width, sky_width));
-    
-    // Calculate pitch offset
-    int pitch_offset = (int)(game->player->pitch * game->screen_height);
-    int height_offset = (int)(game->player->height * game->screen_height);
-    
-    // Determine the vertical range to render the sky
-    int sky_start = 0;
-    int sky_end = game->screen_height / 2 + pitch_offset + height_offset;
-    
-    // Clamp sky_end to screen height
-    sky_end = (sky_end > game->screen_height) ? game->screen_height : sky_end;
-
-
-    for (int i = sky_start; i < sky_end; i++)
+    for (int i = 0; i < game->screen_height / 2; i++)
     {
         for (int j = 0; j < game->screen_width; j++)
         {
             // Calculate texture coordinates
             int tx = (texture_offset + (j * sky_width / game->screen_width)) % sky_width;
-            int ty = (i - pitch_offset) * sky_height / (game->screen_height / 2);
+            int ty = i * sky_height / (game->screen_height / 2);
 
             // Ensure tx and ty are within bounds
-            tx = (tx < 0) ? 0 : (tx >= sky_width) ? sky_width - 1 : tx;
-            ty = (ty < 0) ? 0 : (ty >= sky_height) ? sky_height - 1 : ty;
+            tx = (tx < 0) ? 0 : (tx >= sky_width) ? sky_width - 1
+                                                  : tx;
+            ty = (ty < 0) ? 0 : (ty >= sky_height) ? sky_height - 1
+                                                   : ty;
 
             // Calculate the pixel position in the texture data
             int pixel_pos = ty * line_len + tx * (bpp / 8);

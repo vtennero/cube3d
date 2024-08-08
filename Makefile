@@ -1,5 +1,7 @@
 # Compiler and flags
-CC = gcc -g
+# CC = gcc -g
+# without debugger:
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 # Directories
@@ -27,6 +29,7 @@ render_gun.c \
 raycasting.c \
 raycasting_utils.c \
 movement.c \
+movement_mouse.c \
 textures.c \
 movement_player_reloc.c \
 randomizer.c \

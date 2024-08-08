@@ -60,6 +60,7 @@ t_ray_node *addRay(t_ray_node **head)
 void printRayList(t_ray_node *head)
 {
     t_ray_node *current = head;
+    printf("printRayList\n");
     while (current != NULL)
     {
         printf("Ray at x=%d, draw_start=%d, draw_end=%d, color=%d\n",
@@ -101,5 +102,6 @@ t_ray_node *calculate_rays(t_game *game, t_ray_node *list)
         }
         x++;
     }
+    // printRayList(list);
     return (list);
 }

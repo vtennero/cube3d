@@ -298,3 +298,20 @@ int close_hook(t_game *game_state)
     exit(0);
     return (0);
 }
+
+
+void handle_key_up(t_game *game)
+{
+    printf("You just pressed Up!\n");
+    if (game->player->pitch < 1)
+        game->player->pitch += 0.01;
+    printf("New pitch %f\n", game->player->pitch);
+}
+
+void handle_key_down(t_game *game)
+{
+    printf("You just pressed Down!\n");
+    if (game->player->pitch > -1)
+        game->player->pitch -= 0.01;
+    printf("New pitch %f\n", game->player->pitch);
+}

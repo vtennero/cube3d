@@ -47,6 +47,22 @@ void handle_movement_right(t_game *game)
     }
 }
 
+void handle_movement_up(t_game *game)
+{
+    if (game->key_state[K_UP] == 1)
+    {
+        handle_key_up(game);
+    }
+}
+
+void handle_movement_down(t_game *game)
+{
+    if (game->key_state[K_DOWN] == 1)
+    {
+        handle_key_down(game);
+    }
+}
+
 void handle_movement_forward(t_game *game)
 {
     if (game->key_state[K_W] == 1)

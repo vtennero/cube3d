@@ -128,22 +128,13 @@ void calc_line_height(t_game *game, t_ray_node *ray)
 
 void calc_draw_parameters(t_game *game, t_ray_node *ray)
 {
-    int pitch_offset = (int)(game->player->pitch * game->screen_height);
-    // int pitch_offset = -(int)(game->player->pitch * game->screen_height);
-    
-    ray->ray.lineHeight = (int)(game->screen_height / ray->ray.perpWallDist);
-    
-    // Adjust for player height
-    int height_offset = (int)(game->player->height * game->screen_height / ray->ray.perpWallDist);
-    
-    // Adjust drawStart and drawEnd based on pitch and height
-    ray->ray.draw_start = -ray->ray.lineHeight / 2 + game->screen_height / 2 + pitch_offset + height_offset;
-    if (ray->ray.draw_start < 0)
-        ray->ray.draw_start = 0;
-    
-    ray->ray.draw_end = ray->ray.lineHeight / 2 + game->screen_height / 2 + pitch_offset + height_offset;
-    if (ray->ray.draw_end >= game->screen_height)
-        ray->ray.draw_end = game->screen_height - 1;
+	// calculate lowest and highest pixel to fill in current stripe
+	ray->ray.draw_start = -ray->ray.lineHeight / 2 + game->screen_height / 2;
+	if (ray->ray.draw_start < 0)
+		ray->ray.draw_start = 0;
+	ray->ray.draw_end = ray->ray.lineHeight / 2 + game->screen_height / 2;
+	if (ray->ray.draw_end >= game->screen_height)
+		ray->ray.draw_end = game->screen_height - 1;
 }
 
 void calc_texture_x(t_game *game, t_ray_node *ray)

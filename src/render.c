@@ -49,7 +49,9 @@ int render(t_game *game)
     handle_movement_strafe_left(game);
     handle_movement_strafe_right(game);
     handle_movement_dash(game);
-    // render_sky(game, "textures/sky06.xpm");
+    // pitch
+    handle_movement_up(game);
+    handle_movement_down(game);
     render_sky(game, "textures/sky02.xpm");
     render_floor(game);
     render_ray_list(game);
@@ -86,6 +88,9 @@ int setup_game_mlx(t_game *game)
     mlx_hook(game->win_ptr, 2, 1L << 0, ft_key_press, game);
     mlx_loop_hook(game->mlx_ptr, &render, game);
     mlx_hook(game->win_ptr, 3, 1L << 1, ft_key_release, game);
+
+    // Add this line to handle mouse movement
+    mlx_hook(game->win_ptr, 6, 1L << 6, handle_mouse_move, game);
     mlx_loop(game->mlx_ptr);
 
     /* we will exit the loop if there's no window left, and execute this code */

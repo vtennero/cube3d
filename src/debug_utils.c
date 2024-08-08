@@ -115,3 +115,50 @@ void debug_print_rays(t_ray_node *head)
         idx++;
     }
 }
+
+void debug_texture(t_texture *texture, int x, int y)
+{
+    if (!texture)
+    {
+        printf("Error: Texture pointer is NULL\n");
+        return;
+    }
+
+    printf("-------------------:\n");
+    printf("Debugging t_texture:\n");
+    // printf("Path: %s\n", texture->path ? texture->path : "no path");
+    printf("Image pointer: %p\n", (void*)texture->img);
+    printf("Data pointer: %p\n", (void*)texture->data);
+    printf("Width: %d\n", texture->width);
+    printf("Height: %d\n", texture->height);
+    printf("Bits per pixel: %d\n", texture->tex_bpp);
+    printf("Line length: %d\n", texture->tex_line_len);
+    printf("Endian: %d\n", texture->tex_endian);
+    printf("Requested coordinates: x=%d, y=%d\n", x, y);
+}
+
+void print_ray(const t_ray *ray)
+{
+	printf("print_ray\n");
+	printf("x: %d\n", ray->x);
+	printf("cameraX: %.2f\n", ray->cameraX);
+	printf("rayDirX: %.2f\n", ray->rayDirX);
+	printf("rayDirY: %.2f\n", ray->rayDirY);
+	printf("mapX: %d\n", ray->mapX);
+	printf("mapY: %d\n", ray->mapY);
+	printf("sideDistX: %.2f\n", ray->sideDistX);
+	printf("sideDistY: %.2f\n", ray->sideDistY);
+	printf("deltaDistX: %.2f\n", ray->deltaDistX);
+	printf("deltaDistY: %.2f\n", ray->deltaDistY);
+	printf("perpWallDist: %.2f\n", ray->perpWallDist);
+	printf("stepX: %d\n", ray->stepX);
+	printf("stepY: %d\n", ray->stepY);
+	printf("hit: %d\n", ray->hit);
+	printf("side: %d\n", ray->side);
+	printf("lineHeight: %d\n", ray->lineHeight);
+	printf("draw_start: %d\n", ray->draw_start);
+	printf("draw_end: %d\n", ray->draw_end);
+	printf("color: %d\n", ray->color);
+	printf("wall_face: %d\n", ray->wall_face);
+	printf("******************************\n");
+}
