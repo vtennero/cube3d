@@ -12,7 +12,9 @@
 
 #include "cube3d.h"
 
-#define OBJECT_SIZE 0.5  // Size of the object in world units
+#define OBJECT_SIZE 1.5  // Size of the object in world units
+#define NUM_TEXTURES 3   // Number of textures for animation
+#define ANIMATION_SPEED 10 // Frames per texture change
 
 // Helper function to get pixel color from texture
 int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len)
@@ -30,147 +32,125 @@ int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
     return color;
 }
 
-//  this works
-
-void render_objects(t_game *game)
+// Calculate sprite position relative to camera
+void calculate_sprite_position(t_game *game, float objectX, float objectY, float *spriteX, float *spriteY)
 {
-    // Use the preloaded object texture
-    t_texture *obj_texture = &game->obj_texture[0];
+    *spriteX = objectX - game->player->position.x;
+    *spriteY = objectY - game->player->position.y;
+}
 
-    // Object world position
-    float objectX = 20.5f;  // Center of tile (20,11)
-    float objectY = 11.5f;
-
-    // Calculate sprite position relative to camera
-    float spriteX = objectX - game->player->position.x;
-    float spriteY = objectY - game->player->position.y;
-
-    // Transform sprite with the inverse camera matrix
+// Transform sprite with the inverse camera matrix
+void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY)
+{
     float invDet = 1.0f / (game->player->plane.x * game->player->direction.y - game->player->direction.x * game->player->plane.y);
-    float transformX = invDet * (game->player->direction.y * spriteX - game->player->direction.x * spriteY);
-    float transformY = invDet * (-game->player->plane.y * spriteX + game->player->plane.x * spriteY);
+    *transformX = invDet * (game->player->direction.y * spriteX - game->player->direction.x * spriteY);
+    *transformY = invDet * (-game->player->plane.y * spriteX + game->player->plane.x * spriteY);
+}
 
-    int spriteScreenX = (int)((game->screen_width / 2) * (1 + transformX / transformY));
+// Calculate sprite screen X position
+int calculate_sprite_screen_x(t_game *game, float transformX, float transformY)
+{
+    return (int)((game->screen_width / 2) * (1 + transformX / transformY));
+}
 
-    // Calculate sprite height on screen
-    int spriteHeight = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
-    int drawStartY = -spriteHeight / 2 + game->screen_height / 2;
-    if (drawStartY < 0) drawStartY = 0;
-    int drawEndY = spriteHeight / 2 + game->screen_height / 2;
-    if (drawEndY >= game->screen_height) drawEndY = game->screen_height - 1;
+void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY)
+{
+    *spriteHeight = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
+    
+    // Apply pitch offset
+    int pitchOffset = (int)(game->player->pitch * game->screen_height);
+    
+    *drawStartY = -(*spriteHeight) / 2 + game->screen_height / 2 + pitchOffset;
+    *drawStartY = (*drawStartY < 0) ? 0 : *drawStartY;
+    *drawEndY = (*spriteHeight) / 2 + game->screen_height / 2 + pitchOffset;
+    *drawEndY = (*drawEndY >= game->screen_height) ? game->screen_height - 1 : *drawEndY;
+}
 
-    // Calculate sprite width on screen
-    int spriteWidth = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
-    int drawStartX = -spriteWidth / 2 + spriteScreenX;
-    if (drawStartX < 0) drawStartX = 0;
-    int drawEndX = spriteWidth / 2 + spriteScreenX;
-    if (drawEndX >= game->screen_width) drawEndX = game->screen_width - 1;
+// Calculate sprite width on screen
+void calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, int *spriteWidth, int *drawStartX, int *drawEndX)
+{
+    *spriteWidth = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
+    *drawStartX = -(*spriteWidth) / 2 + spriteScreenX;
+    *drawStartX = (*drawStartX < 0) ? 0 : *drawStartX;
+    *drawEndX = (*spriteWidth) / 2 + spriteScreenX;
+    *drawEndX = (*drawEndX >= game->screen_width) ? game->screen_width - 1 : *drawEndX;
+}
 
-    // Loop through every vertical stripe of the sprite on screen
-    for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+// Check if sprite is in front of camera plane
+int is_sprite_in_front(float transformY, int stripe, int screen_width)
+{
+    return (transformY > 0 && stripe > 0 && stripe < screen_width);
+}
+
+// Find ray node for current stripe
+t_ray_node* find_ray_node(t_game *game, int stripe)
+{
+    t_ray_node *current = game->ray_list;
+    while (current && current->ray.x != stripe)
+        current = current->next;
+    return current;
+}
+
+// Draw sprite vertical stripe, now accounting for pitch
+void draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY)
+{
+    int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * obj_texture->width / spriteWidth) / 256;
+
+    t_ray_node *current = find_ray_node(game, stripe);
+
+    if (current && transformY < current->ray.perpWallDist)
     {
-        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * obj_texture->width / spriteWidth) / 256;
-
-        // Check if the sprite is in front of the camera plane
-        if (transformY > 0 && stripe > 0 && stripe < game->screen_width)
+        for (int y = drawStartY; y < drawEndY; y++)
         {
-            t_ray_node *current = game->ray_list;
-            while (current && current->ray.x != stripe)
-                current = current->next;
-
-            if (current && transformY < current->ray.perpWallDist)
-            {
-                for (int y = drawStartY; y < drawEndY; y++)
-                {
-                    int d = (y) * 256 - game->screen_height * 128 + spriteHeight * 128;
-                    int texY = ((d * obj_texture->height) / spriteHeight) / 256;
-                    int color = get_pixel_color(texX, texY, obj_texture->width, obj_texture->height, obj_texture->data, obj_texture->tex_bpp, obj_texture->tex_line_len);
-                    
-                    // Only draw the pixel if it's not transparent (assuming 0 is transparent)
-                    if (color != -1)
-                        img_pix_put(&game->img, stripe, y, color);
-                }
-            }
+            // Apply pitch to texture coordinate calculation
+            int pitchOffset = (int)(game->player->pitch * game->screen_height);
+            int d = (y - pitchOffset) * 256 - game->screen_height * 128 + spriteHeight * 128;
+            int texY = ((d * obj_texture->height) / spriteHeight) / 256;
+            
+            // Ensure texY is within bounds
+            texY = (texY < 0) ? 0 : (texY >= obj_texture->height) ? obj_texture->height - 1 : texY;
+            
+            int color = get_pixel_color(texX, texY, obj_texture->width, obj_texture->height, obj_texture->data, obj_texture->tex_bpp, obj_texture->tex_line_len);
+            
+            if (color != -1)
+                img_pix_put(&game->img, stripe, y, color);
         }
     }
 }
 
-// void render_objects(t_game *game, char *texture_path)
-// {
-//     // Load the object texture (same as before)
-//     void *obj_texture;
-//     int obj_width, obj_height;
-//     int bpp, line_len, endian;
-//     char *obj_data;
+void render_object(t_game *game, float objectX, float objectY)
+{
+    // Calculate the current texture index based on the frame counter
+    int textureIndex = (game->frame_counter / ANIMATION_SPEED) % NUM_TEXTURES;
+    t_texture *obj_texture = &game->obj_texture[textureIndex];
 
-//     obj_texture = mlx_xpm_file_to_image(game->mlx_ptr, texture_path, &obj_width, &obj_height);
-//     if (obj_texture == NULL)
-//     {
-//         fprintf(stderr, "Failed to load object texture\n");
-//         return;
-//     }
-//     obj_data = mlx_get_data_addr(obj_texture, &bpp, &line_len, &endian);
+    float spriteX, spriteY;
+    calculate_sprite_position(game, objectX, objectY, &spriteX, &spriteY);
 
-//     // Object world position
-//     float objectX = 20.5f;  // Center of tile (20,11)
-//     float objectY = 11.5f;
-//     float objectZ = 0.0f;   // Object is on the floor
+    float transformX, transformY;
+    transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
 
-//     // Calculate sprite position relative to camera
-//     float spriteX = objectX - game->player->position.x;
-//     float spriteY = objectY - game->player->position.y;
-//     float spriteZ = objectZ - game->player->height;
+    int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
 
-//     // Transform sprite with the inverse camera matrix
-//     float invDet = 1.0f / (game->player->plane.x * game->player->direction.y - game->player->direction.x * game->player->plane.y);
-//     float transformX = invDet * (game->player->direction.y * spriteX - game->player->direction.x * spriteY);
-//     float transformY = invDet * (-game->player->plane.y * spriteX + game->player->plane.x * spriteY);
+    int spriteHeight, drawStartY, drawEndY;
+    calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
 
-//     // Adjust for pitch
-//     float pitch_adjust = game->player->pitch * transformY;
-//     transformY -= spriteZ;
+    int spriteWidth, drawStartX, drawEndX;
+    calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
-//     int spriteScreenX = (int)((game->screen_width / 2) * (1 + transformX / transformY));
+    for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+    {
+        if (is_sprite_in_front(transformY, stripe, game->screen_width))
+        {
+            draw_sprite_stripe(game, obj_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+        }
+    }
+}
 
-//     // Calculate sprite height on screen
-//     int spriteHeight = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
-//     int drawStartY = -spriteHeight / 2 + game->screen_height / 2 + (int)(pitch_adjust * game->screen_height);
-//     if (drawStartY < 0) drawStartY = 0;
-//     int drawEndY = spriteHeight / 2 + game->screen_height / 2 + (int)(pitch_adjust * game->screen_height);
-//     if (drawEndY >= game->screen_height) drawEndY = game->screen_height - 1;
-
-//     // Calculate sprite width on screen
-//     int spriteWidth = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
-//     int drawStartX = -spriteWidth / 2 + spriteScreenX;
-//     if (drawStartX < 0) drawStartX = 0;
-//     int drawEndX = spriteWidth / 2 + spriteScreenX;
-//     if (drawEndX >= game->screen_width) drawEndX = game->screen_width - 1;
-
-//     // Loop through every vertical stripe of the sprite on screen
-//     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
-//     {
-//         int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * obj_width / spriteWidth) / 256;
-
-//         // Check if the sprite is in front of the camera plane
-//         if (transformY > 0 && stripe > 0 && stripe < game->screen_width)
-//         {
-//             t_ray_node *current = game->ray_list;
-//             while (current && current->ray.x != stripe)
-//                 current = current->next;
-
-//             if (current && transformY < current->ray.perpWallDist)
-//             {
-//                 for (int y = drawStartY; y < drawEndY; y++)
-//                 {
-//                     int d = (y - (int)(pitch_adjust * game->screen_height)) * 256 - game->screen_height * 128 + spriteHeight * 128;
-//                     int texY = ((d * obj_height) / spriteHeight) / 256;
-//                     int color = get_pixel_color(texX, texY, obj_width, obj_height, obj_data, bpp, line_len);
-                    
-//                     // Only draw the pixel if it's not transparent (assuming 0 is transparent)
-//                     if (color != -1)
-//                         img_pix_put(&game->img, stripe, y, color);
-//                 }
-//             }
-//         }
-//     }
-// }
+void render_objects(t_game *game)
+{
+    render_object(game, 20.5f, 11.5f);
+    
+    // Increment the frame counter
+    game->frame_counter++;
+}

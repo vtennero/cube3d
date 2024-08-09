@@ -12,31 +12,72 @@
 
 #include "cube3d.h"
 
-void load_obj_texture(t_game *game, const char *texture_path)
-{
-    printf("Loading object texture: %s\n", texture_path);
+// void load_obj_texture(t_game *game, const char *texture_path)
+// {
+//     printf("Loading object texture: %s\n", texture_path);
 
-    game->obj_texture[0].img = mlx_xpm_file_to_image(
+//     game->obj_texture[0].img = mlx_xpm_file_to_image(
+//         game->mlx_ptr,
+//         (char *)texture_path,
+//         &game->obj_texture[0].width,
+//         &game->obj_texture[0].height);
+
+//     if (!game->obj_texture[0].img)
+//     {
+//         fprintf(stderr, "Failed to load object texture: %s\n", texture_path);
+//         exit(EXIT_FAILURE);
+//     }
+
+//     game->obj_texture[0].data = mlx_get_data_addr(
+//         game->obj_texture[0].img,
+//         &game->obj_texture[0].tex_bpp,
+//         &game->obj_texture[0].tex_line_len,
+//         &game->obj_texture[0].tex_endian);
+
+//     printf("Loaded object texture: %s, bpp: %d, size: %dx%d\n",
+//            texture_path, game->obj_texture[0].tex_bpp,
+//            game->obj_texture[0].width, game->obj_texture[0].height);
+// }
+
+void load_single_texture(t_game *game, const char *texture_path, int index)
+{
+    printf("Loading object texture %d: %s\n", index, texture_path);
+
+    game->obj_texture[index].img = mlx_xpm_file_to_image(
         game->mlx_ptr,
         (char *)texture_path,
-        &game->obj_texture[0].width,
-        &game->obj_texture[0].height);
+        &game->obj_texture[index].width,
+        &game->obj_texture[index].height);
 
-    if (!game->obj_texture[0].img)
+    if (!game->obj_texture[index].img)
     {
-        fprintf(stderr, "Failed to load object texture: %s\n", texture_path);
+        fprintf(stderr, "Failed to load object texture %d: %s\n", index, texture_path);
         exit(EXIT_FAILURE);
     }
 
-    game->obj_texture[0].data = mlx_get_data_addr(
-        game->obj_texture[0].img,
-        &game->obj_texture[0].tex_bpp,
-        &game->obj_texture[0].tex_line_len,
-        &game->obj_texture[0].tex_endian);
+    game->obj_texture[index].data = mlx_get_data_addr(
+        game->obj_texture[index].img,
+        &game->obj_texture[index].tex_bpp,
+        &game->obj_texture[index].tex_line_len,
+        &game->obj_texture[index].tex_endian);
 
-    printf("Loaded object texture: %s, bpp: %d, size: %dx%d\n",
-           texture_path, game->obj_texture[0].tex_bpp,
-           game->obj_texture[0].width, game->obj_texture[0].height);
+    printf("Loaded object texture %d: %s, bpp: %d, size: %dx%d\n",
+           index, texture_path, game->obj_texture[index].tex_bpp,
+           game->obj_texture[index].width, game->obj_texture[index].height);
+}
+
+void load_obj_textures(t_game *game)
+{
+    char *texture_paths[] = {
+        "textures/enemies/stalker01.xpm",
+        "textures/enemies/stalker02.xpm",
+        "textures/enemies/stalker03.xpm",
+    };
+    
+    for (int i = 0; i < 3; i++)
+    {
+        load_single_texture(game, texture_paths[i], i);
+    }
 }
 
 void load_gun_textures(t_game *game, char *path_format, int num_frames)
@@ -174,7 +215,8 @@ void preload_textures(t_game *game)
            game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
 
     load_floor_textures(game);
-    load_obj_texture(game, "textures/collectibles/collectible01.xpm");
+    load_obj_textures(game);
+    // load_obj_texture(game, "textures/collectibles/collectible01.xpm");
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
 
     scale_gun_textures(game);

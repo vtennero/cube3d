@@ -1,7 +1,7 @@
 # Compiler and flags
-# CC = gcc -g
+CC = gcc -g
 # without debugger:
-CC = gcc
+# CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 AUDIOFLAGS = -lopenal -lmpg123
 

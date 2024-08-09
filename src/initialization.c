@@ -20,6 +20,7 @@ int	create_game_struct(t_game **game)
 	(*game)->screen_height = DEFAULT_S_HEIGHT;
 	(*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->ray_list = NULL;
+	(*game)->frame_counter = 0;
 	return (0);
 }
 

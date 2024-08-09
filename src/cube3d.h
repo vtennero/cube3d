@@ -189,7 +189,7 @@ typedef struct s_game
 	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture			floortextures[8];
 	t_texture			skytexture[1];
-	t_texture			obj_texture[1];
+	t_texture			obj_texture[3];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -202,6 +202,7 @@ typedef struct s_game
 	t_texture			*gun_textures;
 	int					num_gun_frames;
 	int					current_gun_frame;
+	unsigned int		frame_counter;
 	t_ray_node			*ray_list;
 }						t_game;
 
