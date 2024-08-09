@@ -3,6 +3,7 @@
 		"cube3d.h": "c",
 		"cstdlib": "c",
 		"cmath": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"mpg123.h": "c"
 	}
 }

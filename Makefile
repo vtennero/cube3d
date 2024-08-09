@@ -3,6 +3,7 @@
 # without debugger:
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+AUDIOFLAGS = -lopenal -lmpg123
 
 # Directories
 SRC_DIR = src
@@ -26,6 +27,7 @@ render_floor.c \
 render_walls.c \
 render_sky.c \
 render_gun.c \
+render_objects.c \
 raycasting.c \
 raycasting_utils.c \
 movement.c \
@@ -42,7 +44,7 @@ OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(MAIN:.c=.o)
 BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(BONUS_MAIN:.c=.o)
 
 # Include paths
-INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include
+INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR)  -I/usr/include
 
 # MLX Flags
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11 -lm
@@ -68,7 +70,7 @@ $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS)
 
 bonus:
 	$(MAKE) MAIN=$(BONUS_MAIN) NAME=$(BONUS_NAME) all

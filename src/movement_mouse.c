@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/08 18:49:31 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/09 16:00:56 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int handle_mouse_move(int x, int y, t_game *game)
     int dy = y - last_y;
     
     // Adjust these values to control the rotation and pitch speed
-    float rotation_speed = 0.005;
+    float rotation_speed = 0.01;
     float pitch_speed = 0.001;
 
     // Calculate the rotation angle based on mouse movement
@@ -59,9 +59,9 @@ int handle_mouse_move(int x, int y, t_game *game)
         game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
         game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
-        printf("Mouse moved horizontally. New direction: x = %f, y = %f\n", game->player->direction.x, game->player->direction.y);
-        const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-        printf("Facing direction: %s\n", direction);
+        // printf("Mouse moved horizontally. New direction: x = %f, y = %f\n", game->player->direction.x, game->player->direction.y);
+        // const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+        // printf("Facing direction: %s\n", direction);
     }
 
     // Adjust pitch based on vertical mouse movement
@@ -74,7 +74,7 @@ int handle_mouse_move(int x, int y, t_game *game)
         if (game->player->pitch > 1.0) game->player->pitch = 1.0;
         if (game->player->pitch < -1.0) game->player->pitch = -1.0;
 
-        printf("Mouse moved vertically. New pitch: %f\n", game->player->pitch);
+        // printf("Mouse moved vertically. New pitch: %f\n", game->player->pitch);
     }
 
     last_x = x;

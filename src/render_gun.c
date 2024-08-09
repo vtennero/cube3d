@@ -63,9 +63,7 @@ void render_gun(t_game *game)
             int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
 
             if ((unsigned int)color != 0xFF000000) // Skip transparent pixels (assuming black is transparent)
-            {
                 img_pix_put(&game->img, start_x + x, start_y + y, color);
-            }
         }
     }
 }
