@@ -12,6 +12,33 @@
 
 #include "cube3d.h"
 
+void load_obj_texture(t_game *game, const char *texture_path)
+{
+    printf("Loading object texture: %s\n", texture_path);
+
+    game->obj_texture[0].img = mlx_xpm_file_to_image(
+        game->mlx_ptr,
+        (char *)texture_path,
+        &game->obj_texture[0].width,
+        &game->obj_texture[0].height);
+
+    if (!game->obj_texture[0].img)
+    {
+        fprintf(stderr, "Failed to load object texture: %s\n", texture_path);
+        exit(EXIT_FAILURE);
+    }
+
+    game->obj_texture[0].data = mlx_get_data_addr(
+        game->obj_texture[0].img,
+        &game->obj_texture[0].tex_bpp,
+        &game->obj_texture[0].tex_line_len,
+        &game->obj_texture[0].tex_endian);
+
+    printf("Loaded object texture: %s, bpp: %d, size: %dx%d\n",
+           texture_path, game->obj_texture[0].tex_bpp,
+           game->obj_texture[0].width, game->obj_texture[0].height);
+}
+
 void load_gun_textures(t_game *game, char *path_format, int num_frames)
 {
     game->gun_textures = malloc(sizeof(t_texture) * num_frames);
@@ -32,22 +59,22 @@ void load_gun_textures(t_game *game, char *path_format, int num_frames)
     }
 }
 
-void load_floor_texture(t_game *game, int index, char *path)
-{
-    game->floortextures[index].img = mlx_xpm_file_to_image(
-        game->mlx_ptr,
-        path,
-        &game->floortextures[index].width,
-        &game->floortextures[index].height);
-    game->floortextures[index].data = mlx_get_data_addr(
-        game->floortextures[index].img,
-        &game->floortextures[index].tex_bpp,
-        &game->floortextures[index].tex_line_len,
-        &game->floortextures[index].tex_endian);
-    printf("Loaded floor texture %d, bpp: %d, size: %dx%d\n",
-           index, game->floortextures[index].tex_bpp,
-           game->floortextures[index].width, game->floortextures[index].height);
-}
+// void load_floor_texture(t_game *game, int index, char *path)
+// {
+//     game->floortextures[index].img = mlx_xpm_file_to_image(
+//         game->mlx_ptr,
+//         path,
+//         &game->floortextures[index].width,
+//         &game->floortextures[index].height);
+//     game->floortextures[index].data = mlx_get_data_addr(
+//         game->floortextures[index].img,
+//         &game->floortextures[index].tex_bpp,
+//         &game->floortextures[index].tex_line_len,
+//         &game->floortextures[index].tex_endian);
+//     printf("Loaded floor texture %d, bpp: %d, size: %dx%d\n",
+//            index, game->floortextures[index].tex_bpp,
+//            game->floortextures[index].width, game->floortextures[index].height);
+// }
 
 void load_floor_textures(t_game *game)
 {
@@ -146,9 +173,8 @@ void preload_textures(t_game *game)
     printf("Loaded sky texture, bpp: %d, size: %dx%d\n",
            game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
 
-    // Load floor textures
     load_floor_textures(game);
-    // load_gun_texture(game, "textures/gun/frame01.xpm");
+    load_obj_texture(game, "textures/collectibles/collectible01.xpm");
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
 
     scale_gun_textures(game);

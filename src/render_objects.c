@@ -32,21 +32,10 @@ int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
 
 //  this works
 
-void render_objects(t_game *game, char *texture_path)
+void render_objects(t_game *game)
 {
-    // Load the object texture
-    void *obj_texture;
-    int obj_width, obj_height;
-    int bpp, line_len, endian;
-    char *obj_data;
-
-    obj_texture = mlx_xpm_file_to_image(game->mlx_ptr, texture_path, &obj_width, &obj_height);
-    if (obj_texture == NULL)
-    {
-        fprintf(stderr, "Failed to load object texture\n");
-        return;
-    }
-    obj_data = mlx_get_data_addr(obj_texture, &bpp, &line_len, &endian);
+    // Use the preloaded object texture
+    t_texture *obj_texture = &game->obj_texture[0];
 
     // Object world position
     float objectX = 20.5f;  // Center of tile (20,11)
@@ -80,7 +69,7 @@ void render_objects(t_game *game, char *texture_path)
     // Loop through every vertical stripe of the sprite on screen
     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
     {
-        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * obj_width / spriteWidth) / 256;
+        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * obj_texture->width / spriteWidth) / 256;
 
         // Check if the sprite is in front of the camera plane
         if (transformY > 0 && stripe > 0 && stripe < game->screen_width)
@@ -94,8 +83,8 @@ void render_objects(t_game *game, char *texture_path)
                 for (int y = drawStartY; y < drawEndY; y++)
                 {
                     int d = (y) * 256 - game->screen_height * 128 + spriteHeight * 128;
-                    int texY = ((d * obj_height) / spriteHeight) / 256;
-                    int color = get_pixel_color(texX, texY, obj_width, obj_height, obj_data, bpp, line_len);
+                    int texY = ((d * obj_texture->height) / spriteHeight) / 256;
+                    int color = get_pixel_color(texX, texY, obj_texture->width, obj_texture->height, obj_texture->data, obj_texture->tex_bpp, obj_texture->tex_line_len);
                     
                     // Only draw the pixel if it's not transparent (assuming 0 is transparent)
                     if (color != -1)

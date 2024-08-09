@@ -106,6 +106,11 @@ typedef enum e_direction
 	WEST
 }						t_direction;
 
+typedef enum e_object
+{
+	SAMPLE,
+}						t_object;
+
 typedef struct s_player
 {
 	t_vector2d			position;
@@ -184,6 +189,7 @@ typedef struct s_game
 	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture			floortextures[8];
 	t_texture			skytexture[1];
+	t_texture			obj_texture[1];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -371,6 +377,6 @@ int						handle_mouse_move(int x, int y, t_game *game);
 const char				*get_cardinal_direction(float x, float y);
 
 
-void render_objects(t_game *game, char *texture_path);
+void render_objects(t_game *game);
 
 #endif

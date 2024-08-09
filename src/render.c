@@ -55,7 +55,7 @@ int render(t_game *game)
     render_sky(game, "textures/sky06.xpm");
     render_floor(game);
     render_ray_list(game);
-    render_objects(game, "textures/collectibles/collectible01.xpm");
+    render_objects(game);
     render_gun(game);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
