@@ -52,10 +52,16 @@ int render(t_game *game)
     // pitch
     handle_movement_up(game);
     handle_movement_down(game);
+
+    // interactions
+    handle_key_e(game);
+
+    // rendering
     render_sky(game, "textures/sky06.xpm");
     render_floor(game);
     render_ray_list(game);
-    render_objects(game);
+    render_collectibles(game);
+    render_enemies(game);
     render_gun(game);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 

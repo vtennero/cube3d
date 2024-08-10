@@ -30,6 +30,9 @@
 # define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
 # define MAX_FLOOR_TEXTURES 8
 # define TEXTURE_SIZE 245
+#define NUM_ENEMY_TEXTURES 13
+#define MAX_COLLECTIBLES 20
+#define MAX_ENEMIES 5
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -97,6 +100,28 @@ typedef struct s_texture
 	int					tex_line_len;
 	int					tex_endian;
 }						t_texture;
+
+
+
+typedef struct s_extract
+{
+    t_vector2d position;
+    int is_activated;
+    int is_complete;
+} t_extract;
+
+typedef struct s_collectible
+{
+    t_vector2d position;
+    int collected;  // 0 for not collected, 1 for collected
+} t_collectible;
+
+typedef struct s_enemy
+{
+    t_vector2d position;
+    int frame_count;  // for animation purposes
+    int is_alive;     // 0 for dead, 1 for alive
+} t_enemy;
 
 typedef enum e_direction
 {
@@ -189,7 +214,8 @@ typedef struct s_game
 	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture			floortextures[8];
 	t_texture			skytexture[1];
-	t_texture			obj_texture[3];
+	t_texture			enemy_textures[14];
+	t_texture			coll_texture[1];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -204,6 +230,11 @@ typedef struct s_game
 	int					current_gun_frame;
 	unsigned int		frame_counter;
 	t_ray_node			*ray_list;
+	t_extract			extract;
+	t_collectible       collectibles[MAX_COLLECTIBLES];
+    int                 num_collectibles;  // Current number of active collectibles
+    t_enemy             enemies[MAX_ENEMIES];
+    int                 num_enemies;  // Current number of active enemies
 }						t_game;
 
 
@@ -379,5 +410,13 @@ const char				*get_cardinal_direction(float x, float y);
 
 
 void render_objects(t_game *game);
+void render_collectibles(t_game *game);
+int	create_collectibles(t_game *game);
+void handle_key_e(t_game *game);
+int playAudioFile(const char* filename);
+int playAudioFiles(const char** filenames, int count);
+void render_enemies(t_game *game);
+int create_enemies(t_game *game);
+void stopAudio();
 
 #endif

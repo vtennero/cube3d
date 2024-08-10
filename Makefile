@@ -22,12 +22,14 @@ BONUS_MAIN = main_bonus.c
 # Shared source files
 SHARED_SRCS = debug_utils.c \
 initialization.c \
+audio.c \
 render.c \
 render_floor.c \
 render_walls.c \
 render_sky.c \
 render_gun.c \
-render_objects.c \
+render_collectibles.c \
+render_enemies.c \
 raycasting.c \
 raycasting_utils.c \
 movement.c \
@@ -35,7 +37,8 @@ movement_mouse.c \
 textures.c \
 movement_player_reloc.c \
 randomizer.c \
-tmp_staticmap.c
+tmp_staticmap.c \
+keymap_collectibles.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

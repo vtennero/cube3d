@@ -12,73 +12,96 @@
 
 #include "cube3d.h"
 
-// void load_obj_texture(t_game *game, const char *texture_path)
-// {
-//     printf("Loading object texture: %s\n", texture_path);
-
-//     game->obj_texture[0].img = mlx_xpm_file_to_image(
-//         game->mlx_ptr,
-//         (char *)texture_path,
-//         &game->obj_texture[0].width,
-//         &game->obj_texture[0].height);
-
-//     if (!game->obj_texture[0].img)
-//     {
-//         fprintf(stderr, "Failed to load object texture: %s\n", texture_path);
-//         exit(EXIT_FAILURE);
-//     }
-
-//     game->obj_texture[0].data = mlx_get_data_addr(
-//         game->obj_texture[0].img,
-//         &game->obj_texture[0].tex_bpp,
-//         &game->obj_texture[0].tex_line_len,
-//         &game->obj_texture[0].tex_endian);
-
-//     printf("Loaded object texture: %s, bpp: %d, size: %dx%d\n",
-//            texture_path, game->obj_texture[0].tex_bpp,
-//            game->obj_texture[0].width, game->obj_texture[0].height);
-// }
-
-void load_single_texture(t_game *game, const char *texture_path, int index)
+void load_enemy_textures(t_game *game, const char *path_format, int num_textures)
 {
-    printf("Loading object texture %d: %s\n", index, texture_path);
+    if (num_textures > NUM_ENEMY_TEXTURES) {
+        fprintf(stderr, "Error: Trying to load more textures than allocated space.\n");
+        exit(1);
+    }
 
-    game->obj_texture[index].img = mlx_xpm_file_to_image(
+    for (int i = 0; i < num_textures; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i + 1);  // This is correct, as it will generate 001 to 013
+
+        game->enemy_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->enemy_textures[i].width, &game->enemy_textures[i].height);
+        if (game->enemy_textures[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load enemy texture: %s\n", path);
+            exit(1);
+        }
+        game->enemy_textures[i].data = mlx_get_data_addr(game->enemy_textures[i].img, &game->enemy_textures[i].tex_bpp, &game->enemy_textures[i].tex_line_len, &game->enemy_textures[i].tex_endian);
+        printf("Loaded enemy texture %03d\n", i + 1);  // Changed to print the actual file number
+    }
+}
+
+void load_collectible_texture(t_game *game, const char *texture_path)
+{
+    printf("Loading collectible texture: %s\n", texture_path);
+
+    game->coll_texture[0].img = mlx_xpm_file_to_image(
         game->mlx_ptr,
         (char *)texture_path,
-        &game->obj_texture[index].width,
-        &game->obj_texture[index].height);
+        &game->coll_texture[0].width,
+        &game->coll_texture[0].height);
 
-    if (!game->obj_texture[index].img)
+    if (!game->coll_texture[0].img)
     {
-        fprintf(stderr, "Failed to load object texture %d: %s\n", index, texture_path);
+        fprintf(stderr, "Failed to load collectible texture: %s\n", texture_path);
         exit(EXIT_FAILURE);
     }
 
-    game->obj_texture[index].data = mlx_get_data_addr(
-        game->obj_texture[index].img,
-        &game->obj_texture[index].tex_bpp,
-        &game->obj_texture[index].tex_line_len,
-        &game->obj_texture[index].tex_endian);
+    game->coll_texture[0].data = mlx_get_data_addr(
+        game->coll_texture[0].img,
+        &game->coll_texture[0].tex_bpp,
+        &game->coll_texture[0].tex_line_len,
+        &game->coll_texture[0].tex_endian);
 
-    printf("Loaded object texture %d: %s, bpp: %d, size: %dx%d\n",
-           index, texture_path, game->obj_texture[index].tex_bpp,
-           game->obj_texture[index].width, game->obj_texture[index].height);
+    printf("Loaded object texture: %s, bpp: %d, size: %dx%d\n",
+           texture_path, game->coll_texture[0].tex_bpp,
+           game->coll_texture[0].width, game->coll_texture[0].height);
 }
 
-void load_obj_textures(t_game *game)
-{
-    char *texture_paths[] = {
-        "textures/enemies/stalker01.xpm",
-        "textures/enemies/stalker02.xpm",
-        "textures/enemies/stalker03.xpm",
-    };
+// void load_single_texture(t_game *game, const char *texture_path, int index)
+// {
+//     printf("Loading object texture %d: %s\n", index, texture_path);
+
+//     game->obj_texture[index].img = mlx_xpm_file_to_image(
+//         game->mlx_ptr,
+//         (char *)texture_path,
+//         &game->obj_texture[index].width,
+//         &game->obj_texture[index].height);
+
+//     if (!game->obj_texture[index].img)
+//     {
+//         fprintf(stderr, "Failed to load object texture %d: %s\n", index, texture_path);
+//         exit(EXIT_FAILURE);
+//     }
+
+//     game->obj_texture[index].data = mlx_get_data_addr(
+//         game->obj_texture[index].img,
+//         &game->obj_texture[index].tex_bpp,
+//         &game->obj_texture[index].tex_line_len,
+//         &game->obj_texture[index].tex_endian);
+
+//     printf("Loaded object texture %d: %s, bpp: %d, size: %dx%d\n",
+//            index, texture_path, game->obj_texture[index].tex_bpp,
+//            game->obj_texture[index].width, game->obj_texture[index].height);
+// }
+
+// void load_obj_textures(t_game *game)
+// {
+//     char *texture_paths[] = {
+//         "textures/enemies/stalker01.xpm",
+//         "textures/enemies/stalker02.xpm",
+//         "textures/enemies/stalker03.xpm",
+//     };
     
-    for (int i = 0; i < 3; i++)
-    {
-        load_single_texture(game, texture_paths[i], i);
-    }
-}
+//     for (int i = 0; i < 3; i++)
+//     {
+//         load_single_texture(game, texture_paths[i], i);
+//     }
+// }
 
 void load_gun_textures(t_game *game, char *path_format, int num_frames)
 {
@@ -215,9 +238,11 @@ void preload_textures(t_game *game)
            game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
 
     load_floor_textures(game);
-    load_obj_textures(game);
+    load_collectible_texture(game, "textures/collectibles/collectible01.xpm");
+    // load_obj_textures(game);
     // load_obj_texture(game, "textures/collectibles/collectible01.xpm");
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
+    load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
 
     scale_gun_textures(game);
 
