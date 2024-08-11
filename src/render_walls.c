@@ -55,6 +55,7 @@ void	render_ray_list(t_game *game)
 	{
 		t_texture *used_texture = &game->walltextures[current->ray.wall_face];
 		render_ray(&game->img, current->ray, used_texture, game);
+		// (void)used_texture;
 		current = current->next;
 		i++;
 	}

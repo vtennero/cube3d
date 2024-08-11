@@ -42,6 +42,8 @@ int render(t_game *game)
     if (game->win_ptr == NULL)
         return (1);
 
+    relocate_enemies(game);
+    handle_key_esc(game);
     handle_movement_left(game);
     handle_movement_right(game);
     handle_movement_forward(game);
@@ -65,8 +67,9 @@ int render(t_game *game)
     render_gun(game);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
+    clean_rays(game);
 // we should free here
-	game->ray_list = NULL;
+	// game->ray_list = NULL;
 
     return (0);
 }
@@ -101,12 +104,12 @@ int setup_game_mlx(t_game *game)
 
     // Add this line to handle mouse movement
     mlx_hook(game->win_ptr, 6, 1L << 6, handle_mouse_move, game);
+    // mlx_hook(game->win_ptr, 17, 0, handle_cross_key, game);
+
     mlx_loop(game->mlx_ptr);
 
     /* we will exit the loop if there's no window left, and execute this code */
-    // mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
-    // mlx_destroy_display(game->mlx_ptr);
-    // free(game->mlx_ptr);
+
 
     return (0);
 }

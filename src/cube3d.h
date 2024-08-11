@@ -28,11 +28,16 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
-# define MAX_FLOOR_TEXTURES 8
 # define TEXTURE_SIZE 245
 #define NUM_ENEMY_TEXTURES 13
 #define MAX_COLLECTIBLES 20
 #define MAX_ENEMIES 5
+
+#define MAX_WALL_TEXTURES 4
+#define MAX_FLOOR_TEXTURES 8
+#define MAX_ENEMY_TEXTURES 14
+#define MAX_COLLECTIBLE_TEXTURES 1
+#define MAX_SKY_TEXTURES 1
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -84,11 +89,7 @@ typedef enum e_tiletype
 	// Add more as needed
 }						t_tiletype;
 
-// typedef struct s_ray {
-//     t_vector2d dir;
-//     float distance;
-//     t_walltype hitwalltype;
-// } t_ray;
+
 
 typedef struct s_texture
 {
@@ -119,9 +120,13 @@ typedef struct s_collectible
 typedef struct s_enemy
 {
     t_vector2d position;
-    int frame_count;  // for animation purposes
-    int is_alive;     // 0 for dead, 1 for alive
+    int frame_count;     // for animation timing
+    int current_frame;   // current animation frame (0-13)
+    int momentum;        // for frame transition (-3 to +3)
+    int animation_steps; // count of animation steps for periodic jumps
+    int is_alive;        // 0 for dead, 1 for alive
 } t_enemy;
+
 
 typedef enum e_direction
 {
@@ -144,11 +149,6 @@ typedef struct s_player
 	float				pitch;
 	float				height;
 }						t_player;
-
-// typedef struct s_map {
-//     int width, height;
-//     unsigned char** tiles; // Using unsigned char to match our enum
-// } t_map;
 
 typedef struct s_map
 {
@@ -193,29 +193,26 @@ typedef struct s_ray
 	double wallX; // Exact horizontal position on the wall where the ray hits
 }						t_ray;
 
-typedef struct t_ray_node
+typedef struct s_ray_node
 {
 	t_ray				ray;
-	struct t_ray_node	*next;
+	struct s_ray_node	*next;
 }						t_ray_node;
+
+
 
 
 typedef struct s_game
 {
 	void				*mlx_ptr;
 	void				*win_ptr;
-	void				*img_ptr;
-	char				*img_data;
-	int					bits_per_pixel;
-	int					size_line;
-	int					endian;
 	t_player			*player;
 	t_map				*map;
-	t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
-	t_texture			floortextures[8];
-	t_texture			skytexture[1];
-	t_texture			enemy_textures[14];
-	t_texture			coll_texture[1];
+	t_texture 			walltextures[MAX_WALL_TEXTURES]; // Textures for NORTH, EAST, SOUTH, WEST
+	t_texture			floortextures[MAX_FLOOR_TEXTURES];
+	t_texture			skytexture[MAX_SKY_TEXTURES];
+	t_texture			enemy_textures[MAX_ENEMY_TEXTURES];
+	t_texture			coll_texture[MAX_COLLECTIBLE_TEXTURES];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -228,7 +225,6 @@ typedef struct s_game
 	t_texture			*gun_textures;
 	int					num_gun_frames;
 	int					current_gun_frame;
-	unsigned int		frame_counter;
 	t_ray_node			*ray_list;
 	t_extract			extract;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
@@ -270,7 +266,8 @@ typedef enum
 	K_LEFT = 65361,
 	K_RIGHT = 65363,
 	K_UP = 65362,
-	K_DOWN = 65364
+	K_DOWN = 65364,
+	K_ESC = 65307
 }						KeyCodes;
 
 typedef void			(*t_key_func)(t_game *);
@@ -418,5 +415,10 @@ int playAudioFiles(const char** filenames, int count);
 void render_enemies(t_game *game);
 int create_enemies(t_game *game);
 void stopAudio();
-
+void relocate_enemies(t_game *game);
+unsigned long long xorshift64(unsigned long long *state);
+void handle_key_esc(t_game *game);
+void handle_cross_key(t_game *game);
+void	cleanup(t_game *game);
+void	clean_rays(t_game *game);
 #endif

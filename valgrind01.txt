@@ -1,0 +1,117 @@
+==55412== 
+==55412== HEAP SUMMARY:
+==55412==     in use at exit: 1,945,693 bytes in 779 blocks
+==55412==   total heap usage: 14,340 allocs, 13,561 frees, 13,497,788 bytes allocated
+==55412== 
+==55412== 224 (88 direct, 136 indirect) bytes in 1 blocks are definitely lost in loss record 41 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115E1F: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 224 (88 direct, 136 indirect) bytes in 1 blocks are definitely lost in loss record 42 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11551F: load_collectible_texture (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115EFC: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 224 (88 direct, 136 indirect) bytes in 1 blocks are definitely lost in loss record 43 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11105E: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 672 (408 direct, 264 indirect) bytes in 3 blocks are definitely lost in loss record 50 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x48690C3: XShmCreateImage (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
+==55412==    by 0x119676: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115315: load_enemy_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115F32: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 896 (352 direct, 544 indirect) bytes in 4 blocks are definitely lost in loss record 51 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115C31: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 1,792 (704 direct, 1,088 indirect) bytes in 8 blocks are definitely lost in loss record 58 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115980: load_floor_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115EE6: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 2,240 (880 direct, 1,360 indirect) bytes in 10 blocks are definitely lost in loss record 61 of 72
+==55412==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11964B: mlx_int_new_xshm_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x119972: mlx_new_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A257: mlx_int_parse_xpm (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x11A684: mlx_xpm_file_to_image (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115315: load_enemy_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115F32: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 2,496 (192 direct, 2,304 indirect) bytes in 1 blocks are definitely lost in loss record 64 of 72
+==55412==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11159C: initialize_floor_texture_map (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111045: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 3,264 (576 direct, 2,688 indirect) bytes in 1 blocks are definitely lost in loss record 65 of 72
+==55412==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x115635: load_gun_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x115F17: preload_textures (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x111021: setup_game_mlx (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C70: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== 1,843,200 bytes in 576 blocks are definitely lost in loss record 72 of 72
+==55412==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==55412==    by 0x11730B: create_static_map (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x110637: create_map (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117C34: initgame (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412==    by 0x117CA6: main (in /mnt/c/Users/Victor/Documents/_Dev/42/cube3d/cube3d)
+==55412== 
+==55412== LEAK SUMMARY:
+==55412==    definitely lost: 1,846,576 bytes in 606 blocks
+==55412==    indirectly lost: 8,656 bytes in 76 blocks
+==55412==      possibly lost: 0 bytes in 0 blocks
+==55412==    still reachable: 90,461 bytes in 97 blocks
+==55412==         suppressed: 0 bytes in 0 blocks
+==55412== Reachable blocks (those to which a pointer was found) are not shown.
+==55412== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==55412== 
+==55412== For lists of detected and suppressed errors, rerun with: -s
+==55412== ERROR SUMMARY: 10 errors from 10 contexts (suppressed: 1 from 1)

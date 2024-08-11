@@ -1,7 +1,7 @@
 # Compiler and flags
-CC = gcc -g
+# CC = gcc -g
 # without debugger:
-# CC = gcc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 AUDIOFLAGS = -lopenal -lmpg123
 
@@ -34,11 +34,14 @@ raycasting.c \
 raycasting_utils.c \
 movement.c \
 movement_mouse.c \
+movement_enemies.c \
 textures.c \
 movement_player_reloc.c \
 randomizer.c \
 tmp_staticmap.c \
-keymap_collectibles.c
+keymap_collectibles.c \
+terminate01.c \
+terminate02.c \
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

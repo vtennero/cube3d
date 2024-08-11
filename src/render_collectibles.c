@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:44:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/10 15:04:10 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/11 17:41:54 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,9 @@ void render_collectible(t_game *game, t_vector2d position)
     int spriteWidth, drawStartX, drawEndX;
     calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
-    printf("Rendering collectible at (%.2f, %.2f)\n", position.x, position.y);
-    printf("Sprite screen X: %d, Width: %d, Height: %d\n", spriteScreenX, spriteWidth, spriteHeight);
-    printf("Draw X: %d to %d, Y: %d to %d\n", drawStartX, drawEndX, drawStartY, drawEndY);
+    // printf("Rendering collectible at (%.2f, %.2f)\n", position.x, position.y);
+    // printf("Sprite screen X: %d, Width: %d, Height: %d\n", spriteScreenX, spriteWidth, spriteHeight);
+    // printf("Draw X: %d to %d, Y: %d to %d\n", drawStartX, drawEndX, drawStartY, drawEndY);
 
     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
     {
@@ -149,17 +149,17 @@ void render_collectible(t_game *game, t_vector2d position)
 
 void render_collectibles(t_game *game)
 {
-    printf("Rendering collectibles. Total: %d\n", game->num_collectibles);
+    // printf("Rendering collectibles. Total: %d\n", game->num_collectibles);
     for (int i = 0; i < game->num_collectibles; i++)
     {
         if (!game->collectibles[i].collected)
         {
-            printf("Rendering collectible %d at (%.2f, %.2f)\n", i, game->collectibles[i].position.x, game->collectibles[i].position.y);
+            // printf("Rendering collectible %d at (%.2f, %.2f)\n", i, game->collectibles[i].position.x, game->collectibles[i].position.y);
             render_collectible(game, game->collectibles[i].position);
         }
         else
         {
-            printf("Collectible %d is already collected\n", i);
+            // printf("Collectible %d is already collected\n", i);
         }
     }
 }

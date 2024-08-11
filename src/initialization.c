@@ -21,7 +21,7 @@ int	create_game_struct(t_game **game)
 	(*game)->screen_height = DEFAULT_S_HEIGHT;
 	(*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->ray_list = NULL;
-	(*game)->frame_counter = 0;
+	// (*game)->frame_counter = 0;
 	printf("initialized gamestruct\n");
 	return (0);
 }
@@ -80,22 +80,46 @@ int	create_collectibles(t_game *game)
 	return (0);
 }
 
+int randomize_enemy_positions(t_game *game)
+{
+    printf("Randomizing enemy positions\n");
+    int i, x, y;
+    
+    for (i = 0; i < game->num_enemies; i++)
+    {
+        do {
+            x = random_int(game, game->map->width);
+            y = random_int(game, game->map->height);
+        } while (game->map->data[y][x] == 1); // Keep trying until we find a non-wall position
+        
+        game->enemies[i].position.x = (float)x + 0.5f; // Center in the tile
+        game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile
+    }
+    
+    printf("Enemy positions randomized\n");
+    return (0);
+}
+
 int create_enemies(t_game *game)
 {
 	printf("initializing enemies\n");
     int i;
-    float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
+    // float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
 
     game->num_enemies = MAX_ENEMIES;
 
     for (i = 0; i < MAX_ENEMIES; i++)
     {
-        game->enemies[i].position.x = 19.0f;
-        game->enemies[i].position.y = y_positions[i];
+        // game->enemies[i].position.x = 19.0f;
+        // game->enemies[i].position.y = y_positions[i];
         game->enemies[i].is_alive = 1;
         game->enemies[i].frame_count = 0;
+        game->enemies[i].current_frame = 0;
+        game->enemies[i].momentum = 0;
+        game->enemies[i].animation_steps = 0;
     }
 	printf("initialized enemies\n");
-
+	randomize_enemy_positions(game);
+	printf("randomized enemies\n");
     return (0);
 }

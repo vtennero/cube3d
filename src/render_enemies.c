@@ -6,13 +6,16 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:44:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/10 18:02:17 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/11 12:13:25 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-#define ENEMY_SIZE 1.5  // Size of the collectible in world units
+#define ENEMY_SIZE 1.3  // Size of the collectible in world units
+#define NUM_ENEMY_FRAMES 14  // 0-13 included
+#define ANIMATION_STEP_INTERVAL 5  // Change frame every 5 game ticks
+#define JUMP_INTERVAL 75  // Consider a jump every 75 animation steps
 
 // Helper function to get pixel color from texture
 int e_get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len)
@@ -116,12 +119,69 @@ void e_draw_sprite_stripe(t_game *game, t_texture *enemy_texture, int stripe, in
     }
 }
 
-void render_enemy(t_game *game, t_vector2d position)
+int get_next_frame(t_enemy *enemy)
 {
-    t_texture *enemy_texture = &game->enemy_textures[0];
+    enemy->frame_count++;
+    
+    // Only consider changing frame every ANIMATION_STEP_INTERVAL
+    if (enemy->frame_count % ANIMATION_STEP_INTERVAL != 0)
+        return enemy->current_frame;
+
+    // Periodic jump logic
+    enemy->animation_steps++;
+    if (enemy->animation_steps >= JUMP_INTERVAL && (rand() % 100) < 10)
+    {
+        int jump = (rand() % 6) + 5;  // Jump 5-10 frames
+        if (rand() % 2 == 0) jump = -jump;  // 50% chance to jump backwards
+        enemy->current_frame = (enemy->current_frame + jump + NUM_ENEMY_FRAMES) % NUM_ENEMY_FRAMES;
+        enemy->momentum = 0;
+        enemy->animation_steps = 0;
+        return enemy->current_frame;
+    }
+
+    // Normal frame transition logic
+    int roll = rand() % 100;
+    if (roll < 70)
+    {
+        // 70% chance to stay on the current frame
+        if (enemy->momentum > 0) enemy->momentum--;
+        else if (enemy->momentum < 0) enemy->momentum++;
+        return enemy->current_frame;
+    }
+
+    // 30% chance to move based on momentum
+    int direction = (enemy->momentum > 0) ? 1 : (enemy->momentum < 0) ? -1 : (rand() % 2 == 0) ? 1 : -1;
+    int momentum_strength = abs(enemy->momentum);
+    
+    int move_chance;
+    if (momentum_strength >= 2) move_chance = 80;
+    else if (momentum_strength == 1) move_chance = 65;
+    else move_chance = 50;
+
+    if ((rand() % 100) < move_chance)
+    {
+        enemy->current_frame = (enemy->current_frame + direction + NUM_ENEMY_FRAMES) % NUM_ENEMY_FRAMES;
+        enemy->momentum += direction;
+        enemy->momentum = (enemy->momentum > 3) ? 3 : (enemy->momentum < -3) ? -3 : enemy->momentum;
+    }
+    else
+    {
+        enemy->current_frame = (enemy->current_frame - direction + NUM_ENEMY_FRAMES) % NUM_ENEMY_FRAMES;
+        enemy->momentum -= direction;
+        enemy->momentum = (enemy->momentum > 3) ? 3 : (enemy->momentum < -3) ? -3 : enemy->momentum;
+    }
+
+    return enemy->current_frame;
+}
+
+void render_enemy(t_game *game, t_enemy *enemy)
+{
+    int current_frame = get_next_frame(enemy);
+    // printf("current_frame %d\n", current_frame);
+    t_texture *enemy_texture = &game->enemy_textures[current_frame];
 
     float spriteX, spriteY;
-    e_calculate_sprite_position(game, position.x, position.y, &spriteX, &spriteY);
+    e_calculate_sprite_position(game, enemy->position.x, enemy->position.y, &spriteX, &spriteY);
 
     float transformX, transformY;
     e_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
@@ -134,10 +194,6 @@ void render_enemy(t_game *game, t_vector2d position)
     int spriteWidth, drawStartX, drawEndX;
     e_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
-    // printf("Rendering enemy at (%.2f, %.2f)\n", position.x, position.y);
-    // printf("Sprite screen X: %d, Width: %d, Height: %d\n", spriteScreenX, spriteWidth, spriteHeight);
-    // printf("Draw X: %d to %d, Y: %d to %d\n", drawStartX, drawEndX, drawStartY, drawEndY);
-
     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
     {
         if (e_is_sprite_in_front(transformY, stripe, game->screen_width))
@@ -149,17 +205,11 @@ void render_enemy(t_game *game, t_vector2d position)
 
 void render_enemies(t_game *game)
 {
-    // printf("Rendering enemies. Total: %d\n", game->num_enemies);
     for (int i = 0; i < game->num_enemies; i++)
     {
         if (game->enemies[i].is_alive)
         {
-            // printf("Rendering enemy %d at (%.2f, %.2f)\n", i, game->enemies[i].position.x, game->enemies[i].position.y);
-            render_enemy(game, game->enemies[i].position);
-        }
-        else
-        {
-            printf("Enemy %d is already dead\n", i);
+            render_enemy(game, &game->enemies[i]);
         }
     }
 }

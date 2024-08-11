@@ -32,13 +32,12 @@ int main()
     game = NULL;
 
 
-    const char* filename = "audio/001.mp3";
-    int result = playAudioFile(filename);
+    // const char* filename = "audio/001.mp3";
+    // int result = playAudioFile(filename);
     // stopAudio();
-
-    if (result != 0) {
-        printf("Error playing audio file.\n");
-    }
+    // if (result != 0) {
+    //     printf("Error playing audio file.\n");
+    // }
 
 
     // if (map_is_valid)
