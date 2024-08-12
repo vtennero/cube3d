@@ -21,7 +21,11 @@ int	create_game_struct(t_game **game)
 	(*game)->screen_height = DEFAULT_S_HEIGHT;
 	(*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->ray_list = NULL;
-	// (*game)->frame_counter = 0;
+	(*game)->game_sequence = 0;
+	(*game)->current_frame = 0;
+	(*game)->loop_count = 0;
+	printf("screen_height: %d\n", (*game)->screen_height);
+    printf("screen_width: %d\n", (*game)->screen_width);
 	printf("initialized gamestruct\n");
 	return (0);
 }
@@ -77,6 +81,16 @@ int	create_collectibles(t_game *game)
 	game->collectibles[0].position.y = 11.5f;
 	game->collectibles[0].collected = 0;
 	printf("initialized collectibles\n");
+	return (0);
+}
+
+int	create_extraction(t_game *game)
+{
+	printf("initializing extrction\n");
+	game->extract[0].position.x = 19.5f;
+	game->extract[0].position.y = 11.5f;
+	game->extract[0].is_activated = 0;
+	printf("initialized extraction\n");
 	return (0);
 }
 

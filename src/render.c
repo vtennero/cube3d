@@ -39,8 +39,30 @@ void img_pix_put(t_img *img, int x, int y, int color)
 
 int render(t_game *game)
 {
+    // comment this (for testing purposes)
+    // game->game_sequence = 3;
+    // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
+    if (game->game_sequence == 0)
+    {
+        handle_key_enter(game);
+        render_menu(game);
+        mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+    }
+    else if (game->game_sequence == 1)
+    {
+        render_opening(game);
+        mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+    }
+    else if (game->game_sequence == 2)
+    {
+        render_land(game);
+        mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+    }
+    else if (game->game_sequence == 3)
+    {
+
 
     relocate_enemies(game);
     handle_key_esc(game);
@@ -63,14 +85,20 @@ int render(t_game *game)
     render_floor(game);
     render_ray_list(game);
     render_collectibles(game);
+    render_extract(game);
     render_enemies(game);
     render_gun(game);
+
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
     clean_rays(game);
 // we should free here
 	// game->ray_list = NULL;
-
+    }
+    else
+    {
+        printf("game_sequence error %d\n", game->game_sequence);
+    }
     return (0);
 }
 
@@ -83,7 +111,7 @@ int setup_game_mlx(t_game *game)
     game->mlx_ptr = mlx_init();
     if (game->mlx_ptr == NULL)
         return (0);
-    game->win_ptr = mlx_new_window(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT, "my window");
+    game->win_ptr = mlx_new_window(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT, "Helldivers 3D");
     if (game->win_ptr == NULL)
     {
         free(game->win_ptr);
@@ -108,7 +136,6 @@ int setup_game_mlx(t_game *game)
 
     mlx_loop(game->mlx_ptr);
 
-    /* we will exit the loop if there's no window left, and execute this code */
 
 
     return (0);

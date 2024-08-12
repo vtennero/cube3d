@@ -6,13 +6,13 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:44:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/11 17:41:54 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/12 18:48:21 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-#define COLLECTIBLE_SIZE 1.5  // Size of the collectible in world units
+#define COLLECTIBLE_SIZE 1  // Size of the collectible in world units
 
 // Helper function to get pixel color from texture
 int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len)

@@ -42,6 +42,11 @@ tmp_staticmap.c \
 keymap_collectibles.c \
 terminate01.c \
 terminate02.c \
+menu_bonus.c \
+opening_bonus.c \
+land_bonus.c \
+time.c \
+extract_bonus.c \
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

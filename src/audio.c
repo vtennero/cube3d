@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:17:52 by toto              #+#    #+#             */
-/*   Updated: 2024/08/10 18:04:00 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/12 18:13:03 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+
+#define MAX_SOURCES 10
 
 ALCdevice *device = NULL;
 ALCcontext *context = NULL;
-ALuint source = 0;
-ALuint buffer = 0;
+ALuint sources[MAX_SOURCES];
+int sourceCount = 0;
+struct timeval lastPlayTime[MAX_SOURCES];
 
-int playAudioFile(const char* filename)
+// Initialization function
+int initializeAudio() {
+    device = alcOpenDevice(NULL);
+    if (!device) {
+        fprintf(stderr, "Unable to open default device\n");
+        return -1;
+    }
+
+    context = alcCreateContext(device, NULL);
+    alcMakeContextCurrent(context);
+
+    // Generate multiple sources
+    alGenSources(MAX_SOURCES, sources);
+    sourceCount = MAX_SOURCES;
+
+    // Initialize lastPlayTime for each source
+    for (int i = 0; i < MAX_SOURCES; i++) {
+        gettimeofday(&lastPlayTime[i], NULL);
+    }
+
+    // Initialize libmpg123
+    mpg123_init();
+
+    return 0;
+}
+
+// Cleanup function
+void cleanupAudio() {
+    if (sourceCount > 0) {
+        for (int i = 0; i < sourceCount; i++) {
+            alSourceStop(sources[i]);
+            alDeleteSources(1, &sources[i]);
+        }
+    }
+    if (context) {
+        alcMakeContextCurrent(NULL);
+        alcDestroyContext(context);
+    }
+    if (device) {
+        alcCloseDevice(device);
+    }
+    device = NULL;
+    context = NULL;
+    sourceCount = 0;
+
+    mpg123_exit();
+}
+
+// Function to find an available source
+int findAvailableSource() {
+    ALint state;
+    for (int i = 0; i < sourceCount; i++) {
+        alGetSourcei(sources[i], AL_SOURCE_STATE, &state);
+        if (state != AL_PLAYING) {
+            return i;
+        }
+    }
+    return -1;  // No available source
+}
+
+// Function to play audio with optional delay
+int playAudioFileWithDelay(const char* filename, float delayInSeconds)
 {
+    int sourceIndex = findAvailableSource();
+    if (sourceIndex == -1) {
+        fprintf(stderr, "No available sources to play audio\n");
+        return -1;
+    }
+
+    struct timeval currentTime;
+    gettimeofday(&currentTime, NULL);
+
+    // Check if enough time has passed since the last play
+    double timeSinceLastPlay = (currentTime.tv_sec - lastPlayTime[sourceIndex].tv_sec) + 
+                               (currentTime.tv_usec - lastPlayTime[sourceIndex].tv_usec) / 1000000.0;
+
+    if (timeSinceLastPlay < delayInSeconds) {
+        // If not enough time has passed, schedule the sound to play later
+        delayInSeconds -= timeSinceLastPlay;
+    } else {
+        delayInSeconds = 0;  // Play immediately
+    }
+
+    printf("Playing audio %s on source %d with delay %.2f seconds\n", filename, sourceIndex, delayInSeconds);
+
     // libmpg123 variables
     mpg123_handle *mh;
     unsigned char *buffer_data;
@@ -34,23 +121,6 @@ int playAudioFile(const char* filename)
     int channels, encoding;
     long rate;
 
-    // Initialize OpenAL (if not already initialized)
-    if (!device) {
-        device = alcOpenDevice(NULL);
-        if (!device) {
-            fprintf(stderr, "Unable to open default device\n");
-            return -1;
-        }
-
-        context = alcCreateContext(device, NULL);
-        alcMakeContextCurrent(context);
-
-        alGenSources(1, &source);
-        alGenBuffers(1, &buffer);
-    }
-
-    // Initialize libmpg123
-    mpg123_init();
     mh = mpg123_new(NULL, NULL);
     mpg123_open(mh, filename);
     mpg123_getformat(mh, &rate, &channels, &encoding);
@@ -69,40 +139,31 @@ int playAudioFile(const char* filename)
         totalSize += done;
     }
 
+    // Generate a new buffer
+    ALuint buffer;
+    alGenBuffers(1, &buffer);
+
     // Load audio data into AL buffer
     ALenum format = (channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
     alBufferData(buffer, format, totalBuffer, totalSize, rate);
 
     // Set source buffer and play
-    alSourcei(source, AL_BUFFER, buffer);
-    alSourcePlay(source);
+    alSourcei(sources[sourceIndex], AL_BUFFER, buffer);
+    
+    if (delayInSeconds > 0) {
+        alSourcef(sources[sourceIndex], AL_SEC_OFFSET, -delayInSeconds);
+    }
+    
+    alSourcePlay(sources[sourceIndex]);
+
+    // Update last play time
+    gettimeofday(&lastPlayTime[sourceIndex], NULL);
 
     // Clean up
     free(totalBuffer);
     free(buffer_data);
     mpg123_close(mh);
     mpg123_delete(mh);
-    mpg123_exit();
 
     return 0;
-}
-
-void stopAudio()
-{
-    if (source) {
-        alSourceStop(source);
-        alDeleteSources(1, &source);
-        alDeleteBuffers(1, &buffer);
-    }
-    if (context) {
-        alcMakeContextCurrent(NULL);
-        alcDestroyContext(context);
-    }
-    if (device) {
-        alcCloseDevice(device);
-    }
-    device = NULL;
-    context = NULL;
-    source = 0;
-    buffer = 0;
 }

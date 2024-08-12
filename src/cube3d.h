@@ -22,6 +22,7 @@
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 # define DEFAULT_S_WIDTH 800
 # define DEFAULT_S_HEIGHT 600
@@ -38,6 +39,10 @@
 #define MAX_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLE_TEXTURES 1
 #define MAX_SKY_TEXTURES 1
+# define MAX_OPENING_TEXTURES 141
+# define MAX_LAND_TEXTURES 46
+#define FRAMES_PER_SECOND 20
+#define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -213,6 +218,7 @@ typedef struct s_game
 	t_texture			skytexture[MAX_SKY_TEXTURES];
 	t_texture			enemy_textures[MAX_ENEMY_TEXTURES];
 	t_texture			coll_texture[MAX_COLLECTIBLE_TEXTURES];
+	t_texture			menu_texture[1];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -226,11 +232,18 @@ typedef struct s_game
 	int					num_gun_frames;
 	int					current_gun_frame;
 	t_ray_node			*ray_list;
-	t_extract			extract;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
     int                 num_collectibles;  // Current number of active collectibles
     t_enemy             enemies[MAX_ENEMIES];
     int                 num_enemies;  // Current number of active enemies
+	int					game_sequence;
+	int					current_frame;
+	t_texture			land_texture[MAX_LAND_TEXTURES];
+	t_extract			extract[1];
+	t_texture			extract_texture[1];
+	t_texture			opening_texture[MAX_OPENING_TEXTURES];
+	struct timeval		opening_start_time;
+	int					loop_count;
 }						t_game;
 
 
@@ -267,7 +280,8 @@ typedef enum
 	K_RIGHT = 65363,
 	K_UP = 65362,
 	K_DOWN = 65364,
-	K_ESC = 65307
+	K_ESC = 65307,
+	K_ENTER = 65293
 }						KeyCodes;
 
 typedef void			(*t_key_func)(t_game *);
@@ -421,4 +435,40 @@ void handle_key_esc(t_game *game);
 void handle_cross_key(t_game *game);
 void	cleanup(t_game *game);
 void	clean_rays(t_game *game);
+
+
+// menu
+void render_menu(t_game *game);
+void handle_key_enter(t_game *game);
+
+// opening
+void render_opening(t_game *game);
+// int should_increment_frame(struct timeval *start_time);
+int get_current_frame(struct timeval *start_time);
+void    reset_game_start_time(t_game *game);
+long get_elapsed_microseconds(struct timeval *start, struct timeval *end);
+
+void render_land(t_game *game);
+
+// audio
+int initializeAudio();
+void cleanupAudio();
+int playAudioFileWithDelay(const char* filename, float delayInSeconds);
+
+// extract
+int	create_extraction(t_game *game);
+void render_extract(t_game *game);
+
+
+// collectibles
+void draw_sprite_stripe(t_game *game, t_texture *collectible_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY);
+t_ray_node* find_ray_node(t_game *game, int stripe);
+int is_sprite_in_front(float transformY, int stripe, int screen_width);
+void calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, int *spriteWidth, int *drawStartX, int *drawEndX);
+void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY);
+int calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
+void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
+void calculate_sprite_position(t_game *game, float collectibleX, float collectibleY, float *spriteX, float *spriteY);
+int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:17:52 by toto              #+#    #+#             */
-/*   Updated: 2024/08/10 15:23:08 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/12 17:48:11 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,54 @@ ALCcontext *context = NULL;
 ALuint source = 0;
 ALuint buffer = 0;
 
-int playAudioFile(const char* filename)
+// Initialization function
+int initializeAudio()
 {
+    device = alcOpenDevice(NULL);
+    if (!device) {
+        fprintf(stderr, "Unable to open default device\n");
+        return -1;
+    }
+
+    context = alcCreateContext(device, NULL);
+    alcMakeContextCurrent(context);
+
+    alGenSources(1, &source);
+    alGenBuffers(1, &buffer);
+
+    // Initialize libmpg123
+    mpg123_init();
+
+    return 0;
+}
+
+// Cleanup function
+void cleanupAudio()
+{
+    if (source) {
+        alSourceStop(source);
+        alDeleteSources(1, &source);
+        alDeleteBuffers(1, &buffer);
+    }
+    if (context) {
+        alcMakeContextCurrent(NULL);
+        alcDestroyContext(context);
+    }
+    if (device) {
+        alcCloseDevice(device);
+    }
+    device = NULL;
+    context = NULL;
+    source = 0;
+    buffer = 0;
+
+    mpg123_exit();
+}
+
+// Function to play audio during the program
+int playAudioFile(const char* filename) {
+    printf("playing audio %s\n", filename);
+    
     // libmpg123 variables
     mpg123_handle *mh;
     unsigned char *buffer_data;
@@ -34,23 +80,6 @@ int playAudioFile(const char* filename)
     int channels, encoding;
     long rate;
 
-    // Initialize OpenAL (if not already initialized)
-    if (!device) {
-        device = alcOpenDevice(NULL);
-        if (!device) {
-            fprintf(stderr, "Unable to open default device\n");
-            return -1;
-        }
-
-        context = alcCreateContext(device, NULL);
-        alcMakeContextCurrent(context);
-
-        alGenSources(1, &source);
-        alGenBuffers(1, &buffer);
-    }
-
-    // Initialize libmpg123
-    mpg123_init();
     mh = mpg123_new(NULL, NULL);
     mpg123_open(mh, filename);
     mpg123_getformat(mh, &rate, &channels, &encoding);
@@ -82,26 +111,6 @@ int playAudioFile(const char* filename)
     free(buffer_data);
     mpg123_close(mh);
     mpg123_delete(mh);
-    mpg123_exit();
 
     return 0;
-}
-
-void stopAudio() {
-    if (source) {
-        alSourceStop(source);
-        alDeleteSources(1, &source);
-        alDeleteBuffers(1, &buffer);
-    }
-    if (context) {
-        alcMakeContextCurrent(NULL);
-        alcDestroyContext(context);
-    }
-    if (device) {
-        alcCloseDevice(device);
-    }
-    device = NULL;
-    context = NULL;
-    source = 0;
-    buffer = 0;
 }

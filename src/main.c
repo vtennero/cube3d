@@ -19,8 +19,10 @@ int initgame(t_game **game)
     create_map(*game);
     create_player(*game);
     create_collectibles(*game);
+    create_extraction(*game);
     create_enemies(*game);
     setup_game_mlx(*game);
+
 
     return (1);
 }
@@ -31,13 +33,9 @@ int main()
 
     game = NULL;
 
+    initializeAudio();
 
-    // const char* filename = "audio/001.mp3";
-    // int result = playAudioFile(filename);
-    // stopAudio();
-    // if (result != 0) {
-    //     printf("Error playing audio file.\n");
-    // }
+    playAudioFileWithDelay("audio/menu.mp3", 2);
 
 
     // if (map_is_valid)

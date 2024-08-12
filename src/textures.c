@@ -35,6 +35,54 @@ void load_enemy_textures(t_game *game, const char *path_format, int num_textures
     }
 }
 
+void load_opening_textures(t_game *game, const char *path_format, int num_textures)
+{
+    if (num_textures > MAX_OPENING_TEXTURES) {
+        fprintf(stderr, "Error: Trying to load more textures than allocated space.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < num_textures; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i);  // This is correct, as it will generate 001 to 013
+
+        game->opening_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->opening_texture[i].width, &game->opening_texture[i].height);
+        if (game->opening_texture[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load opening texture: %s\n", path);
+            exit(1);
+        }
+        game->opening_texture[i].data = mlx_get_data_addr(game->opening_texture[i].img, &game->opening_texture[i].tex_bpp, &game->opening_texture[i].tex_line_len, &game->enemy_textures[i].tex_endian);
+    }
+    printf("Loaded opening textures\n");  // Changed to print the actual file number
+
+}
+
+void load_land_textures(t_game *game, const char *path_format, int num_textures)
+{
+    if (num_textures > MAX_LAND_TEXTURES) {
+        fprintf(stderr, "Error: Trying to load more textures than allocated space.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < num_textures; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i);  // This is correct, as it will generate 001 to 013
+
+        game->land_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->land_texture[i].width, &game->land_texture[i].height);
+        if (game->land_texture[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load opening texture: %s\n", path);
+            exit(1);
+        }
+        game->land_texture[i].data = mlx_get_data_addr(game->land_texture[i].img, &game->land_texture[i].tex_bpp, &game->land_texture[i].tex_line_len, &game->enemy_textures[i].tex_endian);
+    }
+    printf("Loaded opening textures\n");  // Changed to print the actual file number
+
+}
+
 void load_collectible_texture(t_game *game, const char *texture_path)
 {
     printf("Loading collectible texture: %s\n", texture_path);
@@ -178,6 +226,28 @@ void load_floor_textures(t_game *game)
     }
 }
 
+int load_extract_texture(t_game *game, char *path)
+{
+    t_texture *texture = &game->extract_texture[0];
+    texture->path = path;
+    texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
+    if (!texture->img)
+        return (0);
+    texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    return (1);
+}
+
+int load_menu_texture(t_game *game, char *path)
+{
+    t_texture *texture = &game->menu_texture[0];
+    texture->path = path;
+    texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
+    if (!texture->img)
+        return (0);
+    texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    return (1);
+}
+
 void preload_textures(t_game *game)
 {
     char *wall_texture_paths[] = {
@@ -243,6 +313,10 @@ void preload_textures(t_game *game)
     // load_obj_texture(game, "textures/collectibles/collectible01.xpm");
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
     load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
+    load_menu_texture(game, "textures/menu/menu.xpm");
+    load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
+    load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
+    load_extract_texture(game, "textures/extract/extract.xpm");
 
     scale_gun_textures(game);
 

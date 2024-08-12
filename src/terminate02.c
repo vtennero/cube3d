@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:00:21 by toto              #+#    #+#             */
-/*   Updated: 2024/08/11 19:34:05 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/12 17:48:32 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	cleanup(t_game *game)
 	clean_map(game);
 	// clean_floor();
 	clean_rays(game);
+    cleanupAudio();
 	free(game);
 
 
