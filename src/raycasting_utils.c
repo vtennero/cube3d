@@ -45,72 +45,235 @@ void calc_side_dist(t_game *game, t_ray_node *ray)
 	ray->ray.deltaDistX = (ray->ray.rayDirX == 0) ? 1e30 : fabs(1 / ray->ray.rayDirX);
 	ray->ray.deltaDistY = (ray->ray.rayDirY == 0) ? 1e30 : fabs(1 / ray->ray.rayDirY);
 
-	if (ray->ray.rayDirX < 0)
-	{
-		ray->ray.stepX = -1;
-		ray->ray.sideDistX = (game->player->position.x - ray->ray.mapX) * ray->ray.deltaDistX;
-	}
-	else
-	{
-		ray->ray.stepX = 1;
-		ray->ray.sideDistX = (ray->ray.mapX + 1.0 - game->player->position.x) * ray->ray.deltaDistX;
-	}
-	if (ray->ray.rayDirY < 0)
-	{
-		ray->ray.stepY = -1;
-		ray->ray.sideDistY = (game->player->position.y - ray->ray.mapY) * ray->ray.deltaDistY;
-	}
-	else
-	{
-		ray->ray.stepY = 1;
-		ray->ray.sideDistY = (ray->ray.mapY + 1.0 - game->player->position.y) * ray->ray.deltaDistY;
-	}
+       if (ray->ray.rayDirX < 0)
+       {
+           ray->ray.stepX = -1;
+           ray->ray.sideDistX = (game->player->position.x - ray->ray.mapX) * ray->ray.deltaDistX;
+       }
+       else
+       {
+           ray->ray.stepX = 1;
+           ray->ray.sideDistX = (ray->ray.mapX + 1.0 - game->player->position.x) * ray->ray.deltaDistX;
+       }
+       if (ray->ray.rayDirY < 0)
+       {
+           ray->ray.stepY = -1;
+           ray->ray.sideDistY = (game->player->position.y - ray->ray.mapY) * ray->ray.deltaDistY;
+       }
+       else
+       {
+           ray->ray.stepY = 1;
+           ray->ray.sideDistY = (ray->ray.mapY + 1.0 - game->player->position.y) * ray->ray.deltaDistY;
+       }
 }
 
+// void calc_delta_dist(t_game *game, t_ray_node *ray)
+// {
+// 	(void)game;
+// 	if (ray->ray.rayDirX == 0)
+// 		ray->ray.deltaDistX = 1e30;
+// 	else
+// 		ray->ray.deltaDistX = fabs(1 / ray->ray.rayDirX);
+// 	if (ray->ray.rayDirY == 0)
+// 		ray->ray.deltaDistY = 1e30;
+// 	else
+// 		ray->ray.deltaDistY = fabs(1 / ray->ray.rayDirY);
+// }
+
+
 void calc_delta_dist(t_game *game, t_ray_node *ray)
-{
-	(void)game;
-	if (ray->ray.rayDirX == 0)
-		ray->ray.deltaDistX = 1e30;
-	else
-		ray->ray.deltaDistX = fabs(1 / ray->ray.rayDirX);
-	if (ray->ray.rayDirY == 0)
-		ray->ray.deltaDistY = 1e30;
-	else
-		ray->ray.deltaDistY = fabs(1 / ray->ray.rayDirY);
-}
+   {
+       (void)game;
+       ray->ray.deltaDistX = (ray->ray.rayDirX == 0) ? 1e30 : fabs(1 / ray->ray.rayDirX);
+       ray->ray.deltaDistY = (ray->ray.rayDirY == 0) ? 1e30 : fabs(1 / ray->ray.rayDirY);
+       
+    //    printf("Ray %d: deltaDistX=%.4f, deltaDistY=%.4f\n",               ray->ray.x, ray->ray.deltaDistX, ray->ray.deltaDistY);
+   }
+
+#define EPSILON 1e-6
+
 
 void perform_dda(t_game *game, t_ray_node *ray)
 {
-	int hit;
+    int hit = 0;
+    int step_count = 0;
 
-	hit = 0;
-	while (hit == 0)
-	{
-		// jump to next map square, either in x-direction, or in y-direction
-		if (ray->ray.sideDistX < ray->ray.sideDistY)
-		{
-			ray->ray.sideDistX += ray->ray.deltaDistX;
-			ray->ray.mapX += ray->ray.stepX;
-			ray->ray.side = 0;
-		}
-		else
-		{
-			ray->ray.sideDistY += ray->ray.deltaDistY;
-			ray->ray.mapY += ray->ray.stepY;
-			ray->ray.side = 1;
-		}
-		// Check if ray has hit a wall
-		if (game->map->data[ray->ray.mapX][ray->ray.mapY] > 0)
-		{
-			hit = 1;
-			if (ray->ray.side == 0) // EW wall
-				ray->ray.wall_face = (ray->ray.stepX > 0) ? EAST : WEST;
-			else // NS wall
-				ray->ray.wall_face = (ray->ray.stepY > 0) ? SOUTH : NORTH;
-		}
-	}
+    // printf("Ray %d: Initial mapX=%d, mapY=%d\n", ray->ray.x, ray->ray.mapX, ray->ray.mapY);
+    // printf("Ray %d: rayDirX=%.4f, rayDirY=%.4f\n", ray->ray.x, ray->ray.rayDirX, ray->ray.rayDirY);
+    // printf("Ray %d: sideDistX=%.4f, sideDistY=%.4f\n", ray->ray.x, ray->ray.sideDistX, ray->ray.sideDistY);
+
+    while (hit == 0)
+    {
+        // Boundary check
+        if (ray->ray.mapX < 0 || ray->ray.mapX >= game->map->width ||
+            ray->ray.mapY < 0 || ray->ray.mapY >= game->map->height)
+        {
+            hit = 1;
+            // printf("Ray %d: Out of bounds at mapX=%d, mapY=%d\n", 
+                //    ray->ray.x, ray->ray.mapX, ray->ray.mapY);
+            break;
+        }
+
+        // Epsilon check for precision issues
+        if (fabs(ray->ray.sideDistX - ray->ray.sideDistY) < EPSILON)
+        {
+            // Check both X and Y directions
+            int next_x = ray->ray.mapX + ray->ray.stepX;
+            int next_y = ray->ray.mapY + ray->ray.stepY;
+            
+            if (next_x >= 0 && next_x < game->map->width && 
+                next_y >= 0 && next_y < game->map->height)
+            {
+                if (game->map->data[next_x][ray->ray.mapY] == 1 &&
+                    game->map->data[ray->ray.mapX][next_y] == 1)
+                {
+                    // Both directions hit a wall, choose X arbitrarily
+                    ray->ray.sideDistX += ray->ray.deltaDistX;
+                    ray->ray.mapX += ray->ray.stepX;
+                    ray->ray.side = 0;
+                }
+                else if (game->map->data[next_x][ray->ray.mapY] == 1)
+                {
+                    // X direction hits a wall, move in Y
+                    ray->ray.sideDistY += ray->ray.deltaDistY;
+                    ray->ray.mapY += ray->ray.stepY;
+                    ray->ray.side = 1;
+                }
+                else
+                {
+                    // Move in X direction
+                    ray->ray.sideDistX += ray->ray.deltaDistX;
+                    ray->ray.mapX += ray->ray.stepX;
+                    ray->ray.side = 0;
+                }
+            }
+        }
+        else if (ray->ray.sideDistX < ray->ray.sideDistY)
+        {
+            ray->ray.sideDistX += ray->ray.deltaDistX;
+            ray->ray.mapX += ray->ray.stepX;
+            ray->ray.side = 0;
+        }
+        else
+        {
+            ray->ray.sideDistY += ray->ray.deltaDistY;
+            ray->ray.mapY += ray->ray.stepY;
+            ray->ray.side = 1;
+        }
+
+        // Wall hit check
+        if (game->map->data[ray->ray.mapX][ray->ray.mapY] == 1)
+        {
+            hit = 1;
+            // printf("Ray %d: Hit wall at mapX=%d, mapY=%d\n", 
+                //    ray->ray.x, ray->ray.mapX, ray->ray.mapY);
+            if (ray->ray.side == 0) // EW wall
+                ray->ray.wall_face = (ray->ray.stepX > 0) ? EAST : WEST;
+            else // NS wall
+                ray->ray.wall_face = (ray->ray.stepY > 0) ? SOUTH : NORTH;
+        }
+        else
+        {
+            // printf("Ray %d: Step %d - No hit, current mapX=%d, mapY=%d\n", 
+                //    ray->ray.x, step_count, ray->ray.mapX, ray->ray.mapY);
+        }
+
+        step_count++;
+        if (step_count > 100) // Safeguard against infinite loops
+        {
+            // printf("Ray %d: Exceeded 100 steps, breaking loop\n", ray->ray.x);
+            break;
+        }
+    }
 }
+
+// void perform_dda(t_game *game, t_ray_node *ray)
+// {
+//     int hit = 0;
+//     int step_count = 0;
+
+//     printf("Ray %d: Initial mapX=%d, mapY=%d\n", ray->ray.x, ray->ray.mapX, ray->ray.mapY);
+//     printf("Ray %d: rayDirX=%.4f, rayDirY=%.4f\n", ray->ray.x, ray->ray.rayDirX, ray->ray.rayDirY);
+//     printf("Ray %d: sideDistX=%.4f, sideDistY=%.4f\n", ray->ray.x, ray->ray.sideDistX, ray->ray.sideDistY);
+
+//     while (hit == 0)
+//     {
+//         // jump to next map square, either in x-direction, or in y-direction
+//         if (ray->ray.sideDistX < ray->ray.sideDistY)
+//         {
+//             ray->ray.sideDistX += ray->ray.deltaDistX;
+//             ray->ray.mapX += ray->ray.stepX;
+//             ray->ray.side = 0;
+//             printf("Ray %d: Step %d - Move in X, new mapX=%d\n", ray->ray.x, step_count, ray->ray.mapX);
+//         }
+//         else
+//         {
+//             ray->ray.sideDistY += ray->ray.deltaDistY;
+//             ray->ray.mapY += ray->ray.stepY;
+//             ray->ray.side = 1;
+//             printf("Ray %d: Step %d - Move in Y, new mapY=%d\n", ray->ray.x, step_count, ray->ray.mapY);
+//         }
+
+//         // Check if ray has hit a wall
+//         if (game->map->data[ray->ray.mapX][ray->ray.mapY] == 1)
+//         // if (game->map->data[ray->ray.mapX][ray->ray.mapY] > 0)
+//         {
+//             hit = 1;
+//             printf("Ray %d: Hit wall at mapX=%d, mapY=%d\n", ray->ray.x, ray->ray.mapX, ray->ray.mapY);
+//             if (ray->ray.side == 0) // EW wall
+//                 ray->ray.wall_face = (ray->ray.stepX > 0) ? EAST : WEST;
+//             else // NS wall
+//                 ray->ray.wall_face = (ray->ray.stepY > 0) ? SOUTH : NORTH;
+//             printf("Ray %d: Wall face: %s\n", ray->ray.x, 
+//                    (ray->ray.wall_face == NORTH) ? "NORTH" : 
+//                    (ray->ray.wall_face == SOUTH) ? "SOUTH" : 
+//                    (ray->ray.wall_face == EAST) ? "EAST" : "WEST");
+//         }
+//         else
+//         {
+//             printf("Ray %d: Step %d - No hit, current mapX=%d, mapY=%d\n", 
+//                    ray->ray.x, step_count, ray->ray.mapX, ray->ray.mapY);
+//         }
+
+//         step_count++;
+//         if (step_count > 100) // Safeguard against infinite loops
+//         {
+//             printf("Ray %d: Exceeded 100 steps, breaking loop\n", ray->ray.x);
+//             break;
+//         }
+//     }
+// }
+// void perform_dda(t_game *game, t_ray_node *ray)
+// {
+// 	int hit;
+
+// 	hit = 0;
+// 	while (hit == 0)
+// 	{
+// 		// jump to next map square, either in x-direction, or in y-direction
+// 		if (ray->ray.sideDistX < ray->ray.sideDistY)
+// 		{
+// 			ray->ray.sideDistX += ray->ray.deltaDistX;
+// 			ray->ray.mapX += ray->ray.stepX;
+// 			ray->ray.side = 0;
+// 		}
+// 		else
+// 		{
+// 			ray->ray.sideDistY += ray->ray.deltaDistY;
+// 			ray->ray.mapY += ray->ray.stepY;
+// 			ray->ray.side = 1;
+// 		}
+// 		// Check if ray has hit a wall
+// 		if (game->map->data[ray->ray.mapX][ray->ray.mapY] > 0)
+// 		{
+// 			hit = 1;
+// 			if (ray->ray.side == 0) // EW wall
+// 				ray->ray.wall_face = (ray->ray.stepX > 0) ? EAST : WEST;
+// 			else // NS wall
+// 				ray->ray.wall_face = (ray->ray.stepY > 0) ? SOUTH : NORTH;
+// 		}
+// 	}
+// }
 
 void calc_perp_wall_dist(t_game *game, t_ray_node *ray)
 {

@@ -470,5 +470,6 @@ int calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
 void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
 void calculate_sprite_position(t_game *game, float collectibleX, float collectibleY, float *spriteX, float *spriteY);
 int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
+void c_render_ray_list(t_game *game);
 
 #endif

@@ -86,71 +86,92 @@ void handle_key_right(t_game *game)
     printf("Facing direction: %s\n", direction);
 }
 
+static int detect_collision(t_game *game, float newX, float newY)
+{
+    float buffer = 0.8; // Buffer distance to prevent entering into a wall
+    int mapX = (int)(newX + game->player->direction.x * buffer);
+    int mapY = (int)(newY + game->player->direction.y * buffer);
+
+    // Check if within map bounds and not a wall tile
+    if (mapX >= 0 && mapX < game->map->width && 
+        mapY >= 0 && mapY < game->map->height && 
+        game->map->data[mapY][mapX] != TILE_WALL)
+    {
+        return 0; // No collision
+    }
+    return 1; // Collision detected
+}
+
+static void update_player_position(t_game *game, float newX, float newY)
+{
+    game->player->position.x = newX;
+    game->player->position.y = newY;
+    printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+}
+
+static void print_movement_direction(t_game *game)
+{
+    if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+        printf("You are moving north\n");
+    }
+}
+
 void handle_key_w(t_game *game)
 {
     printf("You just pressed W!\n");
 
     float speed = 0.1;  // Speed of movement, adjust as necessary
-    float buffer = 0.8; // Buffer distance to prevent entering into a wall
     float newX = game->player->position.x + game->player->direction.x * speed;
     float newY = game->player->position.y + game->player->direction.y * speed;
 
-    // Check collision using the buffer for more predictive collision detection
-    int mapX = (int)(newX + game->player->direction.x * buffer);
-    int mapY = (int)(newY + game->player->direction.y * buffer);
-
-    // Ensure within map bounds and not a wall tile
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    if (!detect_collision(game, newX, newY))
     {
-        game->player->position.x = newX;
-        game->player->position.y = newY;
-        printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+        update_player_position(game, newX, newY);
     }
     else
     {
         printf("Collision detected! Close to a wall.\n");
     }
+
     update_gun_frame(game);
     print_game_map(game);
+    print_movement_direction(game);
 }
 
-// // Add this helper function for wall collision detection
-// int is_wall(t_game *game, double x, double y)
-// {
-//     int mapX = (int)x;
-//     int mapY = (int)y;
 
-//     // Check map bounds
-//     if (mapX < 0 || mapX >= game->map->width || mapY < 0 || mapY >= game->map->height)
-//     {
-//         return 1; // Treat out of bounds as a wall
-//     }
-
-//     // Check if the tile is a wall
-//     return (game->map->data[mapY][mapX] == TILE_WALL);
-// }
 
 // void handle_key_w(t_game *game)
 // {
 //     printf("You just pressed W!\n");
 
-//     double speed = 0.1; // Reduced speed for smoother movement
-//     double newX = game->player->position.x + game->player->direction.x * speed;
-//     double newY = game->player->position.y + game->player->direction.y * speed;
+//     float speed = 0.1;  // Speed of movement, adjust as necessary
+//     float buffer = 0.8; // Buffer distance to prevent entering into a wall
+//     float newX = game->player->position.x + game->player->direction.x * speed;
+//     float newY = game->player->position.y + game->player->direction.y * speed;
 
-//     // Check collision for both X and Y separately
-//     if (!is_wall(game, newX, game->player->position.y))
+//     // Check collision using the buffer for more predictive collision detection
+//     int mapX = (int)(newX + game->player->direction.x * buffer);
+//     int mapY = (int)(newY + game->player->direction.y * buffer);
+
+//     // Ensure within map bounds and not a wall tile
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
 //     {
 //         game->player->position.x = newX;
-//     }
-//     if (!is_wall(game, game->player->position.x, newY))
-//     {
 //         game->player->position.y = newY;
+//         printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
 //     }
-
-//     printf("New player position: x = %.4f, y = %.4f\n", game->player->position.x, game->player->position.y);
+//     else
+//     {
+//         printf("Collision detected! Close to a wall.\n");
+//     }
+//     update_gun_frame(game);
 //     print_game_map(game);
+
+//     if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+//     printf("You are moving north\n");
 // }
+// }
+
 
 void handle_key_s(t_game *game)
 {
@@ -191,35 +212,7 @@ float calculate_dynamic_buffer(t_player *player, float base_speed)
     return dynamic_buffer;
 }
 
-// void handle_key_a(t_game *game)
-// {
-//     printf("You just pressed A!\n");
 
-//     float speed = 0.1;
-
-//     // Derive the perpendicular (left) direction vector manually
-//     // Assuming player->direction.x and player->direction.y represent the facing direction
-//     // Perpendicular vector to the left: (-dir.y, dir.x)
-//     float perpX = -game->player->direction.y;  // Opposite of y component
-//     float perpY = game->player->direction.x;   // Same as x component
-
-//     // Calculate the new position by moving left to the direction the player is facing
-//     float newX = game->player->position.x + perpX * speed;
-//     float newY = game->player->position.y + perpY * speed;
-//     int mapX = (int)(newX);
-//     int mapY = (int)(newY);
-
-//     // Check if the new position is within the map and not blocked by a wall
-//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
-//         game->player->position.x = newX;
-//         game->player->position.y = newY;
-//         printf("New player position.x = %f\n", game->player->position.x);
-//         printf("New player position.y = %f\n", game->player->position.y);
-//     } else {
-//         printf("Collision/Out of Map movement\n");
-//     }
-//     print_game_map(game);
-// }
 
 void handle_key_a(t_game *game)
 {
@@ -315,3 +308,72 @@ void handle_key_down(t_game *game)
         game->player->pitch -= 0.01;
     printf("New pitch %f\n", game->player->pitch);
 }
+
+
+// // Add this helper function for wall collision detection
+// int is_wall(t_game *game, double x, double y)
+// {
+//     int mapX = (int)x;
+//     int mapY = (int)y;
+
+//     // Check map bounds
+//     if (mapX < 0 || mapX >= game->map->width || mapY < 0 || mapY >= game->map->height)
+//     {
+//         return 1; // Treat out of bounds as a wall
+//     }
+
+//     // Check if the tile is a wall
+//     return (game->map->data[mapY][mapX] == TILE_WALL);
+// }
+
+// void handle_key_w(t_game *game)
+// {
+//     printf("You just pressed W!\n");
+
+//     double speed = 0.1; // Reduced speed for smoother movement
+//     double newX = game->player->position.x + game->player->direction.x * speed;
+//     double newY = game->player->position.y + game->player->direction.y * speed;
+
+//     // Check collision for both X and Y separately
+//     if (!is_wall(game, newX, game->player->position.y))
+//     {
+//         game->player->position.x = newX;
+//     }
+//     if (!is_wall(game, game->player->position.x, newY))
+//     {
+//         game->player->position.y = newY;
+//     }
+
+//     printf("New player position: x = %.4f, y = %.4f\n", game->player->position.x, game->player->position.y);
+//     print_game_map(game);
+// }
+
+// void handle_key_a(t_game *game)
+// {
+//     printf("You just pressed A!\n");
+
+//     float speed = 0.1;
+
+//     // Derive the perpendicular (left) direction vector manually
+//     // Assuming player->direction.x and player->direction.y represent the facing direction
+//     // Perpendicular vector to the left: (-dir.y, dir.x)
+//     float perpX = -game->player->direction.y;  // Opposite of y component
+//     float perpY = game->player->direction.x;   // Same as x component
+
+//     // Calculate the new position by moving left to the direction the player is facing
+//     float newX = game->player->position.x + perpX * speed;
+//     float newY = game->player->position.y + perpY * speed;
+//     int mapX = (int)(newX);
+//     int mapY = (int)(newY);
+
+//     // Check if the new position is within the map and not blocked by a wall
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL) {
+//         game->player->position.x = newX;
+//         game->player->position.y = newY;
+//         printf("New player position.x = %f\n", game->player->position.x);
+//         printf("New player position.y = %f\n", game->player->position.y);
+//     } else {
+//         printf("Collision/Out of Map movement\n");
+//     }
+//     print_game_map(game);
+// }

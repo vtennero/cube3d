@@ -37,10 +37,27 @@ void img_pix_put(t_img *img, int x, int y, int color)
     }
 }
 
+
+// debug
+
+void print_map_section(t_game *game, int center_x, int center_y, int radius) {
+       printf("Map section around player:\n");
+       for (int y = center_y - radius; y <= center_y + radius; y++) {
+           for (int x = center_x - radius; x <= center_x + radius; x++) {
+               if (x >= 0 && x < game->map->width && y >= 0 && y < game->map->height) {
+                   printf("%d ", game->map->data[x][y]);
+               } else {
+                   printf("# ");
+               }
+           }
+           printf("\n");
+       }
+   }
+
 int render(t_game *game)
 {
     // comment this (for testing purposes)
-    // game->game_sequence = 3;
+    game->game_sequence = 3;
     // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
@@ -83,12 +100,14 @@ int render(t_game *game)
     // rendering
     render_sky(game, "textures/sky06.xpm");
     render_floor(game);
+    // c_render_ray_list(game);
     render_ray_list(game);
     render_collectibles(game);
     render_extract(game);
     render_enemies(game);
     render_gun(game);
 
+    print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
     clean_rays(game);

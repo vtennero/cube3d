@@ -26,6 +26,7 @@ audio.c \
 render.c \
 render_floor.c \
 render_walls.c \
+render_walls_bonus.c \
 render_sky.c \
 render_gun.c \
 render_collectibles.c \
