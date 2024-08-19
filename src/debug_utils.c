@@ -41,7 +41,7 @@ void print_game_map(t_game *game)
     }
 
     t_map *map = game->map;
-    printf("Map dimensions: %dx%d\n", 24, 24);
+    printf("Map dimensions: %dx%d\n", game->map->width, game->map->height);
 
     // Get the player's position in integer coordinates using floor
     int playerX = floor(game->player->position.x);
@@ -49,10 +49,10 @@ void print_game_map(t_game *game)
 
     printf("Player position (floored): %d, %d\n", playerX, playerY);
 
-    // Iterate from the bottom to the top for y
-    for (int y = 24 - 1; y >= 0; y--)
+    // Iterate from top to bottom for y
+    for (int y = 0; y < game->map->height; y++)
     {
-        for (int x = 0; x < 24; x++)
+        for (int x = 0; x < game->map->width; x++)
         {
             if (y == playerY && x == playerX)
             {
@@ -66,6 +66,41 @@ void print_game_map(t_game *game)
         printf("\n");
     }
 }
+
+// void print_game_map(t_game *game)
+// {
+//     if (game == NULL || game->map == NULL)
+//     {
+//         printf("Game or game map is not initialized.\n");
+//         return;
+//     }
+
+//     t_map *map = game->map;
+//     printf("Map dimensions: %dx%d\n", game->map->width, game->map->height);
+
+//     // Get the player's position in integer coordinates using floor
+//     int playerX = floor(game->player->position.x);
+//     int playerY = floor(game->player->position.y);
+
+//     printf("Player position (floored): %d, %d\n", playerX, playerY);
+
+//     // Iterate from the bottom to the top for y
+//     for (int y = game->map->height - 1; y >= 0; y--)
+//     {
+//         for (int x = 0; x < game->map->width; x++)
+//         {
+//             if (y == playerY && x == playerX)
+//             {
+//                 printf("X ");
+//             }
+//             else
+//             {
+//                 printf("%d ", map->data[y][x]);
+//             }
+//         }
+//         printf("\n");
+//     }
+// }
 
 void debug_print_rays(t_ray_node *head)
 {

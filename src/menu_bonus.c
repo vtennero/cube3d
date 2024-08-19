@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:15:38 by toto              #+#    #+#             */
-/*   Updated: 2024/08/12 18:14:36 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/19 14:01:01 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void handle_key_enter(t_game *game)
         {
             reset_game_start_time(game);
             game->game_sequence = 1;
-            playAudioFileWithDelay("audio/drop02.mp3", 0);
+            // playAudioFileWithDelay("audio/drop02.mp3", 0);
             // playAudioFileWithDelay("audio/drop01.mp3", 3);
             // playAudioFileWithDelay("audio/drop03.mp3", 10);
             // playAudioFile("audio/drop.mp3");

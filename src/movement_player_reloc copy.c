@@ -12,27 +12,9 @@
 
 #include "cube3d.h"
 
-
-int detect_collision(t_game *game, float newX, float newY)
-{
-    float buffer = 0.8; // Buffer distance to prevent entering into a wall
-    int mapX = (int)(newX + game->player->direction.x * buffer);
-    int mapY = (int)(newY + game->player->direction.y * buffer);
-
-    // Check if within map bounds and not a wall tile
-    if (mapX >= 0 && mapX < game->map->width && 
-        mapY >= 0 && mapY < game->map->height && 
-        game->map->data[mapY][mapX] != TILE_WALL)
-    {
-        return 0; // No collision
-    }
-    return 1; // Collision detected
-}
-
-
 const char *get_cardinal_direction(float x, float y)
 {
-    float angle = atan2(-y, x); // Negate y to flip the direction
+    float angle = atan2(y, x); // Get angle in radians from x-axis
     if (angle < 0)
     {
         angle += 2 * M_PI; // Normalize angle to be between 0 and 2*pi
@@ -43,56 +25,19 @@ const char *get_cardinal_direction(float x, float y)
     if (angle < pi_8 || angle > 15 * pi_8)
         return "East";
     else if (angle < 3 * pi_8)
-        return "South-East";
+        return "North-East";
     else if (angle < 5 * pi_8)
-        return "South";
+        return "North";
     else if (angle < 7 * pi_8)
-        return "South-West";
+        return "North-West";
     else if (angle < 9 * pi_8)
         return "West";
     else if (angle < 11 * pi_8)
-        return "North-West";
+        return "South-West";
     else if (angle < 13 * pi_8)
-        return "North";
+        return "South";
     else
-        return "North-East";
-}
-
-static void update_player_position(t_game *game, float newX, float newY)
-{
-    game->player->position.x = newX;
-    game->player->position.y = newY;
-    printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
-}
-
-static void print_movement_direction(t_game *game)
-{
-    if (game->player->direction.y > 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
-        printf("You are moving south\n");
-    }
-    // Add other directions as needed
-}
-
-void handle_key_w(t_game *game)
-{
-    printf("You just pressed W!\n");
-
-    float speed = 0.1;  // Speed of movement, adjust as necessary
-    float newX = game->player->position.x + game->player->direction.x * speed;
-    float newY = game->player->position.y + game->player->direction.y * speed;
-
-    if (!detect_collision(game, newX, newY))
-    {
-        update_player_position(game, newX, newY);
-    }
-    else
-    {
-        printf("Collision detected! Close to a wall.\n");
-    }
-
-    update_gun_frame(game);
-    print_game_map(game);
-    print_movement_direction(game);
+        return "South-East";
 }
 
 void handle_key_left(t_game *game)
@@ -141,6 +86,93 @@ void handle_key_right(t_game *game)
     printf("Facing direction: %s\n", direction);
 }
 
+static int detect_collision(t_game *game, float newX, float newY)
+{
+    float buffer = 0.8; // Buffer distance to prevent entering into a wall
+    int mapX = (int)(newX + game->player->direction.x * buffer);
+    int mapY = (int)(newY + game->player->direction.y * buffer);
+
+    // Check if within map bounds and not a wall tile
+    if (mapX >= 0 && mapX < game->map->width && 
+        mapY >= 0 && mapY < game->map->height && 
+        game->map->data[mapY][mapX] != TILE_WALL)
+    {
+        return 0; // No collision
+    }
+    return 1; // Collision detected
+}
+
+static void update_player_position(t_game *game, float newX, float newY)
+{
+    game->player->position.x = newX;
+    game->player->position.y = newY;
+    printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+}
+
+static void print_movement_direction(t_game *game)
+{
+    if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+        printf("You are moving north\n");
+    }
+}
+
+void handle_key_w(t_game *game)
+{
+    printf("You just pressed W!\n");
+
+    float speed = 0.1;  // Speed of movement, adjust as necessary
+    float newX = game->player->position.x + game->player->direction.x * speed;
+    float newY = game->player->position.y + game->player->direction.y * speed;
+
+    if (!detect_collision(game, newX, newY))
+    {
+        update_player_position(game, newX, newY);
+    }
+    else
+    {
+        printf("Collision detected! Close to a wall.\n");
+    }
+
+    update_gun_frame(game);
+    print_game_map(game);
+    print_movement_direction(game);
+}
+
+
+
+// void handle_key_w(t_game *game)
+// {
+//     printf("You just pressed W!\n");
+
+//     float speed = 0.1;  // Speed of movement, adjust as necessary
+//     float buffer = 0.8; // Buffer distance to prevent entering into a wall
+//     float newX = game->player->position.x + game->player->direction.x * speed;
+//     float newY = game->player->position.y + game->player->direction.y * speed;
+
+//     // Check collision using the buffer for more predictive collision detection
+//     int mapX = (int)(newX + game->player->direction.x * buffer);
+//     int mapY = (int)(newY + game->player->direction.y * buffer);
+
+//     // Ensure within map bounds and not a wall tile
+//     if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+//     {
+//         game->player->position.x = newX;
+//         game->player->position.y = newY;
+//         printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+//     }
+//     else
+//     {
+//         printf("Collision detected! Close to a wall.\n");
+//     }
+//     update_gun_frame(game);
+//     print_game_map(game);
+
+//     if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+//     printf("You are moving north\n");
+// }
+// }
+
+
 void handle_key_s(t_game *game)
 {
     printf("You just pressed S!\n");
@@ -166,6 +198,21 @@ void handle_key_s(t_game *game)
     update_gun_frame(game);
     print_game_map(game);
 }
+
+float calculate_dynamic_buffer(t_player *player, float base_speed)
+{
+    // Calculate buffer based on the dot product of direction and plane vectors
+    float dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
+    float plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y * player->plane.y);
+    float dot_product = player->direction.x * player->plane.x + player->direction.y * player->plane.y;
+
+    float cosine_angle = dot_product / (dir_mag * plane_mag);
+    float dynamic_buffer = base_speed * (1 - fabs(cosine_angle)); // Reduce buffer as angle approaches 90 degrees
+    printf("dynamic buffer %f\n", dynamic_buffer);
+    return dynamic_buffer;
+}
+
+
 
 void handle_key_a(t_game *game)
 {

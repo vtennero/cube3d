@@ -3,7 +3,8 @@
 # without debugger:
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-AUDIOFLAGS = -lopenal -lmpg123
+AUDIOFLAGS = 
+# AUDIOFLAGS = -lopenal -lmpg123
 
 # Directories
 SRC_DIR = src
@@ -22,7 +23,6 @@ BONUS_MAIN = main_bonus.c
 # Shared source files
 SHARED_SRCS = debug_utils.c \
 initialization.c \
-audio.c \
 render.c \
 render_floor.c \
 render_walls.c \
@@ -48,6 +48,9 @@ opening_bonus.c \
 land_bonus.c \
 time.c \
 extract_bonus.c \
+# audio.c \ 
+
+
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

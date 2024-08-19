@@ -33,9 +33,9 @@ int main()
 
     game = NULL;
 
-    initializeAudio();
+    // initializeAudio();
 
-    playAudioFileWithDelay("audio/menu.mp3", 2);
+    // playAudioFileWithDelay("audio/menu.mp3", 2);
 
 
     // if (map_is_valid)

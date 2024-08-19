@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   land_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:32:25 by toto              #+#    #+#             */
-/*   Updated: 2024/08/12 18:46:34 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/19 14:00:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void render_land(t_game *game)
     {
             game->game_sequence = 3;
             game->current_frame = 0;
-			playAudioFileWithDelay("audio/land.mp3", 0);
+			// playAudioFileWithDelay("audio/land.mp3", 0);
 
     }
 }

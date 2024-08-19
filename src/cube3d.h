@@ -424,8 +424,7 @@ void render_objects(t_game *game);
 void render_collectibles(t_game *game);
 int	create_collectibles(t_game *game);
 void handle_key_e(t_game *game);
-int playAudioFile(const char* filename);
-int playAudioFiles(const char** filenames, int count);
+
 void render_enemies(t_game *game);
 int create_enemies(t_game *game);
 void stopAudio();
@@ -451,9 +450,11 @@ long get_elapsed_microseconds(struct timeval *start, struct timeval *end);
 void render_land(t_game *game);
 
 // audio
-int initializeAudio();
-void cleanupAudio();
-int playAudioFileWithDelay(const char* filename, float delayInSeconds);
+// int initializeAudio();
+// void cleanupAudio();
+// int playAudioFileWithDelay(const char* filename, float delayInSeconds);
+// int playAudioFile(const char* filename);
+// int playAudioFiles(const char** filenames, int count);
 
 // extract
 int	create_extraction(t_game *game);

@@ -60,3 +60,4 @@ void	render_ray_list(t_game *game)
 		i++;
 	}
 }
+

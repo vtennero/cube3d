@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keymap_collectibles.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:07:42 by toto              #+#    #+#             */
-/*   Updated: 2024/08/12 19:27:25 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/19 14:00:51 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,6 @@ int is_player_close_to_collectible(t_game *game)
     return 0;
 }
 
-// void handle_key_e(t_game *game)
-// {
-//     if (game->key_state[K_E] == 1 && is_player_close_to_collectible(game))
-// 	{
-// 		game->collectibles[0].collected = 1;
-
-//         playAudioFileWithDelay("audio/samplepickup.mp3", 0);
-// 		playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
-// 	    game->extract[0].is_activated = 1;
-
-// 		// playAudioFile("audio/samplepickup.mp3");
-// 		// playAudioFile("audio/raresampleacquired.mp3");
-
-
-// 	}
-//     else if (game->key_state[K_E] == 1 && is_player_close_to_extract(game))
-//     {
-// 		playAudioFileWithDelay("audio/extract01.mp3", 2);
-// 		playAudioFileWithDelay("audio/extract02.mp3", 2);
-//     }
-// 	// add case for terminal
-// }
-
 void handle_key_e(t_game *game)
 {
     if (game->key_state[K_E] == 1)
@@ -91,14 +68,13 @@ void handle_key_e(t_game *game)
         {
             game->collectibles[0].collected = 1;
 
-            playAudioFileWithDelay("audio/samplepickup.mp3", 0);
-            playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+            // playAudioFileWithDelay("audio/samplepickup.mp3", 0);
+            // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
             game->extract[0].is_activated = 1;
         }
         else if (is_player_close_to_extract(game) && game->extract->is_activated)
         {
-            playAudioFileWithDelay("audio/extract01.mp3", 2);
-            // playAudioFileWithDelay("audio/extract02.mp3", 2);
+            // playAudioFileWithDelay("audio/extract01.mp3", 2);
         }
     }
 }
