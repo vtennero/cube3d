@@ -129,6 +129,8 @@ void update_shooting_gun_frame(t_game *game)
         frame_counter = 0;
     }
     frame_counter++;
+    // playAudioFileWithDelay("audio/gun01.wav", 0);
+
 }
 
 t_texture *select_gun_texture(t_game *game)

@@ -97,3 +97,12 @@ void handle_movement_strafe_right(t_game *game)
     }
 }
 
+void handle_space_shoot(t_game *game)
+{
+    if (game->key_state[K_SPACE] == 1)
+    { 
+        game->is_shooting = 1;
+    }
+}
+
+

@@ -3,8 +3,8 @@
 # without debugger:
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-AUDIOFLAGS = 
-# AUDIOFLAGS = -lopenal -lmpg123
+# AUDIOFLAGS = 
+AUDIOFLAGS = -lopenal -lmpg123
 
 # Directories
 SRC_DIR = src
@@ -48,15 +48,16 @@ opening_bonus.c \
 land_bonus.c \
 time.c \
 extract_bonus.c \
-# audio.c \ 
+audio.c 
 
 
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
 # Object files for main and bonus executables
-OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(MAIN:.c=.o)
-BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(BONUS_MAIN:.c=.o)
+# OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(MAIN:.c=.o)
+OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o))
+BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o))
 
 # Include paths
 INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR)  -I/usr/include

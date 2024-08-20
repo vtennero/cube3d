@@ -69,13 +69,13 @@ void handle_key_e(t_game *game)
         {
             game->collectibles[0].collected = 1;
 
-            // playAudioFileWithDelay("audio/samplepickup.mp3", 0);
-            // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+            playAudioFileWithDelay("audio/samplepickup.mp3", 0);
+            playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
             game->extract[0].is_activated = 1;
         }
         else if (is_player_close_to_extract(game) && game->extract->is_activated)
         {
-            // playAudioFileWithDelay("audio/extract01.mp3", 2);
+            playAudioFileWithDelay("audio/extract01.mp3", 2);
         }
     }
 }

@@ -45,7 +45,7 @@ void render_land(t_game *game)
     {
             game->game_sequence = 3;
             game->current_frame = 0;
-			// playAudioFileWithDelay("audio/land.mp3", 0);
+			playAudioFileWithDelay("audio/land.mp3", 0);
 
     }
 }

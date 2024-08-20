@@ -242,7 +242,7 @@ void check_enemy_at_center(t_game *game)
         if (centerX >= drawStartX && centerX < drawEndX && 
             centerY >= drawStartY && centerY < drawEndY && game->enemies[i].is_alive )
         {
-            printf("Aiming at enemy %d\n", i);
+            // printf("Aiming at enemy %d\n", i);
             if (game->is_shooting)
             {
                 game->enemies[i].is_alive = 0;
@@ -257,7 +257,7 @@ void check_enemy_at_center(t_game *game)
 
 int randomize_dead_enemy_positions(t_game *game)
 {
-    printf("Randomizing positions of defeated enemies\n");
+    // printf("Randomizing positions of defeated enemies\n");
     int i, x, y;
     int enemies_repositioned = 0;
     
@@ -281,6 +281,6 @@ int randomize_dead_enemy_positions(t_game *game)
         }
     }
     
-    printf("%d defeated enemies repositioned and revived\n", enemies_repositioned);
+    // printf("%d defeated enemies repositioned and revived\n", enemies_repositioned);
     return (enemies_repositioned);
 }

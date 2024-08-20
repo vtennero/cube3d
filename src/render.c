@@ -57,23 +57,26 @@ void print_map_section(t_game *game, int center_x, int center_y, int radius) {
 int render(t_game *game)
 {
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
     // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
     if (game->game_sequence == 0)
     {
         handle_key_enter(game);
+        handle_key_esc(game);
         render_menu(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else if (game->game_sequence == 1)
     {
+        handle_key_esc(game);
         render_opening(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else if (game->game_sequence == 2)
     {
+        handle_key_esc(game);
         render_land(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
@@ -97,6 +100,7 @@ int render(t_game *game)
 
     // interactions
     handle_key_e(game);
+    // handle_space_shoot(game);
 
     // rendering
     render_sky(game, "textures/sky06.xpm");
@@ -110,7 +114,6 @@ int render(t_game *game)
     randomize_dead_enemy_positions(game);
 
     update_gun_state(game);
-
     render_gun(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
@@ -146,6 +149,8 @@ int setup_game_mlx(t_game *game)
     initialize_game_seed(game);
     initialize_floor_texture_weights(game);
     initialize_floor_texture_map(game);
+    playAudioFileWithDelay("audio/menu.mp3", 2);
+
 
     game->img.mlx_img = mlx_new_image(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT);
     game->img.addr = mlx_get_data_addr(game->img.mlx_img, &game->img.bpp,

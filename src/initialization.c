@@ -94,7 +94,7 @@ int	create_collectibles(t_game *game)
 int	create_extraction(t_game *game)
 {
 	printf("initializing extrction\n");
-	game->extract[0].position.x = 19.5f;
+	game->extract[0].position.x = 10.5f;
 	game->extract[0].position.y = 11.5f;
 	game->extract[0].is_activated = 0;
 	printf("initialized extraction\n");

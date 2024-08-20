@@ -20,10 +20,7 @@ void handle_key_enter(t_game *game)
         {
             reset_game_start_time(game);
             game->game_sequence = 1;
-            // playAudioFileWithDelay("audio/drop02.mp3", 0);
-            // playAudioFileWithDelay("audio/drop01.mp3", 3);
-            // playAudioFileWithDelay("audio/drop03.mp3", 10);
-            // playAudioFile("audio/drop.mp3");
+            playAudioFileWithDelay("audio/drop02.mp3", 0);
         }
         else if (game->game_sequence == 1)
             game->game_sequence = 2;

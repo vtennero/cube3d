@@ -287,7 +287,8 @@ typedef enum
 	K_UP = 65362,
 	K_DOWN = 65364,
 	K_ESC = 65307,
-	K_ENTER = 65293
+	K_ENTER = 65293,
+	K_SPACE = 65513
 }						KeyCodes;
 
 typedef void			(*t_key_func)(t_game *);
@@ -457,11 +458,9 @@ long get_elapsed_microseconds(struct timeval *start, struct timeval *end);
 void render_land(t_game *game);
 
 // audio
-// int initializeAudio();
-// void cleanupAudio();
-// int playAudioFileWithDelay(const char* filename, float delayInSeconds);
-// int playAudioFile(const char* filename);
-// int playAudioFiles(const char** filenames, int count);
+int initializeAudio();
+void cleanupAudio();
+int playAudioFileWithDelay(const char* filename, float delayInSeconds);
 
 // extract
 int	create_extraction(t_game *game);
@@ -485,5 +484,5 @@ int handle_mouse_click(int button, int x, int y, void *param);
 int handle_mouse_release(int button, int x, int y, void *param);
 void check_enemy_at_center(t_game *game);
 int randomize_dead_enemy_positions(t_game *game);
-
+void handle_space_shoot(t_game *game);
 #endif
