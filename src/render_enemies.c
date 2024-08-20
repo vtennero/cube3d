@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_enemies.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:44:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/11 12:13:25 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/20 18:08:27 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,4 +212,75 @@ void render_enemies(t_game *game)
             render_enemy(game, &game->enemies[i]);
         }
     }
+}
+
+void check_enemy_at_center(t_game *game)
+{
+    float centerX = game->screen_width / 2.0f;
+    float centerY = game->screen_height / 2.0f;
+    
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (!game->enemies[i].is_alive)
+            continue;
+
+        float spriteX, spriteY;
+        e_calculate_sprite_position(game, game->enemies[i].position.x, game->enemies[i].position.y, &spriteX, &spriteY);
+
+        float transformX, transformY;
+        e_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+        int spriteScreenX = e_calculate_sprite_screen_x(game, transformX, transformY);
+
+        int spriteHeight, drawStartY, drawEndY;
+        e_calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+        int spriteWidth, drawStartX, drawEndX;
+        e_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+        // Check if the center of the screen is within the enemy's sprite boundaries
+        if (centerX >= drawStartX && centerX < drawEndX && 
+            centerY >= drawStartY && centerY < drawEndY && game->enemies[i].is_alive )
+        {
+            printf("Aiming at enemy %d\n", i);
+            if (game->is_shooting)
+            {
+                game->enemies[i].is_alive = 0;
+            }
+            return;  // Exit the function after finding the first enemy at the center
+        }
+    }
+
+    // If no enemy is found at the center
+    // printf("No enemy at the center of the screen\n");
+}
+
+int randomize_dead_enemy_positions(t_game *game)
+{
+    printf("Randomizing positions of defeated enemies\n");
+    int i, x, y;
+    int enemies_repositioned = 0;
+    
+    for (i = 0; i < game->num_enemies; i++)
+    {
+        if (game->enemies[i].is_alive == 0)
+        {
+            do {
+                x = random_int(game, game->map->width);
+                y = random_int(game, game->map->height);
+            } while (game->map->data[y][x] == 1); // Keep trying until we find a non-wall position
+            
+            game->enemies[i].position.x = (float)x + 0.5f; // Center in the tile
+            game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile
+            game->enemies[i].is_alive = 1; // Revive the enemy
+            game->enemies[i].frame_count = 0; // Reset animation frame
+            game->enemies[i].current_frame = 0; // Reset current frame
+            game->enemies[i].momentum = 0; // Reset momentum
+            game->enemies[i].animation_steps = 0; // Reset animation steps
+            enemies_repositioned++;
+        }
+    }
+    
+    printf("%d defeated enemies repositioned and revived\n", enemies_repositioned);
+    return (enemies_repositioned);
 }

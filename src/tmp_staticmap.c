@@ -116,6 +116,7 @@ void create_static_map(t_game *game)
         for (int x = 0; x < 24; x++)
         {
             // printf("for int x = %d; x < screenWidth; x++\n", x);
+            // map->data[y][x] = staticMap[x][y];
             map->data[y][x] = staticMap[y][x];
         }
     }

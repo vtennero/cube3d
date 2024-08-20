@@ -27,6 +27,8 @@ int ft_key_release(int keycode, t_game *game)
     if (keycode < MAX_KEY_CODE)
     {
         game->key_state[keycode] = 0;
+        game->is_moving_fwd = 0;
+
     }
     return (0);
 }
@@ -95,32 +97,3 @@ void handle_movement_strafe_right(t_game *game)
     }
 }
 
-void handle_movement_dash(t_game *game)
-{
-    if (game->key_state[K_SHIFT] == 1)
-    { // Check if sfhit key is pressed
-        printf("You just pressed Dasshhh!\n");
-
-        float speed = 0.8;  // Speed of movement, adjust as necessary
-        float buffer = 0.8; // Buffer distance to prevent entering into a wall
-        float newX = game->player->position.x + game->player->direction.x * speed;
-        float newY = game->player->position.y + game->player->direction.y * speed;
-
-        // Check collision using the buffer for more predictive collision detection
-        int mapX = (int)(newX + game->player->direction.x * buffer);
-        int mapY = (int)(newY + game->player->direction.y * buffer);
-
-        // Ensure within map bounds and not a wall tile
-        if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
-        {
-            game->player->position.x = newX;
-            game->player->position.y = newY;
-            printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
-        }
-        else
-        {
-            printf("Collision detected! Close to a wall.\n");
-        }
-        print_game_map(game);
-    }
-}

@@ -82,6 +82,7 @@ int render(t_game *game)
 
 
     relocate_enemies(game);
+
     handle_key_esc(game);
     handle_movement_left(game);
     handle_movement_right(game);
@@ -105,6 +106,11 @@ int render(t_game *game)
     render_collectibles(game);
     render_extract(game);
     render_enemies(game);
+    check_enemy_at_center(game);
+    randomize_dead_enemy_positions(game);
+
+    update_gun_state(game);
+
     render_gun(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
@@ -151,6 +157,10 @@ int setup_game_mlx(t_game *game)
 
     // Add this line to handle mouse movement
     mlx_hook(game->win_ptr, 6, 1L << 6, handle_mouse_move, game);
+    mlx_mouse_hook(game->win_ptr, handle_mouse_click, game);
+    mlx_hook(game->win_ptr, 5, 1L << 3, handle_mouse_release, game);  // 5 is the event code for mouse button release
+
+
     // mlx_hook(game->win_ptr, 17, 0, handle_cross_key, game);
 
     mlx_loop(game->mlx_ptr);

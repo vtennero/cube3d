@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:07:42 by toto              #+#    #+#             */
-/*   Updated: 2024/08/19 14:00:51 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:35:40 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ int is_player_close_to_extract(t_game *game)
     float distance_squared = dx * dx + dy * dy;
     
     // If the squared distance is less than the squared collection distance,
-    printf("distance_squared %f\n", distance_squared);
+    printf("EXTRACT: extract position %f, %f | player position %f, %f | distance_squared %f\n", game->extract[0].position.x, game->extract[0].position.y, game->player->position.x, game->player->position.y, distance_squared);
     // return 1
     if (distance_squared <= (COLLECTION_DISTANCE * COLLECTION_DISTANCE))
     {
-        printf("player is close to extract\n");
+        printf("EXTRACT: player is close to extract\n");
         return 1;
     }
-        printf("player is not close to extract\n");
+        printf("EXTRACT: player is not close to extract\n");
+    printf("**************\n");
     return 0;
 }
 

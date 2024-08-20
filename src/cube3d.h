@@ -38,6 +38,7 @@
 #define MAX_FLOOR_TEXTURES 8
 #define MAX_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLE_TEXTURES 1
+#define MAX_SHOOTING_TEXTURES 4
 #define MAX_SKY_TEXTURES 1
 # define MAX_OPENING_TEXTURES 141
 # define MAX_LAND_TEXTURES 46
@@ -231,6 +232,7 @@ typedef struct s_game
 	t_texture			*gun_textures;
 	int					num_gun_frames;
 	int					current_gun_frame;
+	int					current_shooting_frame;
 	t_ray_node			*ray_list;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
     int                 num_collectibles;  // Current number of active collectibles
@@ -242,8 +244,12 @@ typedef struct s_game
 	t_extract			extract[1];
 	t_texture			extract_texture[1];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
+	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
 	struct timeval		opening_start_time;
 	int					loop_count;
+	int					is_shooting;
+	int					is_moving_fwd;
+
 }						t_game;
 
 
@@ -408,10 +414,11 @@ int						create_map(t_game *game);
 int						create_player(t_game *game);
 void					render_gun(t_game *game);
 void					scale_gun_texture(t_game *game);
-void					update_gun_frame(t_game *game);
+void					update_gun_state(t_game *game);
 void					load_gun_textures(t_game *game, char *path_format,
 							int num_frames);
 void					scale_gun_textures(t_game *game);
+void					scale_shooting_textures(t_game *game);
 
 void					debug_texture(t_texture *texture, int x, int y);
 
@@ -472,5 +479,11 @@ void transform_sprite(t_game *game, float spriteX, float spriteY, float *transfo
 void calculate_sprite_position(t_game *game, float collectibleX, float collectibleY, float *spriteX, float *spriteY);
 int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
 void c_render_ray_list(t_game *game);
+
+// shoot
+int handle_mouse_click(int button, int x, int y, void *param);
+int handle_mouse_release(int button, int x, int y, void *param);
+void check_enemy_at_center(t_game *game);
+int randomize_dead_enemy_positions(t_game *game);
 
 #endif

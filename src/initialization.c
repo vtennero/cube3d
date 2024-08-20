@@ -24,6 +24,10 @@ int	create_game_struct(t_game **game)
 	(*game)->game_sequence = 0;
 	(*game)->current_frame = 0;
 	(*game)->loop_count = 0;
+	(*game)->is_shooting = 0;
+	(*game)->current_shooting_frame = 0;
+	(*game)->current_gun_frame = 0;
+	(*game)->is_moving_fwd = 0;
 	printf("screen_height: %d\n", (*game)->screen_height);
     printf("screen_width: %d\n", (*game)->screen_width);
 	printf("initialized gamestruct\n");
@@ -59,8 +63,11 @@ int	create_player(t_game *game)
 	player->direction.y = 0.0f;
 
 	// Initialize the camera plane for the raycasting (related to the FOV)
-	player->plane.x = 0.0f;  // Adjust this value to change the FOV
-	player->plane.y = 0.66f; // This setting assumes a 66 degrees FOV
+	// player->plane.x = 0.0f;  // Adjust this value to change the FOV
+	// player->plane.y = 0.66f; // This setting assumes a 66 degrees FOV
+player->plane.x = 0.0f;
+player->plane.y = -0.66f;  // Note the negative sign
+
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)
