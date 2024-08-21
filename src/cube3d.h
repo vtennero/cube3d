@@ -44,6 +44,7 @@
 # define MAX_LAND_TEXTURES 46
 #define FRAMES_PER_SECOND 20
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
+#define MAX_SCRIPTS 10
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -53,6 +54,23 @@
 /*
 ** ================== STRUCTURES ==================
 */
+
+typedef struct s_game t_game;
+
+// Now we can use t_game in the ScriptFunction typedef
+typedef void (*ScriptFunction)(t_game *game);
+
+typedef struct s_script {
+    struct timeval trigger_time;
+    ScriptFunction func;
+    int is_active;
+} t_script;
+
+typedef struct s_script_manager {
+    t_script scripts[MAX_SCRIPTS];
+    int script_count;
+} t_script_manager;
+
 
 typedef struct s_vector2d
 {
@@ -210,6 +228,7 @@ typedef struct s_ray_node
 
 typedef struct s_game
 {
+	t_script_manager script_manager;
 	void				*mlx_ptr;
 	void				*win_ptr;
 	t_player			*player;
@@ -249,7 +268,6 @@ typedef struct s_game
 	int					loop_count;
 	int					is_shooting;
 	int					is_moving_fwd;
-
 }						t_game;
 
 
@@ -485,4 +503,11 @@ int handle_mouse_release(int button, int x, int y, void *param);
 void check_enemy_at_center(t_game *game);
 int randomize_dead_enemy_positions(t_game *game);
 void handle_space_shoot(t_game *game);
+
+
+// scripts
+void testscript(t_game *game);
+void add_script(t_game *game, ScriptFunction func, int delay_seconds);
+void update_scripts(t_game *game);
+
 #endif

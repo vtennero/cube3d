@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
+#define FIXED_POINT_FACTOR 256
+#define MAX_DISTANCE 1000000.0f 
 
 int get_floor_texture_color(t_texture *texture, int x, int y)
 {
@@ -128,79 +130,46 @@ void initialize_floor_texture_map(t_game *game)
     printf("initialize_floor_texture_map completed successfully\n");
 }
 
-void render_floor(t_game *game)
+
+void render_floor_pixel(t_game *game, int x, int y, float floorX, float floorY)
 {
-    if (!game || !game->player || !game->map || !game->floor_texture_map)
+    int cellX = (int)floorX;
+    int cellY = (int)floorY;
+
+    if (cellX >= 0 && cellX < game->map->width && cellY >= 0 && cellY < game->map->height)
     {
-        fprintf(stderr, "Error: Invalid game state in render_floor\n");
-        return;
-    }
+        int texture_index = game->floor_texture_map[cellY][cellX];
 
-    float pitch = game->player->pitch;
-    int pitch_pixel_offset = -(int)(pitch * DEFAULT_S_HEIGHT);
-    // int height_offset = (int)(game->player->height * DEFAULT_S_HEIGHT);
-    int height_offset = 0;
-    // int height_offset = (int)(game->player->height);
-
-    // Set horizon at the center of the screen
-    int horizon = DEFAULT_S_HEIGHT / 2;
-
-    // Calculate where to start drawing the floor
-    float floor_start = horizon - pitch_pixel_offset + height_offset;
-    if (floor_start < 0) floor_start = 0;
-    if (floor_start >= DEFAULT_S_HEIGHT) floor_start = DEFAULT_S_HEIGHT - 1;
-
-    for (float y = floor_start; y < DEFAULT_S_HEIGHT; y++)
-    {
-        float rayDirX0 = game->player->direction.x - game->player->plane.x;
-        float rayDirY0 = game->player->direction.y - game->player->plane.y;
-        float rayDirX1 = game->player->direction.x + game->player->plane.x;
-        float rayDirY1 = game->player->direction.y + game->player->plane.y;
-
-        float p = y - (horizon - pitch_pixel_offset + height_offset);
-        float posZ = 0.5 * DEFAULT_S_HEIGHT;
-
-        float rowDistance = p > 0 ? posZ / p : 100000.0f; // Avoid division by zero
-
-        float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / DEFAULT_S_WIDTH;
-        float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / DEFAULT_S_WIDTH;
-
-        float floorX = game->player->position.x + rowDistance * rayDirX0;
-        float floorY = game->player->position.y + rowDistance * rayDirY0;
-
-
-        for (float x = 0; x < DEFAULT_S_WIDTH; x++)
+        if (texture_index >= 0 && texture_index < MAX_FLOOR_TEXTURES)
         {
-            int cellX = (int)(floorX);
-            int cellY = (int)(floorY);
+            t_texture *current_texture = &game->floortextures[texture_index];
 
-            if (cellX >= 0 && cellX < game->map->width && cellY >= 0 && cellY < game->map->height)
-            {
-                int texture_index = game->floor_texture_map[cellY][cellX];
+            float fracX = floorX - cellX;
+            float fracY = floorY - cellY;
+            
+            // Use fmodf to ensure we're always within texture bounds
+            int tx = (int)(fmodf(fracX * current_texture->width, current_texture->width));
+            int ty = (int)(fmodf(fracY * current_texture->height, current_texture->height));
 
-                if (texture_index >= 0 && texture_index < MAX_FLOOR_TEXTURES)
-                {
-                    t_texture *current_texture = &game->floortextures[texture_index];
+            // Ensure tx and ty are always non-negative
+            tx = (tx + current_texture->width) % current_texture->width;
+            ty = (ty + current_texture->height) % current_texture->height;
 
-                    if (current_texture && current_texture->data)
-                    {
-                        float fracX = floorX - cellX;
-                        float fracY = floorY - cellY;
-                        float tx = fmodf(fracX * current_texture->width, current_texture->width);
-                        float ty = fmodf(fracY * current_texture->height, current_texture->height);
-                        int color = get_floor_texture_color(current_texture, (int)tx, (int)ty);
-                        img_pix_put(&game->img, (int)x, (int)y, color);
-                    }
-                }
-            }
-            floorX += floorStepX;
-            floorY += floorStepY;
+            int color = get_floor_texture_color(current_texture, tx, ty);
+            img_pix_put(&game->img, x, y, color);
+        }
+        else
+        {
+            img_pix_put(&game->img, x, y, 0xFF0000); // Red for invalid texture index
         }
     }
-
-    // printf("Horizon: %d, Pitch offset: %d, Height offset: %d, Floor start: %f\n", horizon, pitch_pixel_offset, height_offset, floor_start);
+    else
+    {
+        img_pix_put(&game->img, x, y, 0x0000FF); // Blue for out-of-bounds
+    }
 }
 
+// this one works with player height of 0
 
 // void render_floor(t_game *game)
 // {
@@ -212,17 +181,11 @@ void render_floor(t_game *game)
 
 //     float pitch = game->player->pitch;
 //     int pitch_pixel_offset = -(int)(pitch * DEFAULT_S_HEIGHT);
-//     // int height_offset = (int)(game->player->height * DEFAULT_S_HEIGHT);
 //     int height_offset = 0;
-//     // int height_offset = (int)(game->player->height);
 
-//     // Set horizon at the center of the screen
 //     int horizon = DEFAULT_S_HEIGHT / 2;
-
-//     // Calculate where to start drawing the floor
 //     int floor_start = horizon - pitch_pixel_offset + height_offset;
-//     if (floor_start < 0) floor_start = 0;
-//     if (floor_start >= DEFAULT_S_HEIGHT) floor_start = DEFAULT_S_HEIGHT - 1;
+//     floor_start = (floor_start < 0) ? 0 : (floor_start >= DEFAULT_S_HEIGHT ? DEFAULT_S_HEIGHT - 1 : floor_start);
 
 //     for (int y = floor_start; y < DEFAULT_S_HEIGHT; y++)
 //     {
@@ -231,12 +194,10 @@ void render_floor(t_game *game)
 //         float rayDirX1 = game->player->direction.x + game->player->plane.x;
 //         float rayDirY1 = game->player->direction.y + game->player->plane.y;
 
-//         // Adjust the calculation of p to account for pitch and height
 //         int p = y - (horizon - pitch_pixel_offset + height_offset);
-//         float posZ = 0.5 * DEFAULT_S_HEIGHT;
+//         float posZ = 0.5f * DEFAULT_S_HEIGHT;
 
-//         // Calculate row distance
-//         float rowDistance = p > 0 ? posZ / p : 100000; // Avoid division by zero
+//         float rowDistance = p > 0 ? posZ / p : MAX_DISTANCE;
 
 //         float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / DEFAULT_S_WIDTH;
 //         float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / DEFAULT_S_WIDTH;
@@ -244,10 +205,10 @@ void render_floor(t_game *game)
 //         float floorX = game->player->position.x + rowDistance * rayDirX0;
 //         float floorY = game->player->position.y + rowDistance * rayDirY0;
 
-//         for (int x = 0; x < DEFAULT_S_WIDTH; ++x)
+//         for (int x = 0; x < DEFAULT_S_WIDTH; x++)
 //         {
-//             int cellX = (int)(floorX);
-//             int cellY = (int)(floorY);
+//             int cellX = (int)floorX;
+//             int cellY = (int)floorY;
 
 //             if (cellX >= 0 && cellX < game->map->width && cellY >= 0 && cellY < game->map->height)
 //             {
@@ -259,64 +220,96 @@ void render_floor(t_game *game)
 
 //                     if (current_texture && current_texture->data)
 //                     {
-//                         float fracX = floorX - cellX;
-//                         float fracY = floorY - cellY;
-//                         // int tx = (int)(fracX * current_texture->width) & (current_texture->width - 1);
-//                         // int ty = (int)(fracY * current_texture->height) & (current_texture->height - 1);
-//             // int tx = (int)(fracX * current_texture->width);
-//             // int ty = (int)(fracY * current_texture->height);
-//                         int tx = ((int)(fracX * current_texture->width)) % current_texture->width;
-//                         int ty = ((int)(fracY * current_texture->height)) % current_texture->height;
+//                         float fracX = floorX - floorf(floorX);
+//                         float fracY = floorY - floorf(floorY);
+//                         float tx = fracX * current_texture->width;
+//                         float ty = fracY * current_texture->height;
+                        
+//                         // Ensure tx and ty are always within texture bounds
+//                         tx = fmodf(tx, current_texture->width);
+//                         ty = fmodf(ty, current_texture->height);
+                        
+//                         if (tx < 0) tx += current_texture->width;
+//                         if (ty < 0) ty += current_texture->height;
 
-//                         int color = get_floor_texture_color(current_texture, tx, ty);
+//                         int color = get_floor_texture_color(current_texture, (int)tx, (int)ty);
 //                         img_pix_put(&game->img, x, y, color);
 //                     }
 //                 }
 //             }
-
 //             floorX += floorStepX;
 //             floorY += floorStepY;
 //         }
 //     }
-
-//     printf("Horizon: %d, Pitch offset: %d, Height offset: %d, Floor start: %d\n", horizon, pitch_pixel_offset, height_offset, floor_start);
 // }
-
-
-
-void render_floor_pixel(t_game *game, int x, int y, float floorX, float floorY)
+void render_floor(t_game *game)
 {
-    int cellX = (int)floorX;
-    int cellY = (int)floorY;
-
-    // Ensure we're within map bounds
-    if (cellX >= 0 && cellX < game->map->width && cellY >= 0 && cellY < game->map->height)
+    if (!game || !game->player || !game->map || !game->floor_texture_map)
     {
-        int texture_index = game->floor_texture_map[cellY][cellX];
-
-        // Check if the texture index is valid
-        if (texture_index >= 0 && texture_index < MAX_FLOOR_TEXTURES)
-        {
-            t_texture *current_texture = &game->floortextures[texture_index];
-
-            float fracX = floorX - cellX;
-            float fracY = floorY - cellY;
-            int tx = (int)(fracX * current_texture->width) % current_texture->width;
-            int ty = (int)(fracY * current_texture->height) % current_texture->height;
-
-            int color = get_floor_texture_color(current_texture, tx, ty);
-            img_pix_put(&game->img, x, y, color);
-        }
-        else
-        {
-            fprintf(stderr, "Invalid texture index: %d at cellX=%d, cellY=%d\n", texture_index, cellX, cellY);
-            // Use a default color (e.g., red) for invalid texture indices
-            img_pix_put(&game->img, x, y, 0xFF0000);
-        }
+        fprintf(stderr, "Error: Invalid game state in render_floor\n");
+        return;
     }
-    else
+
+    float pitch = game->player->pitch;
+    int pitch_pixel_offset = -(int)(pitch * DEFAULT_S_HEIGHT);
+    float player_height = game->player->height;  // Use player's height
+
+    int horizon = DEFAULT_S_HEIGHT / 2;
+    int floor_start = horizon - pitch_pixel_offset;
+    floor_start = (floor_start < 0) ? 0 : (floor_start >= DEFAULT_S_HEIGHT ? DEFAULT_S_HEIGHT - 1 : floor_start);
+
+    for (int y = floor_start; y < DEFAULT_S_HEIGHT; y++)
     {
-        // Use a default color (e.g., blue) for out-of-bounds coordinates
-        img_pix_put(&game->img, x, y, 0x0000FF);
+        float rayDirX0 = game->player->direction.x - game->player->plane.x;
+        float rayDirY0 = game->player->direction.y - game->player->plane.y;
+        float rayDirX1 = game->player->direction.x + game->player->plane.x;
+        float rayDirY1 = game->player->direction.y + game->player->plane.y;
+
+        int p = y - horizon + pitch_pixel_offset;
+        float posZ = 0.5f * DEFAULT_S_HEIGHT * (1.0f + player_height*2);  // Adjust for player height
+
+        float rowDistance = posZ / p;
+
+        float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / DEFAULT_S_WIDTH;
+        float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / DEFAULT_S_WIDTH;
+
+        float floorX = game->player->position.x + rowDistance * rayDirX0;
+        float floorY = game->player->position.y + rowDistance * rayDirY0;
+
+        for (int x = 0; x < DEFAULT_S_WIDTH; x++)
+        {
+            int cellX = (int)floorX;
+            int cellY = (int)floorY;
+
+            if (cellX >= 0 && cellX < game->map->width && cellY >= 0 && cellY < game->map->height)
+            {
+                int texture_index = game->floor_texture_map[cellY][cellX];
+
+                if (texture_index >= 0 && texture_index < MAX_FLOOR_TEXTURES)
+                {
+                    t_texture *current_texture = &game->floortextures[texture_index];
+
+                    if (current_texture && current_texture->data)
+                    {
+                        float fracX = floorX - floorf(floorX);
+                        float fracY = floorY - floorf(floorY);
+                        float tx = fracX * current_texture->width;
+                        float ty = fracY * current_texture->height;
+                        
+                        // Ensure tx and ty are always within texture bounds
+                        tx = fmodf(tx, current_texture->width);
+                        ty = fmodf(ty, current_texture->height);
+                        
+                        if (tx < 0) tx += current_texture->width;
+                        if (ty < 0) ty += current_texture->height;
+
+                        int color = get_floor_texture_color(current_texture, (int)tx, (int)ty);
+                        img_pix_put(&game->img, x, y, color);
+                    }
+                }
+            }
+            floorX += floorStepX;
+            floorY += floorStepY;
+        }
     }
 }

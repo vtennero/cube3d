@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_collectibles.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:44:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/12 18:48:21 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/21 14:36:32 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ void calculate_sprite_position(t_game *game, float collectibleX, float collectib
     *spriteY = collectibleY - game->player->position.y;
 }
 
+
+
+// this works
 // Transform sprite with the inverse camera matrix
 void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY)
 {
@@ -51,6 +54,7 @@ int calculate_sprite_screen_x(t_game *game, float transformX, float transformY)
     return (int)((game->screen_width / 2) * (1 + transformX / transformY));
 }
 
+// this works
 void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY)
 {
     *spriteHeight = abs((int)(game->screen_height / transformY)) * COLLECTIBLE_SIZE;
@@ -89,6 +93,7 @@ t_ray_node* find_ray_node(t_game *game, int stripe)
     return current;
 }
 
+
 // Draw sprite vertical stripe, now accounting for pitch
 void draw_sprite_stripe(t_game *game, t_texture *collectible_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY)
 {
@@ -116,6 +121,8 @@ void draw_sprite_stripe(t_game *game, t_texture *collectible_texture, int stripe
     }
 }
 
+
+
 void render_collectible(t_game *game, t_vector2d position)
 {
     t_texture *collectible_texture = &game->coll_texture[0];
@@ -134,10 +141,6 @@ void render_collectible(t_game *game, t_vector2d position)
     int spriteWidth, drawStartX, drawEndX;
     calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
-    // printf("Rendering collectible at (%.2f, %.2f)\n", position.x, position.y);
-    // printf("Sprite screen X: %d, Width: %d, Height: %d\n", spriteScreenX, spriteWidth, spriteHeight);
-    // printf("Draw X: %d to %d, Y: %d to %d\n", drawStartX, drawEndX, drawStartY, drawEndY);
-
     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
     {
         if (is_sprite_in_front(transformY, stripe, game->screen_width))
@@ -146,6 +149,7 @@ void render_collectible(t_game *game, t_vector2d position)
         }
     }
 }
+
 
 void render_collectibles(t_game *game)
 {

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:07:42 by toto              #+#    #+#             */
-/*   Updated: 2024/08/21 11:33:34 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:16:15 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,36 @@ int is_player_close_to_collectible(t_game *game)
     return 0;
 }
 
+// void handle_key_e(t_game *game)
+// {
+//     if (game->key_state[K_E] == 1)
+//     {
+//         if (is_player_close_to_collectible(game))
+//         {
+//             game->collectibles[0].collected = 1;
+
+//             // playAudioFileWithDelay("audio/samplepickup.mp3", 0);
+//             // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+//             game->extract[0].is_activated = 1;
+//         }
+//         else if (is_player_close_to_extract(game) && game->extract->is_activated)
+//         {
+//             add_script(game, testscript, 3); // Add testscript to run after 3 seconds
+//             // playAudioFileWithDelay("audio/extract01.mp3", 2);
+//         }
+//     }
+// }
+
+// Modify handle_key_e to remove the key state check
 void handle_key_e(t_game *game)
 {
-    if (game->key_state[K_E] == 1)
+    if (is_player_close_to_collectible(game))
     {
-        if (is_player_close_to_collectible(game))
-        {
-            game->collectibles[0].collected = 1;
-
-            // playAudioFileWithDelay("audio/samplepickup.mp3", 0);
-            // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
-            game->extract[0].is_activated = 1;
-        }
-        else if (is_player_close_to_extract(game) && game->extract->is_activated)
-        {
-            // playAudioFileWithDelay("audio/extract01.mp3", 2);
-        }
+        game->collectibles[0].collected = 1;
+        game->extract[0].is_activated = 1;
+    }
+    else if (is_player_close_to_extract(game) && game->extract->is_activated)
+    {
+        add_script(game, testscript, 3);
     }
 }

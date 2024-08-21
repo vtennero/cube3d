@@ -83,7 +83,7 @@ int render(t_game *game)
     else if (game->game_sequence == 3)
     {
 
-
+    update_scripts(game);
     relocate_enemies(game);
 
     handle_key_esc(game);
@@ -99,7 +99,7 @@ int render(t_game *game)
     handle_movement_down(game);
 
     // interactions
-    handle_key_e(game);
+    // handle_key_e(game);
     // handle_space_shoot(game);
 
     // rendering
@@ -109,19 +109,18 @@ int render(t_game *game)
     render_ray_list(game);
     render_collectibles(game);
     render_extract(game);
-    render_enemies(game);
-    check_enemy_at_center(game);
+    // render_enemies(game);
+
+    // check_enemy_at_center(game);
     randomize_dead_enemy_positions(game);
 
     update_gun_state(game);
-    render_gun(game);
+    // render_gun(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
     clean_rays(game);
-// we should free here
-	// game->ray_list = NULL;
     }
     else
     {

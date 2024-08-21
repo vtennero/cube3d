@@ -28,6 +28,8 @@ int	create_game_struct(t_game **game)
 	(*game)->current_shooting_frame = 0;
 	(*game)->current_gun_frame = 0;
 	(*game)->is_moving_fwd = 0;
+	(*game)->script_manager = (t_script_manager){0};
+
 	printf("screen_height: %d\n", (*game)->screen_height);
     printf("screen_width: %d\n", (*game)->screen_width);
 	printf("initialized gamestruct\n");
@@ -71,6 +73,7 @@ player->plane.y = -0.66f;  // Note the negative sign
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)
+	// player->height = 0.0f;
 	player->height = 0.2;
 	player->pitch = 0.0f;
 	// player->pitch = 0;
