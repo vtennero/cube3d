@@ -33,7 +33,6 @@ int main()
 
     game = NULL;
 
-    initializeAudio();
 
 
 

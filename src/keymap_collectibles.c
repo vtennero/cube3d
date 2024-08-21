@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:07:42 by toto              #+#    #+#             */
-/*   Updated: 2024/08/20 15:35:40 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:33:34 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void handle_key_e(t_game *game)
         {
             game->collectibles[0].collected = 1;
 
-            playAudioFileWithDelay("audio/samplepickup.mp3", 0);
-            playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+            // playAudioFileWithDelay("audio/samplepickup.mp3", 0);
+            // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
             game->extract[0].is_activated = 1;
         }
         else if (is_player_close_to_extract(game) && game->extract->is_activated)
         {
-            playAudioFileWithDelay("audio/extract01.mp3", 2);
+            // playAudioFileWithDelay("audio/extract01.mp3", 2);
         }
     }
 }

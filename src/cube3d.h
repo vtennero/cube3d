@@ -30,7 +30,7 @@
 # define TEX_HEIGHT 64
 # define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
 # define TEXTURE_SIZE 245
-#define NUM_ENEMY_TEXTURES 13
+#define NUM_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLES 20
 #define MAX_ENEMIES 5
 

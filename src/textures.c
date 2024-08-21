@@ -22,7 +22,8 @@ void load_enemy_textures(t_game *game, const char *path_format, int num_textures
     for (int i = 0; i < num_textures; i++)
     {
         char path[256];
-        sprintf(path, path_format, i + 1);  // This is correct, as it will generate 001 to 013
+        sprintf(path, path_format, i);
+        // sprintf(path, path_format, i + 1);  // This is correct, as it will generate 001 to 013
 
         game->enemy_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->enemy_textures[i].width, &game->enemy_textures[i].height);
         if (game->enemy_textures[i].img == NULL)

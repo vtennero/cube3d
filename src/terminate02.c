@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:00:21 by toto              #+#    #+#             */
-/*   Updated: 2024/08/19 13:59:54 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:35:30 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	cleanup(t_game *game)
 	clean_map(game);
 	// clean_floor();
 	clean_rays(game);
-    cleanupAudio();
+    // cleanupAudio();
 	free(game);
 
 

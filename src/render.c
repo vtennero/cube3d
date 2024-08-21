@@ -57,7 +57,7 @@ void print_map_section(t_game *game, int center_x, int center_y, int radius) {
 int render(t_game *game)
 {
     // comment this (for testing purposes)
-    // game->game_sequence = 3;
+    game->game_sequence = 3;
     // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
@@ -149,7 +149,9 @@ int setup_game_mlx(t_game *game)
     initialize_game_seed(game);
     initialize_floor_texture_weights(game);
     initialize_floor_texture_map(game);
-    playAudioFileWithDelay("audio/menu.mp3", 2);
+
+    // initializeAudio();
+    // playAudioFileWithDelay("audio/menu.mp3", 2);
 
 
     game->img.mlx_img = mlx_new_image(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT);

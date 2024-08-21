@@ -3,8 +3,8 @@
 # without debugger:
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-# AUDIOFLAGS = 
-AUDIOFLAGS = -lopenal -lmpg123
+AUDIOFLAGS = 
+# AUDIOFLAGS = -lopenal -lmpg123
 
 # Directories
 SRC_DIR = src
@@ -48,7 +48,7 @@ opening_bonus.c \
 land_bonus.c \
 time.c \
 extract_bonus.c \
-audio.c 
+# audio.c 
 
 
 
