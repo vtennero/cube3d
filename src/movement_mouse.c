@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 18:36:54 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:47:46 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,31 @@ static void adjust_pitch(t_game *game, int dy, float speed)
     }
 }
 
-void center_cursor(t_game *game)
-{
-    int center_x = game->screen_width / 2;
-    int center_y = game->screen_height / 2;
-    mlx_mouse_move(game->mlx_ptr, game->win_ptr, center_x, center_y);
-}
+
+// int handle_mouse_move(int x, int y, t_game *game)
+// {
+//     static int last_x = -1;
+//     static int last_y = -1;
+//     int dx, dy;
+//     float angle;
+//     float rot_speed = 0.01;
+//     float pitch_speed = 0.001;
+
+//     init_last_pos(x, y, &last_x, &last_y);
+//     calc_mouse_delta(x, y, &last_x, &last_y, &dx, &dy);
+    
+//     angle = calc_rotation_angle(dx, rot_speed);
+//     if (fabs(angle) > 0.001)
+//     {
+//         rotate_player(game, angle);
+//     }
+
+//     adjust_pitch(game, dy, pitch_speed);
+
+
+//     return (0);
+// }
+
 
 int handle_mouse_move(int x, int y, t_game *game)
 {
@@ -73,21 +92,43 @@ int handle_mouse_move(int x, int y, t_game *game)
     float rot_speed = 0.01;
     float pitch_speed = 0.001;
 
-    init_last_pos(x, y, &last_x, &last_y);
-    calc_mouse_delta(x, y, &last_x, &last_y, &dx, &dy);
-    
+    // Initialize last position if it's the first call
+    if (last_x == -1 && last_y == -1)
+    {
+        last_x = x;
+        last_y = y;
+        return (0);
+    }
+
+    // Calculate deltas
+    dx = x - last_x;
+    dy = y - last_y;
+
+    // Process rotation
     angle = calc_rotation_angle(dx, rot_speed);
     if (fabs(angle) > 0.001)
     {
         rotate_player(game, angle);
     }
 
+    // Process pitch
     adjust_pitch(game, dy, pitch_speed);
-    center_cursor(game);
+
+    // Update last position
+    last_x = x;
+    last_y = y;
+
+    // Check if cursor is near the edge of the window
+    if (x <= 10 || x >= game->width - 10 || y <= 10 || y >= game->height - 10)
+    {
+        // Move cursor to the center of the screen
+        mlx_mouse_move(game->win_ptr, game->width / 2, game->height / 2);
+        last_x = game->width / 2;
+        last_y = game->height / 2;
+    }
 
     return (0);
 }
-
 
 
 int handle_mouse_click(int button, int x, int y, void *param)
