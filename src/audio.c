@@ -96,7 +96,8 @@ int findAvailableSource() {
     return -1;  // No available source
 }
 
-int stopAudioFile(const char* filename) {
+int stopAudioFile(const char* filename)
+{
     for (int i = 0; i < MAX_SOURCES; i++) {
         if (strcmp(playingTracks[i].filename, filename) == 0) {
             alSourceStop(sources[playingTracks[i].sourceIndex]);

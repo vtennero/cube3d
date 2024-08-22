@@ -94,6 +94,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
         if (random_value == 0)
         {
             printf("Get some get some\n");
+		    playAudioFileWithDelay("audio/getsome.mp3", 0);
             // play audio
         }
     }

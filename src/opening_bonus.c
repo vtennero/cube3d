@@ -122,10 +122,10 @@ void render_opening(t_game *game)
         // First loop: 0 to MAX_OPENING_TEXTURES
         frame_to_render = get_current_frame(&game->opening_start_time);
         
-        // if (frame_to_render == 5)
-        //     playAudioFileWithDelay("audio/drop01.mp3", 3);
-        // if (frame_to_render == 30)
-        //     playAudioFileWithDelay("audio/drop03.mp3", 10);
+        if (frame_to_render == 5)
+            playAudioFileWithDelay("audio/drop01.mp3", 3);
+        if (frame_to_render == 30)
+            playAudioFileWithDelay("audio/drop03.mp3", 10);
         if (frame_to_render >= MAX_OPENING_TEXTURES - 1)
         {
             // First loop complete, start second loop

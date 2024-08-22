@@ -19,8 +19,8 @@ void handle_key_enter(t_game *game)
         if (game->game_sequence == 0)
         {
             reset_game_start_time(game);
-            // game->game_sequence = 1;
-            // playAudioFileWithDelay("audio/drop02.mp3", 0);
+            stopAudioFile("audio/menu02.mp3");
+            playAudioFileWithDelay("audio/drop02.mp3", 0);
         }
         if (game->game_sequence < 3)
             game->game_sequence++;

@@ -64,6 +64,7 @@ int render(t_game *game)
     if (game->game_sequence == 0)
     {
         // handle_key_enter(game);
+        update_scripts(game);
         handle_key_esc(game);
         render_menu(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
@@ -155,8 +156,10 @@ int setup_game_mlx(t_game *game)
     initialize_floor_texture_weights(game);
     initialize_floor_texture_map(game);
 
-    // initializeAudio();
-    // playAudioFileWithDelay("audio/menu.mp3", 2);
+    initializeAudio();
+    playAudioFileWithDelay("audio/menu.mp3", 2);
+    add_script(game, menu_background, 5);
+    add_script(game, menu_background_voice, 10);
 
 
     game->img.mlx_img = mlx_new_image(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT);

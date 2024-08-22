@@ -12,6 +12,30 @@
 
 #include "cube3d.h"
 
+void    menu_background(t_game *game)
+{
+    if (game->game_sequence == 0)
+        playAudioFileWithDelay("audio/menu02.mp3", 2);
+}
+
+void    menu_background_voice(t_game *game)
+{
+    if (game->game_sequence == 0)
+        playAudioFileWithDelay("audio/menu03.mp3", 2);
+}
+
+void    sample_acquired(t_game *game)
+{
+    playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+    (void)game;
+}
+
+void trigger_extract_music(t_game *game)
+{
+    playAudioFileWithDelay("audio/extractmusic00.mp3", 0);
+    (void)game;
+}
+
 void testscript(t_game *game)
 {
     printf("This is a test\n");
@@ -23,6 +47,8 @@ void trigger_landing(t_game *game)
     game->extract[0].is_landing = 1;
     game->extract[0].is_activated = 0;
     printf("landing sequence initiated\n");
+    playAudioFileWithDelay("audio/pelican00.mp3", 0);
+
     // play this is pelican one mp3
     // stopAudioFile("audio/menu.mp3");
     
