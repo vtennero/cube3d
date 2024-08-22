@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 18:49:24 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:50:34 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int handle_mouse_move(int x, int y, t_game *game)
     if (x <= 10 || x >= game->screen_width - 10 || y <= 10 || y >= game->screen_height - 10)
     {
         // Move cursor to the center of the screen
-        mlx_mouse_move(game->win_ptr, game->screen_width / 2, game->screen_height / 2);
+        mlx_mouse_move(game->mlx_ptr, game->win_ptr, game->screen_width / 2, game->screen_height / 2);
         last_x = game->screen_width / 2;
         last_y = game->screen_height / 2;
     }
