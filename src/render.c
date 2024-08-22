@@ -57,33 +57,39 @@ void print_map_section(t_game *game, int center_x, int center_y, int radius) {
 int render(t_game *game)
 {
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
     // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
     if (game->game_sequence == 0)
     {
-        handle_key_enter(game);
+        // handle_key_enter(game);
         handle_key_esc(game);
         render_menu(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else if (game->game_sequence == 1)
     {
+        // handle_key_enter(game);
         handle_key_esc(game);
         render_opening(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else if (game->game_sequence == 2)
     {
+        // handle_key_enter(game);
         handle_key_esc(game);
         render_land(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else if (game->game_sequence == 3)
     {
+    
+    script_found_sth(game);
+    script_board(game);
 
     update_scripts(game);
+    game->num_enemies = calculate_enemy_count(game);
     relocate_enemies(game);
 
     handle_key_esc(game);
@@ -99,7 +105,6 @@ int render(t_game *game)
     handle_movement_down(game);
 
     // interactions
-    // handle_key_e(game);
     // handle_space_shoot(game);
 
     // rendering
@@ -109,13 +114,14 @@ int render(t_game *game)
     render_ray_list(game);
     render_collectibles(game);
     render_extract(game);
-    // render_enemies(game);
+    render_enemies(game);
 
-    // check_enemy_at_center(game);
+    check_enemy_at_center(game);
     randomize_dead_enemy_positions(game);
+    // print_alive_enemies(game);
 
     update_gun_state(game);
-    // render_gun(game);
+    render_gun(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);

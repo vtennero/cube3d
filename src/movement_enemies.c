@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_enemies.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:23:26 by toto              #+#    #+#             */
-/*   Updated: 2024/08/11 17:41:47 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/22 16:00:10 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,4 +268,5 @@ void relocate_enemies(t_game *game)
             relocate_enemy(game, &game->enemies[i], i);
         }
     }
+
 }

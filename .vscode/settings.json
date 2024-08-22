@@ -4,7 +4,8 @@
 		"cstdlib": "c",
 		"cmath": "c",
 		"string.h": "c",
-		"mpg123.h": "c"
+		"mpg123.h": "c",
+		"stdlib.h": "c"
 	},
 	"makefile.configureOnOpen": false
 }

@@ -120,6 +120,14 @@ int ft_key_press(int keycode, t_game *game)
                 handle_key_e(game);  // Call the handler immediately
             }
         }
+        else if (keycode == K_ENTER)
+        {
+            if (game->key_state[K_ENTER] == 0)
+            {
+                game->key_state[K_ENTER] = 1;
+                handle_key_enter(game);  // Call the handler immediately
+            }
+        }
         else
         {
             game->key_state[keycode] = 1;

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/21 15:02:52 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:16:21 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ void testscript(t_game *game)
 {
     printf("This is a test\n");
 	(void)game;
+}
+
+void trigger_landing(t_game *game)
+{
+    game->extract[0].is_landing = 1;
+    game->extract[0].is_activated = 0;
+    printf("landing sequence initiated\n");
+    // play this is pelican one mp3
+    // stopAudioFile("audio/menu.mp3");
+    
 }
 
 void init_script_manager(t_game *game) {
@@ -57,3 +67,4 @@ void update_scripts(t_game *game) {
         }
     }
 }
+

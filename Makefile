@@ -49,6 +49,7 @@ land_bonus.c \
 time.c \
 extract_bonus.c \
 scripts.c \
+scripts_static.c \
 # audio.c 
 
 

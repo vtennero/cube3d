@@ -83,13 +83,77 @@ player->plane.y = -0.66f;  // Note the negative sign
 	return (0);
 }
 
+int randomize_extract_position(t_game *game)
+{
+    int x, y;
+    int valid_position = 0;
+
+    while (!valid_position)
+    {
+        x = random_int(game, game->map->width);
+        y = random_int(game, game->map->height);
+
+        // Check if the current position and all adjacent tiles are not walls
+        if (game->map->data[y][x] != 1 &&
+            (x == 0 || game->map->data[y][x-1] != 1) &&
+            (x == game->map->width - 1 || game->map->data[y][x+1] != 1) &&
+            (y == 0 || game->map->data[y-1][x] != 1) &&
+            (y == game->map->height - 1 || game->map->data[y+1][x] != 1) &&
+            (x == 0 || y == 0 || game->map->data[y-1][x-1] != 1) &&
+            (x == game->map->width - 1 || y == 0 || game->map->data[y-1][x+1] != 1) &&
+            (x == 0 || y == game->map->height - 1 || game->map->data[y+1][x-1] != 1) &&
+            (x == game->map->width - 1 || y == game->map->height - 1 || game->map->data[y+1][x+1] != 1))
+        {
+            valid_position = 1;
+        }
+    }
+
+    game->extract[0].position.x = (float)x + 0.5f; // Center in the tile
+    game->extract[0].position.y = (float)y + 0.5f; // Center in the tile
+
+    return 1; // Return 1 to indicate successful repositioning
+}
+
+int randomize_uncollected_collectibles(t_game *game)
+{
+    int i = 0;
+    int x, y;
+    int collectibles_repositioned = 0;
+    
+    while (i < game->num_collectibles)
+    {
+        if (game->collectibles[i].collected == 0)
+        {
+            x = random_int(game, game->map->width);
+            y = random_int(game, game->map->height);
+            
+            while (game->map->data[y][x] == 1)
+            {
+                x = random_int(game, game->map->width);
+                y = random_int(game, game->map->height);
+            }
+            
+            game->collectibles[i].position.x = (float)x + 0.5f; // Center in the tile
+            game->collectibles[i].position.y = (float)y + 0.5f; // Center in the tile
+            game->collectibles[i].collected = 0; // Mark as uncollected
+            game->collectibles[i].found = 0; // Mark as not found
+            collectibles_repositioned++;
+        }
+        i++;
+    }
+    
+    return (collectibles_repositioned);
+}
+
 int	create_collectibles(t_game *game)
 {
 	printf("initializing collectibles\n");
 	game->num_collectibles = 1;
-	game->collectibles[0].position.x = 20.5f;
-	game->collectibles[0].position.y = 11.5f;
+	randomize_uncollected_collectibles(game);
+	// game->collectibles[0].position.x = 20.5f;
+	// game->collectibles[0].position.y = 11.5f;
 	game->collectibles[0].collected = 0;
+	game->collectibles[0].found = 0;
 	printf("initialized collectibles\n");
 	return (0);
 }
@@ -97,9 +161,12 @@ int	create_collectibles(t_game *game)
 int	create_extraction(t_game *game)
 {
 	printf("initializing extrction\n");
-	game->extract[0].position.x = 10.5f;
-	game->extract[0].position.y = 11.5f;
+	// game->extract[0].position.x = 10.5f;
+	// game->extract[0].position.y = 11.5f;
+	randomize_extract_position(game);
 	game->extract[0].is_activated = 0;
+	game->extract[0].is_available = 0;
+	game->extract[0].is_landing = 0;
 	printf("initialized extraction\n");
 	return (0);
 }
@@ -124,26 +191,62 @@ int randomize_enemy_positions(t_game *game)
     return (0);
 }
 
+int calculate_enemy_count(t_game *game)
+{
+    int map_area = game->map->width * game->map->height;
+    int base_area = 24 * 24;
+    int base_count;
+
+    // Determine base count based on game state
+    if (game->extract->is_landing) {
+        base_count = 20;
+    } else if (game->extract->is_activated) {
+        base_count = 15;
+    } else if (game->collectibles[0].collected) {
+        base_count = 5;
+    } else {
+        base_count = 2;
+    }
+
+    // Calculate enemy count proportional to map area
+    int enemy_count = (map_area * base_count) / base_area;
+
+    // Ensure the count is within acceptable bounds
+    if (enemy_count < 1) {
+        enemy_count = 1;
+    } else if (enemy_count > MAX_ENEMIES) {
+        enemy_count = MAX_ENEMIES;
+    }
+
+    return enemy_count;
+}
+
 int create_enemies(t_game *game)
 {
 	printf("initializing enemies\n");
     int i;
     // float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
 
-    game->num_enemies = MAX_ENEMIES;
+    game->num_enemies = calculate_enemy_count(game);
+    // game->num_enemies = 5;
 
     for (i = 0; i < MAX_ENEMIES; i++)
     {
         // game->enemies[i].position.x = 19.0f;
         // game->enemies[i].position.y = y_positions[i];
-        game->enemies[i].is_alive = 1;
+        game->enemies[i].is_alive = 0;
         game->enemies[i].frame_count = 0;
         game->enemies[i].current_frame = 0;
         game->enemies[i].momentum = 0;
         game->enemies[i].animation_steps = 0;
+    }
+	for (i = 0; i < game->num_enemies; i++)
+    {
+        game->enemies[i].is_alive = 1;
     }
 	printf("initialized enemies\n");
 	randomize_enemy_positions(game);
 	printf("randomized enemies\n");
     return (0);
 }
+

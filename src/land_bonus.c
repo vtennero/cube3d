@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:32:25 by toto              #+#    #+#             */
-/*   Updated: 2024/08/21 11:33:40 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:54:50 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void render_land(t_game *game)
 {
     int frame_to_render = get_current_frame(&game->opening_start_time);
-    printf("render land frame to render %d\n", frame_to_render);
+    // printf("render land frame to render %d\n", frame_to_render);
     t_texture *land_texture = &game->land_texture[frame_to_render];
 
     if (land_texture->img == NULL)

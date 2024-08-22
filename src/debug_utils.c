@@ -197,3 +197,18 @@ void print_ray(const t_ray *ray)
 	printf("wall_face: %d\n", ray->wall_face);
 	printf("******************************\n");
 }
+
+void print_alive_enemies(t_game *game)
+{
+    int alive_count = 0;
+
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (game->enemies[i].is_alive)
+        {
+            alive_count++;
+        }
+    }
+
+    printf("Number of enemies alive: %d\n", alive_count);
+}

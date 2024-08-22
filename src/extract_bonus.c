@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:49:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/20 16:10:34 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:44:36 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,31 +117,174 @@ void extract_draw_sprite_stripe(t_game *game, t_texture *collectible_texture, in
 
 void render_extract(t_game *game)
 {
-    t_texture *extract_texture = &game->extract_texture[0];
+    t_texture *extract_texture;
 
-    if (game->extract[0].is_activated == 1)
+    if (game->extract[0].is_available == 1 || game->extract[0].is_activated == 1)
     {
-        float spriteX, spriteY;
-        // Use the correct coordinates (b1, b2) instead of (a1, a2)
-        extract_calculate_sprite_position(game, game->extract[0].position.x, game->extract[0].position.y, &spriteX, &spriteY);
+        extract_texture = &game->extract_texture[0];
+    }
+    else if (game->extract[0].is_landing == 1)
+    {
+        extract_texture = &game->extract_texture[1];
+    }
+    else
+    {
+        // Extract is neither available nor landing, so we don't render anything
+        return;
+    }
 
-        float transformX, transformY;
-        extract_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+    float spriteX, spriteY;
+    extract_calculate_sprite_position(game, game->extract[0].position.x, game->extract[0].position.y, &spriteX, &spriteY);
 
-        int spriteScreenX = extract_calculate_sprite_screen_x(game, transformX, transformY);
+    float transformX, transformY;
+    extract_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
 
-        int spriteHeight, drawStartY, drawEndY;
-        extract_calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+    int spriteScreenX = extract_calculate_sprite_screen_x(game, transformX, transformY);
 
-        int spriteWidth, drawStartX, drawEndX;
-        extract_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+    int spriteHeight, drawStartY, drawEndY;
+    extract_calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
 
-        for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+    int spriteWidth, drawStartX, drawEndX;
+    extract_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+    for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+    {
+        if (extract_is_sprite_in_front(transformY, stripe, game->screen_width))
         {
-            if (extract_is_sprite_in_front(transformY, stripe, game->screen_width))
-            {
-                extract_draw_sprite_stripe(game, extract_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
-            }
+            extract_draw_sprite_stripe(game, extract_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
         }
     }
 }
+
+// basic version works
+// void render_extract(t_game *game)
+// {
+//     t_texture *extract_texture = &game->extract_texture[0];
+
+//     if (game->extract[0].is_available == 1)
+//     {
+//         float spriteX, spriteY;
+//         // Use the correct coordinates (b1, b2) instead of (a1, a2)
+//         extract_calculate_sprite_position(game, game->extract[0].position.x, game->extract[0].position.y, &spriteX, &spriteY);
+
+//         float transformX, transformY;
+//         extract_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//         int spriteScreenX = extract_calculate_sprite_screen_x(game, transformX, transformY);
+
+//         int spriteHeight, drawStartY, drawEndY;
+//         extract_calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//         int spriteWidth, drawStartX, drawEndX;
+//         extract_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//         for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//         {
+//             if (extract_is_sprite_in_front(transformY, stripe, game->screen_width))
+//             {
+//                 extract_draw_sprite_stripe(game, extract_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//             }
+//         }
+//     }
+// }
+
+// not working
+// #define LANDING_DURATION 3.0f  // Increased landing animation duration to 3 seconds
+
+// void render_extract(t_game *game)
+// {
+//     t_texture *extract_texture = &game->extract_texture[0];
+
+//     if (game->extract[0].is_available == 1 || game->extract[0].is_landing == 1)
+//     {
+//         float spriteX, spriteY;
+//         extract_calculate_sprite_position(game, game->extract[0].position.x, game->extract[0].position.y, &spriteX, &spriteY);
+
+//         float transformX, transformY;
+//         extract_transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//         int spriteScreenX = extract_calculate_sprite_screen_x(game, transformX, transformY);
+
+//         int spriteHeight, drawStartY, drawEndY;
+//         extract_calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//         int spriteWidth, drawStartX, drawEndX;
+//         extract_calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//         // Add landing animation
+//         if (game->extract[0].is_landing == 1)
+//         {
+//             // Calculate the final position
+//             t_vector2d finalPosition = {spriteScreenX, drawStartY};
+            
+//             // Calculate current position based on landing progress
+//             float landingProgress = game->extract[0].landing_progress / LANDING_DURATION;
+//             landingProgress = landingProgress > 1.0f ? 1.0f : landingProgress;  // Clamp to 1.0
+
+//             spriteScreenX = game->extract[0].initial_position.x + (finalPosition.x - game->extract[0].initial_position.x) * landingProgress;
+//             drawStartY = game->extract[0].initial_position.y + (finalPosition.y - game->extract[0].initial_position.y) * landingProgress;
+            
+//             // Recalculate drawEndY based on new drawStartY
+//             drawEndY = drawStartY + spriteHeight;
+            
+//             // Update landing progress
+//             game->extract[0].landing_progress += game->extract[0].delta_time;
+//             if (game->extract[0].landing_progress >= LANDING_DURATION)
+//             {
+//                 game->extract[0].is_landing = 0;
+//                 game->extract[0].is_available = 1;
+//             }
+
+//             // Debug output
+//             printf("Landing Progress: %.2f, SpriteScreenX: %d, DrawStartY: %d, DrawEndY: %d\n", 
+//                    landingProgress, spriteScreenX, drawStartY, drawEndY);
+//         }
+
+//         // Increase sprite size for better visibility
+//         spriteHeight *= 2;
+//         spriteWidth *= 2;
+
+//         // Recalculate drawing boundaries
+//         drawStartX = spriteScreenX - spriteWidth / 2;
+//         drawEndX = spriteScreenX + spriteWidth / 2;
+//         drawStartY = (game->screen_height - spriteHeight) / 2 + game->player->pitch;
+//         drawEndY = drawStartY + spriteHeight;
+
+//         // Clamp drawing boundaries to screen dimensions
+//         drawStartX = (drawStartX < 0) ? 0 : (drawStartX >= game->screen_width) ? game->screen_width - 1 : drawStartX;
+//         drawEndX = (drawEndX < 0) ? 0 : (drawEndX >= game->screen_width) ? game->screen_width - 1 : drawEndX;
+//         drawStartY = (drawStartY < 0) ? 0 : (drawStartY >= game->screen_height) ? game->screen_height - 1 : drawStartY;
+//         drawEndY = (drawEndY < 0) ? 0 : (drawEndY >= game->screen_height) ? game->screen_height - 1 : drawEndY;
+
+//         // Debug output
+//         printf("Sprite Dimensions: Width=%d, Height=%d\n", spriteWidth, spriteHeight);
+//         printf("Drawing Boundaries: X(%d-%d), Y(%d-%d)\n", drawStartX, drawEndX, drawStartY, drawEndY);
+
+//         for (int stripe = drawStartX; stripe <= drawEndX; stripe++)
+//         {
+//             if (extract_is_sprite_in_front(transformY, stripe, game->screen_width))
+//             {
+//                 int texX = (int)(256 * (stripe - drawStartX) * extract_texture->width / spriteWidth) / 256;
+                
+//                 // Ensure texX is within bounds
+//                 texX = (texX < 0) ? 0 : (texX >= extract_texture->width) ? extract_texture->width - 1 : texX;
+
+//                 for (int y = drawStartY; y <= drawEndY; y++)
+//                 {
+//                     int d = (y - drawStartY) * 256;
+//                     int texY = (d * extract_texture->height) / spriteHeight / 256;
+                    
+//                     // Ensure texY is within bounds
+//                     texY = (texY < 0) ? 0 : (texY >= extract_texture->height) ? extract_texture->height - 1 : texY;
+
+//                     int color = extract_get_pixel_color(texX, texY, extract_texture->width, extract_texture->height, extract_texture->data, extract_texture->tex_bpp, extract_texture->tex_line_len);
+                    
+//                     if (color != -1)
+//                     {
+//                         img_pix_put(&game->img, stripe, y, color);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

@@ -189,6 +189,28 @@ void load_gun_textures(t_game *game, char *path_format, int num_frames)
 //            game->floortextures[index].width, game->floortextures[index].height);
 // }
 
+int load_extract_textures(t_game *game, char *path1, char *path2)
+{
+    t_texture *texture1 = &game->extract_texture[0];
+    t_texture *texture2 = &game->extract_texture[1];
+
+    // Load first texture
+    texture1->path = path1;
+    texture1->img = mlx_xpm_file_to_image(game->mlx_ptr, path1, &texture1->width, &texture1->height);
+    if (!texture1->img)
+        return (0);
+    texture1->data = mlx_get_data_addr(texture1->img, &texture1->tex_bpp, &texture1->tex_line_len, &texture1->tex_endian);
+
+    // Load second texture
+    texture2->path = path2;
+    texture2->img = mlx_xpm_file_to_image(game->mlx_ptr, path2, &texture2->width, &texture2->height);
+    if (!texture2->img)
+        return (0);
+    texture2->data = mlx_get_data_addr(texture2->img, &texture2->tex_bpp, &texture2->tex_line_len, &texture2->tex_endian);
+
+    return (1);
+}
+
 void load_floor_textures(t_game *game)
 {
     char *floor_texture_paths[] = {
@@ -342,7 +364,8 @@ void preload_textures(t_game *game)
     load_menu_texture(game, "textures/menu/menu.xpm");
     load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
-    load_extract_texture(game, "textures/extract/extract.xpm");
+    // load_extract_texture(game, "textures/extract/extract.xpm");
+    load_extract_textures(game, "textures/extract/extract00.xpm", "textures/extract/extract01.xpm");
 
     scale_gun_textures(game);
     scale_shooting_textures(game);

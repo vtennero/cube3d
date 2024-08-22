@@ -32,7 +32,7 @@
 # define TEXTURE_SIZE 245
 #define NUM_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLES 20
-#define MAX_ENEMIES 5
+#define MAX_ENEMIES 200
 
 #define MAX_WALL_TEXTURES 4
 #define MAX_FLOOR_TEXTURES 8
@@ -131,14 +131,20 @@ typedef struct s_texture
 typedef struct s_extract
 {
     t_vector2d position;
+    int is_available;
+    int is_landing;
     int is_activated;
     int is_complete;
+    t_vector2d initial_position;
+    float delta_time;  // Time passed since last frame
+    float landing_progress;  // Time passed since last frame
 } t_extract;
 
 typedef struct s_collectible
 {
     t_vector2d position;
     int collected;  // 0 for not collected, 1 for collected
+    int found;  // 0 for not collected, 1 for collected
 } t_collectible;
 
 typedef struct s_enemy
@@ -261,7 +267,7 @@ typedef struct s_game
 	int					current_frame;
 	t_texture			land_texture[MAX_LAND_TEXTURES];
 	t_extract			extract[1];
-	t_texture			extract_texture[1];
+	t_texture			extract_texture[2];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
 	struct timeval		opening_start_time;
@@ -509,5 +515,16 @@ void handle_space_shoot(t_game *game);
 void testscript(t_game *game);
 void add_script(t_game *game, ScriptFunction func, int delay_seconds);
 void update_scripts(t_game *game);
+int is_player_close_to_collectible(t_game *game);
+void    script_found_sth(t_game *game);
+
+// debug
+void print_alive_enemies(t_game *game);
+
+int calculate_enemy_count(t_game *game);
+
+void trigger_landing(t_game *game);
+int is_player_close_to_extract(t_game *game);
+void    script_board(t_game *game);
 
 #endif

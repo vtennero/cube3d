@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/20 17:43:57 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:32:25 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,24 @@ int handle_mouse_move(int x, int y, t_game *game)
 
     return (0);
 }
-int handle_mouse_click(int button, int x, int y, void *param)
 
+int handle_mouse_click(int button, int x, int y, void *param)
 {
     t_game *game = (t_game *)param;
-    (void)game;  // To avoid unused variable warning if you don't use it
-
-    if (button == 1)  // Left mouse button
+    if (button == 1)
     {
         printf("Shooting at position (%d, %d)\n", x, y);
-        // You can add more logic here if needed
 
         game->is_shooting = 1;
-        // update_gun_state(game);
-    }
+        int random_value = random_int(game, 6);
 
+        // If the random value is 0 (25% chance), print the special text
+        if (random_value == 0)
+        {
+            printf("Get some get some\n");
+            // play audio
+        }
+    }
     return (0);
 }
 
