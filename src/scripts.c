@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/22 17:16:21 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:46:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,28 @@ void trigger_landing(t_game *game)
     // play this is pelican one mp3
     // stopAudioFile("audio/menu.mp3");
     
+}
+
+// sucks
+// void play_gun_sound(t_game *game)
+// {
+//     // stopAudioFile("audio/gun01.mp3");
+//     playAudioFileWithDelay("audio/gun01.mp3", 0);
+//     (void)game;
+// }
+
+void play_gun_sound(t_game *game) {
+    playAudioFileWithDelay("audio/gun01.mp3", 0);
+    // If we're still shooting, schedule the next sound
+    if (game->is_shooting) {
+        add_script(game, play_gun_sound, 1); // 0 second delay for continuous fire
+    }
+}
+
+void    trigger_gunshots(t_game *game)
+{
+    if (game->is_shooting)
+        add_script(game, play_gun_sound, 3);
 }
 
 void init_script_manager(t_game *game) {

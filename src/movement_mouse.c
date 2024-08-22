@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_mouse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 18:51:07 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:44:47 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
 
         game->is_shooting = 1;
         int random_value = random_int(game, 6);
+        play_gun_sound(game);
 
         // If the random value is 0 (25% chance), print the special text
         if (random_value == 0)

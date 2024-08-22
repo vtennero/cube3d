@@ -45,11 +45,10 @@
 #define FRAMES_PER_SECOND 20
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
 #define MAX_SCRIPTS 10
+#define OBJECT_SIZE 1
 
-# ifndef M_PI
-#  define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 
-# endif
 
 /*
 ** ================== STRUCTURES ==================
@@ -518,6 +517,8 @@ void add_script(t_game *game, ScriptFunction func, int delay_seconds);
 void update_scripts(t_game *game);
 int is_player_close_to_collectible(t_game *game);
 void    script_found_sth(t_game *game);
+void play_gun_sound(t_game *game);
+void    trigger_gunshots(t_game *game);
 
 // debug
 void print_alive_enemies(t_game *game);
@@ -532,5 +533,15 @@ void    sample_acquired(t_game *game);
 void    menu_background(t_game *game);
 void    menu_background_voice(t_game *game);
 
+// objects
+void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
+void draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY);
+void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY);
+t_ray_node* find_ray_node(t_game *game, int stripe);
+int is_sprite_in_front(float transformY, int stripe, int screen_width);
+void calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, int *spriteWidth, int *drawStartX, int *drawEndX);
+int calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
+void calculate_sprite_position(t_game *game, float object_x, float object_y, float *spriteX, float *spriteY);
+int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
 
 #endif

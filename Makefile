@@ -30,6 +30,7 @@ render_walls_bonus.c \
 render_sky.c \
 render_gun.c \
 render_collectibles.c \
+render_objects.c \
 render_enemies.c \
 raycasting.c \
 raycasting_utils.c \

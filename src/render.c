@@ -40,7 +40,8 @@ void img_pix_put(t_img *img, int x, int y, int color)
 
 // debug
 
-void print_map_section(t_game *game, int center_x, int center_y, int radius) {
+void print_map_section(t_game *game, int center_x, int center_y, int radius)
+{
        printf("Map section around player:\n");
        for (int y = center_y - radius; y <= center_y + radius; y++) {
            for (int x = center_x - radius; x <= center_x + radius; x++) {
@@ -58,7 +59,7 @@ int render(t_game *game)
 {
     // comment this (for testing purposes)
     // game->game_sequence = 3;
-    printf("game sequence: %d\n", game->game_sequence);
+    // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
     if (game->game_sequence == 0)
@@ -88,7 +89,7 @@ int render(t_game *game)
     
     script_found_sth(game);
     script_board(game);
-
+    // trigger_gunshots(game);
     update_scripts(game);
     game->num_enemies = calculate_enemy_count(game);
     relocate_enemies(game);
@@ -173,7 +174,7 @@ int setup_game_mlx(t_game *game)
     // Add this line to handle mouse movement
     mlx_hook(game->win_ptr, 6, 1L << 6, handle_mouse_move, game);
     mlx_mouse_hook(game->win_ptr, handle_mouse_click, game);
-    mlx_hook(game->win_ptr, 5, 1L << 3, handle_mouse_release, game);  // 5 is the event code for mouse button release
+    mlx_hook(game->win_ptr, 5, 1L << 3, handle_mouse_release, game);
 
 
     // mlx_hook(game->win_ptr, 17, 0, handle_cross_key, game);
