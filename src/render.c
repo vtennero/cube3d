@@ -58,7 +58,7 @@ int render(t_game *game)
 {
     // comment this (for testing purposes)
     // game->game_sequence = 3;
-    // printf("game sequence: %d\n", game->game_sequence);
+    printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
     if (game->game_sequence == 0)

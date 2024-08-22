@@ -184,7 +184,7 @@ void render_opening(t_game *game)
     }
 
     // Render the frame
-    print_frame_info(frame_to_render);
+    // print_frame_info(frame_to_render);
     t_texture *opening_texture = &game->opening_texture[frame_to_render];
     check_texture_loaded(opening_texture);
     render_frame(game, opening_texture);

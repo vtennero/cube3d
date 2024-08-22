@@ -142,7 +142,7 @@ void	cleanup(t_game *game)
 	clean_map(game);
 	// clean_floor();
 	clean_rays(game);
-    // cleanupAudio();
+    cleanupAudio();
 	free(game);
 
 
