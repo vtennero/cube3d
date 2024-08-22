@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:32:25 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 16:54:50 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:31:42 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void render_land(t_game *game)
     {
             game->game_sequence = 3;
             game->current_frame = 0;
-            stopAudioFile("audio/drop03.mp3");
+            // stopAudioFile("audio/drop03.mp3");
 			playAudioFileWithDelay("audio/land.mp3", 0);
 
     }

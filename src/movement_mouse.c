@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 13:32:25 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:36:54 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ static void adjust_pitch(t_game *game, int dy, float speed)
     }
 }
 
+void center_cursor(t_game *game)
+{
+    int center_x = game->screen_width / 2;
+    int center_y = game->screen_height / 2;
+    mlx_mouse_move(game->mlx_ptr, game->win_ptr, center_x, center_y);
+}
+
 int handle_mouse_move(int x, int y, t_game *game)
 {
     static int last_x = -1;
@@ -76,9 +83,12 @@ int handle_mouse_move(int x, int y, t_game *game)
     }
 
     adjust_pitch(game, dy, pitch_speed);
+    center_cursor(game);
 
     return (0);
 }
+
+
 
 int handle_mouse_click(int button, int x, int y, void *param)
 {
