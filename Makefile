@@ -6,6 +6,9 @@ CFLAGS = -Wall -Wextra -Werror
 # AUDIOFLAGS = 
 AUDIOFLAGS = -lopenal -lmpg123
 
+# Static linking flag (uncomment to enable)
+STATIC_FLAG = -static
+
 # Directories
 SRC_DIR = src
 LIBFT_DIR = libft
@@ -88,7 +91,7 @@ $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS)
+    $(CC) $(CFLAGS) $(STATIC_FLAG) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS)
 
 bonus:
 	$(MAKE) MAIN=$(BONUS_MAIN) NAME=$(BONUS_NAME) all
