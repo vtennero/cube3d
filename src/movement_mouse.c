@@ -6,13 +6,13 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 18:50:34 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:51:07 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-static void init_last_pos(int x, int y, int *last_x, int *last_y)
+void init_last_pos(int x, int y, int *last_x, int *last_y)
 {
     if (*last_x == -1 || *last_y == -1)
     {
@@ -21,7 +21,7 @@ static void init_last_pos(int x, int y, int *last_x, int *last_y)
     }
 }
 
-static void calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, int *dy)
+void calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, int *dy)
 {
     *dx = x - *last_x;
     *dy = y - *last_y;
@@ -29,25 +29,25 @@ static void calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, in
     *last_y = y;
 }
 
-static float calc_rotation_angle(int dx, float speed)
+float calc_rotation_angle(int dx, float speed)
 {
     return dx * speed;
 }
 
-static void rotate_vector(float *x, float *y, float angle)
+void rotate_vector(float *x, float *y, float angle)
 {
     float old_x = *x;
     *x = old_x * cos(angle) - *y * sin(angle);
     *y = old_x * sin(angle) + *y * cos(angle);
 }
 
-static void rotate_player(t_game *game, float angle)
+void rotate_player(t_game *game, float angle)
 {
     rotate_vector(&game->player->direction.x, &game->player->direction.y, angle);
     rotate_vector(&game->player->plane.x, &game->player->plane.y, angle);
 }
 
-static void adjust_pitch(t_game *game, int dy, float speed)
+void adjust_pitch(t_game *game, int dy, float speed)
 {
     float change = -dy * speed;
     if (fabs(change) > 0.001)
