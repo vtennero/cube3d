@@ -30,10 +30,10 @@ void render_outro(t_game *game)
     // Update game state
     game->current_frame = frame_to_render;
 
-    // Check if we've reached the last frame
-    if (frame_to_render == MAX_OUTRO_TEXTURES - 1)
-    {
-		sleep(10);
-		cleanup(game);
-    }
+    // Check if we've reached the last frame and close properly
+    // if (frame_to_render == MAX_OUTRO_TEXTURES - 1)
+    // {
+	// 	sleep(10);
+	// 	cleanup(game);
+    // }
 }
