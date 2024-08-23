@@ -319,6 +319,17 @@ int load_menu_texture(t_game *game, char *path)
     return (1);
 }
 
+int load_supplies_texture(t_game *game, char *path)
+{
+    t_texture *texture = &game->supplies_texture[0];
+    texture->path = path;
+    texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
+    if (!texture->img)
+        return (0);
+    texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    return (1);
+}
+
 void load_shooting_textures(t_game *game, const char *path_format, int num_textures)
 {
     if (num_textures > MAX_SHOOTING_TEXTURES) {
@@ -416,6 +427,7 @@ void preload_textures(t_game *game)
     // load_extract_texture(game, "textures/extract/extract.xpm");
     // load_extract_textures(game, "textures/extract/extract00.xpm", "textures/extract/extract01.xpm");
     load_extract_textures(game);
+    load_supplies_texture(game, "textures/supplies/supplies.xpm");
 
     scale_gun_textures(game);
     scale_shooting_textures(game);

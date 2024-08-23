@@ -147,6 +147,38 @@ int randomize_uncollected_collectibles(t_game *game)
     return (collectibles_repositioned);
 }
 
+
+int randomize_uncollected_supplies(t_game *game)
+{
+    int i = 0;
+    int x, y;
+    int supplies_repositioned = 0;
+    
+    while (i < game->num_supplies)
+    {
+        if (game->supplies[i].collected == 0)
+        {
+            x = random_int(game, game->map->width);
+            y = random_int(game, game->map->height);
+            
+            while (game->map->data[y][x] == 1)
+            {
+                x = random_int(game, game->map->width);
+                y = random_int(game, game->map->height);
+            }
+            
+            game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
+            game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
+            game->supplies[i].collected = 0; // Mark as uncollected
+            game->supplies[i].found = 0; // Mark as not found
+            supplies_repositioned++;
+        }
+        i++;
+    }
+    
+    return (supplies_repositioned);
+}
+
 int	create_collectibles(t_game *game)
 {
 	printf("initializing collectibles\n");
@@ -172,6 +204,8 @@ int	create_extraction(t_game *game)
 	printf("initialized extraction\n");
 	return (0);
 }
+
+
 
 int randomize_enemy_positions(t_game *game)
 {
@@ -223,6 +257,25 @@ int calculate_enemy_count(t_game *game)
     return enemy_count;
 }
 
+int calculate_supplies(t_game *game)
+{
+    int map_area = game->map->width * game->map->height;
+    int base_area = 24 * 24;
+    int base_count = 5;  // Fixed number of supplies for the base area
+
+    // Calculate supply count proportional to map area
+    int supply_count = (map_area * base_count) / base_area;
+
+    // Ensure the count is within acceptable bounds
+    if (supply_count < 1) {
+        supply_count = 1;
+    } else if (supply_count > MAX_SUPPLIES) {
+        supply_count = MAX_SUPPLIES;
+    }
+
+    return supply_count;
+}
+
 int create_enemies(t_game *game)
 {
 	printf("initializing enemies\n");
@@ -252,3 +305,11 @@ int create_enemies(t_game *game)
     return (0);
 }
 
+int	create_supplies(t_game *game)
+{
+	printf("initializing supplies\n");
+	game->num_supplies = calculate_supplies(game);
+	randomize_uncollected_supplies(game);
+	printf("initialized supplies\n");
+	return (0);
+}

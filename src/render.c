@@ -114,6 +114,7 @@ int render(t_game *game)
     // c_render_ray_list(game);
     render_ray_list(game);
     render_collectibles(game);
+    render_supplies(game);
     render_extract(game);
     render_enemies(game);
 

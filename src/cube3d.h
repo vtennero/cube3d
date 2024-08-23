@@ -32,6 +32,7 @@
 # define TEXTURE_SIZE 245
 #define NUM_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLES 20
+#define MAX_SUPPLIES 200
 #define MAX_ENEMIES 200
 
 #define MAX_WALL_TEXTURES 4
@@ -148,6 +149,13 @@ typedef struct s_collectible
     int found;  // 0 for not collected, 1 for collected
 } t_collectible;
 
+typedef struct s_supplies
+{
+    t_vector2d position;
+    int collected;  // 0 for not collected, 1 for collected
+    int found;  // 0 for not collected, 1 for collected
+} t_supplies;
+
 typedef struct s_enemy
 {
     t_vector2d position;
@@ -263,7 +271,9 @@ typedef struct s_game
 	int					current_shooting_frame;
 	t_ray_node			*ray_list;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
+	t_supplies       	supplies[MAX_SUPPLIES];
     int                 num_collectibles;  // Current number of active collectibles
+    int                 num_supplies;  // Current number of active collectibles
     t_enemy             enemies[MAX_ENEMIES];
     int                 num_enemies;  // Current number of active enemies
 	int					game_sequence;
@@ -271,6 +281,7 @@ typedef struct s_game
 	t_texture			land_texture[MAX_LAND_TEXTURES];
 	t_extract			extract[1];
 	t_texture			extract_texture[2];
+	t_texture			supplies_texture[1];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
 	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
@@ -557,5 +568,8 @@ void render_hit(t_game *game);
 
 void render_outro(t_game *game);
 int get_current_frame_outro(struct timeval *start_time);
+
+// supplies
+void render_supplies(t_game *game);
 
 #endif
