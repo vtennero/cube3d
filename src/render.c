@@ -163,7 +163,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
 
     preload_textures(game);
     initialize_game_seed(game);
