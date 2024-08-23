@@ -106,12 +106,12 @@ static void update_player_position(t_game *game, float newX, float newY)
     // printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
 }
 
-static void print_movement_direction(t_game *game)
-{
-    if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
-        printf("You are moving north\n");
-    }
-}
+// static void print_movement_direction(t_game *game)
+// {
+//     if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+//         printf("You are moving north\n");
+//     }
+// }
 
 float calculate_dynamic_buffer(t_player *player, float base_speed)
 {
@@ -144,8 +144,8 @@ void handle_key_w(t_game *game)
     }
     game->is_moving_fwd = 1;
     // update_gun_state(game);
-    print_game_map(game);
-    print_movement_direction(game);
+    // print_game_map(game);
+    // print_movement_direction(game);
     // game->is_moving_fwd = 0;
 }
 

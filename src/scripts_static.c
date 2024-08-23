@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 14:43:04 by root             ###   ########.fr       */
+/*   Updated: 2024/08/23 15:01:17 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ void    script_board(t_game *game)
 	if (is_player_close_to_extract(game) && game->extract[0].is_landing == 1)
 	{
     	stopAudioFile("audio/extractmusic00.mp3");
+		// add_script(game, )
 		playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
 
 		// play audio extraction complete voice
 		game->game_sequence = 4;
 		reset_game_start_time(game);
+    	// printf("game sequence: %d\n", game->game_sequence);
 
 	}
 }

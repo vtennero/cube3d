@@ -57,9 +57,7 @@ void print_map_section(t_game *game, int center_x, int center_y, int radius)
 
 int render(t_game *game)
 {
-    // comment this (for testing purposes)
-    game->game_sequence = 4;
-    // printf("game sequence: %d\n", game->game_sequence);
+    // printf("RENDER game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);
     if (game->game_sequence == 0)
@@ -135,6 +133,7 @@ int render(t_game *game)
     else if (game->game_sequence == 4)
     {
         render_outro(game);
+        mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else
     {
@@ -158,6 +157,10 @@ int setup_game_mlx(t_game *game)
         free(game->win_ptr);
         return (0);
     }
+
+    // comment this (for testing purposes)
+    game->game_sequence = 3;
+
     preload_textures(game);
     initialize_game_seed(game);
     initialize_floor_texture_weights(game);
