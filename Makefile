@@ -47,6 +47,7 @@ terminate02.c \
 menu_bonus.c \
 opening_bonus.c \
 land_bonus.c \
+outro_bonus.c \
 time.c \
 extract_bonus.c \
 scripts.c \

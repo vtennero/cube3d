@@ -47,7 +47,7 @@
 #define MAX_SCRIPTS 500
 #define OBJECT_SIZE 1
 #define MAX_HEALTH 30
-
+#define MAX_OUTRO_TEXTURES 79
 
 #define M_PI 3.14159265358979323846
 
@@ -272,6 +272,7 @@ typedef struct s_game
 	t_extract			extract[1];
 	t_texture			extract_texture[2];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
+	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
 	struct timeval		opening_start_time;
 	int					loop_count;
@@ -553,4 +554,6 @@ int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
 void enemies_hit(t_game *game);
 void render_hit(t_game *game);
 
+
+void render_outro(t_game *game);
 #endif

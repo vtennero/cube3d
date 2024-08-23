@@ -132,6 +132,10 @@ int render(t_game *game)
 
     clean_rays(game);
     }
+    else if (game->game_sequence == 3)
+    {
+        render_outro(game);
+    }
     else
     {
         printf("game_sequence error %d\n", game->game_sequence);

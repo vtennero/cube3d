@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/22 17:23:01 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 14:04:59 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void    script_board(t_game *game)
 		playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
 
 		// play audio extraction complete voice
-		game->game_sequence = 0;
+		game->game_sequence = 4;
 	}
 }
