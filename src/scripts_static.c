@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts_static.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 16:03:36 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:07:45 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void    script_take_supplies(t_game *game)
     if (game->game_sequence == 3 && found >= 0 && game->supplies[found].collected == 0)
 	{
         printf("restored health\n");
-		playAudioFileWithDelay("audio/stim01.mp3", 0);
+		playAudioFileWithDelay("audio/stims02.mp3", 0);
 		game->supplies[found].collected = 1;
 		game->player->hp = MAX_HEALTH;
 	}
