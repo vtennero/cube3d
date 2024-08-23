@@ -178,6 +178,7 @@ typedef struct s_player
 	t_vector2d			plane;
 	float				pitch;
 	float				height;
+	int					hp;
 }						t_player;
 
 typedef struct s_map
@@ -544,5 +545,8 @@ void calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, i
 int calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
 void calculate_sprite_position(t_game *game, float object_x, float object_y, float *spriteX, float *spriteY);
 int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
+
+// enemies hit
+void enemies_hit(t_game *game);
 
 #endif

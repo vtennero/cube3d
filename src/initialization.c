@@ -76,6 +76,7 @@ player->plane.y = -0.66f;  // Note the negative sign
 	// player->height = 0.0f;
 	player->height = 0.2;
 	player->pitch = 0.0f;
+	player->hp = 100;
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;

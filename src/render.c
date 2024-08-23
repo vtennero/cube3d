@@ -93,6 +93,7 @@ int render(t_game *game)
     update_scripts(game);
     game->num_enemies = calculate_enemy_count(game);
     relocate_enemies(game);
+    enemies_hit(game);
 
     handle_key_esc(game);
     handle_movement_left(game);

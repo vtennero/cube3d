@@ -51,6 +51,7 @@ time.c \
 extract_bonus.c \
 scripts.c \
 scripts_static.c \
+enemies_hit_bonus.c \
 audio.c 
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
