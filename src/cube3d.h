@@ -548,5 +548,6 @@ int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
 
 // enemies hit
 void enemies_hit(t_game *game);
+void render_hit(t_game *game);
 
 #endif

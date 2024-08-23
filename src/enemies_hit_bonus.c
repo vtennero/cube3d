@@ -4,6 +4,35 @@
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 #define HIT_PROBABILITY 5000 // Increased to 20% chance (was 100000)
 
+
+void render_hit(t_game *game)
+{
+    int x, y;
+    int red_color = 0xFF0000;  // Solid red color
+
+    for (y = 0; y < game->screen_height; y++)
+    {
+        for (x = 0; x < game->screen_width; x++)
+        {
+            // Faux transparency effect
+            int faux_alpha = (x * y) % 256;  // This creates a pattern based on pixel position
+            int r = (red_color >> 16) & 0xFF;
+            int g = (red_color >> 8) & 0xFF;
+            int b = red_color & 0xFF;
+
+            // Apply the faux alpha
+            r = (r * faux_alpha) / 255;
+            g = (g * faux_alpha) / 255;
+            b = (b * faux_alpha) / 255;
+
+            // Combine the colors back
+            int final_color = (r << 16) | (g << 8) | b;
+
+            img_pix_put(&game->img, x, y, final_color);
+        }
+    }
+}
+
 // Function to check if an enemy should attempt to hit
 static int should_attempt_hit(unsigned long long *enemy_seed)
 {

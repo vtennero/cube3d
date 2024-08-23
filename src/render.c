@@ -125,6 +125,7 @@ int render(t_game *game)
 
     update_gun_state(game);
     render_gun(game);
+    render_hit(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
