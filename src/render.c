@@ -132,7 +132,7 @@ int render(t_game *game)
 
     clean_rays(game);
     }
-    else if (game->game_sequence == 3)
+    else if (game->game_sequence == 4)
     {
         render_outro(game);
     }
