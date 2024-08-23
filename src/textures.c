@@ -80,7 +80,7 @@ void load_land_textures(t_game *game, const char *path_format, int num_textures)
         }
         game->land_texture[i].data = mlx_get_data_addr(game->land_texture[i].img, &game->land_texture[i].tex_bpp, &game->land_texture[i].tex_line_len, &game->land_texture[i].tex_endian);
     }
-    printf("Loaded opening textures\n");  // Changed to print the actual file number
+    printf("Loaded landing textures\n");  // Changed to print the actual file number
 
 }
 
@@ -104,7 +104,7 @@ void load_outro_textures(t_game *game, const char *path_format, int num_textures
         }
         game->outro_texture[i].data = mlx_get_data_addr(game->outro_texture[i].img, &game->outro_texture[i].tex_bpp, &game->outro_texture[i].tex_line_len, &game->outro_texture[i].tex_endian);
     }
-    printf("Loaded opening textures\n");  // Changed to print the actual file number
+    printf("Loaded outro textures\n");  // Changed to print the actual file number
 
 }
 

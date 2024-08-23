@@ -5,7 +5,7 @@
 void render_outro(t_game *game)
 {
     int frame_to_render = get_current_frame(&game->opening_start_time);
-    // printf("render land frame to render %d\n", frame_to_render);
+    printf("render outro frame to render %d\n", frame_to_render);
     t_texture *outro_texture = &game->outro_texture[frame_to_render];
 
     if (outro_texture->img == NULL)
