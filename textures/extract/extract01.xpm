@@ -1,7 +1,7 @@
 /* XPM */
 static char * extract01_xpm[] = {
 "800 800 9376 3",
-"   	c None",
+"   	c 0xFF000000",
 ".  	c #535254",
 "+  	c #565558",
 "@  	c #5A5B5E",
