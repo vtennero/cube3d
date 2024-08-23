@@ -214,10 +214,10 @@ void load_gun_textures(t_game *game, char *path_format, int num_frames)
 int load_extract_textures(t_game *game)
 {
     static char *file_names[] = {
-        "extract00.xpm",
-        "extract01.xpm",
-        "extract02.xpm",
-        "extract03.xpm"
+        "textures/extract/extract00.xpm",
+        "textures/extract/extract01.xpm",
+        "textures/extract/extract02.xpm",
+        "textures/extract/extract03.xpm"
     };
     const int num_textures = sizeof(file_names) / sizeof(file_names[0]);
 
