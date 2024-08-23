@@ -1,7 +1,7 @@
 /* XPM */
 static char * supplies_xpm[] = {
 "800 800 74197 3",
-"   	c None",
+"   	c 0xFF000000",
 ".  	c #E3D5D2",
 "+  	c #DDCFCD",
 "@  	c #D7C9C7",

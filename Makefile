@@ -31,6 +31,7 @@ render_sky.c \
 render_gun.c \
 render_collectibles.c \
 render_objects.c \
+supplies_bonus.c \
 render_enemies.c \
 raycasting.c \
 raycasting_utils.c \

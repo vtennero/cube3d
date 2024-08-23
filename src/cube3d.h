@@ -571,5 +571,6 @@ int get_current_frame_outro(struct timeval *start_time);
 
 // supplies
 void render_supplies(t_game *game);
+int	create_supplies(t_game *game);
 
 #endif

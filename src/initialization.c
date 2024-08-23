@@ -309,6 +309,7 @@ int	create_supplies(t_game *game)
 {
 	printf("initializing supplies\n");
 	game->num_supplies = calculate_supplies(game);
+    printf("game->num_supplies %d\n", game->num_supplies);
 	randomize_uncollected_supplies(game);
 	printf("initialized supplies\n");
 	return (0);

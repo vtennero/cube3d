@@ -13,6 +13,8 @@ void render_supply(t_game *game, t_vector2d position)
 {
     t_texture *supply_texture = &game->supplies_texture[0];
 
+    printf("Rendering supply at position (%.2f, %.2f)\n", position.x, position.y);
+
     float spriteX, spriteY;
     calculate_sprite_position(game, position.x, position.y, &spriteX, &spriteY);
 
@@ -44,7 +46,7 @@ void render_supplies(t_game *game)
         if (!game->supplies[i].collected)
         {
             // printf("Rendering collectible %d at (%.2f, %.2f)\n", i, game->supplies[i].position.x, game->supplies[i].position.y);
-            render_collectible(game, game->supplies[i].position);
+            render_supply(game, game->supplies[i].position);
         }
         else
         {
