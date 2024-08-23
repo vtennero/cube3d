@@ -422,7 +422,7 @@ void preload_textures(t_game *game)
     load_menu_texture(game, "textures/menu/menu.xpm");
     load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
-    load_outro_textures(game, "textures/outro/outro%02d.xpm", MAX_OUTRO_TEXTURES);
+    load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
     load_extract_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
 

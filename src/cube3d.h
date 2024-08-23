@@ -48,7 +48,7 @@
 #define MAX_SCRIPTS 500
 #define OBJECT_SIZE 1
 #define MAX_HEALTH 30
-#define MAX_OUTRO_TEXTURES 79
+#define MAX_OUTRO_TEXTURES 229
 
 #define M_PI 3.14159265358979323846
 
@@ -536,6 +536,7 @@ void    script_found_sth(t_game *game);
 void play_gun_sound(t_game *game);
 void    trigger_gunshots(t_game *game);
 void    get_hit(t_game *game);
+void trigger_extract_victory(t_game *game);
 
 // debug
 void print_alive_enemies(t_game *game);

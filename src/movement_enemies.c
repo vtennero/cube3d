@@ -6,14 +6,14 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:23:26 by toto              #+#    #+#             */
-/*   Updated: 2024/08/23 10:30:07 by root             ###   ########.fr       */
+/*   Updated: 2024/08/23 18:41:24 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
 #define MOVEMENT_PROBABILITY 999500 // Adjust this to change how often enemies move (0-100)
-#define MOVEMENT_SPEED 0.05     // Adjust this to change how far enemies move each step
+#define MOVEMENT_SPEED 0.02     // Adjust this to change how far enemies move each step
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 
 void print_enemy_direction(int index, float dx, float dy)

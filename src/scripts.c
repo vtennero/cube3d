@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:07 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:36:54 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ void    menu_background_voice(t_game *game)
 void    sample_acquired(t_game *game)
 {
     playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+    (void)game;
+}
+
+void trigger_extract_victory(t_game *game)
+{
+    playAudioFileWithDelay("audio/extract05.mp3", 0);
     (void)game;
 }
 

@@ -137,6 +137,7 @@ int render(t_game *game)
     else if (game->game_sequence == 4)
     {
         render_outro(game);
+        update_scripts(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
     }
     else
