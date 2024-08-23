@@ -9,7 +9,9 @@ void render_hit(t_game *game)
     int x, y;
     int solid_red = 0xFF0000;  // Solid red color
     
-    for (y = 0; y < game->screen_height; y++)
+    if (game->player->is_hit)
+    {
+        for (y = 0; y < game->screen_height; y++)
     {
         for (x = 0; x < game->screen_width; x++)
         {
@@ -22,6 +24,8 @@ void render_hit(t_game *game)
             // creating the illusion of transparency
         }
     }
+    }
+
 }
 
 // Function to check if an enemy should attempt to hit
@@ -62,8 +66,8 @@ void enemy_hit_attempt(t_game *game, t_enemy *enemy, int index)
         // printf("Hit attempt passed probability check\n");
         if (is_close_enough(game, enemy))
         {
-            if (game->player->hp)
-                game->player->hp--;
+            add_script(game, get_hit, 0);
+            game->player->is_hit = 1;
             printf("You got hit by enemy %d; new hp: %d\n", index, game->player->hp);
             
         }

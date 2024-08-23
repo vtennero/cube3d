@@ -179,6 +179,7 @@ typedef struct s_player
 	float				pitch;
 	float				height;
 	int					hp;
+	int					is_hit;
 }						t_player;
 
 typedef struct s_map

@@ -103,7 +103,7 @@ static void update_player_position(t_game *game, float newX, float newY)
 {
     game->player->position.x = newX;
     game->player->position.y = newY;
-    printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+    // printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
 }
 
 static void print_movement_direction(t_game *game)
@@ -122,13 +122,13 @@ float calculate_dynamic_buffer(t_player *player, float base_speed)
 
     float cosine_angle = dot_product / (dir_mag * plane_mag);
     float dynamic_buffer = base_speed * (1 - fabs(cosine_angle)); // Reduce buffer as angle approaches 90 degrees
-    printf("dynamic buffer %f\n", dynamic_buffer);
+    // printf("dynamic buffer %f\n", dynamic_buffer);
     return dynamic_buffer;
 }
 
 void handle_key_w(t_game *game)
 {
-    printf("You just pressed W!\n");
+    // printf("You just pressed W!\n");
 
     float speed = 0.1;  // Speed of movement, adjust as necessary
     float newX = game->player->position.x + game->player->direction.x * speed;
@@ -151,7 +151,7 @@ void handle_key_w(t_game *game)
 
 void handle_key_s(t_game *game)
 {
-    printf("You just pressed S!\n");
+    // printf("You just pressed S!\n");
 
     float speed = 0.1;  // Speed of movement, adjust as necessary
     float buffer = 0.8; // Buffer distance to prevent entering into a wall
@@ -165,7 +165,7 @@ void handle_key_s(t_game *game)
     {
         game->player->position.x = newX + game->player->direction.x * buffer; // Revert buffer
         game->player->position.y = newY + game->player->direction.y * buffer; // Revert buffer
-        printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+        // printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
     }
     else
     {
@@ -173,29 +173,29 @@ void handle_key_s(t_game *game)
     }
     game->is_moving_fwd = 1;
     // update_gun_state(game);
-    print_game_map(game);
+    // print_game_map(game);
 }
 
 
 void handle_key_up(t_game *game)
 {
-    printf("You just pressed Up!\n");
+    // printf("You just pressed Up!\n");
     if (game->player->pitch < 1)
         game->player->pitch += 0.01;
-    printf("New pitch %f\n", game->player->pitch);
+    // printf("New pitch %f\n", game->player->pitch);
 }
 
 void handle_key_down(t_game *game)
 {
-    printf("You just pressed Down!\n");
+    // printf("You just pressed Down!\n");
     if (game->player->pitch > -1)
         game->player->pitch -= 0.01;
-    printf("New pitch %f\n", game->player->pitch);
+    // printf("New pitch %f\n", game->player->pitch);
 }
 
 void handle_key_a(t_game *game)
 {
-    printf("You just pressed A!\n");
+    // printf("You just pressed A!\n");
 
     float speed = 0.1; // Control the speed of strafing
 
@@ -216,13 +216,13 @@ void handle_key_a(t_game *game)
         printf("Collision detected or Out of Map movement\n");
     }
 
-    print_movement_direction(game);
-    print_game_map(game);
+    // print_movement_direction(game);
+    // print_game_map(game);
 }
 
 void handle_key_d(t_game *game)
 {
-    printf("You just pressed D!\n");
+    // printf("You just pressed D!\n");
 
     float speed = 0.1;
 
@@ -243,13 +243,13 @@ void handle_key_d(t_game *game)
         printf("Collision/Out of Map movement\n");
     }
 
-    print_movement_direction(game);
-    print_game_map(game);
+    // print_movement_direction(game);
+    // print_game_map(game);
 }
 
 void handle_key_left(t_game *game)
 {
-    printf("You just pressed Left!\n");
+    // printf("You just pressed Left!\n");
 
     float angle = -0.0872665; // -5 degrees in radians (counterclockwise)
 
@@ -265,16 +265,16 @@ void handle_key_left(t_game *game)
     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
-    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+    // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-    printf("Facing direction: %s\n", direction);
+    // printf("Facing direction: %s\n", direction);
 
-    print_movement_direction(game);
+    // print_movement_direction(game);
 }
 
 void handle_key_right(t_game *game)
 {
-    printf("You just pressed Right!\n");
+    // printf("You just pressed Right!\n");
 
     float angle = 0.0872665; // 5 degrees in radians (clockwise)
 
@@ -290,11 +290,11 @@ void handle_key_right(t_game *game)
     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
-    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+    // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
     const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-    printf("Facing direction: %s\n", direction);
+    // printf("Facing direction: %s\n", direction);
 
-    print_movement_direction(game);
+    // print_movement_direction(game);
 }
 
 void handle_movement_dash(t_game *game)
@@ -311,13 +311,13 @@ void handle_movement_dash(t_game *game)
         {
             game->player->position.x = newX;
             game->player->position.y = newY;
-            printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
+            // printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
         }
         else
         {
             printf("Collision detected! Cannot dash.\n");
         }
-        print_game_map(game);
+        // print_game_map(game);
         game->is_moving_fwd = 1;
 
     }

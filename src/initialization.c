@@ -67,8 +67,8 @@ int	create_player(t_game *game)
 	// Initialize the camera plane for the raycasting (related to the FOV)
 	// player->plane.x = 0.0f;  // Adjust this value to change the FOV
 	// player->plane.y = 0.66f; // This setting assumes a 66 degrees FOV
-player->plane.x = 0.0f;
-player->plane.y = -0.66f;  // Note the negative sign
+    player->plane.x = 0.0f;
+    player->plane.y = -0.66f;  // Note the negative sign
 
 
 	// Initialize pitch (not needed for basic raycasting,
@@ -77,6 +77,7 @@ player->plane.y = -0.66f;  // Note the negative sign
 	player->height = 0.2;
 	player->pitch = 0.0f;
 	player->hp = 100;
+	player->is_hit = 0;
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;

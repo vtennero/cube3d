@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   scripts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/22 23:46:39 by root             ###   ########.fr       */
+/*   Updated: 2024/08/23 13:27:07 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+
+void    get_hit(t_game *game)
+{
+    if (game->player->hp)
+        game->player->hp--;
+    game->player->is_hit = 0;
+}
 
 void    menu_background(t_game *game)
 {
