@@ -2,7 +2,7 @@
 # CC = gcc -g
 # without debugger:
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 # AUDIOFLAGS = 
 AUDIOFLAGS = -lopenal -lmpg123
 
@@ -48,7 +48,11 @@ opening_bonus.c \
 land_bonus.c \
 time.c \
 extract_bonus.c \
-audio.c 
+audio.c \
+check_map_boundaries.c \
+map_parse_utility.c \
+parse_map.c  \
+texture_parse.c
 
 
 

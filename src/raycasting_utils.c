@@ -93,9 +93,13 @@ static void handle_epsilon_case(t_game *game, t_ray *ray)
 {
     int next_x = ray->mapX + ray->stepX;
     int next_y = ray->mapY + ray->stepY;
-    
-    if (next_x >= 0 && next_x < game->map->width && 
-        next_y >= 0 && next_y < game->map->height)
+    printf("next_x : %d and next_y : %d",next_x,next_y);
+	printf("ray_Map_x : %d and ray_Map_y : %d",ray->mapX,ray->mapY);
+
+    // if (next_x >= 0 && next_x < game->map->width && 
+    //     next_y >= 0 && next_y < game->map->height)
+	if (next_x >= 0 && next_x < game->map->height && 
+        next_y >= 0 && next_y < game->map->width)
     {
         if (game->map->data[next_x][ray->mapY] == 1 &&
             game->map->data[ray->mapX][next_y] == 1)
