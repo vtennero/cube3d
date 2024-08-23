@@ -58,7 +58,7 @@ void print_map_section(t_game *game, int center_x, int center_y, int radius)
 int render(t_game *game)
 {
     // comment this (for testing purposes)
-    // game->game_sequence = 3;
+    game->game_sequence = 4;
     // printf("game sequence: %d\n", game->game_sequence);
     if (game->win_ptr == NULL)
         return (1);

@@ -556,4 +556,6 @@ void render_hit(t_game *game);
 
 
 void render_outro(t_game *game);
+int get_current_frame_outro(struct timeval *start_time);
+
 #endif

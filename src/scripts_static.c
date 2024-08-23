@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts_static.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 14:04:59 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 14:43:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ void    script_board(t_game *game)
 
 		// play audio extraction complete voice
 		game->game_sequence = 4;
+		reset_game_start_time(game);
+
 	}
 }

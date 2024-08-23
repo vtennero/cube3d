@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:41:09 by toto              #+#    #+#             */
-/*   Updated: 2024/08/12 17:38:09 by toto             ###   ########.fr       */
+/*   Updated: 2024/08/23 14:39:14 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,16 @@ int get_current_frame(struct timeval *start_time)
     int current_frame = (int)(elapsed_microseconds / MICROSECONDS_PER_FRAME);
 
     return (current_frame < MAX_OPENING_TEXTURES) ? current_frame : MAX_OPENING_TEXTURES - 1;
+}
+
+int get_current_frame_outro(struct timeval *start_time)
+{
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+
+    long elapsed_microseconds = get_elapsed_microseconds(start_time, &current_time);
+    int current_frame = (int)(elapsed_microseconds / MICROSECONDS_PER_FRAME);
+
+    return (current_frame < MAX_OUTRO_TEXTURES) ? current_frame : MAX_OUTRO_TEXTURES - 1;
 }
 
