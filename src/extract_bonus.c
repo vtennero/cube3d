@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:49:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/23 11:38:44 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:43:29 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@
 void render_extract_multi_tile(t_game *game, float base_x, float base_y)
 {
     const int num_tiles = 3;
-    const float tile_offset = 1.0f; // Revert to original offset
+    const float tile_offset = 0.98f; // Slightly reduced offset for minimal overlap
 
     float view_angle = atan2(game->player->direction.y, game->player->direction.x);
     float perp_x = -sin(view_angle);
@@ -259,7 +259,11 @@ void render_extract_multi_tile(t_game *game, float base_x, float base_y)
         int spriteWidth, drawStartX, drawEndX;
         calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
-        // Remove the sprite width increase
+        // Slightly increase sprite width to cover potential gaps
+        spriteWidth = (int)(spriteWidth * 1.02f);
+        drawStartX = -spriteWidth / 2 + spriteScreenX;
+        drawEndX = spriteWidth / 2 + spriteScreenX;
+
         // Ensure we don't draw outside the screen bounds
         drawStartX = (drawStartX < 0) ? 0 : drawStartX;
         drawEndX = (drawEndX >= game->screen_width) ? game->screen_width - 1 : drawEndX;
@@ -272,6 +276,12 @@ void render_extract_multi_tile(t_game *game, float base_x, float base_y)
             }
         }
     }
+}
+
+// The render_extract function remains unchanged
+void render_extract(t_game *game)
+{
+    // ... (unchanged)
 }
 
 void render_extract(t_game *game)
