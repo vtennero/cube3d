@@ -10,7 +10,7 @@ void render_outro(t_game *game)
 
     if (outro_texture->img == NULL)
     {
-        printf("Error: land texture not loaded\n");
+        printf("Error: outro texture not loaded\n");
         return;
     }
 
