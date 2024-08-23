@@ -147,36 +147,96 @@ int randomize_uncollected_collectibles(t_game *game)
     return (collectibles_repositioned);
 }
 
+// int randomize_uncollected_supplies(t_game *game)
+// {
+//     int i = 0;
+//     int x, y;
+//     int supplies_repositioned = 0;
+    
+//     while (i < game->num_supplies)
+//     {
+//         if (game->supplies[i].collected == 0)
+//         {
+//             do {
+//                 x = random_int(game, game->map->width);
+//                 y = random_int(game, game->map->height);
+//             } while (
+//                 game->map->data[y][x] == 1 ||
+//                 (x == (int)game->extract[0].position.x && y == (int)game->extract[0].position.y) ||
+//                 (abs(x - (int)game->extract[0].position.x) <= 1 && abs(y - (int)game->extract[0].position.y) <= 1)
+//             );
+            
+//             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
+//             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
+//             game->supplies[i].collected = 0; // Mark as uncollected
+//             game->supplies[i].found = 0; // Mark as not found
+//             supplies_repositioned++;
+//         }
+//         i++;
+//     }
+    
+//     return (supplies_repositioned);
+// }
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// Subfunction to check if a location is valid
+int is_valid_location(t_game *game, int x, int y) {
+    // Check if the location is within map bounds
+    if (x < 0 || x >= game->map->width || y < 0 || y >= game->map->height) {
+        return 0;
+    }
+    
+    // Check if the location is not an obstacle
+    if (game->map->data[y][x] == 1) {
+        return 0;
+    }
+    
+    // Check if the location is not the extraction point or adjacent to it
+    int extract_x = (int)game->extract[0].position.x;
+    int extract_y = (int)game->extract[0].position.y;
+    if (abs(x - extract_x) <= 1 && abs(y - extract_y) <= 1) {
+        return 0;
+    }
+    
+    return 1;
+}
+
 int randomize_uncollected_supplies(t_game *game)
 {
-    int i = 0;
-    int x, y;
     int supplies_repositioned = 0;
     
-    while (i < game->num_supplies)
-    {
-        if (game->supplies[i].collected == 0)
-        {
-            do {
+    for (int i = 0; i < game->num_supplies; i++) {
+        if (game->supplies[i].collected == 0) {
+            int x, y;
+            int valid_location_found = 0;
+            
+            while (!valid_location_found) {
                 x = random_int(game, game->map->width);
                 y = random_int(game, game->map->height);
-            } while (
-                game->map->data[y][x] == 1 ||
-                (x == (int)game->extract[0].position.x && y == (int)game->extract[0].position.y) ||
-                (abs(x - (int)game->extract[0].position.x) <= 1 && abs(y - (int)game->extract[0].position.y) <= 1)
-            );
+                
+                if (is_valid_location(game, x, y)) {
+                    valid_location_found = 1;
+                }
+            }
             
             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
             game->supplies[i].collected = 0; // Mark as uncollected
             game->supplies[i].found = 0; // Mark as not found
             supplies_repositioned++;
+            
+            // Print the valid location found and the extraction location
+            printf("Supply placed at (%d, %d). Extraction at (%.1f, %.1f)\n", 
+                   x, y, game->extract[0].position.x, game->extract[0].position.y);
         }
-        i++;
     }
     
-    return (supplies_repositioned);
+    return supplies_repositioned;
 }
+
 
 // int randomize_uncollected_supplies(t_game *game)
 // {
@@ -224,7 +284,7 @@ int	create_collectibles(t_game *game)
 
 int	create_extraction(t_game *game)
 {
-	printf("initializing extrction\n");
+	printf("initializing extraction\n");
 	// game->extract[0].position.x = 10.5f;
 	// game->extract[0].position.y = 11.5f;
 	randomize_extract_position(game);
