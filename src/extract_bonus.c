@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:49:50 by toto              #+#    #+#             */
-/*   Updated: 2024/08/23 11:43:29 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:44:26 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,12 +276,6 @@ void render_extract_multi_tile(t_game *game, float base_x, float base_y)
             }
         }
     }
-}
-
-// The render_extract function remains unchanged
-void render_extract(t_game *game)
-{
-    // ... (unchanged)
 }
 
 void render_extract(t_game *game)
