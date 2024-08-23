@@ -280,7 +280,7 @@ typedef struct s_game
 	int					current_frame;
 	t_texture			land_texture[MAX_LAND_TEXTURES];
 	t_extract			extract[1];
-	t_texture			extract_texture[2];
+	t_texture			extract_texture[4];
 	t_texture			supplies_texture[1];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
 	t_texture			outro_texture[MAX_OUTRO_TEXTURES];

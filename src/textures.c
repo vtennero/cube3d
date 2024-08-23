@@ -415,8 +415,7 @@ void preload_textures(t_game *game)
 
     load_floor_textures(game);
     load_collectible_texture(game, "textures/collectibles/collectible01.xpm");
-    // load_obj_textures(game);
-    // load_obj_texture(game, "textures/collectibles/collectible01.xpm");
+
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
     load_shooting_textures(game, "textures/gun/shooting/frame%02d.xpm", MAX_SHOOTING_TEXTURES);
     load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
@@ -424,8 +423,6 @@ void preload_textures(t_game *game)
     load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
     load_outro_textures(game, "textures/outro/outro%02d.xpm", MAX_OUTRO_TEXTURES);
-    // load_extract_texture(game, "textures/extract/extract.xpm");
-    // load_extract_textures(game, "textures/extract/extract00.xpm", "textures/extract/extract01.xpm");
     load_extract_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
 
