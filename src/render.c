@@ -86,6 +86,9 @@ int render(t_game *game)
     {
     
     script_found_sth(game);
+    script_found_supplies(game);
+    script_take_supplies(game);
+
     script_board(game);
     // trigger_gunshots(game);
     update_scripts(game);

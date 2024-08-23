@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts_static.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 15:01:17 by root             ###   ########.fr       */
+/*   Updated: 2024/08/23 16:03:36 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,30 @@ void    script_found_sth(t_game *game)
 		game->collectibles->found = 1;
 	}
 }
+
+void    script_found_supplies(t_game *game)
+{
+	int found = find_closest_supply(game);
+    if (game->game_sequence == 3 && found >= 0 && game->supplies[found].found == 0)
+	{
+        printf("found supplies\n");
+		playAudioFileWithDelay("audio/supplies00.mp3", 0);
+		game->supplies[found].found = 1;
+	}
+}
+
+void    script_take_supplies(t_game *game)
+{
+	int found = find_supply_on_player_tile(game);
+    if (game->game_sequence == 3 && found >= 0 && game->supplies[found].collected == 0)
+	{
+        printf("restored health\n");
+		playAudioFileWithDelay("audio/stim01.mp3", 0);
+		game->supplies[found].collected = 1;
+		game->player->hp = MAX_HEALTH;
+	}
+}
+
 
 void    script_board(t_game *game)
 {

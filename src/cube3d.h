@@ -572,5 +572,9 @@ int get_current_frame_outro(struct timeval *start_time);
 // supplies
 void render_supplies(t_game *game);
 int	create_supplies(t_game *game);
+void    script_found_supplies(t_game *game);
+void    script_take_supplies(t_game *game);
+int find_supply_on_player_tile(t_game *game);
+int find_closest_supply(t_game *game);
 
 #endif
