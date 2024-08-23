@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/23 08:39:53 by root             ###   ########.fr       */
+/*   Updated: 2024/08/24 00:40:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,53 +82,6 @@ int handle_mouse_move(int x, int y, t_game *game)
     return (0);
 }
 
-
-// int handle_mouse_move(int x, int y, t_game *game)
-// {
-//     static int last_x = -1;
-//     static int last_y = -1;
-//     int dx, dy;
-//     float angle;
-//     float rot_speed = 0.01;
-//     float pitch_speed = 0.001;
-
-//     // Initialize last position if it's the first call
-//     if (last_x == -1 && last_y == -1)
-//     {
-//         last_x = x;
-//         last_y = y;
-//         return (0);
-//     }
-
-//     // Calculate deltas
-//     dx = x - last_x;
-//     dy = y - last_y;
-
-//     // Process rotation
-//     angle = calc_rotation_angle(dx, rot_speed);
-//     if (fabs(angle) > 0.001)
-//     {
-//         rotate_player(game, angle);
-//     }
-
-//     // Process pitch
-//     adjust_pitch(game, dy, pitch_speed);
-
-//     // Update last position
-//     last_x = x;
-//     last_y = y;
-
-//     // Check if cursor is near the edge of the window
-//     if (x <= 10 || x >= game->screen_width - 10 || y <= 10 || y >= game->screen_height - 10)
-//     {
-//         // Move cursor to the center of the screen
-//         mlx_mouse_move(game->mlx_ptr, game->win_ptr, game->screen_width / 2, game->screen_height / 2);
-//         last_x = game->screen_width / 2;
-//         last_y = game->screen_height / 2;
-//     }
-
-//     return (0);
-// }
 
 
 int handle_mouse_click(int button, int x, int y, void *param)

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 18:39:12 by root             ###   ########.fr       */
+/*   Updated: 2024/08/24 00:53:14 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void    script_found_supplies(t_game *game)
 	{
         printf("found supplies\n");
 		playAudioFileWithDelay("audio/supplies00.mp3", 0);
+
 		game->supplies[found].found = 1;
 	}
 }
@@ -40,6 +41,8 @@ void    script_take_supplies(t_game *game)
 	{
         printf("restored health\n");
 		playAudioFileWithDelay("audio/stims02.mp3", 0);
+		add_script(game, trigger_supply_take, 0);
+		add_script(game, cancel_supply_take, 1);
 		game->supplies[found].collected = 1;
 		game->player->hp = MAX_HEALTH;
 	}

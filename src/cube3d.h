@@ -189,6 +189,7 @@ typedef struct s_player
 	float				height;
 	int					hp;
 	int					is_hit;
+	int					taking_supplies;
 }						t_player;
 
 typedef struct s_map
@@ -289,6 +290,8 @@ typedef struct s_game
 	int					loop_count;
 	int					is_shooting;
 	int					is_moving_fwd;
+	t_vector2d			center_floor_coords;
+
 }						t_game;
 
 
@@ -426,6 +429,7 @@ void					handle_movement_backward(t_game *game);
 void					handle_movement_strafe_left(t_game *game);
 void					handle_movement_strafe_right(t_game *game);
 void					handle_movement_dash(t_game *game);
+int detect_collision(t_game *game, float newX, float newY);
 
 void					debug_print_rays(t_ray_node *head);
 
@@ -577,5 +581,7 @@ void    script_found_supplies(t_game *game);
 void    script_take_supplies(t_game *game);
 int find_supply_on_player_tile(t_game *game);
 int find_closest_supply(t_game *game);
-
+void    trigger_supply_take(t_game *game);
+void    cancel_supply_take(t_game *game);
+void render_supply_take(t_game *game);
 #endif

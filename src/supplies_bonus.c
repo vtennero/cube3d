@@ -10,6 +10,28 @@
 
 #define SUPPLY_DISTANCE 2.0f  // Increased to 2 or more tiles away
 
+void render_supply_take(t_game *game)
+{
+    int x, y;
+    int solid_white = 0xFFFFFF; 
+    
+    if (game->player->taking_supplies)
+    {
+        for (y = 0; y < game->screen_height; y++)
+    {
+        for (x = 0; x < game->screen_width; x++)
+        {
+            // Decide whether to render this pixel based on a pattern
+            if ((x + y) % 3 == 0)  // This creates a diagonal pattern
+            {
+                img_pix_put(&game->img, x, y, solid_white);
+            }
+        }
+    }
+    }
+
+}
+
 int find_closest_supply(t_game *game)
 {
     int closest_index = -1;

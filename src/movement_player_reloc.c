@@ -51,7 +51,7 @@ int close_hook(t_game *game_state)
 }
 
 
-static int detect_collision(t_game *game, float newX, float newY)
+int detect_collision(t_game *game, float newX, float newY)
 {
     float buffer = 0.8; // Buffer distance to prevent entering into a wall
     

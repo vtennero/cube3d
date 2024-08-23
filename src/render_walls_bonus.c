@@ -58,6 +58,12 @@ void render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
     }
 }
 
+int random_0_to_3(t_game *game)
+{
+    (void)game;
+    return random_int(game, 4);
+}
+
 void	render_ray_list(t_game *game)
 {
 	int i = 0;
@@ -66,9 +72,9 @@ void	render_ray_list(t_game *game)
 
 	while (current != NULL)
 	{
+        // this is for core
 		t_texture *used_texture = &game->walltextures[current->ray.wall_face];
 		render_ray(&game->img, current->ray, used_texture, game);
-		// (void)used_texture;
 		current = current->next;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/23 18:36:54 by root             ###   ########.fr       */
+/*   Updated: 2024/08/24 00:45:05 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,21 @@ void trigger_landing(t_game *game)
 // }
 
 void play_gun_sound(t_game *game) {
-    playAudioFileWithDelay("audio/gun01.mp3", 0);
+    playAudioFileWithDelay("audio/gun02.mp3", 0);
     // If we're still shooting, schedule the next sound
     if (game->is_shooting) {
-        add_script(game, play_gun_sound, 1); // 0 second delay for continuous fire
+        add_script(game, play_gun_sound, 0); // 0 second delay for continuous fire
     }
+}
+
+void    trigger_supply_take(t_game *game)
+{
+    game->player->taking_supplies = 1;
+}
+
+void    cancel_supply_take(t_game *game)
+{
+    game->player->taking_supplies = 0;
 }
 
 void    trigger_gunshots(t_game *game)

@@ -4,6 +4,53 @@
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 #define HIT_PROBABILITY 5000 // Increased to 20% chance (was 100000)
 
+void bump_player(t_game *game, int enemy_index)
+{
+    t_enemy *enemy = &game->enemies[enemy_index];
+    
+    // Calculate vector from enemy to player
+    float dx = game->player->position.x - enemy->position.x;
+    float dy = game->player->position.y - enemy->position.y;
+    
+    // Normalize the vector
+    float length = sqrt(dx * dx + dy * dy);
+    dx /= length;
+    dy /= length;
+    
+    // Apply bump (adjust BUMP_DISTANCE to change the intensity of the bump)
+    float BUMP_DISTANCE = 0.5f;
+    float newX = game->player->position.x + dx * BUMP_DISTANCE;
+    float newY = game->player->position.y + dy * BUMP_DISTANCE;
+    
+    // Check for collision before applying the bump
+    if (!detect_collision(game, newX, newY))
+    {
+        // No collision, apply the bump
+        game->player->position.x = newX;
+        game->player->position.y = newY;
+    }
+    else
+    {
+        // Collision detected, try smaller bumps until no collision or minimum distance reached
+        float min_bump = 0.1f;  // Minimum bump distance to try
+        while (BUMP_DISTANCE > min_bump)
+        {
+            BUMP_DISTANCE *= 0.5f;  // Reduce bump distance by half
+            newX = game->player->position.x + dx * BUMP_DISTANCE;
+            newY = game->player->position.y + dy * BUMP_DISTANCE;
+            
+            if (!detect_collision(game, newX, newY))
+            {
+                // No collision with reduced bump, apply it
+                game->player->position.x = newX;
+                game->player->position.y = newY;
+                break;
+            }
+        }
+        // If we couldn't find a valid bump, the player position remains unchanged
+    }
+}
+
 void render_hit(t_game *game)
 {
     int x, y;
@@ -69,6 +116,8 @@ void enemy_hit_attempt(t_game *game, t_enemy *enemy, int index)
             add_script(game, get_hit, 0);
             game->player->is_hit = 1;
             printf("You got hit by enemy %d; new hp: %d\n", index, game->player->hp);
+            bump_player(game, index);
+
             int random_value = random_int(game, 6);
             if (random_value == 0 && game->player->hp <= 0.25 * MAX_HEALTH)
             {

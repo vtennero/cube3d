@@ -24,11 +24,8 @@ void calc_ray_dir_x(t_game *game, t_ray_node *ray)
 
 void calc_ray_dir_y(t_game *game, t_ray_node *ray)
 {
-// 	ray->ray.rayDirY = game->player->direction.y + game->player->plane.y * ray->ray.cameraX;
     ray->ray.rayDirY = game->player->direction.y + game->player->plane.y * ray->ray.cameraX;
 }
-
-
 
 void calc_map_x(t_game *game, t_ray_node *ray)
 {
@@ -136,42 +133,6 @@ static void move_ray(t_ray *ray)
     }
 }
 
-// static int check_wall_hit(t_game *game, t_ray *ray, int *prev_mapX, int *prev_mapY)
-// {
-//     if (game->map->data[ray->mapX][ray->mapY] == 1)
-//     {
-//     if (ray->side == 0) // EW wall
-//         ray->wall_face = (ray->stepX > 0) ? EAST : WEST;
-//     else // NS wall
-//         ray->wall_face = (ray->stepY > 0) ? SOUTH : NORTH;
-//         // if (ray->side == 0) // EW wall
-//         //     ray->wall_face = (ray->stepX > 0) ? EAST : WEST;
-//         // else // NS wall
-//         //     ray->wall_face = (ray->stepY > 0) ? SOUTH : NORTH;
-//         return 1;
-//     }
-//     // Check for transition from space to wall
-//     else if ((*prev_mapX != ray->mapX || *prev_mapY != ray->mapY) &&
-//              game->map->data[*prev_mapX][*prev_mapY] == 0 &&
-//              game->map->data[ray->mapX][ray->mapY] == 1)
-//     {
-//         // Adjust ray position to the exact hit point
-//         if (ray->side == 0)
-//         {
-//             ray->sideDistX -= ray->deltaDistX;
-//             ray->mapX = *prev_mapX;
-//         }
-//         else
-//         {
-//             ray->sideDistY -= ray->deltaDistY;
-//             ray->mapY = *prev_mapY;
-//         }
-//         return 1;
-//     }
-//     *prev_mapX = ray->mapX;
-//     *prev_mapY = ray->mapY;
-//     return 0;
-// }
 
 
 static int check_wall_hit(t_game *game, t_ray *ray, int *prev_mapX, int *prev_mapY)
@@ -299,3 +260,5 @@ void calc_wall_hit(t_game *game, t_ray_node *ray)
 	wallImpact -= floor(wallImpact); // Normalize the impact point
 	ray->ray.wallX = wallImpact;
 }
+
+

@@ -128,6 +128,7 @@ int render(t_game *game)
     update_gun_state(game);
     render_gun(game);
     render_hit(game);
+    render_supply_take(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
@@ -164,7 +165,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    // game->game_sequence = 3;
+    game->game_sequence = 3;
 
     preload_textures(game);
     initialize_game_seed(game);
