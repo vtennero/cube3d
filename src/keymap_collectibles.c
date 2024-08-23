@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keymap_collectibles.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:07:42 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 19:00:48 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:42:44 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void handle_key_e(t_game *game)
         game->extract[0].is_available = 0;
         game->extract[0].is_activated = 1;
         add_script(game, trigger_landing, 30);
-        add_script(game, trigger_extract_music, 3);
+        add_script(game, trigger_extract_music, 2);
         
     }
 }

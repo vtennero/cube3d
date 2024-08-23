@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:00:39 by root              #+#    #+#             */
-/*   Updated: 2024/08/22 23:08:20 by root             ###   ########.fr       */
+/*   Updated: 2024/08/23 08:54:15 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
     return color;
 }
 
-// Calculate sprite position relative to camera
 void calculate_sprite_position(t_game *game, float object_x, float object_y, float *spriteX, float *spriteY)
 {
     *spriteX = object_x - game->player->position.x;
