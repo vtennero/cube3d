@@ -8,27 +8,21 @@
 void render_hit(t_game *game)
 {
     int x, y;
-    int red_color = 0xFF0000;  // Solid red color
-
+    int base_color = 0xFF0000;  // Red color
+    
     for (y = 0; y < game->screen_height; y++)
     {
         for (x = 0; x < game->screen_width; x++)
         {
-            // Faux transparency effect
-            int faux_alpha = (x * y) % 256;  // This creates a pattern based on pixel position
-            int r = (red_color >> 16) & 0xFF;
-            int g = (red_color >> 8) & 0xFF;
-            int b = red_color & 0xFF;
-
-            // Apply the faux alpha
-            r = (r * faux_alpha) / 255;
-            g = (g * faux_alpha) / 255;
-            b = (b * faux_alpha) / 255;
-
-            // Combine the colors back
-            int final_color = (r << 16) | (g << 8) | b;
-
-            img_pix_put(&game->img, x, y, final_color);
+            // Create a "fake" transparency effect
+            int transparency = (x * y) % 256;
+            int color = base_color | (transparency << 24);
+            
+            // Apply a subtle variation based on screen position
+            color = color * (0.8 + 0.2 * sin((float)x / game->screen_width * M_PI) * 
+                                   sin((float)y / game->screen_height * M_PI));
+            
+            img_pix_put(&game->img, x, y, color);
         }
     }
 }
