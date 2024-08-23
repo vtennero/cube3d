@@ -213,7 +213,7 @@ void load_gun_textures(t_game *game, char *path_format, int num_frames)
 
 int load_extract_textures(t_game *game)
 {
-    static const char *file_names[] = {
+    static char *file_names[] = {
         "extract00.xpm",
         "extract01.xpm",
         "extract02.xpm",
