@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:17:52 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 17:28:12 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:55:11 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#define MAX_SOURCES 10
+#define MAX_SOURCES 50
 
 ALCdevice *device = NULL;
 ALCcontext *context = NULL;
