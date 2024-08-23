@@ -147,7 +147,6 @@ int randomize_uncollected_collectibles(t_game *game)
     return (collectibles_repositioned);
 }
 
-
 int randomize_uncollected_supplies(t_game *game)
 {
     int i = 0;
@@ -158,14 +157,14 @@ int randomize_uncollected_supplies(t_game *game)
     {
         if (game->supplies[i].collected == 0)
         {
-            x = random_int(game, game->map->width);
-            y = random_int(game, game->map->height);
-            
-            while (game->map->data[y][x] == 1)
-            {
+            do {
                 x = random_int(game, game->map->width);
                 y = random_int(game, game->map->height);
-            }
+            } while (
+                game->map->data[y][x] == 1 ||
+                (x == (int)game->extract[0].position.x && y == (int)game->extract[0].position.y) ||
+                (abs(x - (int)game->extract[0].position.x) <= 1 && abs(y - (int)game->extract[0].position.y) <= 1)
+            );
             
             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
@@ -178,6 +177,37 @@ int randomize_uncollected_supplies(t_game *game)
     
     return (supplies_repositioned);
 }
+
+// int randomize_uncollected_supplies(t_game *game)
+// {
+//     int i = 0;
+//     int x, y;
+//     int supplies_repositioned = 0;
+    
+//     while (i < game->num_supplies)
+//     {
+//         if (game->supplies[i].collected == 0)
+//         {
+//             x = random_int(game, game->map->width);
+//             y = random_int(game, game->map->height);
+            
+//             while (game->map->data[y][x] == 1)
+//             {
+//                 x = random_int(game, game->map->width);
+//                 y = random_int(game, game->map->height);
+//             }
+            
+//             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
+//             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
+//             game->supplies[i].collected = 0; // Mark as uncollected
+//             game->supplies[i].found = 0; // Mark as not found
+//             supplies_repositioned++;
+//         }
+//         i++;
+//     }
+    
+//     return (supplies_repositioned);
+// }
 
 int	create_collectibles(t_game *game)
 {
