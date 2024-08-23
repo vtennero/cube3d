@@ -1,8 +1,6 @@
 # Compiler and flags
-# CC = gcc -g
-# without debugger:
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 # AUDIOFLAGS = 
 AUDIOFLAGS = -lopenal -lmpg123
 
@@ -11,6 +9,7 @@ SRC_DIR = src
 LIBFT_DIR = libft
 MLX_DIR = mlx
 OBJ_DIR = obj
+AUDIO_LIB_DIR = audio_lib
 
 # Name of the final executable
 NAME = cube3d
@@ -30,6 +29,8 @@ render_walls_bonus.c \
 render_sky.c \
 render_gun.c \
 render_collectibles.c \
+render_objects.c \
+supplies_bonus.c \
 render_enemies.c \
 raycasting.c \
 raycasting_utils.c \
@@ -46,25 +47,26 @@ terminate02.c \
 menu_bonus.c \
 opening_bonus.c \
 land_bonus.c \
+outro_bonus.c \
 time.c \
 extract_bonus.c \
+scripts.c \
+scripts_static.c \
+enemies_hit_bonus.c \
 audio.c \
 check_map_boundaries.c \
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c
 
-
-
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
 # Object files for main and bonus executables
-# OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(MAIN:.c=.o)
 OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o))
 BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o))
 
 # Include paths
-INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR)  -I/usr/include
+INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include
 
 # MLX Flags
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11 -lm
@@ -77,7 +79,7 @@ MLX_LIB = $(MLX_DIR)/libmlx_$(shell uname).a
 
 .PHONY: all clean fclean re bonus
 
-all: $(LIBFT) $(MLX_LIB) $(NAME)
+all: $(LIBFT) $(MLX_LIB) $(NAME) copy_libs
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
@@ -92,6 +94,11 @@ $(MLX_LIB):
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS)
 
+copy_libs:
+	@mkdir -p $(AUDIO_LIB_DIR)
+	@cp /usr/lib/x86_64-linux-gnu/libopenal.so.1 $(AUDIO_LIB_DIR)/ || true
+	@cp /usr/lib/x86_64-linux-gnu/libmpg123.so.0 $(AUDIO_LIB_DIR)/ || true
+
 bonus:
 	$(MAKE) MAIN=$(BONUS_MAIN) NAME=$(BONUS_NAME) all
 
@@ -102,6 +109,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME) $(BONUS_NAME)
+	rm -rf $(AUDIO_LIB_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all

@@ -30,9 +30,10 @@
 # define TEX_HEIGHT 64
 # define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
 # define TEXTURE_SIZE 245
-#define NUM_ENEMY_TEXTURES 13
+#define NUM_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLES 20
-#define MAX_ENEMIES 5
+#define MAX_SUPPLIES 200
+#define MAX_ENEMIES 200
 
 #define MAX_WALL_TEXTURES 4
 #define MAX_FLOOR_TEXTURES 8
@@ -44,15 +45,34 @@
 # define MAX_LAND_TEXTURES 46
 #define FRAMES_PER_SECOND 20
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
+#define MAX_SCRIPTS 500
+#define OBJECT_SIZE 1
+#define MAX_HEALTH 30
+#define MAX_OUTRO_TEXTURES 229
 
-# ifndef M_PI
-#  define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 
-# endif
 
 /*
 ** ================== STRUCTURES ==================
 */
+
+typedef struct s_game t_game;
+
+// Now we can use t_game in the ScriptFunction typedef
+typedef void (*ScriptFunction)(t_game *game);
+
+typedef struct s_script {
+    struct timeval trigger_time;
+    ScriptFunction func;
+    int is_active;
+} t_script;
+
+typedef struct s_script_manager {
+    t_script scripts[MAX_SCRIPTS];
+    int script_count;
+} t_script_manager;
+
 
 typedef struct s_vector2d
 {
@@ -113,15 +133,28 @@ typedef struct s_texture
 typedef struct s_extract
 {
     t_vector2d position;
+    int is_available;
+    int is_landing;
     int is_activated;
     int is_complete;
+    t_vector2d initial_position;
+    float delta_time;  // Time passed since last frame
+    float landing_progress;  // Time passed since last frame
 } t_extract;
 
 typedef struct s_collectible
 {
     t_vector2d position;
     int collected;  // 0 for not collected, 1 for collected
+    int found;  // 0 for not collected, 1 for collected
 } t_collectible;
+
+typedef struct s_supplies
+{
+    t_vector2d position;
+    int collected;  // 0 for not collected, 1 for collected
+    int found;  // 0 for not collected, 1 for collected
+} t_supplies;
 
 typedef struct s_enemy
 {
@@ -154,6 +187,8 @@ typedef struct s_player
 	t_vector2d			plane;
 	float				pitch;
 	float				height;
+	int					hp;
+	int					is_hit;
 }						t_player;
 
 typedef struct s_map
@@ -210,6 +245,7 @@ typedef struct s_ray_node
 
 typedef struct s_game
 {
+	t_script_manager script_manager;
 	void				*mlx_ptr;
 	void				*win_ptr;
 	t_player			*player;
@@ -235,15 +271,19 @@ typedef struct s_game
 	int					current_shooting_frame;
 	t_ray_node			*ray_list;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
+	t_supplies       	supplies[MAX_SUPPLIES];
     int                 num_collectibles;  // Current number of active collectibles
+    int                 num_supplies;  // Current number of active collectibles
     t_enemy             enemies[MAX_ENEMIES];
     int                 num_enemies;  // Current number of active enemies
 	int					game_sequence;
 	int					current_frame;
 	t_texture			land_texture[MAX_LAND_TEXTURES];
 	t_extract			extract[1];
-	t_texture			extract_texture[1];
+	t_texture			extract_texture[4];
+	t_texture			supplies_texture[1];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
+	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
 	struct timeval		opening_start_time;
 	int					loop_count;
@@ -518,6 +558,7 @@ void render_land(t_game *game);
 int initializeAudio();
 void cleanupAudio();
 int playAudioFileWithDelay(const char* filename, float delayInSeconds);
+int stopAudioFile(const char* filename);
 
 // extract
 int	create_extraction(t_game *game);
@@ -542,4 +583,57 @@ int handle_mouse_release(int button, int x, int y, void *param);
 void check_enemy_at_center(t_game *game);
 int randomize_dead_enemy_positions(t_game *game);
 void handle_space_shoot(t_game *game);
+
+
+// scripts
+void testscript(t_game *game);
+void add_script(t_game *game, ScriptFunction func, int delay_seconds);
+void update_scripts(t_game *game);
+int is_player_close_to_collectible(t_game *game);
+void    script_found_sth(t_game *game);
+void play_gun_sound(t_game *game);
+void    trigger_gunshots(t_game *game);
+void    get_hit(t_game *game);
+void trigger_extract_victory(t_game *game);
+
+// debug
+void print_alive_enemies(t_game *game);
+
+int calculate_enemy_count(t_game *game);
+
+void trigger_landing(t_game *game);
+int is_player_close_to_extract(t_game *game);
+void    script_board(t_game *game);
+void trigger_extract_music(t_game *game);
+void    sample_acquired(t_game *game);
+void    menu_background(t_game *game);
+void    menu_background_voice(t_game *game);
+
+// objects
+void transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
+void draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY);
+void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY);
+t_ray_node* find_ray_node(t_game *game, int stripe);
+int is_sprite_in_front(float transformY, int stripe, int screen_width);
+void calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, int *spriteWidth, int *drawStartX, int *drawEndX);
+int calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
+void calculate_sprite_position(t_game *game, float object_x, float object_y, float *spriteX, float *spriteY);
+int get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
+
+// enemies hit
+void enemies_hit(t_game *game);
+void render_hit(t_game *game);
+
+
+void render_outro(t_game *game);
+int get_current_frame_outro(struct timeval *start_time);
+
+// supplies
+void render_supplies(t_game *game);
+int	create_supplies(t_game *game);
+void    script_found_supplies(t_game *game);
+void    script_take_supplies(t_game *game);
+int find_supply_on_player_tile(t_game *game);
+int find_closest_supply(t_game *game);
+
 #endif

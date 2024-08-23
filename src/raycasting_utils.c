@@ -295,8 +295,8 @@ void calc_wall_hit(t_game *game, t_ray_node *ray)
 	}
 	else
 	{ // Vertical hit
-		// wallImpact = game->player->position.x + ray->ray.perpWallDist * ray->ray.rayDirX;
-            wallImpact = game->player->position.y + ray->ray.perpWallDist * ray->ray.rayDirY;
+		wallImpact = game->player->position.x + ray->ray.perpWallDist * ray->ray.rayDirX;
+            // wallImpact = game->player->position.y + ray->ray.perpWallDist * ray->ray.rayDirY;
 
 	}
 

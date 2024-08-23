@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:32:25 by toto              #+#    #+#             */
-/*   Updated: 2024/08/19 14:00:56 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:31:42 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void render_land(t_game *game)
 {
     int frame_to_render = get_current_frame(&game->opening_start_time);
-    printf("render land frame to render %d\n", frame_to_render);
+    // printf("render land frame to render %d\n", frame_to_render);
     t_texture *land_texture = &game->land_texture[frame_to_render];
 
     if (land_texture->img == NULL)
@@ -45,6 +45,7 @@ void render_land(t_game *game)
     {
             game->game_sequence = 3;
             game->current_frame = 0;
+            // stopAudioFile("audio/drop03.mp3");
 			playAudioFileWithDelay("audio/land.mp3", 0);
 
     }

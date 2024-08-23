@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:17:52 by toto              #+#    #+#             */
-/*   Updated: 2024/08/19 13:55:58 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:55:11 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,21 @@
 #include <string.h>
 #include <sys/time.h>
 
-#define MAX_SOURCES 10
+#define MAX_SOURCES 50
 
 ALCdevice *device = NULL;
 ALCcontext *context = NULL;
 ALuint sources[MAX_SOURCES];
 int sourceCount = 0;
 struct timeval lastPlayTime[MAX_SOURCES];
+
+// New structure to keep track of playing audio files
+typedef struct {
+    char filename[256];
+    int sourceIndex;
+} AudioTrack;
+
+AudioTrack playingTracks[MAX_SOURCES];
 
 // Initialization function
 int initializeAudio() {
@@ -86,6 +94,19 @@ int findAvailableSource() {
         }
     }
     return -1;  // No available source
+}
+
+int stopAudioFile(const char* filename)
+{
+    for (int i = 0; i < MAX_SOURCES; i++) {
+        if (strcmp(playingTracks[i].filename, filename) == 0) {
+            alSourceStop(sources[playingTracks[i].sourceIndex]);
+            playingTracks[i].filename[0] = '\0';  // Clear the filename
+            return 0;
+        }
+    }
+    fprintf(stderr, "Audio file %s not found or not playing\n", filename);
+    return -1;
 }
 
 // Function to play audio with optional delay
@@ -159,6 +180,14 @@ int playAudioFileWithDelay(const char* filename, float delayInSeconds)
     // Update last play time
     gettimeofday(&lastPlayTime[sourceIndex], NULL);
 
+    // Add to playing tracks
+    strncpy(playingTracks[sourceIndex].filename, filename, 255);
+    playingTracks[sourceIndex].filename[255] = '\0';  // Ensure null-termination
+    playingTracks[sourceIndex].sourceIndex = sourceIndex;
+
+    // Update last play time
+    gettimeofday(&lastPlayTime[sourceIndex], NULL);
+
     // Clean up
     free(totalBuffer);
     free(buffer_data);
@@ -167,3 +196,15 @@ int playAudioFileWithDelay(const char* filename, float delayInSeconds)
 
     return 0;
 }
+
+// int stopAudioFile(const char* filename) {
+//     for (int i = 0; i < MAX_SOURCES; i++) {
+//         if (strcmp(playingTracks[i].filename, filename) == 0) {
+//             alSourceStop(sources[playingTracks[i].sourceIndex]);
+//             playingTracks[i].filename[0] = '\0';  // Clear the filename
+//             return 0;
+//         }
+//     }
+//     fprintf(stderr, "Audio file %s not found or not playing\n", filename);
+//     return -1;
+// }

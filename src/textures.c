@@ -22,7 +22,8 @@ void load_enemy_textures(t_game *game, const char *path_format, int num_textures
     for (int i = 0; i < num_textures; i++)
     {
         char path[256];
-        sprintf(path, path_format, i + 1);  // This is correct, as it will generate 001 to 013
+        sprintf(path, path_format, i);
+        // sprintf(path, path_format, i + 1);  // This is correct, as it will generate 001 to 013
 
         game->enemy_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->enemy_textures[i].width, &game->enemy_textures[i].height);
         if (game->enemy_textures[i].img == NULL)
@@ -79,7 +80,31 @@ void load_land_textures(t_game *game, const char *path_format, int num_textures)
         }
         game->land_texture[i].data = mlx_get_data_addr(game->land_texture[i].img, &game->land_texture[i].tex_bpp, &game->land_texture[i].tex_line_len, &game->land_texture[i].tex_endian);
     }
-    printf("Loaded opening textures\n");  // Changed to print the actual file number
+    printf("Loaded landing textures\n");  // Changed to print the actual file number
+
+}
+
+void load_outro_textures(t_game *game, const char *path_format, int num_textures)
+{
+    if (num_textures > MAX_OUTRO_TEXTURES) {
+        fprintf(stderr, "Error: Trying to load more textures than allocated space.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < num_textures; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i);  // This is correct, as it will generate 001 to 013
+
+        game->outro_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->outro_texture[i].width, &game->outro_texture[i].height);
+        if (game->outro_texture[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load opening texture: %s\n", path);
+            exit(1);
+        }
+        game->outro_texture[i].data = mlx_get_data_addr(game->outro_texture[i].img, &game->outro_texture[i].tex_bpp, &game->outro_texture[i].tex_line_len, &game->outro_texture[i].tex_endian);
+    }
+    printf("Loaded outro textures\n");  // Changed to print the actual file number
 
 }
 
@@ -188,6 +213,52 @@ void load_gun_textures(t_game *game, char *path_format, int num_frames)
 //            game->floortextures[index].width, game->floortextures[index].height);
 // }
 
+// int load_extract_textures(t_game *game, char *path1, char *path2)
+// {
+//     t_texture *texture1 = &game->extract_texture[0];
+//     t_texture *texture2 = &game->extract_texture[1];
+
+//     // Load first texture
+//     texture1->path = path1;
+//     texture1->img = mlx_xpm_file_to_image(game->mlx_ptr, path1, &texture1->width, &texture1->height);
+//     if (!texture1->img)
+//         return (0);
+//     texture1->data = mlx_get_data_addr(texture1->img, &texture1->tex_bpp, &texture1->tex_line_len, &texture1->tex_endian);
+
+//     // Load second texture
+//     texture2->path = path2;
+//     texture2->img = mlx_xpm_file_to_image(game->mlx_ptr, path2, &texture2->width, &texture2->height);
+//     if (!texture2->img)
+//         return (0);
+//     texture2->data = mlx_get_data_addr(texture2->img, &texture2->tex_bpp, &texture2->tex_line_len, &texture2->tex_endian);
+
+//     return (1);
+// }
+
+int load_extract_textures(t_game *game)
+{
+    static char *file_names[] = {
+        "textures/extract/extract00.xpm",
+        "textures/extract/extract01.xpm",
+        "textures/extract/extract02.xpm",
+        "textures/extract/extract03.xpm"
+    };
+    const int num_textures = sizeof(file_names) / sizeof(file_names[0]);
+
+    for (int i = 0; i < num_textures; i++)
+    {
+        t_texture *texture = &game->extract_texture[i];
+
+        texture->path = file_names[i];
+        texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path, &texture->width, &texture->height);
+        if (!texture->img)
+            return (0);
+        texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    }
+
+    return (1);
+}
+
 void load_floor_textures(t_game *game)
 {
     char *floor_texture_paths[] = {
@@ -240,6 +311,17 @@ int load_extract_texture(t_game *game, char *path)
 int load_menu_texture(t_game *game, char *path)
 {
     t_texture *texture = &game->menu_texture[0];
+    texture->path = path;
+    texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
+    if (!texture->img)
+        return (0);
+    texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    return (1);
+}
+
+int load_supplies_texture(t_game *game, char *path)
+{
+    t_texture *texture = &game->supplies_texture[0];
     texture->path = path;
     texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
     if (!texture->img)
@@ -333,15 +415,16 @@ void preload_textures(t_game *game)
 
     load_floor_textures(game);
     load_collectible_texture(game, "textures/collectibles/collectible01.xpm");
-    // load_obj_textures(game);
-    // load_obj_texture(game, "textures/collectibles/collectible01.xpm");
+
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
     load_shooting_textures(game, "textures/gun/shooting/frame%02d.xpm", MAX_SHOOTING_TEXTURES);
     load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
     load_menu_texture(game, "textures/menu/menu.xpm");
     load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
-    load_extract_texture(game, "textures/extract/extract.xpm");
+    load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
+    load_extract_textures(game);
+    load_supplies_texture(game, "textures/supplies/supplies.xpm");
 
     scale_gun_textures(game);
     scale_shooting_textures(game);

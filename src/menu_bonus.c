@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:15:38 by toto              #+#    #+#             */
-/*   Updated: 2024/08/19 14:01:01 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:06:47 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void handle_key_enter(t_game *game)
         if (game->game_sequence == 0)
         {
             reset_game_start_time(game);
-            game->game_sequence = 1;
+            stopAudioFile("audio/menu02.mp3");
             playAudioFileWithDelay("audio/drop02.mp3", 0);
         }
-        else if (game->game_sequence == 1)
-            game->game_sequence = 2;
+        if (game->game_sequence < 3)
+            game->game_sequence++;
     }
 }
 

@@ -12,6 +12,21 @@
 
 #include "cube3d.h"
 
+void printRayList(t_ray_node *head)
+{
+    t_ray_node *current = head;
+    printf("printRayList\n");
+    while (current != NULL)
+    {
+        printf("Ray at x=%d, draw_start=%d, draw_end=%d, color=%d\n",
+               current->ray.x,
+               current->ray.draw_start,
+               current->ray.draw_end,
+               current->ray.color);
+        current = current->next;
+    }
+}
+
 void print_vector2d(const t_vector2d *vector)
 {
     const char *format;
@@ -196,4 +211,19 @@ void print_ray(const t_ray *ray)
 	printf("color: %d\n", ray->color);
 	printf("wall_face: %d\n", ray->wall_face);
 	printf("******************************\n");
+}
+
+void print_alive_enemies(t_game *game)
+{
+    int alive_count = 0;
+
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (game->enemies[i].is_alive)
+        {
+            alive_count++;
+        }
+    }
+
+    printf("Number of enemies alive: %d\n", alive_count);
 }
