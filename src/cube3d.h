@@ -522,6 +522,7 @@ int is_player_close_to_collectible(t_game *game);
 void    script_found_sth(t_game *game);
 void play_gun_sound(t_game *game);
 void    trigger_gunshots(t_game *game);
+void    get_hit(t_game *game);
 
 // debug
 void print_alive_enemies(t_game *game);

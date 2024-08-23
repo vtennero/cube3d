@@ -266,7 +266,7 @@ void handle_key_left(t_game *game)
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
     // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-    const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+    // const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
     // printf("Facing direction: %s\n", direction);
 
     // print_movement_direction(game);
@@ -291,7 +291,7 @@ void handle_key_right(t_game *game)
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
     // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-    const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+    // const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
     // printf("Facing direction: %s\n", direction);
 
     // print_movement_direction(game);
