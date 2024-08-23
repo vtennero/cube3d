@@ -76,7 +76,7 @@ int	create_player(t_game *game)
 	// player->height = 0.0f;
 	player->height = 0.2;
 	player->pitch = 0.0f;
-	player->hp = 100;
+	player->hp = MAX_HEALTH;
 	player->is_hit = 0;
 	// player->pitch = 0;
 	// Assign the player to the game structure
