@@ -4,25 +4,22 @@
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 #define HIT_PROBABILITY 5000 // Increased to 20% chance (was 100000)
 
-
 void render_hit(t_game *game)
 {
     int x, y;
-    int base_color = 0xFF0000;  // Red color
+    int solid_red = 0xFF0000;  // Solid red color
     
     for (y = 0; y < game->screen_height; y++)
     {
         for (x = 0; x < game->screen_width; x++)
         {
-            // Create a "fake" transparency effect
-            int transparency = (x * y) % 256;
-            int color = base_color | (transparency << 24);
-            
-            // Apply a subtle variation based on screen position
-            color = color * (0.8 + 0.2 * sin((float)x / game->screen_width * M_PI) * 
-                                   sin((float)y / game->screen_height * M_PI));
-            
-            img_pix_put(&game->img, x, y, color);
+            // Decide whether to render this pixel based on a pattern
+            if ((x + y) % 3 == 0)  // This creates a diagonal pattern
+            {
+                img_pix_put(&game->img, x, y, solid_red);
+            }
+            // Pixels where (x + y) % 3 != 0 are left untouched,
+            // creating the illusion of transparency
         }
     }
 }
