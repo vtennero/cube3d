@@ -3,6 +3,13 @@ SO textures/dmgwall01.xpm
 WE textures/dmgwall06.xpm
 EA textures/dmgwall07.xpm
 
+SO textures/foilagewall01.xpm
+WE textures/foilagewall01.xpm
+EA textures/foilagewall01.xpm
+
+
+
+
 F 184,113,39
 C 51,198,227
 

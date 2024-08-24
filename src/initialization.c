@@ -166,31 +166,15 @@ int	create_player(t_game *game)
 	}
 
 	// Initialize player position
-	player->position.x = game->cub_player_x;
-	player->position.y = game->cub_player_y;
+	player->position.x = game->cub_player_y;
+	player->position.y = game->cub_player_x;
 
 
-	if (game->cub_player_o==2 || game->cub_player_o==4)
-	{
-		player->direction.x = 0.0f;
-		if (game->cub_player_o==2) 
-			player->direction.y = -1.0f;
-		else if (game->cub_player_o==4) 
-			player->direction.y = 1.0f;
-	}
-	else if (game->cub_player_o==3 || game->cub_player_o==5)
-	{
-		player->direction.y = 0.0f;
-		if (game->cub_player_o==3) 
-			player->direction.x = 1.0f;
-		if (game->cub_player_o==5) 
-			player->direction.y = -1.0f;
-	}
 
 
 	// Initialize player direction (looking along the negative x-axis)
-	// player->direction.x = -1.0f;
-	// player->direction.y = 0.0f;
+	player->direction.x = -1.0f;
+	player->direction.y = 0.0f;
 
 	// Initialize the camera plane for the raycasting (related to the FOV)
 	// player->plane.x = 0.0f;  // Adjust this value to change the FOV

@@ -356,12 +356,12 @@ void load_shooting_textures(t_game *game, const char *path_format, int num_textu
 
 void preload_textures(t_game *game)
 {
-    char *wall_texture_paths[] = {
-        "textures/foilagewall01.xpm", // NORTH
-        "textures/dmgwall07.xpm",     // EAST
-        "textures/dmgwall01.xpm",     // SOUTH
-        "textures/dmgwall06.xpm",     // WEST
-    };
+    // char *wall_texture_paths[] = {
+    //     "textures/foilagewall01.xpm", // NORTH
+    //     "textures/dmgwall07.xpm",     // EAST
+    //     "textures/dmgwall01.xpm",     // SOUTH
+    //     "textures/dmgwall06.xpm",     // WEST
+    // };
 
     printf("preload_textures START\n");
 
@@ -370,13 +370,13 @@ void preload_textures(t_game *game)
     {
         game->walltextures[i].img = mlx_xpm_file_to_image(
             game->mlx_ptr,
-            wall_texture_paths[i],
+            game->walltextures[i].path,
             &game->walltextures[i].width,
             &game->walltextures[i].height);
 
         if (!game->walltextures[i].img)
         {
-            fprintf(stderr, "Failed to load wall texture: %s\n", wall_texture_paths[i]);
+            fprintf(stderr, "Failed to load wall texture: %s\n", game->walltextures[i].path);
             exit(EXIT_FAILURE);
         }
 
@@ -387,7 +387,7 @@ void preload_textures(t_game *game)
             &game->walltextures[i].tex_endian);
 
         printf("Loaded wall texture: %s, bpp: %d, size: %dx%d\n",
-               wall_texture_paths[i], game->walltextures[i].tex_bpp,
+               game->walltextures[i].path, game->walltextures[i].tex_bpp,
                game->walltextures[i].width, game->walltextures[i].height);
     }
 
