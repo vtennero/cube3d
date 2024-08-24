@@ -141,6 +141,10 @@ int parse_map(t_game *game,char *cub_filepath)
 		return -1;
 	if (texture_error_handling(game) == -1)
 		return -1;
+	parse_floor_sky_rgb(game);
+	printf("Sky Red is %d,Green is %d, Blue is %d, and hex int is %d",game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue,game->sky_rgb[0].hex_color);
+	printf("Floor Red is %d,Green is %d, Blue is %d, and hex int is %d",game->floor_rgb[0].red,game->floor_rgb[0].green,game->floor_rgb[0].blue,game->floor_rgb[0].hex_color);
+
 	printf("\nTotal Cub line count is %d",game->cub_line_count);
 	printf("\nTotal Map line count is %d",game->cub_map_row_count);
 	printf("\nTotal Map col count is %d",game->cub_map_col_count);

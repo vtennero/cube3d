@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 12:45:14 by cliew             #+#    #+#             */
-/*   Updated: 2024/08/24 14:38:40 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/24 15:57:16 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,37 @@ int			check_map_boundaries(t_game *game)
 	// 	return (put_and_return_err("Map isn't surrounded by wall"));
 	return (0);
 }
+
+int rgb_to_hex_int(int red, int green, int blue) {
+    // Ensure the RGB values are within the range 0-255
+    if (red < 0) red = 0; else if (red > 255) red = 255;
+    if (green < 0) green = 0; else if (green > 255) green = 255;
+    if (blue < 0) blue = 0; else if (blue > 255) blue = 255;
+
+    // Combine RGB components into a single integer
+    return (red << 16) | (green << 8) | blue;
+}
+
+int parse_floor_sky_rgb(t_game *game)
+{
+	char ** f_split;
+	char ** s_split;
+
+
+	f_split=ft_split(game->floor_rgb[0].path,',');
+	game->floor_rgb[0].red=ft_atoi(f_split[0]);
+	game->floor_rgb[0].green=ft_atoi(f_split[1]);
+	game->floor_rgb[0].blue=ft_atoi(f_split[2]);
+	game->floor_rgb[0].hex_color=rgb_to_hex_int(game->floor_rgb[0].red,game->floor_rgb[0].green,game->floor_rgb[0].blue);
+
+
+	s_split=ft_split(game->sky_rgb[0].path,',');
+	game->sky_rgb[0].red=ft_atoi(s_split[0]);
+	game->sky_rgb[0].green=ft_atoi(s_split[1]);
+	game->sky_rgb[0].blue=ft_atoi(s_split[2]);
+	game->sky_rgb[0].hex_color=rgb_to_hex_int(game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue);
+
+	return 1;
+
+}
+

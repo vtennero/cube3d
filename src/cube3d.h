@@ -129,6 +129,18 @@ typedef struct s_texture
 }						t_texture;
 
 
+typedef struct s_rgb
+{
+	char				*path;
+	int					red;
+	int					green;
+	int					blue;
+	int 				hex_color;
+}						t_rgb;
+
+
+
+
 
 typedef struct s_extract
 {
@@ -307,8 +319,8 @@ typedef struct s_game
 	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
     t_texture floortexture[1];
     // t_texture skytexture[1];
-    t_texture floor_rgb[1];
-    t_texture sky_rgb[1];
+    t_rgb floor_rgb[1];
+    t_rgb sky_rgb[1];
 
 
 }						t_game;
@@ -380,6 +392,10 @@ void					initialize_game(t_game *game, int screen_width,
 void					preload_textures(t_game *game);
 
 
+void 				preload_textures_non_bonus(t_game *game);
+void render_floor_rgb(t_img *img, int color);
+void render_sky_rgb(t_game *game, int color);
+
 // Map Parsing //
 // Utility
 char* trim_whitespace(char* str);
@@ -406,6 +422,7 @@ int parse_map_to_array(t_game *game);
 int parse_char_to_int(char chars);
 int	floodfill(t_game *game, int **filled_map, int i, int j);
 int			check_map_boundaries(t_game *game);
+int parse_floor_sky_rgb(t_game *game);
 
 
 //Temp for map parse

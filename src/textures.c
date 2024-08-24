@@ -431,3 +431,137 @@ void preload_textures(t_game *game)
 
     printf("preload_textures END\n");
 }
+
+
+
+void render_floor_rgb(t_img *img, int color) {
+    int i, j;
+    for (i = DEFAULT_S_HEIGHT / 2; i < DEFAULT_S_HEIGHT; ++i) {
+        for (j = 0; j < DEFAULT_S_WIDTH; ++j) {
+            img_pix_put(img, j, i, color);
+        }
+    }
+}
+
+
+void render_sky_rgb(t_game *game, int color)
+{
+    // Check for NULL pointers
+    if (game == NULL ) {
+        fprintf(stderr, "Error: game  is NULL.\n");
+        return;
+    }
+
+    if ( game->player == NULL) {
+        fprintf(stderr, "Error: game->player is NULL.\n");
+        return;
+    }
+
+    // Check for valid screen height
+    if (game->screen_height <= 0) {
+        fprintf(stderr, "Error: screen_height must be positive.\n");
+        return;
+    }
+
+    // Check for valid pitch value
+    if (isnan(game->player->pitch) || isinf(game->player->pitch)) {
+        fprintf(stderr, "Error: player->pitch is invalid.\n");
+        return;
+    }
+
+    // Calculate pitch offset and height offset
+    int pitch_offset = (int)(game->player->pitch * game->screen_height);
+    int height_offset = (int)(game->player->height * game->screen_height);
+
+    // Determine the vertical range to render the sky
+    int sky_start = 0;
+    int wall_top = (game->screen_height / 2) - height_offset; // Top of the wall on the screen
+    int sky_end = wall_top + pitch_offset + (game->screen_height / 5) ;
+
+    // Clamp sky_end to screen height
+    sky_end = (sky_end > game->screen_height) ? game->screen_height : sky_end;
+
+    // Paint the sky with the provided color
+    for (int i = sky_start; i < sky_end; i++)
+    {
+        for (int j = 0; j < game->screen_width; j++)
+        {
+            img_pix_put(&game->img, j, i, color);
+        }
+    }
+}
+
+
+void preload_textures_non_bonus(t_game *game)
+{
+   
+
+    printf("preload_textures START\n");
+
+    // Load wall textures
+    for (int i = NORTH; i <= WEST; i++)
+    {
+        game->walltextures[i].img = mlx_xpm_file_to_image(
+            game->mlx_ptr,
+            game->walltextures[i].path,
+            &game->walltextures[i].width,
+            &game->walltextures[i].height);
+
+        if (!game->walltextures[i].img)
+        {
+            fprintf(stderr, "Failed to load wall texture: %s\n", game->walltextures[i].path);
+            exit(EXIT_FAILURE);
+        }
+
+        game->walltextures[i].data = mlx_get_data_addr(
+            game->walltextures[i].img,
+            &game->walltextures[i].tex_bpp,
+            &game->walltextures[i].tex_line_len,
+            &game->walltextures[i].tex_endian);
+
+        printf("Loaded wall texture: %s, bpp: %d, size: %dx%d\n",
+               game->walltextures[i].path, game->walltextures[i].tex_bpp,
+               game->walltextures[i].width, game->walltextures[i].height);
+    }
+
+    // Load sky texture
+    // game->skytexture[0].img = mlx_xpm_file_to_image(
+    //     game->mlx_ptr,
+    //     "textures/sky02.xpm",
+    //     &game->skytexture[0].width,
+    //     &game->skytexture[0].height);
+
+    // if (!game->skytexture[0].img)
+    // {
+    //     fprintf(stderr, "Failed to load sky texture\n");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // game->skytexture[0].data = mlx_get_data_addr(
+    //     game->skytexture[0].img,
+    //     &game->skytexture[0].tex_bpp,
+    //     &game->skytexture[0].tex_line_len,
+    //     &game->skytexture[0].tex_endian);
+
+    // printf("Loaded sky texture, bpp: %d, size: %dx%d\n",
+    //        game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
+
+
+    // load_floor_textures(game);
+    load_collectible_texture(game, "textures/collectibles/collectible01.xpm");
+
+    load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
+    load_shooting_textures(game, "textures/gun/shooting/frame%02d.xpm", MAX_SHOOTING_TEXTURES);
+    load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
+    load_menu_texture(game, "textures/menu/menu.xpm");
+    load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
+    load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
+    load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
+    load_extract_textures(game);
+    load_supplies_texture(game, "textures/supplies/supplies.xpm");
+
+    scale_gun_textures(game);
+    scale_shooting_textures(game);
+
+    printf("preload_textures END\n");
+}

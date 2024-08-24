@@ -112,8 +112,11 @@ int render(t_game *game)
     // handle_space_shoot(game);
 
     // rendering
-    render_sky(game, "textures/sky06.xpm");
-    render_floor(game);
+    // render_sky(game, "textures/sky06.xpm");
+    // render_floor(game);
+	render_floor_rgb(&game->img, game->floor_rgb[0].hex_color);
+	render_sky_rgb(game, game->sky_rgb[0].hex_color);
+
     // c_render_ray_list(game);
     render_ray_list(game);
     render_collectibles(game);
@@ -166,7 +169,8 @@ int setup_game_mlx(t_game *game)
     // comment this (for testing purposes)
     // game->game_sequence = 3;
 
-    preload_textures(game);
+    // preload_textures(game);
+	preload_textures_non_bonus(game);
     initialize_game_seed(game);
     initialize_floor_texture_weights(game);
     initialize_floor_texture_map(game);
