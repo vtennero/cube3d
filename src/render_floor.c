@@ -11,8 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#define FIXED_POINT_FACTOR 256
-#define MAX_DISTANCE 1000000.0f 
+
 
 int get_floor_texture_color(t_texture *texture, int x, int y)
 {

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/24 00:40:49 by root             ###   ########.fr       */
+/*   Updated: 2024/08/24 23:53:50 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,14 @@ int handle_mouse_click(int button, int x, int y, void *param)
 		    playAudioFileWithDelay("audio/getsome.mp3", 0);
             // play audio
         }
+    }
+    else if (button == 3)
+    {
+        printf("launching orbital strike at %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
+        // add script launch strike
+        game->strike->position.y = game->center_floor_coords.y;
+        game->strike->position.x = game->center_floor_coords.x;
+        game->strike->is_launching = 1;
     }
     return (0);
 }

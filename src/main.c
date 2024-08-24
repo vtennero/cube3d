@@ -22,6 +22,7 @@ int initgame(t_game **game)
     create_extraction(*game);
     create_enemies(*game);
     create_supplies(*game);
+    create_strike(*game);
     setup_game_mlx(*game);
 
 

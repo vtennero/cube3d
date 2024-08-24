@@ -90,42 +90,33 @@ t_ray_node *addRay(t_ray_node **head)
 //     // printRayList(list);
 //     return (list);
 // }
+
 t_vector2d calculate_floor_coordinates(t_game *game, t_ray_node *center_ray)
 {
     t_vector2d floor_coords;
-    float distance;
+    float rayDirX = center_ray->ray.rayDirX;
+    float rayDirY = center_ray->ray.rayDirY;
+    float pitch = game->player->pitch;
+    float player_height = game->player->height;
 
-    // Use the center ray's direction
-    float ray_dir_x = center_ray->ray.rayDirX;
-    float ray_dir_y = center_ray->ray.rayDirY;
+    // Calculate the vertical position of the center pixel
+    int screen_center_y = DEFAULT_S_HEIGHT / 2;
+    int pitch_pixel_offset = -(int)(pitch * DEFAULT_S_HEIGHT);
+    int p = screen_center_y - (DEFAULT_S_HEIGHT / 2) + pitch_pixel_offset;
 
-    // Check if we hit a wall
-    if (center_ray->ray.hit)
+    // Calculate the distance to the floor point
+    float posZ = 0.5f * DEFAULT_S_HEIGHT * (1.0f + player_height * 2);
+    float rowDistance = posZ / p;
+
+    // If we're looking up (negative pitch), use a far distance
+    if (rowDistance < 0 || !isfinite(rowDistance))
     {
-        // If we hit a wall, use the wall hit point
-        distance = center_ray->ray.perpWallDist;
-    }
-    else
-    {
-        // If no wall, use the map's diagonal as the maximum distance
-        distance = sqrt(game->map->width * game->map->width + game->map->height * game->map->height);
+        rowDistance = MAX_DISTANCE;
     }
 
-    // Apply pitch
-    float pitch_offset = game->player->pitch * distance;
-    
-    // Calculate the floor coordinates
-    floor_coords.x = game->player->position.x + ray_dir_x * distance;
-    floor_coords.y = game->player->position.y + ray_dir_y * distance;
-
-    // Adjust for pitch (positive pitch looks down, negative looks up)
-    if (pitch_offset > 0)
-    {
-        // Looking down, move the point closer
-        floor_coords.x = game->player->position.x + ray_dir_x * (distance - pitch_offset);
-        floor_coords.y = game->player->position.y + ray_dir_y * (distance - pitch_offset);
-    }
-    // When looking up (negative pitch), we keep the farthest point
+    // Calculate floor coordinates
+    floor_coords.x = game->player->position.x + rowDistance * rayDirX;
+    floor_coords.y = game->player->position.y + rowDistance * rayDirY;
 
     // Ensure coordinates are within map bounds
     floor_coords.x = fmax(0, fmin(floor_coords.x, game->map->width - 1));
@@ -133,22 +124,76 @@ t_vector2d calculate_floor_coordinates(t_game *game, t_ray_node *center_ray)
 
     return floor_coords;
 }
+
+// t_vector2d calculate_floor_coordinates(t_game *game, t_ray_node *center_ray)
+// {
+//     t_vector2d floor_coords;
+//     float distance;
+
+//     // Use the center ray's direction
+//     float ray_dir_x = center_ray->ray.rayDirX;
+//     float ray_dir_y = center_ray->ray.rayDirY;
+
+//     // Check if we hit a wall
+//     if (center_ray->ray.hit)
+//     {
+//         // If we hit a wall, use the wall hit point
+//         distance = center_ray->ray.perpWallDist;
+//     }
+//     else
+//     {
+//         // If no wall, use the map's diagonal as the maximum distance
+//         distance = sqrt(game->map->width * game->map->width + game->map->height * game->map->height);
+//     }
+
+//     // Apply pitch
+//     float pitch_offset = game->player->pitch * distance;
+    
+//     // Calculate the floor coordinates
+//     floor_coords.x = game->player->position.x + ray_dir_x * distance;
+//     floor_coords.y = game->player->position.y + ray_dir_y * distance;
+
+//     // Adjust for pitch (positive pitch looks down, negative looks up)
+//     if (pitch_offset > 0)
+//     {
+//         // Looking down, move the point closer
+//         floor_coords.x = game->player->position.x + ray_dir_x * (distance - pitch_offset);
+//         floor_coords.y = game->player->position.y + ray_dir_y * (distance - pitch_offset);
+//     }
+//     // When looking up (negative pitch), we keep the farthest point
+
+//     // Ensure coordinates are within map bounds
+//     floor_coords.x = fmax(0, fmin(floor_coords.x, game->map->width - 1));
+//     floor_coords.y = fmax(0, fmin(floor_coords.y, game->map->height - 1));
+
+//     return floor_coords;
+// }
+
 void calculate_and_print_center_ray(t_game *game, t_ray_node *center_ray)
 {
     t_vector2d floor_coords = calculate_floor_coordinates(game, center_ray);
+    
+    // If the center ray hit a wall, use the wall hit point instead
+    if (center_ray->ray.hit)
+    {
+        float wallDist = center_ray->ray.perpWallDist;
+        floor_coords.x = game->player->position.x + center_ray->ray.rayDirX * wallDist;
+        floor_coords.y = game->player->position.y + center_ray->ray.rayDirY * wallDist;
+    }
+
     game->center_floor_coords = floor_coords;
 
     // Calculate tile coordinates
-    t_vector2d tile_coords;
-    tile_coords.x = floor(floor_coords.x);
-    tile_coords.y = floor(floor_coords.y);
+    // t_vector2d tile_coords;
+    // tile_coords.x = floor(floor_coords.x);
+    // tile_coords.y = floor(floor_coords.y);
 
     // Print tile coordinates
-    printf("Center ray aimed at tile: (%.0f, %.0f)\n", tile_coords.x, tile_coords.y);
+    // printf("Center ray aimed at tile: (%.0f, %.0f)\n", tile_coords.x, tile_coords.y);
     
     // Print more information
-    printf("Exact floor coordinates: (%.2f, %.2f)\n", floor_coords.x, floor_coords.y);
-    printf("Player position: (%.2f, %.2f)\n", game->player->position.x, game->player->position.y);
+    // printf("Exact floor coordinates: (%.2f, %.2f)\n", floor_coords.x, floor_coords.y);
+    // printf("Player position: (%.2f, %.2f)\n", game->player->position.x, game->player->position.y);
     // printf("Ray direction: (%.2f, %.2f)\n", center_ray->ray.rayDirX, center_ray->ray.rayDirY);
     // printf("Hit wall: %s\n", center_ray->ray.hit ? "Yes" : "No");
     if (center_ray->ray.hit)

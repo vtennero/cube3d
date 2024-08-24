@@ -45,6 +45,24 @@ int	create_map(t_game *game)
 	return (0);
 }
 
+int create_strike(t_game *game)
+{
+    t_strike *strike = malloc(sizeof(t_strike));
+	if (strike == NULL)
+	{
+		fprintf(stderr, "Failed to allocate memory for the strike.\n");
+		exit(1); // or handle the error as appropriate
+	}
+    strike->position.x = 0;
+    strike->position.y = 0;
+    strike->is_active = 0;
+    strike->is_launching = 0;
+
+	game->strike = strike;
+	printf("initialized strike\n");
+    return (1);
+}
+
 int	create_player(t_game *game)
 {
 	printf("initializing player\n");
@@ -55,6 +73,7 @@ int	create_player(t_game *game)
 		fprintf(stderr, "Failed to allocate memory for the player.\n");
 		exit(1); // or handle the error as appropriate
 	}
+
 
 	// Initialize player position
 	player->position.x = 22;

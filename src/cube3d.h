@@ -53,6 +53,11 @@
 #define M_PI 3.14159265358979323846
 
 
+// floor rendering
+#define FIXED_POINT_FACTOR 256
+#define MAX_DISTANCE 1000000.0f 
+#define MAX_RENDER_DISTANCE 1000000.0f 
+
 /*
 ** ================== STRUCTURES ==================
 */
@@ -156,6 +161,13 @@ typedef struct s_supplies
     int found;  // 0 for not collected, 1 for collected
 } t_supplies;
 
+typedef struct s_strike
+{
+    t_vector2d	position;
+	int			is_launching;
+	int			is_active;
+} t_strike;
+
 typedef struct s_enemy
 {
     t_vector2d position;
@@ -165,7 +177,6 @@ typedef struct s_enemy
     int animation_steps; // count of animation steps for periodic jumps
     int is_alive;        // 0 for dead, 1 for alive
 } t_enemy;
-
 
 typedef enum e_direction
 {
@@ -291,7 +302,7 @@ typedef struct s_game
 	int					is_shooting;
 	int					is_moving_fwd;
 	t_vector2d			center_floor_coords;
-
+	t_strike			*strike;
 }						t_game;
 
 
@@ -584,4 +595,9 @@ int find_closest_supply(t_game *game);
 void    trigger_supply_take(t_game *game);
 void    cancel_supply_take(t_game *game);
 void render_supply_take(t_game *game);
+
+
+void    call_airstrike(t_game *game);
+int create_strike(t_game *game);
+
 #endif
