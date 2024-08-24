@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     game = NULL;
 
     create_game_struct(&game);
-
+	game->bonus=1;
 	if (argc>1)
  		parse_map(game,argv[1]);
 

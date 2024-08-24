@@ -547,7 +547,7 @@ void preload_textures_non_bonus(t_game *game)
     //        game->skytexture[0].tex_bpp, game->skytexture[0].width, game->skytexture[0].height);
 
 
-    // load_floor_textures(game);
+    load_floor_textures(game);
     load_collectible_texture(game, "textures/collectibles/collectible01.xpm");
 
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);

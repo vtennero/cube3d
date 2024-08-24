@@ -257,6 +257,7 @@ typedef struct s_ray_node
 
 typedef struct s_game
 {
+	
 	t_script_manager script_manager;
 	void				*mlx_ptr;
 	void				*win_ptr;
