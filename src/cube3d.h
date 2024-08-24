@@ -304,9 +304,11 @@ typedef struct s_game
 	int cub_player_y;
 	int cub_player_o;
 
-	t_texture walltextures_path[4]; // Textures for NORTH, EAST, SOUTH, WEST
-    t_texture floortexture_rgb[1];
-    t_texture skytexture_rgb[1];
+	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
+    t_texture floortexture[1];
+    // t_texture skytexture[1];
+    t_texture floor_rgb[1];
+    t_texture sky_rgb[1];
 
 
 }						t_game;

@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 21:01:14 by cliew             #+#    #+#             */
-/*   Updated: 2024/07/13 12:41:33 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/24 15:13:38 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ int texture_error_handling(t_game* game)
 	error = 0;
 
 	texture_access_check(game,&error);
-	if (game->floortexture[0].path && check_invalid_rgb(game->floortexture[0].path)){
+	if (game->floor_rgb[0].path && check_invalid_rgb(game->floor_rgb[0].path)){
 		printf("Failed to parse Floor texture\n");
 		error=-1;
 	}
-	if (game->skytexture[0].path && check_invalid_rgb(game->skytexture[0].path)){
+	if (game->sky_rgb[0].path && check_invalid_rgb(game->sky_rgb[0].path)){
 		printf("Failed to parse Sky texture\n");
 		error=-1;
 	}
-	if ((game->walltextures[0].path) && (game->walltextures[1].path) && (game->walltextures[2].path) && (game->walltextures[3].path) && (game->floortexture[0].path) && (game->skytexture[0].path) && error==0)
+	if ((game->walltextures[0].path) && (game->walltextures[1].path) && (game->walltextures[2].path) && (game->walltextures[3].path) && (game->floor_rgb[0].path) && (game->sky_rgb[0].path) && error==0)
 		return 0;
 	return error;
 }
@@ -125,10 +125,10 @@ int check_line(t_game *game, char* line)
 	else if (strcmp(words[0],"WE")==0 )
 		game->walltextures[3].path=words[1];
 	else if (strcmp(words[0],"F")==0 )
-		game->floortexture[0].path=words[1];
+		game->floor_rgb[0].path=words[1];
 
 	else if (strcmp(words[0],"C")==0 ){
-		game->skytexture[0].path=words[1];
+		game->sky_rgb[0].path=words[1];
 	}
 	return 0;
 	
