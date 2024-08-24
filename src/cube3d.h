@@ -289,7 +289,28 @@ typedef struct s_game
 	int					loop_count;
 	int					is_shooting;
 	int					is_moving_fwd;
+
+
+	// Cub parsing
+	char *cub_filepath;
+	int  cub_fd;
+	
+	int  cub_line_count;
+	int  cub_map_row_count;
+	int  cub_map_col_count;
+
+	int **cub_map_array;
+	int cub_player_x;
+	int cub_player_y;
+	int cub_player_o;
+
+	// t_texture walltextures[4]; // Textures for NORTH, EAST, SOUTH, WEST
+    t_texture floortexture[1];
+    // t_texture skytexture[1];
+
+
 }						t_game;
+
 
 
 typedef enum
@@ -355,8 +376,45 @@ typedef struct s_keymap
 void					initialize_game(t_game *game, int screen_width,
 							int screen_height, char *title);
 void					preload_textures(t_game *game);
-// raycasting
 
+
+// Map Parsing //
+// Utility
+char* trim_whitespace(char* str);
+int count_words_from_array(char **words); 
+int	ft_isinteger(char *number);
+int check_invalid_rgb(char* word);
+int** initializeArray(int x, int y);
+
+// Parse texture
+int read_cub_texture_and_analyze_map(t_game *game);
+int check_line(t_game *game, char* line);
+void texture_access_check(t_game* game,int *error);
+int texture_error_handling(t_game* game);
+
+// Parse map
+int parse_line_to_map_array(char* line, t_game *game,int map_line);
+int loop_thru_line_in_map_array(t_game *game);
+int check_player_position_helper(t_game *game,int i,int j,int *player_found);
+int check_player_postion_and_map_char(t_game *game);
+int parse_map_to_array(t_game *game);
+
+
+/// Check map boundaries
+int parse_char_to_int(char chars);
+int	floodfill(t_game *game, int **filled_map, int i, int j);
+int			check_map_boundaries(t_game *game);
+
+
+//Temp for map parse
+int print_2d_array(t_game *game,int ** array_to_print);
+int parse_map(t_game *game,char *cub_filepath);
+
+
+
+
+
+// raycasting
 // debug
 void					print_map(t_map *map);
 void					print_player(const t_player *player);

@@ -36,14 +36,123 @@ int	create_game_struct(t_game **game)
 	return (0);
 }
 
+void create_map_from_cub(t_game *game)
+{
+    // Allocate memory for the map structure
+    t_map *map = malloc(sizeof(t_map));
+    if (map == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed for map structure.\n");
+        exit(1);
+    }
+    printf("Allocated memory for the map structure\n");
+    // Set the dimensions
+    // map->width = 24;
+    // map->height = 24;
+    // map->width = game->screen_width;
+    // map->height = game->screen_height;
+
+	map->width = ((game->cub_map_col_count + 1) / 2);
+	map->height = game->cub_map_row_count;
+    printf("Set the dimensions\n");
+
+    // Allocate memory for the map data
+    map->data = malloc(game->screen_height * sizeof(int *));
+    if (map->data == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed for map data.\n");
+        free(map); // Clean up previously allocated map
+        exit(1);
+    }
+    printf("Allocated memory for the map data\n");
+
+    for (int i = 0; i < game->screen_height; i++)
+    {
+        map->data[i] = malloc(game->screen_width * sizeof(int));
+        if (map->data[i] == NULL)
+        {
+            fprintf(stderr, "Memory allocation failed for map row.\n");
+            // Clean up previously allocated rows and map structure
+            for (int j = 0; j < i; j++)
+            {
+                free(map->data[j]);
+            }
+            free(map->data);
+            free(map);
+            exit(1);
+        }
+    }
+
+   
+    // Copy the static map to the allocated map
+    for (int x = 0; x <map->height ; x++)
+    {
+        // printf("for (int y = %d; y < screenHeight; y++)\n", y);
+        for (int y = 0; y < map->width ; y++)
+        {
+            // printf("for int x = %d; x < screenWidth; x++\n", x);
+            // map->data[y][x] = staticMap[x][y];
+            map->data[x][y] =  game->cub_map_array[x][y];
+        }
+    }
+    printf("copied the static map to the allocated map\n");
+
+    // Link the map to the game structure
+    game->map = map;
+}
+
+
 int	create_map(t_game *game)
 {
 	// Implement map creation and initialization
 	printf("initializing map\n");
-	create_static_map(game);
+	//create_static_map(game);
+	create_map_from_cub(game);
+
 	printf("initialized map\n");
 	return (0);
 }
+	int print_2d_array(t_game *game,int ** array_to_print)
+{
+	int x;
+	int y;
+	x =game->cub_map_row_count;
+	y=((game->cub_map_col_count + 1) / 2);
+
+	printf("\n GAME MAP ARRAY \n _________________________________ \n");
+
+    for (int i = 0; i < x; ++i) {
+        for (int j = 0; j < y; ++j) {
+	
+            printf("%d ", array_to_print[i][j]);
+        }
+        printf("\n");
+    }
+	return 1;
+}
+
+
+int parse_map(t_game *game,char *cub_filepath)
+{
+	game->cub_filepath=cub_filepath;
+	printf("%s",cub_filepath);
+	printf("%s",game->cub_filepath);
+	if (read_cub_texture_and_analyze_map(game)==-1)
+		return -1;
+	if (texture_error_handling(game) == -1)
+		return -1;
+	printf("\nTotal Cub line count is %d",game->cub_line_count);
+	printf("\nTotal Map line count is %d",game->cub_map_row_count);
+	printf("\nTotal Map col count is %d",game->cub_map_col_count);
+	if (parse_map_to_array(game) == -1)
+		return -1;
+	if (check_map_boundaries(game) ==-1)
+		return -1;
+    // Implement map creation and initialization
+
+    return 0;
+}
+
 
 int	create_player(t_game *game)
 {
@@ -57,12 +166,31 @@ int	create_player(t_game *game)
 	}
 
 	// Initialize player position
-	player->position.x = 22;
-	player->position.y = 12;
+	player->position.x = game->cub_player_x;
+	player->position.y = game->cub_player_y;
+
+
+	if (game->cub_player_o==2 || game->cub_player_o==4)
+	{
+		player->direction.x = 0.0f;
+		if (game->cub_player_o==2) 
+			player->direction.y = -1.0f;
+		else if (game->cub_player_o==4) 
+			player->direction.y = 1.0f;
+	}
+	else if (game->cub_player_o==3 || game->cub_player_o==5)
+	{
+		player->direction.y = 0.0f;
+		if (game->cub_player_o==3) 
+			player->direction.x = 1.0f;
+		if (game->cub_player_o==5) 
+			player->direction.y = -1.0f;
+	}
+
 
 	// Initialize player direction (looking along the negative x-axis)
-	player->direction.x = -1.0f;
-	player->direction.y = 0.0f;
+	// player->direction.x = -1.0f;
+	// player->direction.y = 0.0f;
 
 	// Initialize the camera plane for the raycasting (related to the FOV)
 	// player->plane.x = 0.0f;  // Adjust this value to change the FOV

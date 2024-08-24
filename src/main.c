@@ -15,7 +15,6 @@
 int initgame(t_game **game)
 {
     printf("initgame\n");
-    create_game_struct(game);
     create_map(*game);
     create_player(*game);
     create_collectibles(*game);
@@ -28,14 +27,16 @@ int initgame(t_game **game)
     return (1);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     t_game *game;
 
     game = NULL;
 
+    create_game_struct(&game);
 
-
+	if (argc>1)
+ 		parse_map(game,argv[1]);
 
     // if (map_is_valid)
     initgame(&game);

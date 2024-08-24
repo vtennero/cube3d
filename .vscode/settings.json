@@ -5,7 +5,14 @@
 		"cmath": "c",
 		"string.h": "c",
 		"mpg123.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"array": "c",
+		"deque": "c",
+		"string": "c",
+		"unordered_map": "c",
+		"vector": "c",
+		"string_view": "c",
+		"initializer_list": "c"
 	},
 	"makefile.configureOnOpen": false
 }
