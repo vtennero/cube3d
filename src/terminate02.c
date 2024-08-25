@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   terminate02.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:00:21 by toto              #+#    #+#             */
-/*   Updated: 2024/08/21 11:35:30 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/25 16:53:05 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,17 @@ void	clean_rays(t_game *game)
 // void	clean_(t_game *game)
 // void	clean_(t_game *game)
 // void	clean_(t_game *game)
+
+
+// void cleanup_strike_textures(t_game *game)
+// {
+//     for (int i = 0; i < NUM_AIRSTRIKE_FRAMES; i++)
+//     {
+//         if (game->airstrike_textures[i].img)
+//             mlx_destroy_image(game->mlx_ptr, game->airstrike_textures[i].img);
+//     }
+//     free(game->airstrike_textures);
+// }
 
 void	cleanup(t_game *game)
 {

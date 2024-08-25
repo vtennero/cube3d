@@ -96,11 +96,11 @@ void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, 
             if (x >= 0 && x < game->screen_width)
             {
                 int color;
-                char* color_name;
+                // char* color_name;
                 if (i >= -white_width/2 && i < white_width/2)
                 {
                     color = 0xFFFFFF; // White in the middle
-                    color_name = "White";
+                    // color_name = "White";
                 }
                 else
                 {
@@ -108,19 +108,21 @@ void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, 
                     float gradient = 1.0f - (float)abs(i) / (total_width/2);
                     int red_value = 128 + (int)(127 * gradient); // Range from 128 to 255
                     color = (red_value << 16) | 0x000000; // Only red channel
-                    color_name = "Red (Gradient)";
+                    // color_name = "Red (Gradient)";
                 }
                 img_pix_put(&game->img, x, y, color);
                 
                 // Print debug info for every 50th pixel to avoid overwhelming output
-                if (y % 50 == 0 && i == 0)
-                {
-                    printf("Drawing pixel: x=%d, y=%d, color=%s, total_width=%d\n", x, y, color_name, total_width);
-                }
+                // if (y % 50 == 0 && i == 0)
+                // {
+                //     printf("Drawing pixel: x=%d, y=%d, color=%s, total_width=%d\n", x, y, color_name, total_width);
+                // }
             }
         }
     }
 }
+
+
 
 
 void render_call_strike(t_game *game, t_vector2d position)
@@ -180,28 +182,107 @@ void render_ongoing_strike(t_game *game)
     int current_frame = get_next_airstrike_frame(game->strike);
     t_texture *strike_texture = &game->airstrike_textures[current_frame];
 
-    float spriteX, spriteY;
-    calculate_sprite_position(game, game->strike->position.x, game->strike->position.y, &spriteX, &spriteY);
+    printf("Rendering strike frame %d, texture address: %p\n", current_frame, (void*)strike_texture);
 
-    float transformX, transformY;
-    transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+    // Define offsets for adjacent tiles
+    int offsets[4][2] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}}; // Current tile and 3 adjacent
 
-    int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
-
-    int spriteHeight, drawStartY, drawEndY;
-    calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
-
-    int spriteWidth, drawStartX, drawEndX;
-    calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
-
-    for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+    for (int i = 0; i < 4; i++)
     {
-        if (is_sprite_in_front(transformY, stripe, game->screen_width))
+        float spriteX, spriteY;
+        calculate_sprite_position(game, 
+                                  game->strike->position.x + offsets[i][0], 
+                                  game->strike->position.y + offsets[i][1], 
+                                  &spriteX, &spriteY);
+
+        float transformX, transformY;
+        transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+        int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+        int spriteHeight, drawStartY, drawEndY;
+        calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+        int spriteWidth, drawStartX, drawEndX;
+        calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+        printf("Strike sprite dimensions for tile %d: X=%d-%d, Y=%d-%d\n", i, drawStartX, drawEndX, drawStartY, drawEndY);
+
+        for (int stripe = drawStartX; stripe < drawEndX; stripe++)
         {
-            draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+            if (is_sprite_in_front(transformY, stripe, game->screen_width))
+            {
+                draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+            }
         }
     }
 }
+
+// void render_ongoing_strike(t_game *game)
+// {
+//     if (!game->strike->is_active)
+//         return;
+
+//     int current_frame = get_next_airstrike_frame(game->strike);
+//     t_texture *strike_texture = &game->airstrike_textures[current_frame];
+
+//     printf("Rendering strike frame %d, texture address: %p\n", current_frame, (void*)strike_texture);
+
+//     float spriteX, spriteY;
+//     calculate_sprite_position(game, game->strike->position.x, game->strike->position.y, &spriteX, &spriteY);
+
+//     float transformX, transformY;
+//     transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//     int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+//     int spriteHeight, drawStartY, drawEndY;
+//     calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//     int spriteWidth, drawStartX, drawEndX;
+//     calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//     printf("Strike sprite dimensions: X=%d-%d, Y=%d-%d\n", drawStartX, drawEndX, drawStartY, drawEndY);
+
+//     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//     {
+//         if (is_sprite_in_front(transformY, stripe, game->screen_width))
+//         {
+//             draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//         }
+//     }
+// }
+
+// void render_ongoing_strike(t_game *game)
+// {
+//     if (!game->strike->is_active)
+//         return;
+
+//     int current_frame = get_next_airstrike_frame(game->strike);
+//     t_texture *strike_texture = &game->airstrike_textures[current_frame];
+
+//     float spriteX, spriteY;
+//     calculate_sprite_position(game, game->strike->position.x, game->strike->position.y, &spriteX, &spriteY);
+
+//     float transformX, transformY;
+//     transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//     int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+//     int spriteHeight, drawStartY, drawEndY;
+//     calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//     int spriteWidth, drawStartX, drawEndX;
+//     calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//     for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//     {
+//         if (is_sprite_in_front(transformY, stripe, game->screen_width))
+//         {
+//             draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//         }
+//     }
+// }
 
 void    render_strike(t_game *game)
 {

@@ -6,11 +6,47 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/24 00:53:14 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 17:48:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+void script_strike_enemies(t_game *game)
+{
+	if (game->strike->is_active)
+	{
+    float strikeX = game->strike->position.x;
+    float strikeY = game->strike->position.y;
+    
+    // Define the radius for considering an enemy "close"
+    // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+    float strike_radius = 2.0f;
+
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (!game->enemies[i].is_alive)
+            continue;
+
+        float enemyX = game->enemies[i].position.x;
+        float enemyY = game->enemies[i].position.y;
+
+        // Calculate the distance between the strike and the enemy
+        float dx = strikeX - enemyX;
+        float dy = strikeY - enemyY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the enemy is within the strike radius
+        if (distance <= strike_radius)
+        {
+            game->enemies[i].is_alive = 0;
+            // Optionally, you can add some visual or sound effect here
+            // printf("Enemy %d struck down!\n", i);
+        }
+    }
+	}
+
+}
 
 void    script_found_sth(t_game *game)
 {

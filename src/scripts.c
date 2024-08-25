@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/25 16:29:05 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 18:19:16 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,36 @@ void    trigger_gunshots(t_game *game)
 //     playAudioFileWithDelay("audio/eagle")
 // }
 
+void play_random_eagle_call(t_game *game)
+{
+    // Generate a random number between 0 and 5
+    int random_call = random_int(game, 6);
+    
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/eaglec00.mp3";
+    audio_file[12] = '0' + random_call / 10;
+    audio_file[13] = '0' + random_call % 10;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
+
+void    eagle_bombs(t_game *game)
+{
+    // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
+    play_random_eagle_call(game);
+    game->strike->is_active = 1;
+    (void)game;
+}
+
 void    eagle_inbound(t_game *game)
 {
-    // add_script(game, eagle_voice_post_strike, 2);
     game->strike->is_launching = 0;
-    game->strike->is_active = 0;
 
     // play audio, choose audio
-    playAudioFileWithDelay("audio/eagle00.mp3", 0);
+    add_script(game, eagle_bombs, 1);
+    playAudioFileWithDelay("audio/eagles00.mp3", 0);
+
 
     // eaglesgtrikes--
 }

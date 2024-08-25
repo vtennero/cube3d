@@ -61,6 +61,11 @@
 // airstrikes
 #define NUM_AIRSTRIKE_FRAMES 20
 #define AIRSTRIKE_ANIMATION_INTERVAL 3  // Change frame every 3 game ticks
+#define NUM_ADJACENT_TILES 3
+#define TOTAL_STRIKE_TILES 4 // Including the main tile
+#define NUM_TILES 4
+#define NUM_EXPLOSIONS 4
+#define EXPLOSION_DELAY 30 // Frames between explosion starts
 
 /*
 ** ================== STRUCTURES ==================
@@ -167,6 +172,16 @@ typedef struct s_supplies
     int found;  // 0 for not collected, 1 for collected
 } t_supplies;
 
+typedef struct s_explosion
+{
+    t_vector2d offset;
+    int is_active;
+    int current_frame;
+    int frame_count;
+} t_explosion;
+
+
+
 typedef struct s_strike
 {
     t_vector2d	position;
@@ -175,6 +190,7 @@ typedef struct s_strike
 	int			current_frame;
 	int			frame_count;
 } t_strike;
+
 
 typedef struct s_enemy
 {
@@ -609,5 +625,5 @@ void render_supply_take(t_game *game);
 void    render_strike(t_game *game);
 int create_strike(t_game *game);
 void    eagle_inbound(t_game *game);
-
+void script_strike_enemies(t_game *game);
 #endif

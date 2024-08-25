@@ -88,7 +88,7 @@ int render(t_game *game)
     script_found_sth(game);
     script_found_supplies(game);
     script_take_supplies(game);
-
+    script_strike_enemies(game);
     script_board(game);
     // trigger_gunshots(game);
     update_scripts(game);
@@ -166,7 +166,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
 
     preload_textures(game);
     initialize_game_seed(game);

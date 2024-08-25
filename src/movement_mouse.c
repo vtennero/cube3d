@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/25 16:33:26 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 18:21:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ int handle_mouse_move(int x, int y, t_game *game)
     return (0);
 }
 
+void play_random_strike_sound(t_game *game)
+{
+    // Generate a random number between 0 and 2
+    int random_strike = random_int(game, 3);
+    
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/strike00.mp3";
+    audio_file[13] = '0' + random_strike;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
 
 
 int handle_mouse_click(int button, int x, int y, void *param)
@@ -103,7 +115,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
             // play audio
         }
     }
-    else if (button == 3)
+    else if (button == 3 && game->strike->is_launching == 0 && game->strike->is_active == 0)
     {
         printf("launching orbital strike at %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
         // add script launch strike
@@ -111,7 +123,8 @@ int handle_mouse_click(int button, int x, int y, void *param)
         game->strike->position.x = game->center_floor_coords.x;
         game->strike->is_launching = 1;
         // script to choose audio for airstrike
-        // playAudioFileWithDelay("")
+        // playAudioFileWithDelay("audio/strike00.mp3", 0);
+        play_random_strike_sound(game);
         add_script(game, eagle_inbound, 3);
     }
     return (0);
