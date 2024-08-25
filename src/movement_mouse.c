@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/25 18:21:12 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 18:25:15 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void play_random_strike_sound(t_game *game)
 int handle_mouse_click(int button, int x, int y, void *param)
 {
     t_game *game = (t_game *)param;
-    if (button == 1)
+    if (button == 1 && game->game_sequence == 3)
     {
         printf("Shooting at position (%d, %d)\n", x, y);
 
@@ -115,7 +115,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
             // play audio
         }
     }
-    else if (button == 3 && game->strike->is_launching == 0 && game->strike->is_active == 0)
+    else if (button == 3 && game->strike->is_launching == 0 && game->strike->is_active == 0 && game->game_sequence == 3)
     {
         printf("launching orbital strike at %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
         // add script launch strike
