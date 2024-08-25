@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/24 23:53:50 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 16:33:26 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ int handle_mouse_click(int button, int x, int y, void *param)
         game->strike->position.y = game->center_floor_coords.y;
         game->strike->position.x = game->center_floor_coords.x;
         game->strike->is_launching = 1;
+        // script to choose audio for airstrike
+        // playAudioFileWithDelay("")
+        add_script(game, eagle_inbound, 3);
     }
     return (0);
 }

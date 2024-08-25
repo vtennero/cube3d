@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/24 00:45:05 by root             ###   ########.fr       */
+/*   Updated: 2024/08/25 16:29:05 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,6 @@ void trigger_landing(t_game *game)
     
 }
 
-// sucks
-// void play_gun_sound(t_game *game)
-// {
-//     // stopAudioFile("audio/gun01.mp3");
-//     playAudioFileWithDelay("audio/gun01.mp3", 0);
-//     (void)game;
-// }
 
 void play_gun_sound(t_game *game) {
     playAudioFileWithDelay("audio/gun02.mp3", 0);
@@ -100,18 +93,84 @@ void    trigger_gunshots(t_game *game)
         add_script(game, play_gun_sound, 3);
 }
 
+// void    eagle_voice_post_strike(t_game *game)
+// {
+//     playAudioFileWithDelay("audio/eagle")
+// }
+
+void    eagle_inbound(t_game *game)
+{
+    // add_script(game, eagle_voice_post_strike, 2);
+    game->strike->is_launching = 0;
+    game->strike->is_active = 0;
+
+    // play audio, choose audio
+    playAudioFileWithDelay("audio/eagle00.mp3", 0);
+
+    // eaglesgtrikes--
+}
+
 void init_script_manager(t_game *game) {
     game->script_manager = (t_script_manager){0};
 }
 
+// void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
+//     if (game->script_manager.script_count >= MAX_SCRIPTS) {
+//         printf("Error: Maximum number of scripts reached\n");
+//         return;
+//     }
+
+//     struct timeval now;
+//     gettimeofday(&now, NULL);
+
+//     t_script new_script = {
+//         .trigger_time = {
+//             .tv_sec = now.tv_sec + delay_seconds,
+//             .tv_usec = now.tv_usec
+//         },
+//         .func = func,
+//         .is_active = 1
+//     };
+
+//     game->script_manager.scripts[game->script_manager.script_count++] = new_script;
+// }
+
+// void update_scripts(t_game *game) {
+//     struct timeval now;
+//     gettimeofday(&now, NULL);
+
+//     for (int i = 0; i < game->script_manager.script_count; i++) {
+//         t_script *script = &game->script_manager.scripts[i];
+//         if (script->is_active && 
+//             (now.tv_sec > script->trigger_time.tv_sec || 
+//             (now.tv_sec == script->trigger_time.tv_sec && now.tv_usec >= script->trigger_time.tv_usec))) {
+//             script->func(game);
+//             script->is_active = 0;
+//         }
+//     }
+// }
+
+
 void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
-    if (game->script_manager.script_count >= MAX_SCRIPTS) {
-        printf("Error: Maximum number of scripts reached\n");
+    if (game->script_manager.active_script_count >= MAX_SCRIPTS) {
+        printf("Error: Maximum number of active scripts reached\n");
         return;
     }
 
     struct timeval now;
     gettimeofday(&now, NULL);
+
+    // Find an inactive slot or use the next available slot
+    int slot = -1;
+    for (int i = 0; i < game->script_manager.script_count; i++) {
+        if (!game->script_manager.scripts[i].is_active) {
+            slot = i;
+            break;
+        }
+    }
+    if (slot == -1) {
+        slot = game->script_manager.script_count++;
+    }
 
     t_script new_script = {
         .trigger_time = {
@@ -122,7 +181,8 @@ void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
         .is_active = 1
     };
 
-    game->script_manager.scripts[game->script_manager.script_count++] = new_script;
+    game->script_manager.scripts[slot] = new_script;
+    game->script_manager.active_script_count++;
 }
 
 void update_scripts(t_game *game) {
@@ -136,7 +196,7 @@ void update_scripts(t_game *game) {
             (now.tv_sec == script->trigger_time.tv_sec && now.tv_usec >= script->trigger_time.tv_usec))) {
             script->func(game);
             script->is_active = 0;
+            game->script_manager.active_script_count--;
         }
     }
 }
-

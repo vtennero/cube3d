@@ -57,6 +57,7 @@ int create_strike(t_game *game)
     strike->position.y = 0;
     strike->is_active = 0;
     strike->is_launching = 0;
+    strike->current_frame = 0;
 
 	game->strike = strike;
 	printf("initialized strike\n");

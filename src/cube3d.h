@@ -58,6 +58,10 @@
 #define MAX_DISTANCE 1000000.0f 
 #define MAX_RENDER_DISTANCE 1000000.0f 
 
+// airstrikes
+#define NUM_AIRSTRIKE_FRAMES 20
+#define AIRSTRIKE_ANIMATION_INTERVAL 3  // Change frame every 3 game ticks
+
 /*
 ** ================== STRUCTURES ==================
 */
@@ -71,10 +75,12 @@ typedef struct s_script {
     struct timeval trigger_time;
     ScriptFunction func;
     int is_active;
+
 } t_script;
 
 typedef struct s_script_manager {
     t_script scripts[MAX_SCRIPTS];
+	int active_script_count;
     int script_count;
 } t_script_manager;
 
@@ -166,6 +172,8 @@ typedef struct s_strike
     t_vector2d	position;
 	int			is_launching;
 	int			is_active;
+	int			current_frame;
+	int			frame_count;
 } t_strike;
 
 typedef struct s_enemy
@@ -297,6 +305,7 @@ typedef struct s_game
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
 	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
+	t_texture			airstrike_textures[NUM_AIRSTRIKE_FRAMES];
 	struct timeval		opening_start_time;
 	int					loop_count;
 	int					is_shooting;
@@ -597,7 +606,8 @@ void    cancel_supply_take(t_game *game);
 void render_supply_take(t_game *game);
 
 
-void    call_airstrike(t_game *game);
+void    render_strike(t_game *game);
 int create_strike(t_game *game);
+void    eagle_inbound(t_game *game);
 
 #endif

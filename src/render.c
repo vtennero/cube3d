@@ -120,7 +120,7 @@ int render(t_game *game)
     render_supplies(game);
     render_extract(game);
     render_enemies(game);
-    call_airstrike(game);
+    render_strike(game);
 
     check_enemy_at_center(game);
     randomize_dead_enemy_positions(game);
