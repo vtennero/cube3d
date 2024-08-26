@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 21:01:14 by cliew             #+#    #+#             */
-/*   Updated: 2024/08/24 15:13:38 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/26 20:19:01 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int texture_error_handling(t_game* game)
 	}
 	if ((game->walltextures[0].path) && (game->walltextures[1].path) && (game->walltextures[2].path) && (game->walltextures[3].path) && (game->floor_rgb[0].path) && (game->sky_rgb[0].path) && error==0)
 		return 0;
+	else
+		error=-1;
 	return error;
 }
 

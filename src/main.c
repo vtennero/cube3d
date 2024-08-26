@@ -35,11 +35,11 @@ int main(int argc, char **argv)
 
     create_game_struct(&game);
 	game->bonus=1;
-	if (argc>1)
- 		parse_map(game,argv[1]);
-
+	if (argc>1 && parse_map(game,argv[1])!=-1)
+    	initgame(&game);
+	else
+		ft_printf("Map Parsing error!");
     // if (map_is_valid)
-    initgame(&game);
 
     return (0);
 }
