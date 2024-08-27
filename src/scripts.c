@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/25 18:19:16 by root             ###   ########.fr       */
+/*   Updated: 2024/08/27 12:16:16 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,16 @@ void play_gun_sound(t_game *game) {
 void    trigger_supply_take(t_game *game)
 {
     game->player->taking_supplies = 1;
+    // crazy mode 
+	// game->player->direction.x = 0.2f;
 }
 
 void    cancel_supply_take(t_game *game)
 {
     game->player->taking_supplies = 0;
+    // crazy mode 
+	// game->player->direction.x = -1.0f;
+
 }
 
 void    trigger_gunshots(t_game *game)

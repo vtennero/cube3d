@@ -106,12 +106,12 @@ static void update_player_position(t_game *game, float newX, float newY)
     // printf("New player position: x = %f, y = %f\n", game->player->position.x, game->player->position.y);
 }
 
-// static void print_movement_direction(t_game *game)
-// {
-//     if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
-//         printf("You are moving north\n");
-//     }
-// }
+void print_movement_direction(t_game *game)
+{
+    if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+        printf("You are moving north\n");
+    }
+}
 
 float calculate_dynamic_buffer(t_player *player, float base_speed)
 {
@@ -265,11 +265,11 @@ void handle_key_left(t_game *game)
     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
-    // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-    // const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-    // printf("Facing direction: %s\n", direction);
+    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+    const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+    printf("Facing direction: %s\n", direction);
 
-    // print_movement_direction(game);
+    print_movement_direction(game);
 }
 
 void handle_key_right(t_game *game)
@@ -290,11 +290,11 @@ void handle_key_right(t_game *game)
     game->player->plane.x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
     game->player->plane.y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 
-    // printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-    // const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-    // printf("Facing direction: %s\n", direction);
+    printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+    const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+    printf("Facing direction: %s\n", direction);
 
-    // print_movement_direction(game);
+    print_movement_direction(game);
 }
 
 void handle_movement_dash(t_game *game)

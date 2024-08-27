@@ -196,22 +196,35 @@ int	create_player(t_game *game)
 
 
 
-
-	// Initialize player direction (looking along the negative x-axis)
-	player->direction.x = -1.0f;
-	player->direction.y = 0.0f;
-
-	// Initialize the camera plane for the raycasting (related to the FOV)
-	// player->plane.x = 0.0f;  // Adjust this value to change the FOV
-	// player->plane.y = 0.66f; // This setting assumes a 66 degrees FOV
+    // to wrap in a function
+    // Facing west (your original working setup)
+    player->direction.x = -1.0f;
+    player->direction.y = 0.0f;
     player->plane.x = 0.0f;
-    player->plane.y = -0.66f;  // Note the negative sign
+    player->plane.y = -0.66f;
 
+    // // Facing south (what we just set up)
+    // player->direction.x = 0.0f;
+    // player->direction.y = -1.0f;
+    // player->plane.x = 0.66f;
+    // player->plane.y = 0.0f;
+
+    // // Facing east
+    // player->direction.x = 1.0f;
+    // player->direction.y = 0.0f;
+    // player->plane.x = 0.0f;
+    // player->plane.y = 0.66f;
+
+    // // Facing north
+    // player->direction.x = 0.0f;
+    // player->direction.y = 1.0f;
+    // player->plane.x = -0.66f;
+    // player->plane.y = 0.0f;
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)
 	// player->height = 0.0f;
-	player->height = 0.2;
+	player->height = 0.2f;
 	player->pitch = 0.0f;
 	player->hp = MAX_HEALTH;
 	player->is_hit = 0;
