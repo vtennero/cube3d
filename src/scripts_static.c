@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scripts_static.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:38:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/25 17:48:33 by root             ###   ########.fr       */
+/*   Updated: 2024/08/27 17:39:38 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,49 @@ void script_strike_enemies(t_game *game)
 
 }
 
+void script_strike_player(t_game *game)
+{
+    if (game->strike->is_active)
+    {
+        float strikeX = game->strike->position.x;
+        float strikeY = game->strike->position.y;
+        
+        // Define the radius for considering the player "close"
+        // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+        float strike_radius = 2.0f;
+
+        float playerX = game->player->position.x;
+        float playerY = game->player->position.y;
+
+        // Calculate the distance between the strike and the player
+        float dx = strikeX - playerX;
+        float dy = strikeY - playerY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the player is within the strike radius
+        if (distance <= strike_radius)
+        {
+            game->player->hp = 0;
+            // Optionally, you can add some visual or sound effect here
+            // printf("Player struck down!\n");
+        }
+    }
+}
+
+void	play_land_voice(t_game *game)
+{
+    int random_call = random_int(game, 9);
+    
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/land00.mp3";
+    // char audio_file[] = "audio/eaglec00.mp3";
+    audio_file[10] = '0' + random_call / 10;
+    audio_file[11] = '0' + random_call % 10;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
+
 void    script_found_sth(t_game *game)
 {
     if (game->game_sequence == 3 && game->collectibles->found == 0 && is_player_close_to_collectible(game) == 1)
@@ -81,6 +124,17 @@ void    script_take_supplies(t_game *game)
 		add_script(game, cancel_supply_take, 1);
 		game->supplies[found].collected = 1;
 		game->player->hp = MAX_HEALTH;
+	}
+}
+
+void	script_die(t_game *game)
+{
+	// printf("script die\n");
+	if (game->player->hp == 0 && game->player->is_dead == 0)
+	{
+		reset_game_start_time(game);
+		game->player->is_dead = 1;
+		playAudioFileWithDelay("audio/kia00.mp3", 0);
 	}
 }
 

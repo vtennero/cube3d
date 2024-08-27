@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:32:25 by toto              #+#    #+#             */
-/*   Updated: 2024/08/22 18:31:42 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:28:06 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void render_land(t_game *game)
 {
+    // printf("render land\n");
     int frame_to_render = get_current_frame(&game->opening_start_time);
     // printf("render land frame to render %d\n", frame_to_render);
     t_texture *land_texture = &game->land_texture[frame_to_render];
@@ -21,9 +22,9 @@ void render_land(t_game *game)
     if (land_texture->img == NULL)
     {
         printf("Error: land texture not loaded\n");
-        return;
     }
-
+    else 
+    {
     // Render the frame
     for (int y = 0; y < game->screen_height; y++)
     {
@@ -40,13 +41,23 @@ void render_land(t_game *game)
     // Update game state
     game->current_frame = frame_to_render;
 
+    // printf("current frame = %d\n", frame_to_render);
+
     // Check if we've reached the last frame
     if (frame_to_render == MAX_LAND_TEXTURES - 1)
     {
+            // printf("rendered all land frames\n");
             game->game_sequence = 3;
             game->current_frame = 0;
+            game->player->is_dead = 0;
+            game->player->hp = MAX_HEALTH;
             // stopAudioFile("audio/drop03.mp3");
-			playAudioFileWithDelay("audio/land.mp3", 0);
+            play_land_voice(game);
+			// playAudioFileWithDelay("audio/land.mp3", 0);
 
     }
+    }
+
+        return;
+
 }

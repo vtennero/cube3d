@@ -53,6 +53,7 @@ land_bonus.c \
 outro_bonus.c \
 time.c \
 extract_bonus.c \
+respawn_bonus.c \
 scripts.c \
 scripts_static.c \
 enemies_hit_bonus.c \

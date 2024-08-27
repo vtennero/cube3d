@@ -84,13 +84,13 @@ int render(t_game *game)
     }
     else if (game->game_sequence == 3)
     {
-    
+    script_strike_player(game);
+    script_die(game);
     script_found_sth(game);
     script_found_supplies(game);
     script_take_supplies(game);
     script_strike_enemies(game);
     script_board(game);
-    // trigger_gunshots(game);
     update_scripts(game);
     game->num_enemies = calculate_enemy_count(game);
     relocate_enemies(game);
@@ -109,7 +109,6 @@ int render(t_game *game)
     handle_movement_down(game);
 
     // interactions
-    // handle_space_shoot(game);
 
     // rendering
 	if (game->bonus==1)
@@ -141,7 +140,7 @@ int render(t_game *game)
     render_gun(game);
     render_hit(game);
     render_supply_take(game);
-    // render_respawn(game);
+    render_respawn(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);

@@ -6,13 +6,12 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/27 16:38:18 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:50:04 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-#include <mlx.h>
 
 void init_last_pos(int x, int y, int *last_x, int *last_y)
 {

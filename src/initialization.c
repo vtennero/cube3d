@@ -229,6 +229,7 @@ int	create_player(t_game *game)
 	player->hp = MAX_HEALTH;
 	player->is_hit = 0;
 	player->taking_supplies = 0;
+    player->is_dead = 0;
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;
@@ -354,6 +355,33 @@ int is_valid_location(t_game *game, int x, int y) {
     
     return 1;
 }
+
+int respawn_player(t_game *game)
+{
+    
+        if (game->player->is_dead == 1)
+        {
+            int x, y;
+            int valid_location_found = 0;
+            
+            while (!valid_location_found) {
+                x = random_int(game, game->map->width);
+                y = random_int(game, game->map->height);
+                
+                if (is_valid_location(game, x, y)) {
+                    valid_location_found = 1;
+                }
+            }
+            
+            game->player->position.x = (float)x + 0.5f; // Center in the tile
+            game->player->position.y = (float)y + 0.5f; // Center in the tile
+            
+            // Print the valid location found and the extraction location
+        }
+    
+    return (0);
+}
+
 
 int randomize_uncollected_supplies(t_game *game)
 {

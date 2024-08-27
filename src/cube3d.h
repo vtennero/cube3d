@@ -28,7 +28,7 @@
 # define DEFAULT_S_HEIGHT 600
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
-# define MAX_KEY_CODE 65600 // Assuming 65363 is the highest keycode you have
+# define MAX_KEY_CODE 65600
 # define TEXTURE_SIZE 245
 #define NUM_ENEMY_TEXTURES 14
 #define MAX_COLLECTIBLES 20
@@ -47,8 +47,10 @@
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
 #define MAX_SCRIPTS 500
 #define OBJECT_SIZE 1
-#define MAX_HEALTH 30
+// #define MAX_HEALTH 1
+#define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
+#define EXTRACT_CALL_TIME 120
 
 #define M_PI 3.14159265358979323846
 
@@ -236,6 +238,7 @@ typedef struct s_player
 	float				height;
 	int					hp;
 	int					is_hit;
+	int					is_dead;
 	int					taking_supplies;
 }						t_player;
 
@@ -709,4 +712,12 @@ void script_strike_enemies(t_game *game);
 
 
 int close_hook(t_game *game);
+
+// respawn
+void	script_die(t_game *game);
+void	render_respawn(t_game *game);
+void	play_land_voice(t_game *game);
+int respawn_player(t_game *game);
+void script_strike_player(t_game *game);
+
 #endif
