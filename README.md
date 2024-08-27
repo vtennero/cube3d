@@ -1,5 +1,8 @@
 # cube3d
 
+to run on 42 computers:
+bash run.sh
+
 next
 - smooth memory mgt
 - map parsing
