@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map_boundaries.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 12:45:14 by cliew             #+#    #+#             */
-/*   Updated: 2024/08/24 15:57:16 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/27 15:06:32 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 			return 0;
 		if (chars==49)
 			return 1;
-		if (chars==32)
+		if (ft_isspace(chars))
 			return 9;
+		// if (chars==32)
+		// 	return 9;
 		if (chars=='N')
 			return 2;
 		if (chars=='E')
