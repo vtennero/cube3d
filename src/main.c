@@ -15,7 +15,6 @@
 int initgame(t_game **game)
 {
     printf("initgame\n");
-    create_game_struct(game);
     create_map(*game);
     create_player(*game);
     create_collectibles(*game);
@@ -29,17 +28,19 @@ int initgame(t_game **game)
     return (1);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     t_game *game;
 
     game = NULL;
 
-
-
-
+    create_game_struct(&game);
+	game->bonus=1;
+	if (argc>1 && parse_map(game,argv[1])!=-1)
+    	initgame(&game);
+	else
+		ft_printf("Map Parsing error!");
     // if (map_is_valid)
-    initgame(&game);
 
     return (0);
 }

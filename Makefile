@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 # Audio flags
 # AUDIOFLAGS = -lopenal -lmpg123
@@ -57,7 +57,13 @@ scripts_static.c \
 enemies_hit_bonus.c \
 airstrike_bonus.c \
 audio_non_bonus.c 
-# audio.c 
+# audio.c \
+check_map_boundaries.c \
+map_parse_utility.c \
+parse_map.c  \
+texture_parse.c \
+
+
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
