@@ -58,11 +58,11 @@ scripts.c \
 scripts_static.c \
 enemies_hit_bonus.c \
 airstrike_bonus.c \
-audio_non_bonus.c \
 check_map_boundaries.c \
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
+audio_non_bonus.c \
 # audio.c \
 
 
