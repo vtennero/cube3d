@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_utility.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:57:02 by cliew             #+#    #+#             */
-/*   Updated: 2024/07/12 20:59:22 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/27 16:01:34 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int check_invalid_rgb(char* word)
 		if  (!ft_isinteger(words[count]) || ft_atoi(words[count]) <0 || ft_atoi(words[count])>255)
 		{
 			printf("Error\nRGB value must be between 0 and 255\n");
+			free_split_result(words);
 			return 1;
 		}
 
@@ -88,8 +89,11 @@ int check_invalid_rgb(char* word)
 	if (count!=3)
 	{
 		printf("Error\nRGB value must be 3 values between 0 and 255,seprated by comma (e.g. 0,125,255)\n");
+		free_split_result(words);
+
 		return 1;
 	}
+	free_split_result(words);
 	return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:00:21 by toto              #+#    #+#             */
-/*   Updated: 2024/08/27 15:49:40 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:42:03 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,28 @@ void	clean_rays(t_game *game)
 //     free(game->airstrike_textures);
 // }
 
+void free_texture_array(t_texture *textures, int num_items,t_game*game) {
+ 
+    for (int i = 0; i < num_items; i++) {
+        if (textures[i].img != NULL) {
+            mlx_destroy_image(game->mlx_ptr, textures[i].img);  // Free the image resource
+            textures[i].img = NULL;  // Set the pointer to NULL to avoid dangling pointers
+        }
+    }
+}
+
+void free_split_result(char **words) {
+    if (words == NULL) {
+        return;  // Handle case where words is NULL
+    }
+
+    for (int i = 0; words[i] != NULL; i++) {
+        free(words[i]);  // Free each string
+    }
+
+    free(words);  // Free the array of pointers
+}
+
 void	cleanup(t_game *game)
 {
 	printf("cleanup\n");
@@ -160,6 +182,27 @@ void	cleanup(t_game *game)
 	// clean_textures(game);
 	clean_map(game);
 	// clean_floor();
+
+
+
+    free_texture_array(game->walltextures,MAX_WALL_TEXTURES,game);
+    free_texture_array(game->floortextures,MAX_FLOOR_TEXTURES,game);
+    free_texture_array(game->skytexture,MAX_SKY_TEXTURES,game);
+    free_texture_array(game->enemy_textures,MAX_ENEMY_TEXTURES,game);
+    free_texture_array(game->coll_texture,MAX_COLLECTIBLE_TEXTURES,game);
+    free_texture_array(game->menu_texture,1,game);
+
+    free_texture_array(game->land_texture,MAX_LAND_TEXTURES,game);
+
+    free_texture_array(game->extract_texture,4,game);
+    free_texture_array(game->supplies_texture,1,game);
+    free_texture_array(game->opening_texture,MAX_OPENING_TEXTURES,game);
+
+    free_texture_array(game->outro_texture,MAX_OUTRO_TEXTURES,game);
+    free_texture_array(game->shooting_texture,MAX_SHOOTING_TEXTURES,game);
+    free_texture_array(game->airstrike_textures,NUM_AIRSTRIKE_FRAMES,game);
+
+    free(game->strike);
 	clean_rays(game);
     cleanupAudio();
 	free(game);
@@ -172,3 +215,5 @@ void	cleanup(t_game *game)
 
 	exit(0);
 }
+
+
