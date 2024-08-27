@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 12:45:14 by cliew             #+#    #+#             */
-/*   Updated: 2024/08/27 15:06:32 by cliew            ###   ########.fr       */
+/*   Updated: 2024/08/27 16:24:17 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int parse_floor_sky_rgb(t_game *game)
 	game->sky_rgb[0].green=ft_atoi(s_split[1]);
 	game->sky_rgb[0].blue=ft_atoi(s_split[2]);
 	game->sky_rgb[0].hex_color=rgb_to_hex_int(game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue);
-
+	free_split_result(f_split);
 	return 1;
 
 }

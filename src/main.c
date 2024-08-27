@@ -17,11 +17,14 @@ int initgame(t_game **game)
     printf("initgame\n");
     create_map(*game);
     create_player(*game);
+    // if ((*game)->bonus)
+    // {
     create_collectibles(*game);
     create_extraction(*game);
     create_enemies(*game);
     create_supplies(*game);
     create_strike(*game);
+    // }
     setup_game_mlx(*game);
 
 

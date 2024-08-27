@@ -599,6 +599,8 @@ void handle_key_esc(t_game *game);
 void handle_cross_key(t_game *game);
 void	cleanup(t_game *game);
 void	clean_rays(t_game *game);
+void 	free2DArray(int **array, int rows);
+void free_split_result(char **words);
 
 
 // menu
