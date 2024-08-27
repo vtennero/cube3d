@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:17:52 by toto              #+#    #+#             */
-/*   Updated: 2024/08/23 11:55:11 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:45:27 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct {
 AudioTrack playingTracks[MAX_SOURCES];
 
 // Initialization function
-int initializeAudio() {
+int initializeAudio()
+{
     device = alcOpenDevice(NULL);
     if (!device) {
         fprintf(stderr, "Unable to open default device\n");
@@ -63,7 +64,8 @@ int initializeAudio() {
 }
 
 // Cleanup function
-void cleanupAudio() {
+void cleanupAudio()
+{
     if (sourceCount > 0) {
         for (int i = 0; i < sourceCount; i++) {
             alSourceStop(sources[i]);
@@ -85,7 +87,8 @@ void cleanupAudio() {
 }
 
 // Function to find an available source
-int findAvailableSource() {
+int findAvailableSource()
+{
     ALint state;
     for (int i = 0; i < sourceCount; i++) {
         alGetSourcei(sources[i], AL_SOURCE_STATE, &state);

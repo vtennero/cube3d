@@ -3,7 +3,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 # Audio flags
-AUDIOFLAGS = -lopenal -lmpg123
+# AUDIOFLAGS = -lopenal -lmpg123
+AUDIOFLAGS = 
 
 # Directories
 SRC_DIR = src
@@ -55,7 +56,8 @@ scripts.c \
 scripts_static.c \
 enemies_hit_bonus.c \
 airstrike_bonus.c \
-audio.c 
+audio_non_bonus.c 
+# audio.c 
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
