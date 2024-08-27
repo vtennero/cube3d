@@ -704,4 +704,7 @@ void    render_strike(t_game *game);
 int create_strike(t_game *game);
 void    eagle_inbound(t_game *game);
 void script_strike_enemies(t_game *game);
+
+
+int close_hook(t_game *game);
 #endif

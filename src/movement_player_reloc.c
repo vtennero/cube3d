@@ -40,13 +40,10 @@ const char *get_cardinal_direction(float x, float y)
         return "South-East";
 }
 
-int close_hook(t_game *game_state)
+int close_hook(t_game *game)
 {
     ft_printf("Close button clicked, exiting...\n");
-    // clear_mlx_resources(game_state);
-    // clear_game_state(game_state);
-    (void)game_state;
-    exit(0);
+    cleanup(game);
     return (0);
 }
 

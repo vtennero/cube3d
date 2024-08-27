@@ -141,6 +141,7 @@ int render(t_game *game)
     render_gun(game);
     render_hit(game);
     render_supply_take(game);
+    // render_respawn(game);
 
     // print_map_section(game, game->player->position.x, game->player->position.y, 5);
     mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
@@ -149,6 +150,7 @@ int render(t_game *game)
     }
     else if (game->game_sequence == 4)
     {
+    handle_key_esc(game);
         render_outro(game);
         update_scripts(game);
         mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
@@ -177,7 +179,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
     // preload_textures(game);
 	preload_textures_non_bonus(game);
     initialize_game_seed(game);
@@ -202,6 +204,7 @@ int setup_game_mlx(t_game *game)
     mlx_hook(game->win_ptr, 6, 1L << 6, handle_mouse_move, game);
     mlx_mouse_hook(game->win_ptr, handle_mouse_click, game);
     mlx_hook(game->win_ptr, 5, 1L << 3, handle_mouse_release, game);
+    mlx_hook(game->win_ptr, 17, 0, close_hook, game);
 
 
     // mlx_hook(game->win_ptr, 17, 0, handle_cross_key, game);

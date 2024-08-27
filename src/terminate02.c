@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   terminate02.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:00:21 by toto              #+#    #+#             */
-/*   Updated: 2024/08/25 16:53:05 by root             ###   ########.fr       */
+/*   Updated: 2024/08/27 15:49:40 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,19 @@ void	clean_player(t_game *game)
 	game->player = NULL;
 }
 
-void	clean_mlx(t_game *game)
+void clean_mlx(t_game *game)
 {
-    mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
-    mlx_destroy_display(game->mlx_ptr);
-    free(game->mlx_ptr);
+    if (game->img.mlx_img)
+        mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
+    
+    if (game->win_ptr)
+        mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+    
+    if (game->mlx_ptr)
+    {
+        mlx_destroy_display(game->mlx_ptr);
+        free(game->mlx_ptr);
+    }
 }
 void clean_texture(t_texture *textures, int num_textures)
 {
@@ -148,7 +156,7 @@ void	cleanup(t_game *game)
 {
 	printf("cleanup\n");
 	clean_player(game);
-	// clean_mlx();
+	clean_mlx(game);
 	// clean_textures(game);
 	clean_map(game);
 	// clean_floor();

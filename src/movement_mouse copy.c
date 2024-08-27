@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   movement_mouse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/27 16:38:18 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:25:15 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
-
-#include <mlx.h>
 
 void init_last_pos(int x, int y, int *last_x, int *last_y)
 {
@@ -59,42 +57,27 @@ void adjust_pitch(t_game *game, int dy, float speed)
     }
 }
 
+
 int handle_mouse_move(int x, int y, t_game *game)
 {
-    // static int last_x = -1;
-    // static int last_y = -1;
-    (void)x;
-    (void)y;
-    
+    static int last_x = -1;
+    static int last_y = -1;
     int dx, dy;
     float angle;
-    float rot_speed = 0.005;  // Half of the original value
+    float rot_speed = 0.01;
     float pitch_speed = 0.001;
-    int center_x = DEFAULT_S_WIDTH / 2;
-    int center_y = DEFAULT_S_HEIGHT / 2;
 
-    // Get the current mouse position
-    int current_x, current_y;
-    mlx_mouse_get_pos(game->mlx_ptr, game->win_ptr, &current_x, &current_y);
-
-    // Calculate the delta from the center
-    dx = current_x - center_x;
-    dy = current_y - center_y;
-
-    // Only process if there's actual movement
-    if (dx != 0 || dy != 0)
+    init_last_pos(x, y, &last_x, &last_y);
+    calc_mouse_delta(x, y, &last_x, &last_y, &dx, &dy);
+    
+    angle = calc_rotation_angle(dx, rot_speed);
+    if (fabs(angle) > 0.001)
     {
-        angle = calc_rotation_angle(dx, rot_speed);
-        if (fabs(angle) > 0.001)
-        {
-            rotate_player(game, angle);
-        }
-
-        adjust_pitch(game, dy, pitch_speed);
-
-        // Move the mouse back to the center
-        mlx_mouse_move(game->mlx_ptr, game->win_ptr, center_x, center_y);
+        rotate_player(game, angle);
     }
+
+    adjust_pitch(game, dy, pitch_speed);
+
 
     return (0);
 }
