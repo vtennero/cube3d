@@ -613,6 +613,7 @@ void preload_textures_non_bonus(t_game *game)
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
     load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
     load_extract_textures(game);
+    load_strike_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
 
     scale_gun_textures(game);

@@ -122,9 +122,11 @@ int get_next_airstrike_frame(t_strike *strike)
         strike->is_active = 0;
         strike->is_launching = 0;
     }
+    printf("Airstrike frame: %d, frame_count: %d\n", strike->current_frame, strike->frame_count);
 
     return strike->current_frame;
 }
+
 
 void render_ongoing_strike(t_game *game)
 {
