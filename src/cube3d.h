@@ -628,6 +628,8 @@ int stopAudioFile(const char* filename);
 // extract
 int	create_extraction(t_game *game);
 void render_extract(t_game *game);
+void trigger_prelanding(t_game *game);
+void extraction_available(t_game *game);
 
 
 // collectibles

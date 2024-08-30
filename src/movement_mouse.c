@@ -109,6 +109,7 @@ void play_random_strike_sound(t_game *game)
     
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
+    playAudioFileWithDelay("audio/orbitalcall.mp3", 0);
 }
 
 

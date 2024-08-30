@@ -67,6 +67,14 @@ void trigger_landing(t_game *game)
     // stopAudioFile("audio/menu.mp3");
     
 }
+void trigger_prelanding(t_game *game)
+{
+    playAudioFileWithDelay("audio/eta.mp3", 0);
+}
+void extraction_available(t_game *game)
+{
+    playAudioFileWithDelay("audio/extractionready.mp3", 0);
+}
 
 
 void play_gun_sound(t_game *game) {
