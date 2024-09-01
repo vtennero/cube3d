@@ -620,6 +620,7 @@ void	clean_rays(t_game *game);
 void 	free2DArray(int **array, int rows);
 void free_split_result(char **words);
 
+void freeArray(int **array, int x);
 
 // menu
 void render_menu(t_game *game);

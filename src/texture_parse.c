@@ -102,9 +102,15 @@ int check_line(t_game *game, char* line)
 	printf("words[1]] is %s!\n",words[1]);
 
 	if (word_count>2 )  // Change to or?
+	{
+		free_split_result(words);
 		return -1;
+	}
 	if (word_count<2)
+	{
+		free_split_result(words);
 		return 0;
+	}
 	// To remove trailing new line
 	if ((words[1]) && (strlen(words[1]) > 0) && (words[1][strlen(words[1]) -1] == '\n') )
 		words[1][strlen(words[1])-1] = '\0';
@@ -115,23 +121,25 @@ int check_line(t_game *game, char* line)
 		((strcmp(words[1],"0")==0) || (strcmp(words[1],"1")==0)) 
 	)
 	{
+	free_split_result(words);
 	return -1;
 	}
-	
 	if (strcmp(words[0],"NO")==0 )
-		game->walltextures[0].path=words[1];
+		game->walltextures[0].path=ft_strdup(words[1]);
 	else if (strcmp(words[0],"EA")==0 )
-		game->walltextures[1].path=words[1];
+		game->walltextures[1].path=ft_strdup(words[1]);
 	else if (strcmp(words[0],"SO")==0 )
-		game->walltextures[2].path=words[1];
+		game->walltextures[2].path=ft_strdup(words[1]);
 	else if (strcmp(words[0],"WE")==0 )
-		game->walltextures[3].path=words[1];
+		game->walltextures[3].path=ft_strdup(words[1]);
 	else if (strcmp(words[0],"F")==0 )
-		game->floor_rgb[0].path=words[1];
+		game->floor_rgb[0].path=ft_strdup(words[1]);
 
 	else if (strcmp(words[0],"C")==0 ){
-		game->sky_rgb[0].path=words[1];
+		game->sky_rgb[0].path=ft_strdup(words[1]);
 	}
+	
+	free_split_result(words);
 	return 0;
 	
 }

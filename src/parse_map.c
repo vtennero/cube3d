@@ -21,13 +21,20 @@
 
 		i=0;
 		j=0;
-		while (line[i] != '\0') {
-    	if (i % 2 == 0) {
-        	game->cub_map_array[map_line][j] = parse_char_to_int(line[i]);
-        	j++;
-    		}
-    	i++;
-		}
+		printf("%s\n", line);
+
+		while (line[i] != '\0') 
+		{
+			if (i % 2 == 0  && i<= game->cub_map_col_count)
+			{
+				// printf("i is %d \n",i);
+				// printf("j is %d \n",j);
+				// printf("%c\n",line[i]);
+				game->cub_map_array[map_line][j] = parse_char_to_int(line[i]);
+				j++;
+			}
+			i++;
+			}
 		// To parse empty space after \0
 		while (i <= game->cub_map_col_count) {
     	if (i % 2 == 0) {
@@ -61,7 +68,8 @@
 		{
 			if ((line_count>=game->cub_line_count-game->cub_map_row_count) && (map_line<=game->cub_map_row_count))
 			{
-				// printf("line is now:\n%s",line); /// This should be the first line of the map
+				// printf("line count: %d,game->cub_line_count:%d,game->cub_map_row_count:%d,map_line is %d,game->cub_map_row_count is %d",line_count,game->cub_line_count,game->cub_map_row_count,map_line,game->cub_map_row_count);
+				// printf("line of map is now:\n%s",line); /// This should be the first line of the map
 				parse_line_to_map_array(line,game,map_line);
 				map_line++;
 
@@ -152,3 +160,5 @@
 	
 		return 1;
 	}
+
+	

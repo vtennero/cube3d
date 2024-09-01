@@ -65,6 +65,7 @@ int			check_map_boundaries(t_game *game)
 	filled_map=initializeArray(game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
 	// print_2d_array(game,filled_map);
 	is_surrounded = floodfill(game, filled_map, x, y);
+	freeArray(filled_map,game->cub_map_row_count);
 	if (!is_surrounded)
 	{
 		printf("Map isn't surrounded by wall");
@@ -106,6 +107,8 @@ int parse_floor_sky_rgb(t_game *game)
 	game->sky_rgb[0].blue=ft_atoi(s_split[2]);
 	game->sky_rgb[0].hex_color=rgb_to_hex_int(game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue);
 	free_split_result(f_split);
+	free_split_result(s_split);
+
 	return 1;
 
 }

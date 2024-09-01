@@ -83,6 +83,28 @@ void clean_textures(t_game *game)
     }
     printf("clean_textures DONE\n");
 }
+
+
+
+
+
+// void free_map(t_game *game) {
+//     if (game->map != NULL) {
+//         if (game-map->data != NULL) {
+//             // Free each row
+//             for (int i = 0; i < game->screen_height; i++) {
+//                 free(map->data[i]);
+//             }
+//             // Free the array of rows
+//             free(map->data);
+//         }
+//         // Free the map structure
+//         free(map);
+//     }
+// }
+
+
+
 void clean_map(t_game *game)
 {
     printf("clean_map\n");
@@ -91,7 +113,7 @@ void clean_map(t_game *game)
         // Free the 2D array of map data
         if (game->map->data)
         {
-            for (int i = 0; i < game->map->height; i++)
+            for (int i = 0; i < game->screen_height; i++)
             {
                 if (game->map->data[i])
                 {
@@ -260,6 +282,19 @@ void free_split_result(char **words) {
     free(words);  // Free the array of pointers
 }
 
+
+void freeArray(int **array, int x) {
+    int i = 0;
+
+    // Free each inner array
+    while (i < x) {
+        free(array[i]);
+        i++;
+    }
+
+    // Free the outer array
+    free(array);
+}
 void free_floor_texture_map(t_game *game)
 {
     if (!game || !game->floor_texture_map || !game->map)
@@ -276,6 +311,18 @@ void free_floor_texture_map(t_game *game)
 
     free(game->floor_texture_map);
     game->floor_texture_map = NULL;
+}
+
+
+void free_wall_texture_map_path(t_game *game)
+{
+
+	free(game->walltextures[0].path);
+	free(game->walltextures[1].path);
+	free(game->walltextures[2].path);
+	free(game->walltextures[3].path);
+	free(game->floor_rgb[0].path);
+	free(game->sky_rgb[0].path);
 }
 
 void	cleanup(t_game *game)
@@ -305,8 +352,11 @@ void	cleanup(t_game *game)
     free_texture_array(game->airstrike_textures,NUM_AIRSTRIKE_FRAMES,game);
     free_gun_textures(game);
     free_floor_texture_map(game);
+	free_wall_texture_map_path(game);
     free(game->strike);
 	clean_map(game);
+//	free_map(game->map);
+	freeArray(game->cub_map_array,game->cub_map_row_count);
 	clean_rays(game);
 	clean_mlx(game);
     cleanupAudio();
