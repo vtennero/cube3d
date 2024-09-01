@@ -90,16 +90,19 @@ void handle_key_e(t_game *game)
         game->extract[0].is_available = 1;
         playAudioFileWithDelay("audio/samplepickup.mp3", 0);
         add_script(game, sample_acquired, 1);
+        add_script(game, extraction_available, 5);
         
     }
     else if (is_player_close_to_extract(game) && game->extract->is_available)
     {
         // add_script(game, testscript, 3);
         playAudioFileWithDelay("audio/extract01.mp3", 0);
+        playAudioFileWithDelay("audio/extractkeyboard.mp3", 0);
         game->extract[0].is_available = 0;
         game->extract[0].is_activated = 1;
         add_script(game, trigger_extract_music, 1);
         add_script(game, trigger_landing, EXTRACT_CALL_TIME);
+        add_script(game, trigger_prelanding, EXTRACT_CALL_TIME - 10);
         
     }
 }
