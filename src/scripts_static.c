@@ -143,11 +143,14 @@ void    script_board(t_game *game)
 {
 	if (is_player_close_to_extract(game) && game->extract[0].is_landing == 1)
 	{
-    	stopAudioFile("audio/extractmusic00.mp3");
-		playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
-		playAudioFileWithDelay("audio/extract04.mp3", 0);
-		add_script(game, trigger_extract_victory, 5);
-
+        if (game->extract[0].is_landing == 1)
+        {
+            stopAudioFile("audio/extractmusic00.mp3");
+            playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
+            playAudioFileWithDelay("audio/extract04.mp3", 0);
+            add_script(game, trigger_extract_victory, 5);
+            game->extract[0].is_landing = 0;
+        }
         if (game->player->height >= 3)
         {
             game->game_sequence = 4;
