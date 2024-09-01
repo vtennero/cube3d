@@ -62,8 +62,8 @@ check_map_boundaries.c \
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
-audio_dummy.c \
-# audio_bonus.c \
+audio_bonus.c \
+# audio_dummy.c \
 
 
 
