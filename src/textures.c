@@ -319,6 +319,18 @@ int load_menu_texture(t_game *game, char *path)
     return (1);
 }
 
+int load_pelican_inside_texture(t_game *game, char *path)
+{
+    t_texture *texture = &game->pelican_inside[0];
+    texture->path = path;
+    texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
+    if (!texture->img)
+        return (0);
+    texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+    return (1);
+}
+
+
 int load_supplies_texture(t_game *game, char *path)
 {
     t_texture *texture = &game->supplies_texture[0];
@@ -611,10 +623,12 @@ void preload_textures_non_bonus(t_game *game)
     // load_menu_texture(game, "textures/menu/menu.xpm");
     // load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
-    // load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
+    load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
     load_extract_textures(game);
     load_strike_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
+    load_pelican_inside_texture(game, "textures/extract/pelicaninside.xpm");
+
 
     scale_gun_textures(game);
     scale_shooting_textures(game);

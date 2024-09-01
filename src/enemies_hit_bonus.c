@@ -145,7 +145,7 @@ void enemies_hit(t_game *game)
     // printf("Checking hits for %d enemies\n", game->num_enemies);
     for (int i = 0; i < game->num_enemies; i++)
     {
-        if (game->enemies[i].is_alive)
+        if (game->enemies[i].is_alive && game->player->is_extracting == 0 && game->player->is_dead == 0)
         {
             enemy_hit_attempt(game, &game->enemies[i], i);
         }

@@ -148,10 +148,19 @@ void    script_board(t_game *game)
 		playAudioFileWithDelay("audio/extract04.mp3", 0);
 		add_script(game, trigger_extract_victory, 5);
 
-		// play audio extraction complete voice
-		game->game_sequence = 4;
-		reset_game_start_time(game);
-    	// printf("game sequence: %d\n", game->game_sequence);
+        if (game->player->height >= 3)
+        {
+            game->game_sequence = 4;
+            game->player->is_extracting = 0;
+            reset_game_start_time(game);
+            // printf("game sequence: %d\n", game->game_sequence);
+        }
+        else
+        {
+            game->player->height *= 1.03;
+            game->player->is_extracting = 1;
+        }
+
 
 	}
 }

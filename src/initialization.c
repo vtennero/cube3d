@@ -232,6 +232,7 @@ int	create_player(t_game *game)
 	player->is_hit = 0;
 	player->taking_supplies = 0;
     player->is_dead = 0;
+    player->is_extracting = 0;
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;

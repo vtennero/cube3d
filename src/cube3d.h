@@ -50,7 +50,8 @@
 // #define MAX_HEALTH 1
 #define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
-#define EXTRACT_CALL_TIME 120
+#define EXTRACT_CALL_TIME 5
+// #define EXTRACT_CALL_TIME 120
 
 #define M_PI 3.14159265358979323846
 
@@ -251,6 +252,7 @@ typedef struct s_player
 	int					is_hit;
 	int					is_dead;
 	int					taking_supplies;
+	int					is_extracting;
 }						t_player;
 
 typedef struct s_map
@@ -319,6 +321,7 @@ typedef struct s_game
 	t_texture			enemy_textures[MAX_ENEMY_TEXTURES];
 	t_texture			coll_texture[MAX_COLLECTIBLE_TEXTURES];
 	t_texture			menu_texture[1];
+	t_texture			pelican_inside[1];
 	int					screen_height;
 	int					screen_width;
 	int					bonus;
@@ -642,6 +645,7 @@ int	create_extraction(t_game *game);
 void render_extract(t_game *game);
 void trigger_prelanding(t_game *game);
 void extraction_available(t_game *game);
+void render_pelican_inside(t_game *game);
 
 
 // collectibles
@@ -734,5 +738,4 @@ void	play_land_voice(t_game *game);
 int respawn_player(t_game *game);
 void script_strike_player(t_game *game);
 t_vector2d calculate_explosion_position(t_vector2d base_position, int explosion_index);
-
 #endif
