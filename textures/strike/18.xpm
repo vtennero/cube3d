@@ -87,7 +87,7 @@ static char *_8[] = {
 "( c #FE9569",
 ") c #FE946A",
 "_ c #FE9168",
-"` c None",
+"` c 0xFF000000",
 "' c #FE9569",
 "] c #FE946A",
 "[ c white",

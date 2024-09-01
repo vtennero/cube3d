@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   audio_non_bonus.c                                  :+:      :+:    :+:   */
+/*   audio_dummy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 11:39:22 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/27 11:45:35 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:42:28 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ int stopAudioFile(const char* filename)
 	return(0);
 }
 
-
 int playAudioFileWithDelay(const char* filename, float delayInSeconds)
 {
-	printf("non audio mode on\n");
-	(void)filename;
+	printf("non audio mode on: play file %s\n", filename);
 	(void)delayInSeconds;
 	return(0);
 }

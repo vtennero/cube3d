@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strike_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
+/*   Updated: 2024/08/29 14:05:49 by vitenner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cube3d.h"
 
@@ -28,6 +39,7 @@ float calculate_screen_shake(t_game *game, int current_frame)
 
 void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, float distance)
 {
+    (void)drawStartY;
     // Calculate the total width based on distance
     int total_width = (int)(STRIKE_WIDTH_FACTOR * game->screen_width / distance);
     // Ensure the total width is at least 3 pixels
@@ -37,8 +49,8 @@ void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, 
     int white_width = total_width / 2;
     // int red_width = (total_width - white_width) / 2;
 
-    printf("Drawing strike: stripe=%d, drawStartY=%d, drawEndY=%d, total_width=%d\n", 
-           stripe, drawStartY, drawEndY, total_width);
+    // printf("Drawing strike: stripe=%d, drawStartY=%d, drawEndY=%d, total_width=%d\n", 
+    //        stripe, drawStartY, drawEndY, total_width);
 
     for (int y = 0; y < drawEndY; y++)
     {
@@ -103,82 +115,78 @@ void render_call_strike(t_game *game, t_vector2d position)
     }
 }
 
-
-
-int get_next_airstrike_frame(t_strike *strike)
+void update_airstrike_frames(t_strike *strike)
 {
-    strike->frame_count++;
-    
-    // Only change frame every AIRSTRIKE_ANIMATION_INTERVAL
-    if (strike->frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
-        return strike->current_frame;
+    int all_explosions_complete = 1;
 
-    // Move to the next frame in the sequence
-    strike->current_frame = (strike->current_frame + 1) % NUM_AIRSTRIKE_FRAMES;
+    for (int i = 0; i < NUM_EXPLOSIONS; i++)
+    {
+        strike->frame_count[i]++;
+        
+        // Only change frame every AIRSTRIKE_ANIMATION_INTERVAL
+        if (strike->frame_count[i] % AIRSTRIKE_ANIMATION_INTERVAL == 0)
+        {
+            // Move to the next frame in the sequence, wrapping around to 0 when we reach NUM_AIRSTRIKE_FRAMES
+            strike->current_frame[i] = (strike->current_frame[i] + 1) % NUM_AIRSTRIKE_FRAMES;
+        }
 
-    // If we've completed a full cycle, set is_active to 0
-    if (strike->current_frame == 0)
+        // If this explosion hasn't completed its animation, mark that not all explosions are complete
+        if (strike->frame_count[i] < NUM_AIRSTRIKE_FRAMES * AIRSTRIKE_ANIMATION_INTERVAL)
+            all_explosions_complete = 0;
+    }
+
+    // If we've completed all explosions, set is_active to 0
+    if (all_explosions_complete)
     {
         strike->is_active = 0;
         strike->is_launching = 0;
     }
-    printf("Airstrike frame: %d, frame_count: %d\n", strike->current_frame, strike->frame_count);
-
-    return strike->current_frame;
 }
-
 
 void render_ongoing_strike(t_game *game)
 {
     if (!game->strike->is_active)
         return;
 
-    int current_frame = get_next_airstrike_frame(game->strike);
-    t_texture *strike_texture = &game->airstrike_textures[current_frame];
-
-    // printf("Rendering strike frame %d, texture address: %p\n", current_frame, (void*)strike_texture);
-
-    // Calculate screen shake offset
-    float shake_offset = calculate_screen_shake(game, current_frame);
-
-    // Apply screen shake to player height
-    if (game->player->is_dead == 0)
-        game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+    update_airstrike_frames(game->strike);
 
     // Define offsets for adjacent tiles
     int offsets[4][2] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}}; // Current tile and 3 adjacent
 
-    for (int i = 0; i < 4; i++)
+    for (int explosion = 0; explosion < NUM_EXPLOSIONS; explosion++)
     {
-        float spriteX, spriteY;
-        calculate_sprite_position(game, 
-                                  game->strike->position.x + offsets[i][0], 
-                                  game->strike->position.y + offsets[i][1], 
-                                  &spriteX, &spriteY);
+        int current_frame = game->strike->current_frame[explosion];
+        t_texture *strike_texture = &game->airstrike_textures[current_frame];
 
-        float transformX, transformY;
-        transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
-
-        int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
-
-        int spriteHeight, drawStartY, drawEndY;
-        calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
-
-        int spriteWidth, drawStartX, drawEndX;
-        calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
-
-        printf("Strike sprite dimensions for tile %d: X=%d-%d, Y=%d-%d\n", i, drawStartX, drawEndX, drawStartY, drawEndY);
-
-        for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+        for (int i = 0; i < 4; i++)
         {
-            if (is_sprite_in_front(transformY, stripe, game->screen_width))
+            float spriteX, spriteY;
+            calculate_sprite_position(game, 
+                                      game->strike->position.x + offsets[i][0],
+                                      game->strike->position.y + offsets[i][1],
+                                      &spriteX, &spriteY);
+
+            float transformX, transformY;
+            transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+            int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+            int spriteHeight, drawStartY, drawEndY;
+            calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+            int spriteWidth, drawStartX, drawEndX;
+            calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+            for (int stripe = drawStartX; stripe < drawEndX; stripe++)
             {
-                draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+                if (is_sprite_in_front(transformY, stripe, game->screen_width))
+                {
+                    draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+                }
             }
         }
     }
 }
-
 
 void    render_strike(t_game *game)
 {

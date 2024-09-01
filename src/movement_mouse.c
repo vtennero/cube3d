@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/08/27 16:50:04 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:05:52 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
         // playAudioFileWithDelay("audio/strike00.mp3", 0);
         play_random_strike_sound(game);
         add_script(game, eagle_inbound, 3);
+
     }
     return (0);
 }

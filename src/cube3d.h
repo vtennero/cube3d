@@ -79,16 +79,16 @@ typedef struct s_game t_game;
 typedef void (*ScriptFunction)(t_game *game);
 
 typedef struct s_script {
-    struct timeval trigger_time;
-    ScriptFunction func;
-    int is_active;
+	struct timeval trigger_time;
+	ScriptFunction func;
+	int is_active;
 
 } t_script;
 
 typedef struct s_script_manager {
-    t_script scripts[MAX_SCRIPTS];
+	t_script scripts[MAX_SCRIPTS];
 	int active_script_count;
-    int script_count;
+	int script_count;
 } t_script_manager;
 
 
@@ -162,38 +162,48 @@ typedef struct s_rgb
 
 typedef struct s_extract
 {
-    t_vector2d position;
-    int is_available;
-    int is_landing;
-    int is_activated;
-    int is_complete;
-    t_vector2d initial_position;
-    float delta_time;  // Time passed since last frame
-    float landing_progress;  // Time passed since last frame
+	t_vector2d position;
+	int is_available;
+	int is_landing;
+	int is_activated;
+	int is_complete;
+	t_vector2d initial_position;
+	float delta_time;  // Time passed since last frame
+	float landing_progress;  // Time passed since last frame
 } t_extract;
 
 typedef struct s_collectible
 {
-    t_vector2d position;
-    int collected;  // 0 for not collected, 1 for collected
-    int found;  // 0 for not collected, 1 for collected
+	t_vector2d position;
+	int collected;  // 0 for not collected, 1 for collected
+	int found;  // 0 for not collected, 1 for collected
 } t_collectible;
 
 typedef struct s_supplies
 {
-    t_vector2d position;
-    int collected;  // 0 for not collected, 1 for collected
-    int found;  // 0 for not collected, 1 for collected
+	t_vector2d position;
+	int collected;  // 0 for not collected, 1 for collected
+	int found;  // 0 for not collected, 1 for collected
 } t_supplies;
 
+
+// stable
 typedef struct s_explosion
 {
-    t_vector2d offset;
-    int is_active;
-    int current_frame;
-    int frame_count;
+	t_vector2d offset;
 } t_explosion;
 
+
+
+
+// typedef struct s_strike
+// {
+// 	t_vector2d	position;
+// 	int			is_launching;
+// 	int			is_active;
+//    	int			current_frame[NUM_EXPLOSIONS];
+// 	int			frame_count[NUM_EXPLOSIONS];
+// } t_strike;
 
 
 typedef struct s_strike
@@ -206,14 +216,15 @@ typedef struct s_strike
 } t_strike;
 
 
+
 typedef struct s_enemy
 {
-    t_vector2d position;
-    int frame_count;     // for animation timing
-    int current_frame;   // current animation frame (0-13)
-    int momentum;        // for frame transition (-3 to +3)
-    int animation_steps; // count of animation steps for periodic jumps
-    int is_alive;        // 0 for dead, 1 for alive
+	t_vector2d position;
+	int frame_count;     // for animation timing
+	int current_frame;   // current animation frame (0-13)
+	int momentum;        // for frame transition (-3 to +3)
+	int animation_steps; // count of animation steps for periodic jumps
+	int is_alive;        // 0 for dead, 1 for alive
 } t_enemy;
 
 typedef enum e_direction
@@ -324,10 +335,10 @@ typedef struct s_game
 	t_ray_node			*ray_list;
 	t_collectible       collectibles[MAX_COLLECTIBLES];
 	t_supplies       	supplies[MAX_SUPPLIES];
-    int                 num_collectibles;  // Current number of active collectibles
-    int                 num_supplies;  // Current number of active collectibles
-    t_enemy             enemies[MAX_ENEMIES];
-    int                 num_enemies;  // Current number of active enemies
+	int                 num_collectibles;  // Current number of active collectibles
+	int                 num_supplies;  // Current number of active collectibles
+	t_enemy             enemies[MAX_ENEMIES];
+	int                 num_enemies;  // Current number of active enemies
 	int					game_sequence;
 	int					current_frame;
 	t_texture			land_texture[MAX_LAND_TEXTURES];
@@ -344,6 +355,7 @@ typedef struct s_game
 	int					is_moving_fwd;
 
 
+
 	// Cub parsing
 	char *cub_filepath;
 	int  cub_fd;
@@ -358,10 +370,10 @@ typedef struct s_game
 	int cub_player_o;
 
 	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
-    t_texture floortexture[1];
-    // t_texture skytexture[1];
-    t_rgb floor_rgb[1];
-    t_rgb sky_rgb[1];
+	t_texture floortexture[1];
+	// t_texture skytexture[1];
+	t_rgb floor_rgb[1];
+	t_rgb sky_rgb[1];
 
 
 	t_vector2d			center_floor_coords;
@@ -709,7 +721,7 @@ void    render_strike(t_game *game);
 int create_strike(t_game *game);
 void    eagle_inbound(t_game *game);
 void script_strike_enemies(t_game *game);
-
+void initialize_multi_strike(t_game *game, t_vector2d position, int num_strikes);
 
 int close_hook(t_game *game);
 
@@ -719,5 +731,6 @@ void	render_respawn(t_game *game);
 void	play_land_voice(t_game *game);
 int respawn_player(t_game *game);
 void script_strike_player(t_game *game);
+t_vector2d calculate_explosion_position(t_vector2d base_position, int explosion_index);
 
 #endif

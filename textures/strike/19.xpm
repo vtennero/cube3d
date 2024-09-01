@@ -22,7 +22,7 @@ static char *_9[] = {
 ", c #FE946A",
 "< c #FE9569",
 "1 c #FE9569",
-"2 c None",
+"2 c 0xFF000000",
 "3 c #FE9268",
 "4 c #FE8D63",
 "5 c #FF7F00",

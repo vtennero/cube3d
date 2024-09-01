@@ -173,6 +173,8 @@ int create_strike(t_game *game)
     strike->current_frame = 0;
     strike->frame_count = 0;
 
+
+
 	game->strike = strike;
 	printf("initialized strike\n");
     return (1);

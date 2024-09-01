@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/27 12:16:16 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:42:00 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,8 @@ void    eagle_inbound(t_game *game)
     game->strike->is_launching = 0;
 
     // play audio, choose audio
-    add_script(game, eagle_bombs, 1);
+    add_script(game, eagle_bombs, 2);
+    // add_script(game, eagle_bombs, 1);
     playAudioFileWithDelay("audio/eagles00.mp3", 0);
 
 
