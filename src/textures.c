@@ -391,6 +391,29 @@ void load_strike_textures(t_game *game)
     printf("Loaded %d strike textures\n", num_textures);
 }
 
+
+void load_napalm_textures(t_game *game)
+{
+    const char *path_format = "textures/strike/napalm%02d.xpm";
+    int num_textures = NUM_NAPALM_FRAMES;
+
+    for (int i = 0; i < num_textures; i++)
+    {
+        char path[256];
+        sprintf(path, path_format, i);
+
+        game->napalm_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->napalm_textures[i].width, &game->napalm_textures[i].height);
+        if (game->napalm_textures[i].img == NULL)
+        {
+            fprintf(stderr, "Error: Could not load strike texture: %s\n", path);
+            exit(1);
+        }
+        game->napalm_textures[i].data = mlx_get_data_addr(game->napalm_textures[i].img, &game->napalm_textures[i].tex_bpp, &game->napalm_textures[i].tex_line_len, &game->napalm_textures[i].tex_endian);
+
+    }
+    printf("Loaded %d napalm textures\n", num_textures);
+}
+
 void load_shooting_textures(t_game *game, const char *path_format, int num_textures)
 {
     if (num_textures > MAX_SHOOTING_TEXTURES) {
@@ -480,13 +503,14 @@ void preload_textures(t_game *game)
     load_gun_textures(game, "textures/gun/frame%02d.xpm", 12);
     load_shooting_textures(game, "textures/gun/shooting/frame%02d.xpm", MAX_SHOOTING_TEXTURES);
     load_enemy_textures(game, "textures/enemies/%03d.xpm", NUM_ENEMY_TEXTURES);
-    load_menu_texture(game, "textures/menu/menu.xpm");
-    load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
-    load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
-    load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
+    // load_menu_texture(game, "textures/menu/menu.xpm");
+    // load_opening_textures(game, "textures/jump/xpm/jump%03d.xpm", MAX_OPENING_TEXTURES);
+    // load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
+    // load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
     load_extract_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
     load_strike_textures(game);
+    load_napalm_textures(game);
 
     scale_gun_textures(game);
     scale_shooting_textures(game);
@@ -620,6 +644,7 @@ void preload_textures_non_bonus(t_game *game)
     load_land_textures(game, "textures/land/land%03d.xpm", MAX_LAND_TEXTURES);
     load_outro_textures(game, "textures/outro/outro%03d.xpm", MAX_OUTRO_TEXTURES);
     load_extract_textures(game);
+    load_napalm_textures(game);
     load_strike_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
     load_pelican_inside_texture(game, "textures/extract/pelicaninside.xpm");

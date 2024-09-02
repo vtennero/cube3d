@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/09/01 13:47:26 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:58:23 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,13 @@ int handle_mouse_click(int button, int x, int y, void *param)
             // play audio
         }
     }
-    else if (button == 3 && game->strike->is_launching == 0 && game->strike->is_active == 0 && game->game_sequence == 3)
+    else if (button == 3 && game->strike[0].is_launching == 0 && game->strike[0].is_active == 0 && game->game_sequence == 3)
     {
         printf("launching orbital strike at %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
         // add script launch strike
-        game->strike->position.y = game->center_floor_coords.y;
-        game->strike->position.x = game->center_floor_coords.x;
-        game->strike->is_launching = 1;
+        game->strike[0].position.y = game->center_floor_coords.y;
+        game->strike[0].position.x = game->center_floor_coords.x;
+        game->strike[0].is_launching = 1;
         // script to choose audio for airstrike
         // playAudioFileWithDelay("audio/strike00.mp3", 0);
         play_random_strike_sound(game);

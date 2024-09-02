@@ -73,7 +73,7 @@ int is_player_close_to_collectible(t_game *game)
 //             // playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
 //             game->extract[0].is_activated = 1;
 //         }
-//         else if (is_player_close_to_extract(game) && game->extract->is_activated)
+//     if (is_player_close_to_extract(game) && game->extract->is_activated)
 //         {
 //             add_script(game, testscript, 3); // Add testscript to run after 3 seconds
 //             // playAudioFileWithDelay("audio/extract01.mp3", 2);
@@ -107,3 +107,48 @@ void handle_key_e(t_game *game)
         
     }
 }
+
+void    handle_key_2(t_game *game)
+{
+    
+    if (game->strike[1].is_launching == 0 && game->strike[1].is_active == 0 && game->game_sequence == 3)
+    {
+        printf("launching napalm strike at %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
+        // add script launch strike
+        game->strike[1].position.y = game->center_floor_coords.y;
+        game->strike[1].position.x = game->center_floor_coords.x;
+        game->strike[1].is_launching = 1;
+        // script to choose audio for airstrike
+        // playAudioFileWithDelay("audio/strike00.mp3", 0);
+        play_random_strike_sound(game);
+        add_script(game, napalm_inbound, 3);
+        add_script(game, remove_napalm, 15);
+
+    }
+}
+
+// void    handle_key_3(t_game *game)
+// {
+    
+//     if (game->strike[1].is_launching == 0 && game->strike[1].is_active == 0 && game->game_sequence == 3)
+//     {
+//         printf("launching barrage %f, %f\n", game->center_floor_coords.y, game->center_floor_coords.x);
+//         // add script launch strike
+//         game->strike[1].position.y = game->center_floor_coords.y;
+//         game->strike[1].position.x = game->center_floor_coords.x;
+//         game->strike[1].is_launching = 1;
+//         int random_call = random_int(game, 1);
+
+//         // Create the audio file name based on the random number
+//         char audio_file[] = "audio/orbitalbarrage00.mp3";
+//         audio_file[19] = '0' + random_call / 10;
+//         audio_file[20] = '0' + random_call % 10;
+
+//         // Play the selected audio file with no delay
+//         playAudioFileWithDelay(audio_file, 0);
+
+//         add_script(game, barrage_inbound, 8);
+//         add_script(game, stop_barrage, 15);
+
+//     }
+// }

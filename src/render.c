@@ -84,70 +84,70 @@ int render(t_game *game)
     }
     else if (game->game_sequence == 3)
     {
-    script_strike_player(game);
-    script_die(game);
-    script_found_sth(game);
-    script_found_supplies(game);
-    script_take_supplies(game);
-    script_strike_enemies(game);
-    script_board(game);
-    script_takeoff(game);
-    update_scripts(game);
-    game->num_enemies = calculate_enemy_count(game);
-    relocate_enemies(game);
-    enemies_hit(game);
+        script_strike_player(game);
+        script_die(game);
+        script_found_sth(game);
+        script_found_supplies(game);
+        script_take_supplies(game);
+        script_strike_enemies(game);
+        script_napalm_player(game, 1, 6);
+        script_napalm_enemies(game, 1, 6);
 
-    handle_key_esc(game);
-    handle_movement_left(game);
-    handle_movement_right(game);
-    handle_movement_forward(game);
-    handle_movement_backward(game);
-    handle_movement_strafe_left(game);
-    handle_movement_strafe_right(game);
-    handle_movement_dash(game);
-    // pitch
-    handle_movement_up(game);
-    handle_movement_down(game);
+        script_board(game);
+        script_takeoff(game);
+        update_scripts(game);
+        game->num_enemies = calculate_enemy_count(game);
+        relocate_enemies(game);
+        enemies_hit(game);
 
-    // interactions
-
-    // rendering
-	if (game->bonus==1)
-    {
-		render_sky(game, "textures/sky06.xpm");
-		render_floor(game);
-	}
-	else
-	{
-		render_floor_rgb(&game->img, game->floor_rgb[0].hex_color);
-		render_sky_rgb(game, game->sky_rgb[0].hex_color);
-	}
-	
+        handle_key_esc(game);
+        handle_movement_left(game);
+        handle_movement_right(game);
+        handle_movement_forward(game);
+        handle_movement_backward(game);
+        handle_movement_strafe_left(game);
+        handle_movement_strafe_right(game);
+        handle_movement_dash(game);
+        // pitch
+        handle_movement_up(game);
+        handle_movement_down(game);
 
 
-    // c_render_ray_list(game);
-    render_ray_list(game);
-    render_collectibles(game);
-    render_supplies(game);
-    render_extract(game);
-    render_enemies(game);
-    render_strike(game);
+        // rendering
+        if (game->bonus==1)
+        {
+            render_sky(game, "textures/sky06.xpm");
+            render_floor(game);
+        }
+        else
+        {
+            render_floor_rgb(&game->img, game->floor_rgb[0].hex_color);
+            render_sky_rgb(game, game->sky_rgb[0].hex_color);
+        }
+        // c_render_ray_list(game);
+        render_ray_list(game);
+        render_collectibles(game);
+        render_supplies(game);
+        render_extract(game);
+        render_enemies(game);
+        render_strike(game);
+        render_napalm(game);
 
-    check_enemy_at_center(game);
-    randomize_dead_enemy_positions(game);
-    // print_alive_enemies(game);
+        check_enemy_at_center(game);
+        randomize_dead_enemy_positions(game);
+        // print_alive_enemies(game);
 
-    update_gun_state(game);
-    render_gun(game);
-    render_hit(game);
-    render_supply_take(game);
-    render_respawn(game);
-    render_pelican_inside(game);
+        update_gun_state(game);
+        render_gun(game);
+        render_hit(game);
+        render_supply_take(game);
+        render_respawn(game);
+        render_pelican_inside(game);
 
-    // print_map_section(game, game->player->position.x, game->player->position.y, 5);
-    mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+        // print_map_section(game, game->player->position.x, game->player->position.y, 5);
+        mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 
-    clean_rays(game);
+        clean_rays(game);
     }
     else if (game->game_sequence == 4)
     {
@@ -180,7 +180,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    // game->game_sequence = 3;
+    game->game_sequence = 3;
     // preload_textures(game);
 	preload_textures_non_bonus(game);
     initialize_game_seed(game);

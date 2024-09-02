@@ -29,14 +29,14 @@ void    play_bug_death(t_game *game)
 
 void script_strike_enemies(t_game *game)
 {
-	if (game->strike->is_active)
+	if (game->strike[0].is_active)
 	{
-    float strikeX = game->strike->position.x;
-    float strikeY = game->strike->position.y;
+    float strikeX = game->strike[0].position.x;
+    float strikeY = game->strike[0].position.y;
     
     // Define the radius for considering an enemy "close"
     // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-    float strike_radius = 2.0f;
+    float strike_radius = 4.0f;
 
     for (int i = 0; i < game->num_enemies; i++)
     {
@@ -66,14 +66,14 @@ void script_strike_enemies(t_game *game)
 
 void script_strike_player(t_game *game)
 {
-    if (game->strike->is_active)
+    if (game->strike[0].is_active)
     {
-        float strikeX = game->strike->position.x;
-        float strikeY = game->strike->position.y;
+        float strikeX = game->strike[0].position.x;
+        float strikeY = game->strike[0].position.y;
         
         // Define the radius for considering the player "close"
         // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-        float strike_radius = 2.0f;
+        float strike_radius = 4.0f;
 
         float playerX = game->player->position.x;
         float playerY = game->player->position.y;
@@ -92,6 +92,71 @@ void script_strike_player(t_game *game)
         }
     }
 }
+
+void script_napalm_enemies(t_game *game, int strike_no, float radius)
+{
+	if (game->strike[strike_no].is_active)
+	{
+    float strikeX = game->strike[strike_no].position.x;
+    float strikeY = game->strike[strike_no].position.y;
+    
+    // Define the radius for considering an enemy "close"
+    // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (!game->enemies[i].is_alive)
+            continue;
+
+        float enemyX = game->enemies[i].position.x;
+        float enemyY = game->enemies[i].position.y;
+
+        // Calculate the distance between the strike and the enemy
+        float dx = strikeX - enemyX;
+        float dy = strikeY - enemyY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the enemy is within the strike radius
+        if (distance <= radius)
+        {
+            game->enemies[i].is_alive = 0;
+            play_bug_death(game);
+            // Optionally, you can add some visual or sound effect here
+            // printf("Enemy %d struck down!\n", i);
+        }
+    }
+	}
+
+}
+
+void script_napalm_player(t_game *game, int strike_no, float radius)
+{
+    if (game->strike[strike_no].is_active)
+    {
+        float strikeX = game->strike[strike_no].position.x;
+        float strikeY = game->strike[strike_no].position.y;
+        
+        // Define the radius for considering the player "close"
+        // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+
+        float playerX = game->player->position.x;
+        float playerY = game->player->position.y;
+
+        // Calculate the distance between the strike and the player
+        float dx = strikeX - playerX;
+        float dy = strikeY - playerY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the player is within the strike radius
+        if (distance <= radius)
+        {
+            game->player->hp--;
+            // Optionally, you can add some visual or sound effect here
+            // printf("Player struck down!\n");
+        }
+    }
+}
+
 
 void	play_land_voice(t_game *game)
 {

@@ -7,8 +7,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 
 # Audio flags
-AUDIOFLAGS = -lopenal -lmpg123
-# AUDIOFLAGS = 
+# AUDIOFLAGS = -lopenal -lmpg123
+AUDIOFLAGS = 
 
 # Directories
 SRC_DIR = src
@@ -66,8 +66,8 @@ map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
 pelican_inside_bonus.c \
-audio_bonus.c \
-# audio_dummy.c \
+audio_dummy.c \
+# audio_bonus.c \
 
 
 
