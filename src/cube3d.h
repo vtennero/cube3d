@@ -680,6 +680,8 @@ void    trigger_gunshots(t_game *game);
 void    get_hit(t_game *game);
 void trigger_extract_victory(t_game *game);
 
+void    play_bug_death(t_game *game);
+
 // debug
 void print_alive_enemies(t_game *game);
 
