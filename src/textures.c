@@ -627,7 +627,7 @@ void preload_textures_non_bonus(t_game *game)
     load_extract_textures(game);
     load_strike_textures(game);
     load_supplies_texture(game, "textures/supplies/supplies.xpm");
-    // load_pelican_inside_texture(game, "textures/extract/pelicaninside.xpm");
+    load_pelican_inside_texture(game, "textures/extract/pelicaninside.xpm");
 
 
     scale_gun_textures(game);
