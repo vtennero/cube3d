@@ -386,12 +386,7 @@ void load_strike_textures(t_game *game)
             exit(1);
         }
         game->airstrike_textures[i].data = mlx_get_data_addr(game->airstrike_textures[i].img, &game->airstrike_textures[i].tex_bpp, &game->airstrike_textures[i].tex_line_len, &game->airstrike_textures[i].tex_endian);
-        
-        // Verify texture dimensions
-        if (game->airstrike_textures[i].width != 189 || game->airstrike_textures[i].height != 189)
-        {
-            fprintf(stderr, "Warning: Texture %d has unexpected dimensions: %dx%d\n", i, game->airstrike_textures[i].width, game->airstrike_textures[i].height);
-        }
+
     }
     printf("Loaded %d strike textures\n", num_textures);
 }

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/01 13:44:29 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:04:16 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,11 @@ void render_ongoing_strike(t_game *game)
     int current_frame = get_next_airstrike_frame(game->strike);
     t_texture *strike_texture = &game->airstrike_textures[current_frame];
 
-    // printf("Rendering strike frame %d, texture address: %p\n", current_frame, (void*)strike_texture);
+    // printf("render_ongoing_strike: Rendering strike frame %d, texture address: %p\n", current_frame, (void*)strike_texture);
 
     // Calculate screen shake offset
     float shake_offset = calculate_screen_shake(game, current_frame);
+    // printf("render_ongoing_strike: shake_offset %f\n", shake_offset);
 
     // Apply screen shake to player height
     if (game->player->is_dead == 0)
@@ -160,23 +161,29 @@ void render_ongoing_strike(t_game *game)
     // Define offsets for adjacent tiles
     int offsets[4][2] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}}; // Current tile and 3 adjacent
 
+
     for (int i = 0; i < 4; i++)
     {
+        // printf("render_ongoing_strike: calcualting sprites positions for explosion %d\n", i);
         float spriteX, spriteY;
         calculate_sprite_position(game, 
                                   game->strike->position.x + offsets[i][0], 
                                   game->strike->position.y + offsets[i][1], 
                                   &spriteX, &spriteY);
 
+        // printf("render_ongoing_strike: calcualting transform_sprite for explosion %d\n", i);
         float transformX, transformY;
         transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+        // printf("render_ongoing_strike:  calculate_sprite_screen_x for explosion %d\n", i);
 
         int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
 
         int spriteHeight, drawStartY, drawEndY;
+        // printf("render_ongoing_strike:  calculate_sprite_height for explosion %d\n", i);
         calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
 
         int spriteWidth, drawStartX, drawEndX;
+        // printf("render_ongoing_strike:  calculate_sprite_width for explosion %d\n", i);
         calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
 
         // printf("Strike sprite dimensions for tile %d: X=%d-%d, Y=%d-%d\n", i, drawStartX, drawEndX, drawStartY, drawEndY);
@@ -185,6 +192,7 @@ void render_ongoing_strike(t_game *game)
         {
             if (is_sprite_in_front(transformY, stripe, game->screen_width))
             {
+        // printf("render_ongoing_strike:  draw_sprite_stripe for explosion %d\n", i);
                 draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
             }
         }
