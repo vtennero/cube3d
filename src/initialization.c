@@ -57,7 +57,7 @@ void create_map_from_cub(t_game *game)
     printf("Set the dimensions\n");
 
     // Allocate memory for the map data
-    map->data = malloc(game->screen_height * sizeof(int *));
+    map->data = malloc(map->height * sizeof(int *));
     if (map->data == NULL)
     {
         fprintf(stderr, "Memory allocation failed for map data.\n");
@@ -66,9 +66,9 @@ void create_map_from_cub(t_game *game)
     }
     printf("Allocated memory for the map data\n");
 
-    for (int i = 0; i < game->screen_height; i++)
+    for (int i = 0; i <map->height; i++)
     {
-        map->data[i] = malloc(game->screen_width * sizeof(int));
+        map->data[i] = malloc(map->width * sizeof(int));
         if (map->data[i] == NULL)
         {
             fprintf(stderr, "Memory allocation failed for map row.\n");
