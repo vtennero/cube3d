@@ -91,6 +91,7 @@ int render(t_game *game)
     script_take_supplies(game);
     script_strike_enemies(game);
     script_board(game);
+    script_takeoff(game);
     update_scripts(game);
     game->num_enemies = calculate_enemy_count(game);
     relocate_enemies(game);

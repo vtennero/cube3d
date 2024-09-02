@@ -690,6 +690,7 @@ int calculate_enemy_count(t_game *game);
 void trigger_landing(t_game *game);
 int is_player_close_to_extract(t_game *game);
 void    script_board(t_game *game);
+void    script_takeoff(t_game *game);
 void trigger_extract_music(t_game *game);
 void    sample_acquired(t_game *game);
 void    menu_background(t_game *game);

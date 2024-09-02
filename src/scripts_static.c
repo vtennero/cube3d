@@ -160,27 +160,29 @@ void    script_board(t_game *game)
 {
 	if (is_player_close_to_extract(game) && game->extract[0].is_landing == 1)
 	{
-        if (game->extract[0].is_landing == 1)
-        {
-            stopAudioFile("audio/extractmusic00.mp3");
-            playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
-            playAudioFileWithDelay("audio/extract04.mp3", 0);
-            add_script(game, trigger_extract_victory, 5);
-            game->extract[0].is_landing = 0;
-        }
+        stopAudioFile("audio/extractmusic00.mp3");
+        playAudioFileWithDelay("audio/extractmusic01.mp3", 0);
+        playAudioFileWithDelay("audio/extract04.mp3", 0);
+        add_script(game, trigger_extract_victory, 5);
+        game->extract[0].is_landing = 0;
+        game->player->is_extracting = 1;
+	}
+}
+
+void    script_takeoff(t_game *game)
+{
+    if (game->player->is_extracting == 1)
+    {
         if (game->player->height >= 3)
         {
-            game->game_sequence = 4;
             game->player->is_extracting = 0;
+            game->game_sequence = 4;
             reset_game_start_time(game);
-            // printf("game sequence: %d\n", game->game_sequence);
         }
         else
         {
             game->player->height *= 1.03;
             game->player->is_extracting = 1;
         }
-
-
-	}
+    }
 }

@@ -118,7 +118,7 @@ void enemy_hit_attempt(t_game *game, t_enemy *enemy, int index)
             printf("You got hit by enemy %d; new hp: %d\n", index, game->player->hp);
             bump_player(game, index);
 
-            int random_value = random_int(game, 6);
+            int random_value = random_int(game, 3);
             if (random_value == 0 && game->player->hp <= 0.25 * MAX_HEALTH)
             {
                 playAudioFileWithDelay("audio/stims00.mp3", 0);
