@@ -113,7 +113,7 @@ void clean_map(t_game *game)
         // Free the 2D array of map data
         if (game->map->data)
         {
-            for (int i = 0; i < game->screen_height; i++)
+            for (int i = 0; i < game->map->height; i++)
             {
                 if (game->map->data[i])
                 {
