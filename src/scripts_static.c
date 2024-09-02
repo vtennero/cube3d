@@ -12,6 +12,21 @@
 
 #include "cube3d.h"
 
+void    play_bug_death(t_game *game)
+{
+    int random_call = random_int(game, 6);
+    
+    (void)game;
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/bug00.mp3";
+    // char audio_file[] = "audio/eaglec00.mp3";
+    audio_file[9] = '0' + random_call / 10;
+    audio_file[10] = '0' + random_call % 10;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
+
 void script_strike_enemies(t_game *game)
 {
 	if (game->strike->is_active)
@@ -40,6 +55,7 @@ void script_strike_enemies(t_game *game)
         if (distance <= strike_radius)
         {
             game->enemies[i].is_alive = 0;
+            play_bug_death(game);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
@@ -134,6 +150,7 @@ void	script_die(t_game *game)
 	{
 		reset_game_start_time(game);
 		game->player->is_dead = 1;
+		playAudioFileWithDelay("audio/death.mp3", 0);
 		playAudioFileWithDelay("audio/kia00.mp3", 0);
 	}
 }
