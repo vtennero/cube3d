@@ -32,26 +32,90 @@
 		return -1;
 	}
 
-	int	floodfill(t_game *game, int **filled_map, int i, int j)
-{
-	int	is_surrounded;
-	// printf("i is %d and j is %d",i,j);
-	if (i < 0 || i >= game->cub_map_row_count || j < 0 || j >= ((game->cub_map_col_count+1)/2))
-		return (0);
-	if (game->cub_map_array[i][j] == 1|| filled_map[i][j] == 1)
-		return (1);
-	else
-		filled_map[i][j] = 1;
-	// print_2d_array(game,filled_map);
+// 	int	floodfill(t_game *game, int **filled_map, int i, int j)
+// {
+// 	int	is_surrounded;
+// 	// printf("i is %d and j is %d",i,j);
+// 	if (i < 0 || i >= game->cub_map_row_count || j < 0 || j >= ((game->cub_map_col_count+1)/2))
+// 	{
+// 		printf("i is %d and j is %d,game->cub_map_row_count is %d and game->cub_map_col_count is %d",i,j,game->cub_map_row_count,((game->cub_map_col_count+1)/2));
+// 		return (0);
 
-	is_surrounded = 1;
-	is_surrounded &= floodfill(game, filled_map, i - 1, j);
-	is_surrounded &= floodfill(game, filled_map, i + 1, j);
-	is_surrounded &= floodfill(game, filled_map, i, j - 1);
-	is_surrounded &= floodfill(game, filled_map, i, j + 1);
-	return (is_surrounded);
+// 	}
+// 	if (game->cub_map_array[i][j] == 1|| filled_map[i][j] == 1)
+// 		return (1);
+// 	else
+// 		filled_map[i][j] = 1;
+// 	// print_2d_array(game,filled_map);
+// 	is_surrounded = 1;
+// 	is_surrounded &= floodfill(game, filled_map, i - 1, j);
+// 	is_surrounded &= floodfill(game, filled_map, i + 1, j);
+// 	is_surrounded &= floodfill(game, filled_map, i, j - 1);
+// 	is_surrounded &= floodfill(game, filled_map, i, j + 1);
+// 	return (is_surrounded);
+// }
+int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j) {
+    // Define directions for up, down, left, and right
+    int directions[4][2] = {
+        {-1, 0}, // up
+        {1, 0},  // down
+        {0, -1}, // left
+        {0, 1}   // right
+    };
+
+    // Check for invalid starting position
+    if (start_i < 0 || start_i >= game->cub_map_row_count ||
+        start_j < 0 || start_j >= ((game->cub_map_col_count + 1) / 2)) {
+        printf("Invalid starting position: i=%d, j=%d\n", start_i, start_j);
+        return 0;
+    }
+
+    // Check if the starting position is already filled or blocked
+    if (game->cub_map_array[start_i][start_j] == 1 || filled_map[start_i][start_j] == 1) {
+        return 1;
+    }
+
+    // Initialize stack and push the starting position
+    Point *stack = (Point *)malloc(game->cub_map_row_count * game->cub_map_col_count * sizeof(Point));
+    int stack_size = 0;
+    stack[stack_size++] = (Point){start_i, start_j};
+
+    int is_surrounded = 1;
+
+    while (stack_size > 0) {
+        // Pop the top position from the stack
+        stack_size--;
+        Point current = stack[stack_size];
+
+        int x = current.x;
+        int y = current.y;
+
+        // Continue if the position is out of bounds or already filled or blocked
+        if (x < 0 || x >= game->cub_map_row_count || y < 0 || y >= ((game->cub_map_col_count + 1) / 2) ||
+            game->cub_map_array[x][y] == 1 || filled_map[x][y] == 1) {
+            continue;
+        }
+
+        // Mark the position as filled
+        filled_map[x][y] = 1;
+
+        // Check surrounding positions and push them onto the stack if they are valid
+        for (int d = 0; d < 4; d++) {
+            int new_x = x + directions[d][0];
+            int new_y = y + directions[d][1];
+            if (new_x >= 0 && new_x < game->cub_map_row_count &&
+                new_y >= 0 && new_y < ((game->cub_map_col_count + 1) / 2) &&
+                game->cub_map_array[new_x][new_y] == 0 && filled_map[new_x][new_y] == 0) {
+                stack[stack_size++] = (Point){new_x, new_y};
+            }
+        }
+    }
+
+    // Free the stack memory
+    free(stack);
+
+    return is_surrounded;
 }
-
 
 int			check_map_boundaries(t_game *game)
 {
@@ -64,7 +128,8 @@ int			check_map_boundaries(t_game *game)
 	y = game->cub_player_y;
 	filled_map=initializeArray(game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
 	// print_2d_array(game,filled_map);
-	is_surrounded = floodfill(game, filled_map, x, y);
+	// is_surrounded = floodfill(game, filled_map, x, y);
+	is_surrounded = floodfill_iterative(game, filled_map, x, y);
 	freeArray(filled_map,game->cub_map_row_count);
 	if (!is_surrounded)
 	{

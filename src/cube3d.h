@@ -430,6 +430,10 @@ typedef struct s_keymap
 	int					keycode;
 	t_key_func			func;
 }						t_keymap;
+typedef struct {
+    int x;
+    int y;
+} Point;
 
 /*
 ** -- MEMORY --
@@ -479,6 +483,7 @@ int parse_map_to_array(t_game *game);
 /// Check map boundaries
 int parse_char_to_int(char chars);
 int	floodfill(t_game *game, int **filled_map, int i, int j);
+int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j);
 int			check_map_boundaries(t_game *game);
 int parse_floor_sky_rgb(t_game *game);
 
