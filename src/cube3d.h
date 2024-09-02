@@ -47,8 +47,8 @@
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
 #define MAX_SCRIPTS 500
 #define OBJECT_SIZE 1
-// #define MAX_HEALTH 1
-#define MAX_HEALTH 50
+#define MAX_HEALTH 10
+// #define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
 #define EXTRACT_CALL_TIME 5
 // #define EXTRACT_CALL_TIME 120
@@ -685,6 +685,8 @@ void    trigger_gunshots(t_game *game);
 void    get_hit(t_game *game);
 void trigger_extract_victory(t_game *game);
 
+void    play_bug_death(t_game *game);
+
 // debug
 void print_alive_enemies(t_game *game);
 
@@ -693,6 +695,7 @@ int calculate_enemy_count(t_game *game);
 void trigger_landing(t_game *game);
 int is_player_close_to_extract(t_game *game);
 void    script_board(t_game *game);
+void    script_takeoff(t_game *game);
 void trigger_extract_music(t_game *game);
 void    sample_acquired(t_game *game);
 void    menu_background(t_game *game);
