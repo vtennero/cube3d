@@ -212,11 +212,14 @@ typedef struct s_explosion
 typedef struct s_strike
 {
     t_vector2d	position;
+    t_vector2d	base_position;
 	int			is_launching;
 	int			is_active;
 	int			current_frame;
 	int			frame_count;
-	int			is_hitting;
+	int			is_animating;
+	int delay_frames;
+    int delay_duration;
 } t_strike;
 
 
@@ -764,5 +767,15 @@ void    handle_key_2(t_game *game);
 void play_random_strike_sound(t_game *game);
 void script_napalm_enemies(t_game *game, int strike_no, float radius);
 void script_napalm_player(t_game *game, int strike_no, float radius);
+// barrage
+void    barrage_inbound(t_game *game);
+void    stop_barrage(t_game *game);
+void    handle_key_3(t_game *game);
+void    render_barrage(t_game *game);
+
+// randomizer
+int is_valid_location(t_game *game, int x, int y);
+float random_float(t_game *game);
+void    play_barrage_shell(t_game *game);
 
 #endif

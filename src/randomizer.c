@@ -39,3 +39,12 @@ int random_int(t_game *game, int max)
 {
     return (int)(next_random(game) % max);
 }
+
+float random_float(t_game *game)
+{
+    // Generate a random 32-bit integer
+    unsigned int rand_int = (unsigned int)(next_random(game) & 0xFFFFFFFF);
+    
+    // Convert to float in range [0, 1)
+    return (float)rand_int / (float)0x100000000;
+}
