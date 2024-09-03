@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 15:47:33 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:52:23 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -516,7 +516,7 @@ void render_ongoing_barrage(t_game *game)
         game->strike[2].delay_frames = 0;
         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
         printf("Barrage Hit\n");
-        add_script(play_barrage_shell, 0);
+        add_script(game, play_barrage_shell, 0);
         randomize_barrage_location(game);
     }
     }
