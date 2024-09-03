@@ -475,7 +475,7 @@ char* trim_whitespace(char* str);
 int count_words_from_array(char **words); 
 int	ft_isinteger(char *number);
 int check_invalid_rgb(char* word);
-int** initializeArray(int x, int y);
+int** initialize_array(int x, int y);
 
 // Parse texture
 int read_cub_texture_and_analyze_map(t_game *game);
