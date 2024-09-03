@@ -52,6 +52,7 @@
 #define MAX_OUTRO_TEXTURES 229
 #define EXTRACT_CALL_TIME 5
 // #define EXTRACT_CALL_TIME 120
+#define MAX_STRIKES 3
 
 #define M_PI 3.14159265358979323846
 
@@ -63,6 +64,7 @@
 
 // airstrikes
 #define NUM_AIRSTRIKE_FRAMES 20
+#define NUM_NAPALM_FRAMES 15
 #define AIRSTRIKE_ANIMATION_INTERVAL 3  // Change frame every 3 game ticks
 #define NUM_ADJACENT_TILES 3
 #define TOTAL_STRIKE_TILES 4 // Including the main tile
@@ -214,6 +216,7 @@ typedef struct s_strike
 	int			is_active;
 	int			current_frame;
 	int			frame_count;
+	int			is_hitting;
 } t_strike;
 
 
@@ -352,6 +355,7 @@ typedef struct s_game
 	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
 	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
 	t_texture			airstrike_textures[NUM_AIRSTRIKE_FRAMES];
+	t_texture			napalm_textures[NUM_NAPALM_FRAMES];
 	struct timeval		opening_start_time;
 	int					loop_count;
 	int					is_shooting;
@@ -380,13 +384,17 @@ typedef struct s_game
 
 
 	t_vector2d			center_floor_coords;
-	t_strike			*strike;
+	t_strike			strike[MAX_STRIKES];
+	// t_strike			*strike;
 }						t_game;
 
 
 
 typedef enum
 {
+	K_1 = 49,
+	K_2 = 50,
+	K_3 = 51,
 	K_A = 97,
 	K_B = 98,
 	K_C = 99,
@@ -747,4 +755,14 @@ void	play_land_voice(t_game *game);
 int respawn_player(t_game *game);
 void script_strike_player(t_game *game);
 t_vector2d calculate_explosion_position(t_vector2d base_position, int explosion_index);
+
+// napalm
+void render_napalm(t_game *game);
+void    napalm_inbound(t_game *game);
+void    remove_napalm(t_game *game);
+void    handle_key_2(t_game *game);
+void play_random_strike_sound(t_game *game);
+void script_napalm_enemies(t_game *game, int strike_no, float radius);
+void script_napalm_player(t_game *game, int strike_no, float radius);
+
 #endif

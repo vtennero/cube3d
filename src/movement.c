@@ -12,26 +12,7 @@
 
 #include "cube3d.h"
 
-// int ft_key_press(int keycode, t_game *game)
-// {
-//     printf("ft_key_press %d\n", keycode);
-//     if (keycode < MAX_KEY_CODE)
-//     {
-//         game->key_state[keycode] = 1;
-//     }
-//     return (0);
-// }
 
-// int ft_key_release(int keycode, t_game *game)
-// {
-//     if (keycode < MAX_KEY_CODE)
-//     {
-//         game->key_state[keycode] = 0;
-//         game->is_moving_fwd = 0;
-
-//     }
-//     return (0);
-// }
 
 void handle_movement_left(t_game *game)
 {
@@ -126,6 +107,14 @@ int ft_key_press(int keycode, t_game *game)
             {
                 game->key_state[K_ENTER] = 1;
                 handle_key_enter(game);  // Call the handler immediately
+            }
+        }
+        else if (keycode == K_2)
+        {
+            if (game->key_state[K_2] == 0)
+            {
+                game->key_state[K_2] = 1;
+                handle_key_2(game);  // Call the handler immediately
             }
         }
         else

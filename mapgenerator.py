@@ -25,7 +25,7 @@ C 51,198,227
         map_data[-1][j] = '1'
 
     # Add random walls
-    wall_density = 0.1  # Adjust this value to change the density of walls
+    wall_density = 0.01  # Adjust this value to change the density of walls
     for i in range(1, height - 1):
         for j in range(1, width - 1):
             if random.random() < wall_density:

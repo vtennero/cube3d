@@ -159,28 +159,46 @@ int parse_map(t_game *game,char *cub_filepath)
     return 0;
 }
 
-
 int create_strike(t_game *game)
 {
-    t_strike *strike = malloc(sizeof(t_strike));
-	if (strike == NULL)
-	{
-		fprintf(stderr, "Failed to allocate memory for the strike.\n");
-		exit(1); // or handle the error as appropriate
-	}
-    strike->position.x = 0;
-    strike->position.y = 0;
-    strike->is_active = 0;
-    strike->is_launching = 0;
-    strike->current_frame = 0;
-    strike->frame_count = 0;
+    // Initialize all strikes in the array
+    for (int i = 0; i < MAX_STRIKES; i++)
+    {
+        game->strike[i].position.x = 0;
+        game->strike[i].position.y = 0;
+        game->strike[i].is_active = 0;
+        game->strike[i].is_launching = 0;
+        game->strike[i].current_frame = 0;
+        game->strike[i].frame_count = 0;
+        game->strike[i].is_hitting = 0;
+    }
 
-
-
-	game->strike = strike;
-	printf("initialized strike\n");
+    printf("Initialized %d strikes\n", MAX_STRIKES);
     return (1);
 }
+
+
+// int create_strike(t_game *game)
+// {
+//     t_strike *strike = malloc(sizeof(t_strike));
+// 	if (strike == NULL)
+// 	{
+// 		fprintf(stderr, "Failed to allocate memory for the strike.\n");
+// 		exit(1); // or handle the error as appropriate
+// 	}
+//     strike->position.x = 0;
+//     strike->position.y = 0;
+//     strike->is_active = 0;
+//     strike->is_launching = 0;
+//     strike->current_frame = 0;
+//     strike->frame_count = 0;
+
+
+
+// 	game->strike = strike;
+// 	printf("initialized strike\n");
+//     return (1);
+// }
 
 int	create_player(t_game *game)
 {

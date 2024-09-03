@@ -353,7 +353,7 @@ void	cleanup(t_game *game)
     free_gun_textures(game);
     free_floor_texture_map(game);
 	free_wall_texture_map_path(game);
-    free(game->strike);
+    // free(game->strike);
 	clean_map(game);
 //	free_map(game->map);
 	// freeArray(game->cub_map_array,game->cub_map_row_count);

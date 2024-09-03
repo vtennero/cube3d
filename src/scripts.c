@@ -128,17 +128,44 @@ void play_random_eagle_call(t_game *game)
     playAudioFileWithDelay(audio_file, 0);
 }
 
+void    remove_napalm(t_game *game)
+{
+    game->strike[1].is_active = 0;
+}
+
+void    napalm_bombs(t_game *game)
+{
+    // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
+    play_random_eagle_call(game);
+    game->strike[1].is_active = 1;
+    (void)game;
+}
+
+void    napalm_inbound(t_game *game)
+{
+    game->strike[1].is_launching = 0;
+
+    // play audio, choose audio
+    add_script(game, napalm_bombs, 1);
+    playAudioFileWithDelay("audio/eagles00.mp3", 0);
+
+
+    // eaglesgtrikes--
+}
+
 void    eagle_bombs(t_game *game)
 {
     // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
-    game->strike->is_active = 1;
+    game->strike[0].is_active = 1;
     (void)game;
 }
 
+
+
 void    eagle_inbound(t_game *game)
 {
-    game->strike->is_launching = 0;
+    game->strike[0].is_launching = 0;
 
     // play audio, choose audio
     add_script(game, eagle_bombs, 1);
