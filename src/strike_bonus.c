@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 15:52:23 by root             ###   ########.fr       */
+/*   Updated: 2024/09/03 16:26:24 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,82 @@ void    render_strike(t_game *game)
 }
 
 
+// int get_next_napalm_frame(t_strike *strike)
+// {
+//     strike[1].frame_count++;
+    
+//     if (strike[1].frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
+//         return strike[1].current_frame;
+
+//     strike[1].current_frame = (strike[1].current_frame + 1) % NUM_NAPALM_FRAMES;
+
+//     // Remove the deactivation logic to keep the napalm effect active indefinitely
+//     // The is_active and is_launching flags will remain unchanged
+
+//     return strike[1].current_frame;
+// }
+
+// void render_ongoing_napalm(t_game *game)
+// {
+//     if (!game->strike[1].is_active)
+//         return;
+
+//     int current_frame = get_next_napalm_frame(game->strike);
+//     t_texture *napalm_texture = &game->napalm_textures[current_frame];
+
+//     float shake_offset = calculate_screen_shake(game, current_frame);
+
+//     if (game->player->is_dead == 0)
+//         game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+
+//     int offsets[NUM_NAPALM_OFFSETS][2] = {
+//         {0, 0},
+//         {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+//         {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+//         {2, 0}, {-2, 0}, {0, 2}, {0, -2},
+//         {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2},
+//         {3, 0}, {-3, 0}, {0, 3}, {0, -3},
+//         {3, 1}, {3, -1}, {-3, 1}, {-3, -1}, {1, 3}, {1, -3}, {-1, 3}, {-1, -3},
+//         {4, 0}, {-4, 0}, {0, 4}, {0, -4}
+//     };
+
+//     for (int i = 0; i < NUM_NAPALM_OFFSETS; i++)
+//     {
+//         float spriteX, spriteY;
+//         calculate_sprite_position(game, 
+//                                   game->strike[1].position.x + offsets[i][0], 
+//                                   game->strike[1].position.y + offsets[i][1], 
+//                                   &spriteX, &spriteY);
+
+//         float transformX, transformY;
+//         transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//         int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+//         int spriteHeight, drawStartY, drawEndY;
+//         calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//         int spriteWidth, drawStartX, drawEndX;
+//         calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//         for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//         {
+//             if (is_sprite_in_front(transformY, stripe, game->screen_width))
+//             {
+//                 draw_sprite_stripe(game, napalm_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//             }
+//         }
+//     }
+// }
+
+// void render_napalm(t_game *game)
+// {
+//     if (game->strike[1].is_launching)
+//         render_call_strike(game, game->strike[1].position);
+//     else if (game->strike[1].is_active)
+//         render_ongoing_napalm(game);
+// }
+
 int get_next_napalm_frame(t_strike *strike)
 {
     strike[1].frame_count++;
@@ -230,8 +306,9 @@ int get_next_napalm_frame(t_strike *strike)
 
     strike[1].current_frame = (strike[1].current_frame + 1) % NUM_NAPALM_FRAMES;
 
-    // Remove the deactivation logic to keep the napalm effect active indefinitely
-    // The is_active and is_launching flags will remain unchanged
+    // Set is_animating to false after the first full animation cycle
+    if (strike[1].current_frame == 0)
+        strike[1].is_animating = 0;
 
     return strike[1].current_frame;
 }
@@ -244,10 +321,20 @@ void render_ongoing_napalm(t_game *game)
     int current_frame = get_next_napalm_frame(game->strike);
     t_texture *napalm_texture = &game->napalm_textures[current_frame];
 
-    float shake_offset = calculate_screen_shake(game, current_frame);
+    // Only calculate and apply screen shake if is_animating is true
+    if (game->strike[1].is_animating)
+    {
+        float shake_offset = calculate_screen_shake(game, current_frame);
 
-    if (game->player->is_dead == 0)
-        game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+        if (game->player->is_dead == 0)
+            game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+    }
+    else
+    {
+        // Reset player height to base height when not shaking
+        if (game->player->is_dead == 0)
+            game->player->height = BASE_PLAYER_HEIGHT;
+    }
 
     int offsets[NUM_NAPALM_OFFSETS][2] = {
         {0, 0},
@@ -292,9 +379,14 @@ void render_ongoing_napalm(t_game *game)
 void render_napalm(t_game *game)
 {
     if (game->strike[1].is_launching)
+    {
         render_call_strike(game, game->strike[1].position);
+        game->strike[1].is_animating = 1; // Start animating when launching
+    }
     else if (game->strike[1].is_active)
+    {
         render_ongoing_napalm(game);
+    }
 }
 
 
