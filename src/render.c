@@ -92,6 +92,8 @@ int render(t_game *game)
         script_strike_enemies(game);
         script_napalm_player(game, 1, 6);
         script_napalm_enemies(game, 1, 6);
+        script_barrage_enemies(game);
+        script_barrage_player(game);
 
         script_board(game);
         script_takeoff(game);
