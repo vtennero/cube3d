@@ -46,60 +46,14 @@ void create_map_from_cub(t_game *game)
         exit(1);
     }
     printf("Allocated memory for the map structure\n");
-    // Set the dimensions
-    // map->width = 24;
-    // map->height = 24;
-    // map->width = game->screen_width;
-    // map->height = game->screen_height;
-
 	map->width = ((game->cub_map_col_count + 1) / 2);
 	map->height = game->cub_map_row_count;
     printf("Set the dimensions\n");
-
-    // Allocate memory for the map data
-    // map->data = malloc(map->height * sizeof(int *));
-    // if (map->data == NULL)
-    // {
-    //     fprintf(stderr, "Memory allocation failed for map data.\n");
-    //     free(map); // Clean up previously allocated map
-    //     exit(1);
-    // }
-    // printf("Allocated memory for the map data\n");
-
-    // for (int i = 0; i <=map->height; i++)
-    // {
-    //     map->data[i] = malloc(map->width * sizeof(int));
-    //     if (map->data[i] == NULL)
-    //     {
-    //         fprintf(stderr, "Memory allocation failed for map row.\n");
-    //         // Clean up previously allocated rows and map structure
-    //         for (int j = 0; j < i; j++)
-    //         {
-    //             free(map->data[j]);
-    //         }
-    //         free(map->data);
-    //         free(map);
-    //         exit(1);
-    //     }
-    // }
-
-   
-    // // Copy the static map to the allocated map
-    // for (int x = 0; x <map->height ; x++)
-    // {
-    //     // printf("for (int y = %d; y < screenHeight; y++)\n", y);
-    //     for (int y = 0; y < map->width ; y++)
-    //     {
-    //         // printf("for int x = %d; x < screenWidth; x++\n", x);
-    //         // map->data[y][x] = staticMap[x][y];
-    //         map->data[x][y] =  game->cub_map_array[x][y];
-    //     }
-    // }
-    printf("copied the static map to the allocated map\n");
-
     // Link the map to the game structure
 	map->data = game->cub_map_array;
     game->map = map;
+	printf("copied the static map to the allocated map\n");
+
 	
 }
 
@@ -108,9 +62,7 @@ int	create_map(t_game *game)
 {
 	// Implement map creation and initialization
 	printf("initializing map\n");
-	//create_static_map(game);
 	create_map_from_cub(game);
-
 	printf("initialized map\n");
 	return (0);
 }

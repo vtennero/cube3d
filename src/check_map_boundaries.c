@@ -19,8 +19,6 @@
 			return 1;
 		if (ft_isspace(chars))
 			return 9;
-		// if (chars==32)
-		// 	return 9;
 		if (chars=='N')
 			return 2;
 		if (chars=='E')
@@ -32,28 +30,8 @@
 		return -1;
 	}
 
-// 	int	floodfill(t_game *game, int **filled_map, int i, int j)
-// {
-// 	int	is_surrounded;
-// 	// printf("i is %d and j is %d",i,j);
-// 	if (i < 0 || i >= game->cub_map_row_count || j < 0 || j >= ((game->cub_map_col_count+1)/2))
-// 	{
-// 		printf("i is %d and j is %d,game->cub_map_row_count is %d and game->cub_map_col_count is %d",i,j,game->cub_map_row_count,((game->cub_map_col_count+1)/2));
-// 		return (0);
 
-// 	}
-// 	if (game->cub_map_array[i][j] == 1|| filled_map[i][j] == 1)
-// 		return (1);
-// 	else
-// 		filled_map[i][j] = 1;
-// 	// print_2d_array(game,filled_map);
-// 	is_surrounded = 1;
-// 	is_surrounded &= floodfill(game, filled_map, i - 1, j);
-// 	is_surrounded &= floodfill(game, filled_map, i + 1, j);
-// 	is_surrounded &= floodfill(game, filled_map, i, j - 1);
-// 	is_surrounded &= floodfill(game, filled_map, i, j + 1);
-// 	return (is_surrounded);
-// }
+
 int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j) {
     // Define directions for up, down, left, and right
     int directions[4][2] = {
@@ -69,12 +47,10 @@ int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_
         printf("Invalid starting position: i=%d, j=%d\n", start_i, start_j);
         return 0;
     }
-
     // Check if the starting position is already filled or blocked
     if (game->cub_map_array[start_i][start_j] == 1 || filled_map[start_i][start_j] == 1) {
         return 1;
     }
-
     // Initialize stack and push the starting position
     Point *stack = (Point *)malloc(game->cub_map_row_count * game->cub_map_col_count * sizeof(Point));
     int stack_size = 0;
@@ -126,20 +102,14 @@ int			check_map_boundaries(t_game *game)
 
 	x = game->cub_player_x;
 	y = game->cub_player_y;
-	filled_map=initializeArray(game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
-	// print_2d_array(game,filled_map);
-	// is_surrounded = floodfill(game, filled_map, x, y);
+	filled_map=initialize_array(game->cub_map_row_count*2, (game->cub_map_col_count + 1) / 2); 
 	is_surrounded = floodfill_iterative(game, filled_map, x, y);
-	freeArray(filled_map,game->cub_map_row_count);
+	freeArray(filled_map,game->cub_map_row_count*2);
 	if (!is_surrounded)
 	{
 		printf("Map isn't surrounded by wall");
 		return -1;
 	}
-
-	// free_ptrarr((void**)filled_map);
-	// if (!is_surrounded)
-	// 	return (put_and_return_err("Map isn't surrounded by wall"));
 	return (0);
 }
 
