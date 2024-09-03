@@ -777,5 +777,7 @@ void    render_barrage(t_game *game);
 int is_valid_location(t_game *game, int x, int y);
 float random_float(t_game *game);
 void    play_barrage_shell(t_game *game);
+void script_barrage_enemies(t_game *game);
+void script_barrage_player(t_game *game);
 
 #endif

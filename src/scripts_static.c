@@ -157,6 +157,72 @@ void script_napalm_player(t_game *game, int strike_no, float radius)
     }
 }
 
+void script_barrage_enemies(t_game *game)
+{
+	if (game->strike[2].is_active)
+	{
+    float strikeX = game->strike[2].position.x;
+    float strikeY = game->strike[2].position.y;
+    
+    // Define the radius for considering an enemy "close"
+    // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+    float strike_radius = 4.0f;
+
+    for (int i = 0; i < game->num_enemies; i++)
+    {
+        if (!game->enemies[i].is_alive)
+            continue;
+
+        float enemyX = game->enemies[i].position.x;
+        float enemyY = game->enemies[i].position.y;
+
+        // Calculate the distance between the strike and the enemy
+        float dx = strikeX - enemyX;
+        float dy = strikeY - enemyY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the enemy is within the strike radius
+        if (distance <= strike_radius && game->strike[2].is_animating)
+        {
+            game->enemies[i].is_alive = 0;
+            play_bug_death(game);
+            // Optionally, you can add some visual or sound effect here
+            // printf("Enemy %d struck down!\n", i);
+        }
+    }
+	}
+
+}
+
+void script_barrage_player(t_game *game)
+{
+    if (game->strike[2].is_active)
+    {
+        float strikeX = game->strike[2].position.x;
+        float strikeY = game->strike[2].position.y;
+        
+        // Define the radius for considering the player "close"
+        // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
+        float strike_radius = 4.0f;
+
+        float playerX = game->player->position.x;
+        float playerY = game->player->position.y;
+
+        // Calculate the distance between the strike and the player
+        float dx = strikeX - playerX;
+        float dy = strikeY - playerY;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        // Check if the player is within the strike radius
+        if (distance <= strike_radius && game->strike[2].is_animating)
+        {
+            game->player->hp = 0;
+            // Optionally, you can add some visual or sound effect here
+            // printf("Player struck down!\n");
+        }
+    }
+}
+
 
 void	play_land_voice(t_game *game)
 {
