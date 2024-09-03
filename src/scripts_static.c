@@ -55,7 +55,8 @@ void script_strike_enemies(t_game *game)
         if (distance <= strike_radius)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            // play_bug_death(game);
+            add_script(game, play_bug_death, 0);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
@@ -120,7 +121,8 @@ void script_napalm_enemies(t_game *game, int strike_no, float radius)
         if (distance <= radius)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            // play_bug_death(game);
+            add_script(game, play_bug_death, 0);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
@@ -185,7 +187,8 @@ void script_barrage_enemies(t_game *game)
         if (distance <= strike_radius && game->strike[2].is_animating)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            add_script(game, play_bug_death, 0);
+            // play_bug_death(game);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }

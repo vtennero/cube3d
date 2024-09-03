@@ -182,8 +182,8 @@ void    barrage_inbound(t_game *game)
 
     // Create the audio file name based on the random number
     char audio_file[] = "audio/orbitalbarragecall00.mp3";
-    audio_file[23] = '0' + random_call / 10;
-    audio_file[24] = '0' + random_call % 10;
+    audio_file[24] = '0' + random_call / 10;
+    audio_file[25] = '0' + random_call % 10;
 
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
@@ -203,8 +203,8 @@ void    play_barrage_shell(t_game *game)
 
     // Create the audio file name based on the random number
     char audio_file[] = "audio/orbitalbarrage00.mp3";
-    audio_file[19] = '0' + random_call / 10;
-    audio_file[20] = '0' + random_call % 10;
+    audio_file[20] = '0' + random_call / 10;
+    audio_file[21] = '0' + random_call % 10;
 
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
