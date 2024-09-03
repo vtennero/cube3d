@@ -207,6 +207,7 @@ int	create_player(t_game *game)
 	player->taking_supplies = 0;
     player->is_dead = 0;
     player->is_extracting = 0;
+    player->is_burning = 0;
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;
@@ -336,7 +337,11 @@ int is_valid_location(t_game *game, int x, int y)
 
 int respawn_player(t_game *game)
 {
-    
+    game->player->is_burning = 0;
+    stopAudioFile("audio/burn00.mp3");
+    stopAudioFile("audio/burn01.mp3");
+    stopAudioFile("audio/burn02.mp3");
+    stopAudioFile("audio/burn03.mp3");
         if (game->player->is_dead == 1)
         {
             int x, y;

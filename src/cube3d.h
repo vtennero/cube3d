@@ -50,8 +50,8 @@
 #define MAX_HEALTH 15
 // #define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
-// #define EXTRACT_CALL_TIME 5
-#define EXTRACT_CALL_TIME 120
+#define EXTRACT_CALL_TIME 15
+// #define EXTRACT_CALL_TIME 120
 #define MAX_STRIKES 3
 
 #define M_PI 3.14159265358979323846
@@ -259,6 +259,7 @@ typedef struct s_player
 	int					is_dead;
 	int					taking_supplies;
 	int					is_extracting;
+	int					is_burning;
 }						t_player;
 
 typedef struct s_map
@@ -767,6 +768,9 @@ void    handle_key_2(t_game *game);
 void play_random_strike_sound(t_game *game);
 void script_napalm_enemies(t_game *game, int strike_no, float radius);
 void script_napalm_player(t_game *game, int strike_no, float radius);
+void    player_burning(t_game *game);
+
+
 // barrage
 void    barrage_inbound(t_game *game);
 void    stop_barrage(t_game *game);

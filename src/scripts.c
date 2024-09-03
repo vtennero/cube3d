@@ -70,13 +70,15 @@ void trigger_landing(t_game *game)
 void trigger_prelanding(t_game *game)
 {
     (void)game;
+    printf("prelanding warning\n");
     playAudioFileWithDelay("audio/eta.mp3", 0);
 }
 
 void extraction_available(t_game *game)
 {
     (void)game;
-    playAudioFileWithDelay("audio/extractionready.mp3", 0);
+    if (game->extract[0].is_activated == 0)
+        playAudioFileWithDelay("audio/extractionready.mp3", 0);
 }
 
 
@@ -213,7 +215,7 @@ void    stop_barrage(t_game *game)
 
 void    play_barrage_shell(t_game *game)
 {
-    int random_call = random_int(game, 1);
+    int random_call = random_int(game, 2);
 
     // Create the audio file name based on the random number
     char audio_file[] = "audio/orbitalbarrage00.mp3";

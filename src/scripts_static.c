@@ -132,6 +132,21 @@ void script_napalm_enemies(t_game *game, int strike_no, float radius)
 
 }
 
+void play_random_burn_cry(t_game *game)
+{
+    (void)game;
+    // Generate a random number between 0 and 5
+    int random_call = random_int(game, 4);
+    
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/burn00.mp3";
+    audio_file[10] = '0' + random_call / 10;
+    audio_file[11] = '0' + random_call % 10;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
+
 void script_napalm_player(t_game *game, int strike_no, float radius)
 {
     if (game->strike[strike_no].is_active)
@@ -153,7 +168,9 @@ void script_napalm_player(t_game *game, int strike_no, float radius)
         // Check if the player is within the strike radius
         if (distance <= radius)
         {
-            game->player->hp--;
+            if (game->player->is_burning == 0)
+                play_random_burn_cry(game);
+            game->player->is_burning = 1;
             // Optionally, you can add some visual or sound effect here
             // printf("Player struck down!\n");
         }
@@ -226,7 +243,18 @@ void script_barrage_player(t_game *game)
         }
     }
 }
+void    player_burning(t_game *game)
+{
+    int random_call = random_int(game, 5);
 
+    if (game->player->is_burning == 1 && random_call == 0)
+    {
+            printf("🔥 player is burning!!! health %d\n", game->player->hp);
+            add_script(game, get_hit, 0);
+            game->player->hp--;
+            game->player->is_hit = 1;
+    }
+}
 
 void	play_land_voice(t_game *game)
 {
@@ -271,20 +299,31 @@ void    script_take_supplies(t_game *game)
 	{
         printf("restored health\n");
 		playAudioFileWithDelay("audio/stims02.mp3", 0);
+		playAudioFileWithDelay("audio/stims03.mp3", 0);
 		add_script(game, trigger_supply_take, 0);
 		add_script(game, cancel_supply_take, 1);
 		game->supplies[found].collected = 1;
 		game->player->hp = MAX_HEALTH;
+		game->player->is_burning = 0;
+        stopAudioFile("audio/burn00.mp3");
+        stopAudioFile("audio/burn01.mp3");
+        stopAudioFile("audio/burn02.mp3");
+        stopAudioFile("audio/burn03.mp3");
 	}
 }
 
 void	script_die(t_game *game)
 {
 	// printf("script die\n");
-	if (game->player->hp == 0 && game->player->is_dead == 0)
+	if (game->player->hp <= 0 && game->player->is_dead == 0)
 	{
 		reset_game_start_time(game);
 		game->player->is_dead = 1;
+		game->player->is_burning = 0;
+        stopAudioFile("audio/burn00.mp3");
+        stopAudioFile("audio/burn01.mp3");
+        stopAudioFile("audio/burn02.mp3");
+        stopAudioFile("audio/burn03.mp3");
 		playAudioFileWithDelay("audio/death.mp3", 0);
 		playAudioFileWithDelay("audio/kia00.mp3", 0);
 	}
