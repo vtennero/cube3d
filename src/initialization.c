@@ -168,7 +168,9 @@ int create_strike(t_game *game)
         game->strike[i].is_launching = 0;
         game->strike[i].current_frame = 0;
         game->strike[i].frame_count = 0;
-        game->strike[i].is_hitting = 0;
+        game->strike[i].is_animating = 0;
+        game->strike[i].delay_duration = 60 * 2;
+        game->strike[i].delay_frames = 0;
     }
 
     printf("Initialized %d strikes\n", MAX_STRIKES);
@@ -356,7 +358,8 @@ int randomize_uncollected_collectibles(t_game *game)
 #include <math.h>
 
 // Subfunction to check if a location is valid
-int is_valid_location(t_game *game, int x, int y) {
+int is_valid_location(t_game *game, int x, int y)
+{
     // Check if the location is within map bounds
     if (x < 0 || x >= game->map->width || y < 0 || y >= game->map->height) {
         return 0;

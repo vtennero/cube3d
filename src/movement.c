@@ -117,6 +117,14 @@ int ft_key_press(int keycode, t_game *game)
                 handle_key_2(game);  // Call the handler immediately
             }
         }
+        else if (keycode == K_3)
+        {
+            if (game->key_state[K_3] == 0)
+            {
+                game->key_state[K_3] = 1;
+                handle_key_3(game);  // Call the handler immediately
+            }
+        }
         else
         {
             game->key_state[keycode] = 1;

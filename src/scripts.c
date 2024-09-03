@@ -175,6 +175,41 @@ void    eagle_inbound(t_game *game)
     // eaglesgtrikes--
 }
 
+void    barrage_inbound(t_game *game)
+{
+    game->strike[2].is_active = 1;
+    int random_call = random_int(game, 1);
+
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/orbitalbarragecall00.mp3";
+    audio_file[23] = '0' + random_call / 10;
+    audio_file[24] = '0' + random_call % 10;
+
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+
+}
+
+void    stop_barrage(t_game *game)
+{
+    game->strike[2].is_active = 0;
+    game->strike[2].is_launching = 0;
+    printf("Barrage over\n");
+}
+
+void    play_barrage_shell(t_game *game)
+{
+    int random_call = random_int(game, 1);
+
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/orbitalbarrage00.mp3";
+    audio_file[19] = '0' + random_call / 10;
+    audio_file[20] = '0' + random_call % 10;
+
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
+}
+
 void init_script_manager(t_game *game) {
     game->script_manager = (t_script_manager){0};
 }

@@ -132,6 +132,7 @@ int render(t_game *game)
         render_enemies(game);
         render_strike(game);
         render_napalm(game);
+        render_barrage(game);
 
         check_enemy_at_center(game);
         randomize_dead_enemy_positions(game);
