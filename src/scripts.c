@@ -133,12 +133,23 @@ void    remove_napalm(t_game *game)
     game->strike[1].is_active = 0;
 }
 
+void    delay_strike_hit(t_game *game)
+{
+    game->strike[0].is_active = 1;
+
+}
+
+void    delay_napalm_hit(t_game *game)
+{
+    game->strike[1].is_active = 1;
+
+}
+
 void    napalm_bombs(t_game *game)
 {
     // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
-    game->strike[1].is_active = 1;
-    (void)game;
+    add_script(game, delay_napalm_hit, 1);
 }
 
 void    napalm_inbound(t_game *game)
@@ -157,8 +168,7 @@ void    eagle_bombs(t_game *game)
 {
     // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
-    game->strike[0].is_active = 1;
-    (void)game;
+    add_script(game, delay_strike_hit, 1);
 }
 
 

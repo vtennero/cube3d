@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 16:26:24 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:52:49 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -602,13 +602,14 @@ void render_ongoing_barrage(t_game *game)
             }
         }
             // Check if we've completed a full animation cycle
+    if (current_frame == 0)
+        add_script(game, play_barrage_shell, 0);
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
         game->strike[2].is_animating = 0;
         game->strike[2].delay_frames = 0;
         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
         printf("Barrage Hit\n");
-        add_script(game, play_barrage_shell, 0);
         randomize_barrage_location(game);
     }
     }
