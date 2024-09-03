@@ -140,7 +140,9 @@
 
 	{       
 		int check_status;
-		game->cub_map_array=initializeArray(game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
+		// game->cub_map_array=initializeArray(game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
+		game->cub_map_array=initializeArray(game->cub_map_row_count*2, (game->cub_map_col_count + 1) ); 
+
 		// initializeArray(game,game->cub_map_row_count, (game->cub_map_col_count + 1) / 2); 
 		print_2d_array(game,game->cub_map_array);
 		loop_thru_line_in_map_array(game);

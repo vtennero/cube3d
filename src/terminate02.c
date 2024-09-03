@@ -356,7 +356,9 @@ void	cleanup(t_game *game)
     // free(game->strike);
 	clean_map(game);
 //	free_map(game->map);
-	freeArray(game->cub_map_array,game->cub_map_row_count);
+	// freeArray(game->cub_map_array,game->cub_map_row_count);
+
+	freeArray((game->cub_map_array),game->cub_map_row_count*2);
 	clean_rays(game);
 	clean_mlx(game);
     cleanupAudio();

@@ -97,9 +97,9 @@ int check_line(t_game *game, char* line)
 	line=trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count=count_words_from_array(words);
-	printf("word count is %d !\n",word_count);
-	printf("words[0] is %s!\n",words[0]);
-	printf("words[1]] is %s!\n",words[1]);
+	// printf("word count is %d !\n",word_count);
+	// printf("words[0] is %s!\n",words[0]);
+	// printf("words[1]] is %s!\n",words[1]);
 
 	if (word_count>2 )  // Change to or?
 	{
