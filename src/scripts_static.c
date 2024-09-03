@@ -24,6 +24,7 @@ void    play_bug_death(t_game *game)
     audio_file[10] = '0' + random_call % 10;
     
     // Play the selected audio file with no delay
+    stopAudioFile(audio_file);
     playAudioFileWithDelay(audio_file, 0);
 }
 

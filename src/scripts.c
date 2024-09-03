@@ -146,7 +146,7 @@ void    napalm_inbound(t_game *game)
     game->strike[1].is_launching = 0;
 
     // play audio, choose audio
-    add_script(game, napalm_bombs, 1);
+    add_script(game, napalm_bombs, 0);
     playAudioFileWithDelay("audio/eagles00.mp3", 0);
 
 
@@ -168,7 +168,7 @@ void    eagle_inbound(t_game *game)
     game->strike[0].is_launching = 0;
 
     // play audio, choose audio
-    add_script(game, eagle_bombs, 1);
+    add_script(game, eagle_bombs, 0);
     playAudioFileWithDelay("audio/eagles00.mp3", 0);
 
 
