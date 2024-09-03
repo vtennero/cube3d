@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 17:02:56 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:38:01 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,41 +390,6 @@ void render_napalm(t_game *game)
 }
 
 
-// void randomize_barrage_location(t_game *game)
-// {
-//     // Assuming the game map is a grid with dimensions defined somewhere
-//     // If not, you'll need to add these to your game structure
-//     int map_width = game->map->width;  // Add this to your t_game struct if not present
-//     int map_height = game->map->height;  // Add this to your t_game struct if not present
-
-//     // Generate random x and y coordinates within the map bounds
-//     int new_x = random_int(game, map_width);
-//     int new_y = random_int(game, map_height);
-
-//     // Update the strike position
-//     game->strike[2].position.x = new_x;
-//     game->strike[2].position.y = new_y;
-
-//     // Optionally, you might want to ensure the new position is valid
-//     // (e.g., not inside a wall or outside the playable area)
-//     while (!is_valid_location(game, new_x, new_y))  // You'll need to implement is_valid_position
-//     {
-//         new_x = random_int(game, map_width);
-//         new_y = random_int(game, map_height);
-//         game->strike[2].position.x = new_x;
-//         game->strike[2].position.y = new_y;
-//     }
-
-//     // Optionally, reset any relevant strike parameters
-//     game->strike[2].frame_count = 0;
-//     game->strike[2].current_frame = 0;
-//     game->strike[2].is_active = 1;
-//     game->strike[2].is_launching = 1;
-
-//     // Debug output
-//     printf("New barrage location: (%d, %d)\n", new_x, new_y);
-// }
-
 void randomize_barrage_location(t_game *game)
 {
     // Assuming the game map is a grid with dimensions defined somewhere
@@ -514,19 +479,7 @@ void render_call_barrage(t_game *game, t_vector2d position)
     }
 }
 
-// int get_next_barrage_frame(t_strike *strike)
-// {
-//     strike[2].frame_count++;
-    
-//     // Only change frame every AIRSTRIKE_ANIMATION_INTERVAL
-//     if (strike[2].frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
-//         return strike[2].current_frame;
 
-//     // Move to the next frame in the sequence
-//     strike[2].current_frame = (strike[2].current_frame + 1) % NUM_AIRSTRIKE_FRAMES;
-
-//     return strike[2].current_frame;
-// }
 
 int get_next_barrage_frame(t_strike *strike)
 {
@@ -602,10 +555,10 @@ void render_ongoing_barrage(t_game *game)
             }
         }
             // Check if we've completed a full animation cycle
-    if (current_frame == NUM_AIRSTRIKE_FRAMES / 2)
-        add_script(game, play_barrage_shell, 0);
+    // if (current_frame == NUM_AIRSTRIKE_FRAMES)
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
+        add_script(game, play_barrage_shell,2);
         game->strike[2].is_animating = 0;
         game->strike[2].delay_frames = 0;
         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
@@ -616,14 +569,6 @@ void render_ongoing_barrage(t_game *game)
 
     // printf("render_ongoing_barrage: End\n");
 }
-
-// void    render_barrage(t_game *game)
-// {
-//     if (game->strike[2].is_launching)
-//         render_call_barrage(game, game->strike[2].base_position);
-//     if (game->strike[2].is_active)
-//         render_ongoing_barrage(game);
-// }
 
 void render_barrage(t_game *game)
 {

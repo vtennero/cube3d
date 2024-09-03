@@ -220,6 +220,7 @@ void    play_barrage_shell(t_game *game)
     audio_file[20] = '0' + random_call / 10;
     audio_file[21] = '0' + random_call % 10;
 
+    add_script(game, play_barrage_shell,1);
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
 }
