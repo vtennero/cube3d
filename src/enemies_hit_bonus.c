@@ -121,6 +121,7 @@ void enemy_hit_attempt(t_game *game, t_enemy *enemy, int index)
             int random_value = random_int(game, 3);
             if (random_value == 0 && game->player->hp <= 0.25 * MAX_HEALTH)
             {
+                stopAudioFile("audio/stims00.mp3");
                 playAudioFileWithDelay("audio/stims00.mp3", 0);
             }
             

@@ -508,7 +508,7 @@ int calculate_supplies(t_game *game)
 {
     int map_area = game->map->width * game->map->height;
     int base_area = 24 * 24;
-    int base_count = 5;  // Fixed number of supplies for the base area
+    int base_count = 3;  // Fixed number of supplies for the base area
 
     // Calculate supply count proportional to map area
     int supply_count = (map_area * base_count) / base_area;

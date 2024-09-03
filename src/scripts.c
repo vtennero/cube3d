@@ -80,7 +80,9 @@ void extraction_available(t_game *game)
 }
 
 
-void play_gun_sound(t_game *game) {
+void play_gun_sound(t_game *game)
+{
+    stopAudioFile("audio/gun02.mp3");
     playAudioFileWithDelay("audio/gun02.mp3", 0);
     // If we're still shooting, schedule the next sound
     if (game->is_shooting) {
