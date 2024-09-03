@@ -82,8 +82,10 @@ void extraction_available(t_game *game)
 
 void play_gun_sound(t_game *game)
 {
-    stopAudioFile("audio/gun02.mp3");
-    playAudioFileWithDelay("audio/gun02.mp3", 0);
+    // stopAudioFile("audio/gun02.mp3");
+    // playAudioFileWithDelay("audio/gun02.mp3", 0);
+    stopAudioFile("audio/tmafir00.mp3");
+    playAudioFileWithDelay("audio/tmafir00.mp3", 0);
     // If we're still shooting, schedule the next sound
     if (game->is_shooting) {
         add_script(game, play_gun_sound, 0); // 0 second delay for continuous fire

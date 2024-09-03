@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 16:52:49 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:02:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -602,7 +602,7 @@ void render_ongoing_barrage(t_game *game)
             }
         }
             // Check if we've completed a full animation cycle
-    if (current_frame == 0)
+    if (current_frame == NUM_AIRSTRIKE_FRAMES / 2)
         add_script(game, play_barrage_shell, 0);
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
