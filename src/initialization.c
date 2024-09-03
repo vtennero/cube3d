@@ -57,48 +57,50 @@ void create_map_from_cub(t_game *game)
     printf("Set the dimensions\n");
 
     // Allocate memory for the map data
-    map->data = malloc(map->height * sizeof(int *));
-    if (map->data == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed for map data.\n");
-        free(map); // Clean up previously allocated map
-        exit(1);
-    }
-    printf("Allocated memory for the map data\n");
+    // map->data = malloc(map->height * sizeof(int *));
+    // if (map->data == NULL)
+    // {
+    //     fprintf(stderr, "Memory allocation failed for map data.\n");
+    //     free(map); // Clean up previously allocated map
+    //     exit(1);
+    // }
+    // printf("Allocated memory for the map data\n");
 
-    for (int i = 0; i <map->height; i++)
-    {
-        map->data[i] = malloc(map->width * sizeof(int));
-        if (map->data[i] == NULL)
-        {
-            fprintf(stderr, "Memory allocation failed for map row.\n");
-            // Clean up previously allocated rows and map structure
-            for (int j = 0; j < i; j++)
-            {
-                free(map->data[j]);
-            }
-            free(map->data);
-            free(map);
-            exit(1);
-        }
-    }
+    // for (int i = 0; i <=map->height; i++)
+    // {
+    //     map->data[i] = malloc(map->width * sizeof(int));
+    //     if (map->data[i] == NULL)
+    //     {
+    //         fprintf(stderr, "Memory allocation failed for map row.\n");
+    //         // Clean up previously allocated rows and map structure
+    //         for (int j = 0; j < i; j++)
+    //         {
+    //             free(map->data[j]);
+    //         }
+    //         free(map->data);
+    //         free(map);
+    //         exit(1);
+    //     }
+    // }
 
    
-    // Copy the static map to the allocated map
-    for (int x = 0; x <map->height ; x++)
-    {
-        // printf("for (int y = %d; y < screenHeight; y++)\n", y);
-        for (int y = 0; y < map->width ; y++)
-        {
-            // printf("for int x = %d; x < screenWidth; x++\n", x);
-            // map->data[y][x] = staticMap[x][y];
-            map->data[x][y] =  game->cub_map_array[x][y];
-        }
-    }
+    // // Copy the static map to the allocated map
+    // for (int x = 0; x <map->height ; x++)
+    // {
+    //     // printf("for (int y = %d; y < screenHeight; y++)\n", y);
+    //     for (int y = 0; y < map->width ; y++)
+    //     {
+    //         // printf("for int x = %d; x < screenWidth; x++\n", x);
+    //         // map->data[y][x] = staticMap[x][y];
+    //         map->data[x][y] =  game->cub_map_array[x][y];
+    //     }
+    // }
     printf("copied the static map to the allocated map\n");
 
     // Link the map to the game structure
+	map->data = game->cub_map_array;
     game->map = map;
+	
 }
 
 
