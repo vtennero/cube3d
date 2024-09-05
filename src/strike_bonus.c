@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/05 12:52:34 by root             ###   ########.fr       */
+/*   Updated: 2024/09/05 12:58:47 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,34 +494,100 @@ int get_next_barrage_frame(t_strike *strike)
     return strike->current_frame;
 }
 
+// void render_ongoing_barrage(t_game *game)
+// {
+//     // printf("render_ongoing_barrage: Start\n");
+//     if (!game->strike[2].is_active)
+//     {
+//         // printf("render_ongoing_barrage: Strike not active, returning\n");
+//         return;
+//     }
+
+//     int current_frame = get_next_barrage_frame(&game->strike[2]);
+//     // printf("render_ongoing_barrage: Current frame: %d\n", current_frame);
+
+//     t_texture *strike_texture = &game->airstrike_textures[current_frame];
+//     // printf("render_ongoing_barrage: Strike texture address: %p\n", (void*)strike_texture);
+//     printf("render_ongoing_barrage: current_frame: %d\n", current_frame);
+
+//     // Calculate screen shake offset
+//     float shake_offset = calculate_screen_shake(game, current_frame);
+//     // printf("render_ongoing_barrage: Shake offset: %f\n", shake_offset);
+
+//     // Apply screen shake to player height
+//     if (game->player->is_dead == 0)
+//     {
+//         game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+//         // printf("render_ongoing_barrage: Player height: %f\n", game->player->height);
+//     }
+
+//     int offsets[1][2] = {{0, 0}}; // Only one tile rendered
+
+//     for (int i = 0; i < 1; i++)
+//     {
+//         float spriteX, spriteY;
+//         calculate_sprite_position(game, 
+//                                   game->strike[2].position.x + offsets[i][0], 
+//                                   game->strike[2].position.y + offsets[i][1], 
+//                                   &spriteX, &spriteY);
+//         // printf("render_ongoing_barrage: Sprite position: (%f, %f)\n", spriteX, spriteY);
+
+//         float transformX, transformY;
+//         transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+//         // printf("render_ongoing_barrage: Transformed position: (%f, %f)\n", transformX, transformY);
+
+//         int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+//         // printf("render_ongoing_barrage: Sprite Screen X: %d\n", spriteScreenX);
+
+//         int spriteHeight, drawStartY, drawEndY;
+//         calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+//         // printf("render_ongoing_barrage: Sprite Height: %d, Draw Y range: %d - %d\n", spriteHeight, drawStartY, drawEndY);
+
+//         int spriteWidth, drawStartX, drawEndX;
+//         calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+//         // printf("render_ongoing_barrage: Sprite Width: %d, Draw X range: %d - %d\n", spriteWidth, drawStartX, drawEndX);
+
+//         for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//         {
+//             if (is_sprite_in_front(transformY, stripe, game->screen_width))
+//             {
+//                 // printf("render_ongoing_barrage: Drawing stripe %d\n", stripe);
+//                 draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//             }
+//         }
+//             // Check if we've completed a full animation cycle
+//     if (current_frame == 17)
+//         add_script(game, play_barrage_shell,1);
+//     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
+//     {
+//         // add_script(game, play_barrage_shell,2);
+//         game->strike[2].is_animating = 0;
+//         game->strike[2].delay_frames = 0;
+//         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
+//         printf("Barrage Hit\n");
+//         randomize_barrage_location(game);
+//     }
+//     }
+
+//     // printf("render_ongoing_barrage: End\n");
+// }
+
 void render_ongoing_barrage(t_game *game)
 {
-    // printf("render_ongoing_barrage: Start\n");
     if (!game->strike[2].is_active)
-    {
-        // printf("render_ongoing_barrage: Strike not active, returning\n");
         return;
-    }
 
     int current_frame = get_next_barrage_frame(&game->strike[2]);
-    // printf("render_ongoing_barrage: Current frame: %d\n", current_frame);
-
     t_texture *strike_texture = &game->airstrike_textures[current_frame];
-    // printf("render_ongoing_barrage: Strike texture address: %p\n", (void*)strike_texture);
     printf("render_ongoing_barrage: current_frame: %d\n", current_frame);
 
-    // Calculate screen shake offset
     float shake_offset = calculate_screen_shake(game, current_frame);
-    // printf("render_ongoing_barrage: Shake offset: %f\n", shake_offset);
 
-    // Apply screen shake to player height
     if (game->player->is_dead == 0)
-    {
         game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
-        // printf("render_ongoing_barrage: Player height: %f\n", game->player->height);
-    }
 
-    int offsets[1][2] = {{0, 0}}; // Only one tile rendered
+    int offsets[1][2] = {{0, 0}};
+    float SCALE_FACTOR = 2.0f;  // Add this line to define the scale factor
 
     for (int i = 0; i < 1; i++)
     {
@@ -530,46 +596,47 @@ void render_ongoing_barrage(t_game *game)
                                   game->strike[2].position.x + offsets[i][0], 
                                   game->strike[2].position.y + offsets[i][1], 
                                   &spriteX, &spriteY);
-        // printf("render_ongoing_barrage: Sprite position: (%f, %f)\n", spriteX, spriteY);
 
         float transformX, transformY;
         transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
-        // printf("render_ongoing_barrage: Transformed position: (%f, %f)\n", transformX, transformY);
 
         int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
-        // printf("render_ongoing_barrage: Sprite Screen X: %d\n", spriteScreenX);
 
         int spriteHeight, drawStartY, drawEndY;
-        calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
-        // printf("render_ongoing_barrage: Sprite Height: %d, Draw Y range: %d - %d\n", spriteHeight, drawStartY, drawEndY);
+        calculate_sprite_height(game, transformY / SCALE_FACTOR, &spriteHeight, &drawStartY, &drawEndY);
+        
+        // Adjust drawStartY and drawEndY for scaling
+        int centerY = (drawStartY + drawEndY) / 2;
+        drawStartY = centerY - (int)((drawEndY - drawStartY) * SCALE_FACTOR / 2);
+        drawEndY = centerY + (int)((drawEndY - drawStartY) * SCALE_FACTOR / 2);
 
         int spriteWidth, drawStartX, drawEndX;
-        calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
-        // printf("render_ongoing_barrage: Sprite Width: %d, Draw X range: %d - %d\n", spriteWidth, drawStartX, drawEndX);
+        calculate_sprite_width(game, transformY / SCALE_FACTOR, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+        
+        // Adjust drawStartX and drawEndX for scaling
+        int centerX = (drawStartX + drawEndX) / 2;
+        drawStartX = centerX - (int)((drawEndX - drawStartX) * SCALE_FACTOR / 2);
+        drawEndX = centerX + (int)((drawEndX - drawStartX) * SCALE_FACTOR / 2);
 
         for (int stripe = drawStartX; stripe < drawEndX; stripe++)
         {
             if (is_sprite_in_front(transformY, stripe, game->screen_width))
             {
-                // printf("render_ongoing_barrage: Drawing stripe %d\n", stripe);
-                draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+                draw_sprite_stripe(game, strike_texture, stripe, drawStartY, drawEndY, spriteHeight * SCALE_FACTOR, spriteWidth * SCALE_FACTOR, spriteScreenX, transformY);
             }
         }
-            // Check if we've completed a full animation cycle
-    if (current_frame == 17)
-        add_script(game, play_barrage_shell,1);
-    if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
-    {
-        // add_script(game, play_barrage_shell,2);
-        game->strike[2].is_animating = 0;
-        game->strike[2].delay_frames = 0;
-        printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
-        printf("Barrage Hit\n");
-        randomize_barrage_location(game);
-    }
-    }
 
-    // printf("render_ongoing_barrage: End\n");
+        if (current_frame == 17)
+            add_script(game, play_barrage_shell, 1);
+        if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
+        {
+            game->strike[2].is_animating = 0;
+            game->strike[2].delay_frames = 0;
+            printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
+            printf("Barrage Hit\n");
+            randomize_barrage_location(game);
+        }
+    }
 }
 
 void render_barrage(t_game *game)
