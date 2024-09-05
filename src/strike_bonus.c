@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/05 12:38:21 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:44:30 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -556,7 +556,7 @@ void render_ongoing_barrage(t_game *game)
             }
         }
             // Check if we've completed a full animation cycle
-    if (current_frame == 10)
+    if (current_frame == 15)
         add_script(game, play_barrage_shell,0);
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
