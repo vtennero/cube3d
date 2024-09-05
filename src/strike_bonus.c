@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/05 12:48:14 by root             ###   ########.fr       */
+/*   Updated: 2024/09/05 12:50:06 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -560,7 +560,7 @@ void render_ongoing_barrage(t_game *game)
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
         // add_script(game, play_barrage_shell,2);
-        add_script(game, play_barrage_shell,0);
+        add_script(game, play_barrage_shell,1);
         game->strike[2].is_animating = 0;
         game->strike[2].delay_frames = 0;
         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");
