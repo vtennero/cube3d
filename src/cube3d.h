@@ -784,4 +784,7 @@ void    play_barrage_shell(t_game *game);
 void script_barrage_enemies(t_game *game);
 void script_barrage_player(t_game *game);
 
+// helath bar
+void render_health_bar(t_game *game);
+
 #endif

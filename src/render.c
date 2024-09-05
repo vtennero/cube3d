@@ -144,6 +144,7 @@ int render(t_game *game)
 
         update_gun_state(game);
         render_gun(game);
+        render_health_bar(game);
         render_hit(game);
         render_supply_take(game);
         render_respawn(game);

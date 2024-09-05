@@ -338,6 +338,7 @@ int is_valid_location(t_game *game, int x, int y)
 int respawn_player(t_game *game)
 {
     game->player->is_burning = 0;
+    game->player->hp = MAX_HEALTH;
     stopAudioFile("audio/burn00.mp3");
     stopAudioFile("audio/burn01.mp3");
     stopAudioFile("audio/burn02.mp3");

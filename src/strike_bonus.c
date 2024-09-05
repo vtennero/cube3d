@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strike_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/03 18:38:01 by toto             ###   ########.fr       */
+/*   Updated: 2024/09/05 12:38:21 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -508,6 +508,7 @@ void render_ongoing_barrage(t_game *game)
 
     t_texture *strike_texture = &game->airstrike_textures[current_frame];
     // printf("render_ongoing_barrage: Strike texture address: %p\n", (void*)strike_texture);
+    printf("render_ongoing_barrage: current_frame: %d\n", current_frame);
 
     // Calculate screen shake offset
     float shake_offset = calculate_screen_shake(game, current_frame);
@@ -555,10 +556,11 @@ void render_ongoing_barrage(t_game *game)
             }
         }
             // Check if we've completed a full animation cycle
-    // if (current_frame == NUM_AIRSTRIKE_FRAMES)
+    if (current_frame == 10)
+        add_script(game, play_barrage_shell,0);
     if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
     {
-        add_script(game, play_barrage_shell,2);
+        // add_script(game, play_barrage_shell,2);
         game->strike[2].is_animating = 0;
         game->strike[2].delay_frames = 0;
         printf("render_ongoing_barrage: Completed full animation cycle, randomizing location\n");

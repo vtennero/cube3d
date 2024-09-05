@@ -250,9 +250,8 @@ void    player_burning(t_game *game)
     if (game->player->is_burning == 1 && random_call == 0)
     {
             printf("🔥 player is burning!!! health %d\n", game->player->hp);
-            add_script(game, get_hit, 0);
-            game->player->hp--;
             game->player->is_hit = 1;
+            add_script(game, get_hit, 1);
     }
 }
 
@@ -303,8 +302,8 @@ void    script_take_supplies(t_game *game)
 		add_script(game, trigger_supply_take, 0);
 		add_script(game, cancel_supply_take, 1);
 		game->supplies[found].collected = 1;
-		game->player->hp = MAX_HEALTH;
 		game->player->is_burning = 0;
+		game->player->hp = MAX_HEALTH;
         stopAudioFile("audio/burn00.mp3");
         stopAudioFile("audio/burn01.mp3");
         stopAudioFile("audio/burn02.mp3");
@@ -320,6 +319,7 @@ void	script_die(t_game *game)
 		reset_game_start_time(game);
 		game->player->is_dead = 1;
 		game->player->is_burning = 0;
+		game->player->hp = MAX_HEALTH;
         stopAudioFile("audio/burn00.mp3");
         stopAudioFile("audio/burn01.mp3");
         stopAudioFile("audio/burn02.mp3");

@@ -108,7 +108,7 @@ int stopAudioFile(const char* filename)
             return 0;
         }
     }
-    fprintf(stderr, "Audio file %s not found or not playing\n", filename);
+    fprintf(stderr, "stopAudioFile: Audio file %s not found or not playing\n", filename);
     return -1;
 }
 
