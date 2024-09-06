@@ -37,7 +37,7 @@ void script_strike_enemies(t_game *game)
     
     // Define the radius for considering an enemy "close"
     // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-    float strike_radius = 4.0f;
+    float strike_radius = 5.0f;
 
     for (int i = 0; i < game->num_enemies; i++)
     {
@@ -75,7 +75,7 @@ void script_strike_player(t_game *game)
         
         // Define the radius for considering the player "close"
         // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-        float strike_radius = 4.0f;
+        float strike_radius = 5.0f;
 
         float playerX = game->player->position.x;
         float playerY = game->player->position.y;
@@ -186,7 +186,7 @@ void script_barrage_enemies(t_game *game)
     
     // Define the radius for considering an enemy "close"
     // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-    float strike_radius = 4.0f;
+    float strike_radius = 6.0f;
 
     for (int i = 0; i < game->num_enemies; i++)
     {
@@ -224,7 +224,7 @@ void script_barrage_player(t_game *game)
         
         // Define the radius for considering the player "close"
         // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-        float strike_radius = 4.0f;
+        float strike_radius = 6.0f;
 
         float playerX = game->player->position.x;
         float playerY = game->player->position.y;
