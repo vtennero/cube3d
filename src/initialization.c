@@ -111,6 +111,33 @@ int parse_map(t_game *game,char *cub_filepath)
     return 0;
 }
 
+// int create_strike(t_game *game)
+// {
+//     // Initialize all strikes in the array
+//     for (int i = 0; i < MAX_STRIKES; i++)
+//     {
+//         game->strike[i].position.x = 0;
+//         game->strike[i].position.y = 0;
+//         game->strike[i].is_active = 0;
+//         game->strike[i].is_launching = 0;
+//         game->strike[i].current_frame = 0;
+//         game->strike[i].frame_count = 0;
+//         game->strike[i].is_animating = 0;
+//         game->strike[i].delay_duration = 60 * 2;
+//         game->strike[i].delay_frames = 0;
+//         for (int j = 0; j < NUM_NAPALM_OFFSETS; j++)
+//         {
+//             game->strike[i].frame_counts[j] = rand() % (NUM_NAPALM_FRAMES * 100);
+//             game->strike[i].speed_multipliers[j] = 0.25f + ((float)rand() / RAND_MAX) * 0.2f;
+//             // game->strike[i].speed_multipliers[j] = 0.1f + ((float)rand() / RAND_MAX) * 0.2f;
+//         }
+//     }
+
+//     printf("Initialized %d strikes\n", MAX_STRIKES);
+//     return (1);
+// }
+
+
 int create_strike(t_game *game)
 {
     // Initialize all strikes in the array
@@ -125,40 +152,30 @@ int create_strike(t_game *game)
         game->strike[i].is_animating = 0;
         game->strike[i].delay_duration = 60 * 2;
         game->strike[i].delay_frames = 0;
-        for (int j = 0; j < NUM_NAPALM_OFFSETS; j++)
+
+        if (i == 0)  // Airstrike
         {
-            game->strike[i].frame_counts[j] = rand() % (NUM_NAPALM_FRAMES * 100);
-            game->strike[i].speed_multipliers[j] = 0.25f + ((float)rand() / RAND_MAX) * 0.2f;
-            // game->strike[i].speed_multipliers[j] = 0.1f + ((float)rand() / RAND_MAX) * 0.2f;
+            for (int j = 0; j < NUM_OFFSETS; j++)
+            {
+                game->strike[i].frame_counts[j] = rand() % (NUM_AIRSTRIKE_FRAMES * 100);
+                // game->strike[i].speed_multipliers[j] = 10.0f + ((float)rand() / RAND_MAX) * 5.0f;  // Speed between 5 and 10
+                game->strike[i].speed_multipliers[j] = 15.0f + ((float)rand() / RAND_MAX) * 10.0f;  // Speed between 15 and 25
+            }
+
+        }
+        else if (i == 1)  // Napalm strike
+        {
+            for (int j = 0; j < NUM_NAPALM_OFFSETS; j++)
+            {
+                game->strike[i].frame_counts[j] = rand() % (NUM_NAPALM_FRAMES * 100);
+                game->strike[i].speed_multipliers[j] = 0.25f + ((float)rand() / RAND_MAX) * 0.2f;
+            }
         }
     }
 
     printf("Initialized %d strikes\n", MAX_STRIKES);
     return (1);
 }
-
-
-// int create_strike(t_game *game)
-// {
-//     t_strike *strike = malloc(sizeof(t_strike));
-// 	if (strike == NULL)
-// 	{
-// 		fprintf(stderr, "Failed to allocate memory for the strike.\n");
-// 		exit(1); // or handle the error as appropriate
-// 	}
-//     strike->position.x = 0;
-//     strike->position.y = 0;
-//     strike->is_active = 0;
-//     strike->is_launching = 0;
-//     strike->current_frame = 0;
-//     strike->frame_count = 0;
-
-
-
-// 	game->strike = strike;
-// 	printf("initialized strike\n");
-//     return (1);
-// }
 
 int	create_player(t_game *game)
 {

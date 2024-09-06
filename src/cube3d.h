@@ -73,6 +73,9 @@
 #define EXPLOSION_DELAY 30 // Frames between explosion starts
 #define NUM_NAPALM_OFFSETS 37
 
+#define NUM_OFFSETS 13
+
+
 /*
 ** ================== STRUCTURES ==================
 */
