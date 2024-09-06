@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/05 12:58:47 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:09:03 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #define SHAKE_INTENSITY 0.3f // Maximum shake offset
 #define BASE_PLAYER_HEIGHT 0.2f // Base player height
 #define NUM_OFFSETS 13
-#define NUM_NAPALM_OFFSETS 37
 
 
 
@@ -297,20 +296,110 @@ void    render_strike(t_game *game)
 //         render_ongoing_napalm(game);
 // }
 
-int get_next_napalm_frame(t_strike *strike)
-{
-    strike[1].frame_count++;
+// int get_next_napalm_frame(t_strike *strike)
+// {
+//     strike[1].frame_count++;
     
-    if (strike[1].frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
-        return strike[1].current_frame;
+//     if (strike[1].frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
+//         return strike[1].current_frame;
 
-    strike[1].current_frame = (strike[1].current_frame + 1) % NUM_NAPALM_FRAMES;
+//     strike[1].current_frame = (strike[1].current_frame + 1) % NUM_NAPALM_FRAMES;
 
-    // Set is_animating to false after the first full animation cycle
-    if (strike[1].current_frame == 0)
-        strike[1].is_animating = 0;
+//     // Set is_animating to false after the first full animation cycle
+//     if (strike[1].current_frame == 0)
+//         strike[1].is_animating = 0;
 
-    return strike[1].current_frame;
+//     return strike[1].current_frame;
+// }
+
+
+// void render_ongoing_napalm(t_game *game)
+// {
+//     if (!game->strike[1].is_active)
+//         return;
+
+//     int current_frame = get_next_napalm_frame(game->strike);
+//     t_texture *napalm_texture = &game->napalm_textures[current_frame];
+
+//     // Only calculate and apply screen shake if is_animating is true
+//     if (game->strike[1].is_animating)
+//     {
+//         float shake_offset = calculate_screen_shake(game, current_frame);
+
+//         if (game->player->is_dead == 0)
+//             game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+//     }
+//     else
+//     {
+//         // Reset player height to base height when not shaking
+//         if (game->player->is_dead == 0)
+//             game->player->height = BASE_PLAYER_HEIGHT;
+//     }
+
+//     int offsets[NUM_NAPALM_OFFSETS][2] = {
+//         {0, 0},
+//         {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+//         {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+//         {2, 0}, {-2, 0}, {0, 2}, {0, -2},
+//         {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2},
+//         {3, 0}, {-3, 0}, {0, 3}, {0, -3},
+//         {3, 1}, {3, -1}, {-3, 1}, {-3, -1}, {1, 3}, {1, -3}, {-1, 3}, {-1, -3},
+//         {4, 0}, {-4, 0}, {0, 4}, {0, -4}
+//     };
+
+//     for (int i = 0; i < NUM_NAPALM_OFFSETS; i++)
+//     {
+//         float spriteX, spriteY;
+//         calculate_sprite_position(game, 
+//                                   game->strike[1].position.x + offsets[i][0], 
+//                                   game->strike[1].position.y + offsets[i][1], 
+//                                   &spriteX, &spriteY);
+
+//         float transformX, transformY;
+//         transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
+
+//         int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
+
+//         int spriteHeight, drawStartY, drawEndY;
+//         calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
+
+//         int spriteWidth, drawStartX, drawEndX;
+//         calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
+
+//         for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+//         {
+//             if (is_sprite_in_front(transformY, stripe, game->screen_width))
+//             {
+//                 draw_sprite_stripe(game, napalm_texture, stripe, drawStartY, drawEndY, spriteHeight, spriteWidth, spriteScreenX, transformY);
+//             }
+//         }
+//     }
+// }
+
+
+int get_next_napalm_frame(t_strike *strike, int offset_index)
+{
+    strike->frame_counts[offset_index] += (int)(strike->speed_multipliers[offset_index] * 100);
+    
+    printf("Offset %d: Frame count %d, Speed %.2f\n", 
+           offset_index, strike->frame_counts[offset_index], strike->speed_multipliers[offset_index]);
+
+    if (strike->frame_counts[offset_index] < 0)
+    {
+        printf("Offset %d: Not displaying (negative frame count)\n", offset_index);
+        return -1;
+    }
+
+    int frame = (strike->frame_counts[offset_index] / 100) % NUM_NAPALM_FRAMES;
+
+    if (strike->frame_counts[offset_index] >= NUM_NAPALM_FRAMES * 100)
+    {
+        printf("Offset %d: Resetting frame count\n", offset_index);
+        strike->frame_counts[offset_index] = 0;
+    }
+
+    printf("Offset %d: Displaying frame %d\n", offset_index, frame);
+    return frame;
 }
 
 void render_ongoing_napalm(t_game *game)
@@ -318,22 +407,35 @@ void render_ongoing_napalm(t_game *game)
     if (!game->strike[1].is_active)
         return;
 
-    int current_frame = get_next_napalm_frame(game->strike);
-    t_texture *napalm_texture = &game->napalm_textures[current_frame];
+    int first_visible_frame = -1;
+    int current_frames[NUM_NAPALM_OFFSETS];
 
-    // Only calculate and apply screen shake if is_animating is true
-    if (game->strike[1].is_animating)
+    // Update all frame counts and get current frames
+    for (int i = 0; i < NUM_NAPALM_OFFSETS; i++)
     {
-        float shake_offset = calculate_screen_shake(game, current_frame);
+        current_frames[i] = get_next_napalm_frame(&game->strike[1], i);
+        if (first_visible_frame == -1 && current_frames[i] != -1)
+        {
+            first_visible_frame = current_frames[i];
+        }
+    }
 
+    // Screen shake calculation
+    if (game->strike[1].is_animating && first_visible_frame != -1)
+    {
+        float shake_offset = calculate_screen_shake(game, first_visible_frame);
         if (game->player->is_dead == 0)
             game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
+        
+        // Check if we've completed one full cycle
+        if (game->strike[1].frame_counts[0] >= NUM_NAPALM_FRAMES * 50)
+        {
+            game->strike[1].is_animating = 0;
+        }
     }
-    else
+    else if (game->player->is_dead == 0)
     {
-        // Reset player height to base height when not shaking
-        if (game->player->is_dead == 0)
-            game->player->height = BASE_PLAYER_HEIGHT;
+        game->player->height = BASE_PLAYER_HEIGHT;
     }
 
     int offsets[NUM_NAPALM_OFFSETS][2] = {
@@ -347,8 +449,14 @@ void render_ongoing_napalm(t_game *game)
         {4, 0}, {-4, 0}, {0, 4}, {0, -4}
     };
 
+
     for (int i = 0; i < NUM_NAPALM_OFFSETS; i++)
     {
+        if (current_frames[i] == -1)
+            continue;
+
+        t_texture *napalm_texture = &game->napalm_textures[current_frames[i]];
+
         float spriteX, spriteY;
         calculate_sprite_position(game, 
                                   game->strike[1].position.x + offsets[i][0], 
@@ -375,6 +483,7 @@ void render_ongoing_napalm(t_game *game)
         }
     }
 }
+
 
 void render_napalm(t_game *game)
 {

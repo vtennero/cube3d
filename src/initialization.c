@@ -125,6 +125,12 @@ int create_strike(t_game *game)
         game->strike[i].is_animating = 0;
         game->strike[i].delay_duration = 60 * 2;
         game->strike[i].delay_frames = 0;
+        for (int j = 0; j < NUM_NAPALM_OFFSETS; j++)
+        {
+            game->strike[i].frame_counts[j] = rand() % (NUM_NAPALM_FRAMES * 100);
+            game->strike[i].speed_multipliers[j] = 0.25f + ((float)rand() / RAND_MAX) * 0.2f;
+            // game->strike[i].speed_multipliers[j] = 0.1f + ((float)rand() / RAND_MAX) * 0.2f;
+        }
     }
 
     printf("Initialized %d strikes\n", MAX_STRIKES);

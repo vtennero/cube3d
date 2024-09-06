@@ -50,8 +50,8 @@
 #define MAX_HEALTH 15
 // #define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
-#define EXTRACT_CALL_TIME 15
-// #define EXTRACT_CALL_TIME 120
+// #define EXTRACT_CALL_TIME 15
+#define EXTRACT_CALL_TIME 120
 #define MAX_STRIKES 3
 
 #define M_PI 3.14159265358979323846
@@ -71,6 +71,7 @@
 #define NUM_TILES 4
 #define NUM_EXPLOSIONS 4
 #define EXPLOSION_DELAY 30 // Frames between explosion starts
+#define NUM_NAPALM_OFFSETS 37
 
 /*
 ** ================== STRUCTURES ==================
@@ -220,6 +221,8 @@ typedef struct s_strike
 	int			is_animating;
 	int delay_frames;
     int delay_duration;
+	int frame_counts[NUM_NAPALM_OFFSETS];
+    float speed_multipliers[NUM_NAPALM_OFFSETS];
 } t_strike;
 
 
