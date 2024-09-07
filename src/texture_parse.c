@@ -119,6 +119,7 @@ int all_paths_set(t_game *game) {
     if (game->sky_rgb[0].path == NULL) {
         return 0; 
     }
+	printf("All path set!");
     return 1; 
 }
 
@@ -133,7 +134,8 @@ int	check_line(t_game *game, char *line,int *map_start)
 	line = trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count = count_words_from_array(words);
-
+	if (word_count==0)
+		return 0;
 	if (word_count != 2 && *map_start==0)
 	{
 		free_split_result(words);
@@ -144,28 +146,34 @@ int	check_line(t_game *game, char *line,int *map_start)
 			- 1] == '\n'))
 		words[1][ft_strlen(words[1]) - 1] = '\0';
 
+
+	if (words[0] && ft_strcmp(words[0], "NO") == 0)
+		game->walltextures[0].path = ft_strdup(words[1]);
+	else if (words[0] && ft_strcmp(words[0], "EA") == 0)
+		game->walltextures[1].path = ft_strdup(words[1]);
+	else if (words[0] && ft_strcmp(words[0], "SO") == 0)
+		game->walltextures[2].path = ft_strdup(words[1]);
+	else if (words[0] && ft_strcmp(words[0], "WE") == 0)
+		game->walltextures[3].path = ft_strdup(words[1]);
+	else if (words[0] && ft_strcmp(words[0], "F") == 0)
+		game->floor_rgb[0].path = ft_strdup(words[1]);
+
+	else if (words[0] && ft_strcmp(words[0], "C") == 0)
+	{
+		game->sky_rgb[0].path = ft_strdup(words[1]);
+	}
+	if (all_paths_set(game)==1 && *map_start==0)
+	{
+		*map_start=1;
+		game->cub_line_count++;
+	}
+
 	if (((ft_strcmp(words[0], "0") == 0) || (ft_strcmp(words[0], "1") == 0))
 		&& ((ft_strcmp(words[1], "0") == 0) || (ft_strcmp(words[1], "1") == 0)))
 	{
 		free_split_result(words);
 		return (-1);
 	}
-	if (ft_strcmp(words[0], "NO") == 0)
-		game->walltextures[0].path = ft_strdup(words[1]);
-	else if (ft_strcmp(words[0], "EA") == 0)
-		game->walltextures[1].path = ft_strdup(words[1]);
-	else if (ft_strcmp(words[0], "SO") == 0)
-		game->walltextures[2].path = ft_strdup(words[1]);
-	else if (ft_strcmp(words[0], "WE") == 0)
-		game->walltextures[3].path = ft_strdup(words[1]);
-	else if (ft_strcmp(words[0], "F") == 0)
-		game->floor_rgb[0].path = ft_strdup(words[1]);
-
-	else if (ft_strcmp(words[0], "C") == 0)
-	{
-		game->sky_rgb[0].path = ft_strdup(words[1]);
-	}
-
 	free_split_result(words);
 	return (0);
 }

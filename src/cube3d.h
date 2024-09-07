@@ -486,7 +486,7 @@ int** initialize_array(int x, int y);
 
 // Parse texture
 int read_cub_texture_and_analyze_map(t_game *game);
-int check_line(t_game *game, char* line);
+int check_line(t_game *game, char* line,int *map_start);
 void texture_access_check(t_game* game,int *error);
 int texture_error_handling(t_game* game);
 
