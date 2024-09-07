@@ -485,10 +485,17 @@ int check_invalid_rgb(char* word);
 int** initialize_array(int x, int y);
 
 // Parse texture
-int read_cub_texture_and_analyze_map(t_game *game);
-int check_line(t_game *game, char* line,int *map_start);
-void texture_access_check(t_game* game,int *error);
-int texture_error_handling(t_game* game);
+int	read_cub_texture_and_analyze_map(t_game *game);
+int	assign_texture(char **words, char **path, char *texture);
+int	assign_textures(t_game *game, char **words);
+int	check_line(t_game *game, char *line, int *map_start);
+
+
+int	all_paths_set(t_game *game);
+int	handle_error(const char *message, int error_code);
+int	texture_error_handling(t_game *game);
+void	texture_access_check(t_game *game, int *error);
+
 
 // Parse map
 int parse_line_to_map_array(char* line, t_game *game,int *map_line);

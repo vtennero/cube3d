@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   texture_parse.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+      
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/07/12 21:01:14 by cliew             #+#    #+#             */
 /*   Updated: 2024/08/26 20:19:01 by cliew            ###   ########.fr       */
@@ -14,11 +14,6 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-
-int handle_error(const char *message, int error_code) {
-    perror(message);
-    return error_code;
-}
 
 int	read_cub_texture_and_analyze_map(t_game *game)
 {
@@ -28,14 +23,12 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 	map_start = 0;
 	game->cub_fd = open(game->cub_filepath, O_RDONLY);
 	if (game->cub_fd < 0)
-		return handle_error("Error \nCould not open file", -1);
+		return (handle_error("Error \nCould not open file", -1));
 	line = get_next_line(game->cub_fd);
 	while (line != NULL)
 	{
 		game->cub_line_count++;
-		// if (check_line(game, line) == -1)
-		// 	map_start = 1;
-		check_line(game, line,&map_start);
+		check_line(game, line, &map_start);
 		if (map_start == 1)
 		{
 			if ((int)(ft_strlen(line)) > game->cub_map_col_count)
@@ -49,180 +42,58 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 	return (1);
 }
 
-void	texture_access_check(t_game *game, int *error)
+int	assign_texture(char **words, char **path, char *texture)
 {
-	if (game->walltextures[0].path && access(game->walltextures[0].path,
-			R_OK) != 0)
+	if ((words[1]) && (ft_strlen(words[1]) > 0) && (words[1][ft_strlen(words[1])
+			- 1] == '\n'))
+		words[1][ft_strlen(words[1]) - 1] = '\0';
+	if (words[0] && ft_strcmp(words[0], texture) == 0)
 	{
-		perror("Error\nFailed to parse North wall texture");
-		*error = -1;
+		if (*path)
+		{
+			free(*path);
+			ft_printf("Overriding texture set for %s\n", texture);
+		}
+		*path = ft_strdup(words[1]);
 	}
-	if (game->walltextures[1].path && access(game->walltextures[1].path,
-			R_OK) != 0)
-	{
-		perror("Error\nFailed to parse East wall texture");
-		*error = -1;
-	}
-	if (game->walltextures[2].path && access(game->walltextures[2].path,
-			R_OK) != 0)
-	{
-		perror("Error\nFailed to parse South wall texture");
-		*error = -1;
-	}
-	if (game->walltextures[3].path && access(game->walltextures[3].path,
-			R_OK) != 0)
-	{
-		perror("Error\nFailed to parse West wall texture");
-		*error = -1;
-	}
+	return (1);
 }
 
-int	texture_error_handling(t_game *game)
+int	assign_textures(t_game *game, char **words)
 {
-	int error;
-
-	error = 0;
-
-	texture_access_check(game, &error);
-	if (game->floor_rgb[0].path && check_invalid_rgb(game->floor_rgb[0].path))
-	{
-		printf("Failed to parse Floor texture\n");
-		error = -1;
-	}
-	if (game->sky_rgb[0].path && check_invalid_rgb(game->sky_rgb[0].path))
-	{
-		printf("Failed to parse Sky texture\n");
-		error = -1;
-	}
-	if ((game->walltextures[0].path) && (game->walltextures[1].path)
-		&& (game->walltextures[2].path) && (game->walltextures[3].path)
-		&& (game->floor_rgb[0].path) && (game->sky_rgb[0].path) && error == 0)
-		return (0);
-	else
-		error = -1;
-	return (error);
+	assign_texture(words, &(game->walltextures[0].path), "NO");
+	assign_texture(words, &(game->walltextures[1].path), "EA");
+	assign_texture(words, &(game->walltextures[2].path), "SO");
+	assign_texture(words, &(game->walltextures[3].path), "WE");
+	assign_texture(words, &(game->floor_rgb[0].path), "F");
+	assign_texture(words, &(game->sky_rgb[0].path), "C");
+	return (1);
 }
 
-
-int all_paths_set(t_game *game) {
-    int i = 0;
-
-    while (i < 4) {
-        if (game->walltextures[i].path == NULL) {
-            return 0; 
-        }
-        i++;
-    }
-    if (game->floor_rgb[0].path == NULL) {
-        return 0; 
-    }
-    if (game->sky_rgb[0].path == NULL) {
-        return 0; 
-    }
-	printf("All path set!");
-    return 1; 
-}
-
-
-
-int	check_line(t_game *game, char *line,int *map_start)
-
+int	check_line(t_game *game, char *line, int *map_start)
 {
-	char **words;
-	int word_count;
+	char	**words;
+	int		word_count;
 
 	line = trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count = count_words_from_array(words);
-	if (word_count==0)
-		return 0;
-	if (word_count != 2 && *map_start==0)
-	{
-		free_split_result(words);
-		return handle_error("Invalid characters in texture parsing", -1);
-	}
-
-	if ((words[1]) && (ft_strlen(words[1]) > 0) && (words[1][ft_strlen(words[1])
-			- 1] == '\n'))
-		words[1][ft_strlen(words[1]) - 1] = '\0';
-
-
-	if (words[0] && ft_strcmp(words[0], "NO") == 0)
-		game->walltextures[0].path = ft_strdup(words[1]);
-	else if (words[0] && ft_strcmp(words[0], "EA") == 0)
-		game->walltextures[1].path = ft_strdup(words[1]);
-	else if (words[0] && ft_strcmp(words[0], "SO") == 0)
-		game->walltextures[2].path = ft_strdup(words[1]);
-	else if (words[0] && ft_strcmp(words[0], "WE") == 0)
-		game->walltextures[3].path = ft_strdup(words[1]);
-	else if (words[0] && ft_strcmp(words[0], "F") == 0)
-		game->floor_rgb[0].path = ft_strdup(words[1]);
-
-	else if (words[0] && ft_strcmp(words[0], "C") == 0)
-	{
-		game->sky_rgb[0].path = ft_strdup(words[1]);
-	}
-	if (all_paths_set(game)==1 && *map_start==0)
-	{
-		*map_start=1;
-		game->cub_line_count++;
-	}
-
+	if (word_count == 0)
+		return (0);
 	if (((ft_strcmp(words[0], "0") == 0) || (ft_strcmp(words[0], "1") == 0))
-		&& ((ft_strcmp(words[1], "0") == 0) || (ft_strcmp(words[1], "1") == 0)))
+		&& ((ft_strcmp(words[1], "0") == 0) || (ft_strcmp(words[1], "1") == 0))
+		&& all_paths_set(game) == 1 && *map_start == 0)
 	{
+		*map_start = 1;
 		free_split_result(words);
 		return (-1);
 	}
+	if (word_count != 2 && *map_start == 0)
+	{
+		free_split_result(words);
+		return (handle_error("Invalid characters in texture parsing", -1));
+	}
+	assign_textures(game, words);
 	free_split_result(words);
 	return (0);
 }
-
-// int	check_line(t_game *game, char *line)
-
-// {
-// 	char **words;
-// 	int word_count;
-// 	line = trim_whitespace(line);
-// 	words = ft_split(line, ' ');
-// 	word_count = count_words_from_array(words);
-
-// 	if (word_count > 2)
-// 	{
-// 		free_split_result(words);
-// 		return (-1);
-// 	}
-// 	if (word_count < 2)
-// 	{
-// 		free_split_result(words);
-// 		return (0);
-// 	}
-// 	if ((words[1]) && (ft_strlen(words[1]) > 0) && (words[1][ft_strlen(words[1])
-// 			- 1] == '\n'))
-// 		words[1][ft_strlen(words[1]) - 1] = '\0';
-
-// 	if (((ft_strcmp(words[0], "0") == 0) || (ft_strcmp(words[0], "1") == 0))
-// 		&& ((ft_strcmp(words[1], "0") == 0) || (ft_strcmp(words[1], "1") == 0)))
-// 	{
-// 		free_split_result(words);
-// 		return (-1);
-// 	}
-// 	if (ft_strcmp(words[0], "NO") == 0)
-// 		game->walltextures[0].path = ft_strdup(words[1]);
-// 	else if (ft_strcmp(words[0], "EA") == 0)
-// 		game->walltextures[1].path = ft_strdup(words[1]);
-// 	else if (ft_strcmp(words[0], "SO") == 0)
-// 		game->walltextures[2].path = ft_strdup(words[1]);
-// 	else if (ft_strcmp(words[0], "WE") == 0)
-// 		game->walltextures[3].path = ft_strdup(words[1]);
-// 	else if (ft_strcmp(words[0], "F") == 0)
-// 		game->floor_rgb[0].path = ft_strdup(words[1]);
-
-// 	else if (ft_strcmp(words[0], "C") == 0)
-// 	{
-// 		game->sky_rgb[0].path = ft_strdup(words[1]);
-// 	}
-
-// 	free_split_result(words);
-// 	return (0);
-// }

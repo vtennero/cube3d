@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 # CFLAGS = -Wall -Wextra -Werror -g
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
@@ -65,6 +65,7 @@ check_map_boundaries.c \
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
+texture_parse_02.c \
 pelican_inside_bonus.c \
 health_bar_bonus.c \
 audio_bonus.c \
