@@ -484,7 +484,7 @@ void texture_access_check(t_game* game,int *error);
 int texture_error_handling(t_game* game);
 
 // Parse map
-int parse_line_to_map_array(char* line, t_game *game,int map_line);
+int parse_line_to_map_array(char* line, t_game *game,int *map_line);
 int loop_thru_line_in_map_array(t_game *game);
 int check_player_position_helper(t_game *game,int i,int j,int *player_found);
 int check_player_postion_and_map_char(t_game *game);
