@@ -318,6 +318,10 @@ typedef struct s_ray_node
 }						t_ray_node;
 
 
+typedef struct s_point {
+    int x;
+    int y;
+} t_point;
 
 
 typedef struct s_game
@@ -386,6 +390,12 @@ typedef struct s_game
 	int cub_player_y;
 	int cub_player_o;
 
+	// Flood fill
+	int **filled_map; // Added
+    t_point *stack;     // Added
+    int stack_size;   // Added
+
+
 	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture floortexture[1];
 	// t_texture skytexture[1];
@@ -448,10 +458,6 @@ typedef struct s_keymap
 	int					keycode;
 	t_key_func			func;
 }						t_keymap;
-typedef struct {
-    int x;
-    int y;
-} Point;
 
 /*
 ** -- MEMORY --
@@ -507,8 +513,9 @@ int parse_map_to_array(t_game *game);
 
 /// Check map boundaries
 int parse_char_to_int(char chars);
-int	floodfill(t_game *game, int **filled_map, int i, int j);
-int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j);
+// int	floodfill(t_game *game, int **filled_map, int i, int j);
+// int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j);
+int floodfill_iterative(t_game *game, int start_i, int start_j);
 int			check_map_boundaries(t_game *game);
 int parse_floor_sky_rgb(t_game *game);
 
