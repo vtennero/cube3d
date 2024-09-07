@@ -102,9 +102,16 @@ void handle_key_e(t_game *game)
         game->extract[0].is_activated = 1;
         add_script(game, trigger_extract_music, 1);
         add_script(game, trigger_landing, EXTRACT_CALL_TIME);
-        if (EXTRACT_CALL_TIME - 10 > 0)
-            add_script(game, trigger_prelanding, EXTRACT_CALL_TIME - 10);
-        
+
+        int extract_eta = EXTRACT_CALL_TIME - 10;
+        printf("extract eta %d\n", extract_eta);
+        // if (EXTRACT_CALL_TIME - 10 > 0)
+        // {
+            // printf("prelanding warning triggered\n");
+            add_script(game, trigger_prelanding, extract_eta);
+        // }
+        // else
+            // printf("prelanding not triggered EXTRACT_CALL_TIME - 10%d\n", EXTRACT_CALL_TIME - 10);
     }
 }
 
@@ -144,6 +151,7 @@ void    handle_key_3(t_game *game)
 
         playAudioFileWithDelay("audio/orbitalcall.mp3", 0);
         add_script(game, barrage_inbound, BARRAGE_CALL_IN_TIME);
+        add_script(game, play_barrage_shell,BARRAGE_CALL_IN_TIME - 2);
         add_script(game, stop_barrage, BARRAGE_DURATION);
 
     }

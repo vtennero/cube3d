@@ -70,18 +70,24 @@ void trigger_landing(t_game *game)
 void trigger_prelanding(t_game *game)
 {
     (void)game;
+    printf("prelanding warning\n");
     playAudioFileWithDelay("audio/eta.mp3", 0);
 }
 
 void extraction_available(t_game *game)
 {
     (void)game;
-    playAudioFileWithDelay("audio/extractionready.mp3", 0);
+    if (game->extract[0].is_activated == 0)
+        playAudioFileWithDelay("audio/extractionready.mp3", 0);
 }
 
 
-void play_gun_sound(t_game *game) {
-    playAudioFileWithDelay("audio/gun02.mp3", 0);
+void play_gun_sound(t_game *game)
+{
+    // stopAudioFile("audio/gun02.mp3");
+    // playAudioFileWithDelay("audio/gun02.mp3", 0);
+    stopAudioFile("audio/tmafir00.mp3");
+    playAudioFileWithDelay("audio/tmafir00.mp3", 0);
     // If we're still shooting, schedule the next sound
     if (game->is_shooting) {
         add_script(game, play_gun_sound, 0); // 0 second delay for continuous fire
@@ -133,12 +139,23 @@ void    remove_napalm(t_game *game)
     game->strike[1].is_active = 0;
 }
 
+void    delay_strike_hit(t_game *game)
+{
+    game->strike[0].is_active = 1;
+
+}
+
+void    delay_napalm_hit(t_game *game)
+{
+    game->strike[1].is_active = 1;
+
+}
+
 void    napalm_bombs(t_game *game)
 {
     // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
-    game->strike[1].is_active = 1;
-    (void)game;
+    add_script(game, delay_napalm_hit, 1);
 }
 
 void    napalm_inbound(t_game *game)
@@ -146,7 +163,7 @@ void    napalm_inbound(t_game *game)
     game->strike[1].is_launching = 0;
 
     // play audio, choose audio
-    add_script(game, napalm_bombs, 1);
+    add_script(game, napalm_bombs, 0);
     playAudioFileWithDelay("audio/eagles00.mp3", 0);
 
 
@@ -157,8 +174,7 @@ void    eagle_bombs(t_game *game)
 {
     // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
-    game->strike[0].is_active = 1;
-    (void)game;
+    add_script(game, delay_strike_hit, 1);
 }
 
 
@@ -168,7 +184,7 @@ void    eagle_inbound(t_game *game)
     game->strike[0].is_launching = 0;
 
     // play audio, choose audio
-    add_script(game, eagle_bombs, 1);
+    add_script(game, eagle_bombs, 0);
     playAudioFileWithDelay("audio/eagles00.mp3", 0);
 
 
@@ -182,8 +198,8 @@ void    barrage_inbound(t_game *game)
 
     // Create the audio file name based on the random number
     char audio_file[] = "audio/orbitalbarragecall00.mp3";
-    audio_file[23] = '0' + random_call / 10;
-    audio_file[24] = '0' + random_call % 10;
+    audio_file[24] = '0' + random_call / 10;
+    audio_file[25] = '0' + random_call % 10;
 
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
@@ -199,13 +215,14 @@ void    stop_barrage(t_game *game)
 
 void    play_barrage_shell(t_game *game)
 {
-    int random_call = random_int(game, 1);
+    int random_call = random_int(game, 2);
 
     // Create the audio file name based on the random number
     char audio_file[] = "audio/orbitalbarrage00.mp3";
-    audio_file[19] = '0' + random_call / 10;
-    audio_file[20] = '0' + random_call % 10;
+    audio_file[20] = '0' + random_call / 10;
+    audio_file[21] = '0' + random_call % 10;
 
+    // add_script(game, play_barrage_shell,1);
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
 }

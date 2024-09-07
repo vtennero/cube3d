@@ -85,22 +85,24 @@ int render(t_game *game)
     else if (game->game_sequence == 3)
     {
         script_strike_player(game);
+        script_napalm_enemies(game, 1, 6);
+        script_napalm_player(game, 1, 6);
+        player_burning(game);
+        script_barrage_enemies(game);
+        script_barrage_player(game);
         script_die(game);
         script_found_sth(game);
         script_found_supplies(game);
         script_take_supplies(game);
         script_strike_enemies(game);
-        script_napalm_player(game, 1, 6);
-        script_napalm_enemies(game, 1, 6);
-        script_barrage_enemies(game);
-        script_barrage_player(game);
+
 
         script_board(game);
         script_takeoff(game);
-        update_scripts(game);
         game->num_enemies = calculate_enemy_count(game);
         relocate_enemies(game);
         enemies_hit(game);
+        update_scripts(game);
 
         handle_key_esc(game);
         handle_movement_left(game);
@@ -142,6 +144,7 @@ int render(t_game *game)
 
         update_gun_state(game);
         render_gun(game);
+        render_health_bar(game);
         render_hit(game);
         render_supply_take(game);
         render_respawn(game);
@@ -183,7 +186,7 @@ int setup_game_mlx(t_game *game)
     }
 
     // comment this (for testing purposes)
-    game->game_sequence = 3;
+    // game->game_sequence = 3;
     // preload_textures(game);
 	preload_textures_non_bonus(game);
     initialize_game_seed(game);

@@ -24,6 +24,7 @@ void    play_bug_death(t_game *game)
     audio_file[10] = '0' + random_call % 10;
     
     // Play the selected audio file with no delay
+    stopAudioFile(audio_file);
     playAudioFileWithDelay(audio_file, 0);
 }
 
@@ -36,7 +37,7 @@ void script_strike_enemies(t_game *game)
     
     // Define the radius for considering an enemy "close"
     // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-    float strike_radius = 4.0f;
+    float strike_radius = 5.0f;
 
     for (int i = 0; i < game->num_enemies; i++)
     {
@@ -55,7 +56,8 @@ void script_strike_enemies(t_game *game)
         if (distance <= strike_radius)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            // play_bug_death(game);
+            add_script(game, play_bug_death, 0);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
@@ -73,7 +75,7 @@ void script_strike_player(t_game *game)
         
         // Define the radius for considering the player "close"
         // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-        float strike_radius = 4.0f;
+        float strike_radius = 5.0f;
 
         float playerX = game->player->position.x;
         float playerY = game->player->position.y;
@@ -120,13 +122,29 @@ void script_napalm_enemies(t_game *game, int strike_no, float radius)
         if (distance <= radius)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            // play_bug_death(game);
+            add_script(game, play_bug_death, 0);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
     }
 	}
 
+}
+
+void play_random_burn_cry(t_game *game)
+{
+    (void)game;
+    // Generate a random number between 0 and 5
+    int random_call = random_int(game, 4);
+    
+    // Create the audio file name based on the random number
+    char audio_file[] = "audio/burn00.mp3";
+    audio_file[10] = '0' + random_call / 10;
+    audio_file[11] = '0' + random_call % 10;
+    
+    // Play the selected audio file with no delay
+    playAudioFileWithDelay(audio_file, 0);
 }
 
 void script_napalm_player(t_game *game, int strike_no, float radius)
@@ -150,7 +168,9 @@ void script_napalm_player(t_game *game, int strike_no, float radius)
         // Check if the player is within the strike radius
         if (distance <= radius)
         {
-            game->player->hp--;
+            if (game->player->is_burning == 0)
+                play_random_burn_cry(game);
+            game->player->is_burning = 1;
             // Optionally, you can add some visual or sound effect here
             // printf("Player struck down!\n");
         }
@@ -166,7 +186,7 @@ void script_barrage_enemies(t_game *game)
     
     // Define the radius for considering an enemy "close"
     // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-    float strike_radius = 4.0f;
+    float strike_radius = 6.0f;
 
     for (int i = 0; i < game->num_enemies; i++)
     {
@@ -185,7 +205,8 @@ void script_barrage_enemies(t_game *game)
         if (distance <= strike_radius && game->strike[2].is_animating)
         {
             game->enemies[i].is_alive = 0;
-            play_bug_death(game);
+            add_script(game, play_bug_death, 0);
+            // play_bug_death(game);
             // Optionally, you can add some visual or sound effect here
             // printf("Enemy %d struck down!\n", i);
         }
@@ -203,7 +224,7 @@ void script_barrage_player(t_game *game)
         
         // Define the radius for considering the player "close"
         // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-        float strike_radius = 4.0f;
+        float strike_radius = 6.0f;
 
         float playerX = game->player->position.x;
         float playerY = game->player->position.y;
@@ -222,7 +243,17 @@ void script_barrage_player(t_game *game)
         }
     }
 }
+void    player_burning(t_game *game)
+{
+    int random_call = random_int(game, 5);
 
+    if (game->player->is_burning == 1 && random_call == 0)
+    {
+            printf("🔥 player is burning!!! health %d\n", game->player->hp);
+            game->player->is_hit = 1;
+            add_script(game, get_hit, 1);
+    }
+}
 
 void	play_land_voice(t_game *game)
 {
@@ -267,20 +298,32 @@ void    script_take_supplies(t_game *game)
 	{
         printf("restored health\n");
 		playAudioFileWithDelay("audio/stims02.mp3", 0);
+		playAudioFileWithDelay("audio/stims03.mp3", 0);
 		add_script(game, trigger_supply_take, 0);
 		add_script(game, cancel_supply_take, 1);
 		game->supplies[found].collected = 1;
+		game->player->is_burning = 0;
 		game->player->hp = MAX_HEALTH;
+        stopAudioFile("audio/burn00.mp3");
+        stopAudioFile("audio/burn01.mp3");
+        stopAudioFile("audio/burn02.mp3");
+        stopAudioFile("audio/burn03.mp3");
 	}
 }
 
 void	script_die(t_game *game)
 {
 	// printf("script die\n");
-	if (game->player->hp == 0 && game->player->is_dead == 0)
+	if (game->player->hp <= 0 && game->player->is_dead == 0)
 	{
 		reset_game_start_time(game);
 		game->player->is_dead = 1;
+		game->player->is_burning = 0;
+		game->player->hp = MAX_HEALTH;
+        stopAudioFile("audio/burn00.mp3");
+        stopAudioFile("audio/burn01.mp3");
+        stopAudioFile("audio/burn02.mp3");
+        stopAudioFile("audio/burn03.mp3");
 		playAudioFileWithDelay("audio/death.mp3", 0);
 		playAudioFileWithDelay("audio/kia00.mp3", 0);
 	}

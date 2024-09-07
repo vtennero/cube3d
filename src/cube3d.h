@@ -47,11 +47,11 @@
 #define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
 #define MAX_SCRIPTS 500
 #define OBJECT_SIZE 1
-#define MAX_HEALTH 10
+#define MAX_HEALTH 15
 // #define MAX_HEALTH 50
 #define MAX_OUTRO_TEXTURES 229
-#define EXTRACT_CALL_TIME 5
-// #define EXTRACT_CALL_TIME 120
+// #define EXTRACT_CALL_TIME 15
+#define EXTRACT_CALL_TIME 120
 #define MAX_STRIKES 3
 
 #define M_PI 3.14159265358979323846
@@ -71,6 +71,10 @@
 #define NUM_TILES 4
 #define NUM_EXPLOSIONS 4
 #define EXPLOSION_DELAY 30 // Frames between explosion starts
+#define NUM_NAPALM_OFFSETS 37
+
+#define NUM_OFFSETS 13
+
 
 /*
 ** ================== STRUCTURES ==================
@@ -220,6 +224,8 @@ typedef struct s_strike
 	int			is_animating;
 	int delay_frames;
     int delay_duration;
+	int frame_counts[NUM_NAPALM_OFFSETS];
+    float speed_multipliers[NUM_NAPALM_OFFSETS];
 } t_strike;
 
 
@@ -259,6 +265,7 @@ typedef struct s_player
 	int					is_dead;
 	int					taking_supplies;
 	int					is_extracting;
+	int					is_burning;
 }						t_player;
 
 typedef struct s_map
@@ -767,6 +774,9 @@ void    handle_key_2(t_game *game);
 void play_random_strike_sound(t_game *game);
 void script_napalm_enemies(t_game *game, int strike_no, float radius);
 void script_napalm_player(t_game *game, int strike_no, float radius);
+void    player_burning(t_game *game);
+
+
 // barrage
 void    barrage_inbound(t_game *game);
 void    stop_barrage(t_game *game);
@@ -779,5 +789,8 @@ float random_float(t_game *game);
 void    play_barrage_shell(t_game *game);
 void script_barrage_enemies(t_game *game);
 void script_barrage_player(t_game *game);
+
+// helath bar
+void render_health_bar(t_game *game);
 
 #endif

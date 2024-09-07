@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_mouse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/09/02 15:58:23 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:54:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int handle_mouse_click(int button, int x, int y, void *param)
         if (random_value == 0)
         {
             printf("Get some get some\n");
+		    stopAudioFile("audio/getsome.mp3");
 		    playAudioFileWithDelay("audio/getsome.mp3", 0);
             // play audio
         }

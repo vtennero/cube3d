@@ -66,6 +66,7 @@ map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
 pelican_inside_bonus.c \
+health_bar_bonus.c \
 audio_bonus.c \
 # audio_dummy.c \
 

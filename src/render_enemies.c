@@ -143,7 +143,8 @@ void check_enemy_at_center(t_game *game)
             if (game->is_shooting)
             {
                 game->enemies[i].is_alive = 0;
-                play_bug_death(game);
+                // play_bug_death(game);
+                add_script(game, play_bug_death, 0);
             }
             return;  // Exit the function after finding the first enemy at the center
         }
