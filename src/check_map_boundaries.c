@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_map_boundaries.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: cliew <cliew@student.42.fr>                +#+  +:+      
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/07/13 12:45:14 by cliew             #+#    #+#             */
 /*   Updated: 2024/08/27 16:24:17 by cliew            ###   ########.fr       */
@@ -45,10 +45,8 @@ int	check_map_boundaries(t_game *game)
 	y = game->cub_player_y;
 	filled_map = initialize_array(game->cub_map_row_count * 2,
 			(game->cub_map_col_count + 1) / 2);
-	game->filled_map=filled_map;
+	game->filled_map = filled_map;
 	is_surrounded = floodfill_iterative(game, x, y);
-
-	// is_surrounded = floodfill_iterative(game, filled_map, x, y);
 	freeArray(filled_map, game->cub_map_row_count * 2);
 	if (!is_surrounded)
 	{
@@ -97,86 +95,19 @@ int	parse_floor_sky_rgb(t_game *game)
 	return (1);
 }
 
-void get_directions(int directions[4][2]) {
-    directions[0][0] = -1; directions[0][1] = 0; // up
-    directions[1][0] = 1;  directions[1][1] = 0; // down
-    directions[2][0] = 0;  directions[2][1] = -1; // left
-    directions[3][0] = 0;  directions[3][1] = 1;  // right
-}
 
-int is_valid_position(t_game *game, int x, int y) {
-    return x >= 0 && x < game->cub_map_row_count &&
-           y >= 0 && y < ((game->cub_map_col_count + 1) / 2) &&
-           game->cub_map_array[x][y] == 0 &&
-           game->filled_map[x][y] == 0;
-}
-void initialize_stack(t_game *game, int start_i, int start_j) {
-    game->stack = (t_point *)malloc((size_t)(game->cub_map_row_count * game->cub_map_col_count) * sizeof(t_point));
-    if (game->stack == NULL) {
-        fprintf(stderr, "Memory allocation failed for stack\n");
-        exit(EXIT_FAILURE);
-    }
-    game->stack_size = 0;
-    game->stack[game->stack_size++] = (t_point){start_i, start_j};
-}
+int	floodfill_iterative(t_game *game, int start_i, int start_j)
+{
+	int	is_surrounded;
 
-void process_position(t_game *game, t_point current) {
-    int x = current.x;
-    int y = current.y;
-
-    // Mark the position as filled
-    game->filled_map[x][y] = 1;
-
-    // Define directions for up, down, left, and right
-    int directions[4][2];
-    get_directions(directions);
-
-    int d = 0;
-    while (d < 4) {
-        int new_x = x + directions[d][0];
-        int new_y = y + directions[d][1];
-        if (is_valid_position(game, new_x, new_y)) {
-            game->stack[game->stack_size++] = (t_point){new_x, new_y};
-        }
-        d++;
-    }
-}
-
-void process_current_position(t_game *game, t_point current) {
-    process_position(game, current);
-}
-
-
-int fill_and_process_stack(t_game *game) {
-    int is_surrounded = 1;
-
-    while (game->stack_size > 0) {
-        game->stack_size--;
-        t_point current = game->stack[game->stack_size];
-
-        if (!is_valid_position(game, current.x, current.y)) {
-            continue;
-        }
-
-        process_current_position(game, current);
-    }
-
-    return is_surrounded;
-}
-
-
-int floodfill_iterative(t_game *game, int start_i, int start_j) {
-    if (start_i < 0 || start_i >= game->cub_map_row_count ||
-        start_j < 0 || start_j >= ((game->cub_map_col_count + 1) / 2)) {
-        printf("Invalid starting position: i=%d, j=%d\n", start_i, start_j);
-        return 0;
-    }
-
-    initialize_stack(game, start_i, start_j);
-
-    int is_surrounded = fill_and_process_stack(game);
-
-    free(game->stack);
-
-    return is_surrounded;
+	if (start_i < 0 || start_i >= game->cub_map_row_count || start_j < 0
+		|| start_j >= ((game->cub_map_col_count + 1) / 2))
+	{
+		printf("Invalid starting position: i=%d, j=%d\n", start_i, start_j);
+		return (0);
+	}
+	initialize_stack(game, start_i, start_j);
+	is_surrounded = fill_and_process_stack(game);
+	free(game->stack);
+	return (is_surrounded);
 }
