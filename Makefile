@@ -63,6 +63,7 @@ scripts_static.c \
 enemies_hit_bonus.c \
 strike_bonus.c \
 check_map_boundaries.c \
+flood_fill_helper.c\
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
