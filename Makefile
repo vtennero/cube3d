@@ -50,6 +50,7 @@ tmp_staticmap.c \
 keymap_collectibles.c \
 terminate01.c \
 terminate02.c \
+terminate03.c \
 menu_bonus.c \
 opening_bonus.c \
 land_bonus.c \

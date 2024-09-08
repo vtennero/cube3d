@@ -530,7 +530,12 @@ int print_2d_array(t_game *game,int ** array_to_print);
 int parse_map(t_game *game,char *cub_filepath);
 
 
-
+// Clear memory - terminate03.c
+void free_split_result(char **words);
+void clean_map(t_game *game);
+void free_wall_texture_map_path(t_game *game);
+void free_floor_texture_map(t_game *game);
+void freeArray(int **array, int x);
 
 
 // raycasting
