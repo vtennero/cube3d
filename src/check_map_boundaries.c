@@ -36,18 +36,11 @@ int	parse_char_to_int(char chars)
 
 int	check_map_boundaries(t_game *game)
 {
-	int	x;
-	int	y;
-	int	**filled_map;
 	int	is_surrounded;
 
-	x = game->cub_player_x;
-	y = game->cub_player_y;
-	filled_map = initialize_array(game->cub_map_row_count * 2,
-			(game->cub_map_col_count + 1) / 2);
-	game->filled_map = filled_map;
-	is_surrounded = floodfill_iterative(game, x, y);
-	free_array(filled_map, game->cub_map_row_count * 2);
+	is_surrounded = 1;
+	is_surrounded = validate_map(&is_surrounded, game->cub_map_array,
+			game->cub_map_row_count, (game->cub_map_col_count + 1) / 2);
 	if (!is_surrounded)
 	{
 		printf("Map isn't surrounded by wall");
@@ -93,20 +86,4 @@ int	parse_floor_sky_rgb(t_game *game)
 	free_split_result(f_split);
 	free_split_result(s_split);
 	return (1);
-}
-
-int	floodfill_iterative(t_game *game, int start_i, int start_j)
-{
-	int	is_surrounded;
-
-	if (start_i < 0 || start_i >= game->cub_map_row_count || start_j < 0
-		|| start_j >= ((game->cub_map_col_count + 1) / 2))
-	{
-		printf("Invalid starting position: i=%d, j=%d\n", start_i, start_j);
-		return (0);
-	}
-	initialize_stack(game, start_i, start_j);
-	is_surrounded = fill_and_process_stack(game);
-	free(game->stack);
-	return (is_surrounded);
 }

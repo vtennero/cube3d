@@ -318,12 +318,6 @@ typedef struct s_ray_node
 }						t_ray_node;
 
 
-typedef struct s_point {
-    int x;
-    int y;
-} t_point;
-
-
 typedef struct s_game
 {
 	
@@ -390,11 +384,6 @@ typedef struct s_game
 	int cub_player_y;
 	int cub_player_o;
 
-	// Flood fill
-	int **filled_map; // Added
-    t_point *stack;     // Added
-    int stack_size;   // Added
-	int directions[4][2];
 
 	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture floortexture[1];
@@ -513,16 +502,19 @@ int parse_map_to_array(t_game *game);
 
 /// Check map boundaries
 int parse_char_to_int(char chars);
-int floodfill_iterative(t_game *game, int start_i, int start_j);
 int			check_map_boundaries(t_game *game);
 int parse_floor_sky_rgb(t_game *game);
 int	rgb_to_hex_int(int red, int green, int blue);
 
-void	get_directions(t_game *game);
-int	fill_and_process_stack(t_game *game);
-void	process_position(t_game *game, t_point current);
-void	initialize_stack(t_game *game, int start_i, int start_j);
-int	is_valid_position(t_game *game, int x, int y);
+
+int	check_order_in_column(int **array, int col, int row_count, int direction);
+int	check_order_in_row(int **array, int row, int col_count, int direction);
+int	validate_map( int* valid,int **array, int row_count, int col_count);
+// void	get_directions(t_game *game);
+// int	fill_and_process_stack(t_game *game);
+// void	process_position(t_game *game, t_point current);
+// void	initialize_stack(t_game *game, int start_i, int start_j);
+// int	is_valid_position(t_game *game, int x, int y);
 
 
 //Temp for map parse
