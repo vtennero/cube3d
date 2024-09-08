@@ -47,7 +47,7 @@ int	check_map_boundaries(t_game *game)
 			(game->cub_map_col_count + 1) / 2);
 	game->filled_map = filled_map;
 	is_surrounded = floodfill_iterative(game, x, y);
-	freeArray(filled_map, game->cub_map_row_count * 2);
+	free_array(filled_map, game->cub_map_row_count * 2);
 	if (!is_surrounded)
 	{
 		printf("Map isn't surrounded by wall");

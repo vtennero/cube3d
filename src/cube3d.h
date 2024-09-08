@@ -535,7 +535,7 @@ void free_split_result(char **words);
 void clean_map(t_game *game);
 void free_wall_texture_map_path(t_game *game);
 void free_floor_texture_map(t_game *game);
-void freeArray(int **array, int x);
+void free_array(int **array, int x);
 
 
 // raycasting
@@ -664,10 +664,8 @@ void handle_key_esc(t_game *game);
 void handle_cross_key(t_game *game);
 void	cleanup(t_game *game);
 void	clean_rays(t_game *game);
-void 	free2DArray(int **array, int rows);
-void free_split_result(char **words);
 
-void freeArray(int **array, int x);
+
 
 // menu
 void render_menu(t_game *game);
