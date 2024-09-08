@@ -95,7 +95,6 @@ int	parse_floor_sky_rgb(t_game *game)
 	return (1);
 }
 
-
 int	floodfill_iterative(t_game *game, int start_i, int start_j)
 {
 	int	is_surrounded;
