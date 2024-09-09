@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/09 17:36:57 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:54:30 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void render_strike(t_game *game)
     static int frame_counter = 0;
     frame_counter++;
 
-    printf("Frame: %d\n", frame_counter);
+    // printf("Frame: %d\n", frame_counter);
 
     if (game->strike[0].is_launching)
         render_call_strike(game, game->strike[0].position);
