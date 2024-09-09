@@ -318,8 +318,6 @@ typedef struct s_ray_node
 }						t_ray_node;
 
 
-
-
 typedef struct s_game
 {
 	
@@ -387,6 +385,7 @@ typedef struct s_game
 	int cub_player_y;
 	int cub_player_o;
 
+
 	// t_texture walltextures_[4]; // Textures for NORTH, EAST, SOUTH, WEST
 	t_texture floortexture[1];
 	// t_texture skytexture[1];
@@ -449,10 +448,6 @@ typedef struct s_keymap
 	int					keycode;
 	t_key_func			func;
 }						t_keymap;
-typedef struct {
-    int x;
-    int y;
-} Point;
 
 /*
 ** -- MEMORY --
@@ -486,13 +481,20 @@ int check_invalid_rgb(char* word);
 int** initialize_array(int x, int y);
 
 // Parse texture
-int read_cub_texture_and_analyze_map(t_game *game);
-int check_line(t_game *game, char* line);
-void texture_access_check(t_game* game,int *error);
-int texture_error_handling(t_game* game);
+int	read_cub_texture_and_analyze_map(t_game *game);
+int	assign_texture(char **words, char **path, char *texture);
+int	assign_textures(t_game *game, char **words);
+int	check_line(t_game *game, char *line, int *map_start);
+
+
+int	all_paths_set(t_game *game);
+int	handle_error(const char *message, int error_code);
+int	texture_error_handling(t_game *game);
+void	texture_access_check(t_game *game, int *error);
+
 
 // Parse map
-int parse_line_to_map_array(char* line, t_game *game,int map_line);
+int parse_line_to_map_array(char* line, t_game *game,int *map_line);
 int loop_thru_line_in_map_array(t_game *game);
 int check_player_position_helper(t_game *game,int i,int j,int *player_found);
 int check_player_postion_and_map_char(t_game *game);
@@ -501,10 +503,19 @@ int parse_map_to_array(t_game *game);
 
 /// Check map boundaries
 int parse_char_to_int(char chars);
-int	floodfill(t_game *game, int **filled_map, int i, int j);
-int floodfill_iterative (t_game *game, int **filled_map, int start_i, int start_j);
 int			check_map_boundaries(t_game *game);
 int parse_floor_sky_rgb(t_game *game);
+int	rgb_to_hex_int(int red, int green, int blue);
+
+
+int	check_order_in_column(int **array, int col, int row_count, int direction);
+int	check_order_in_row(int **array, int row, int col_count, int direction);
+int	validate_map( int* valid,int **array, int row_count, int col_count);
+// void	get_directions(t_game *game);
+// int	fill_and_process_stack(t_game *game);
+// void	process_position(t_game *game, t_point current);
+// void	initialize_stack(t_game *game, int start_i, int start_j);
+// int	is_valid_position(t_game *game, int x, int y);
 
 
 //Temp for map parse
@@ -512,7 +523,12 @@ int print_2d_array(t_game *game,int ** array_to_print);
 int parse_map(t_game *game,char *cub_filepath);
 
 
-
+// Clear memory - terminate03.c
+void free_split_result(char **words);
+void clean_map(t_game *game);
+void free_wall_texture_map_path(t_game *game);
+void free_floor_texture_map(t_game *game);
+void free_array(int **array, int x);
 
 
 // raycasting
@@ -641,10 +657,8 @@ void handle_key_esc(t_game *game);
 void handle_cross_key(t_game *game);
 void	cleanup(t_game *game);
 void	clean_rays(t_game *game);
-void 	free2DArray(int **array, int rows);
-void free_split_result(char **words);
 
-void freeArray(int **array, int x);
+
 
 // menu
 void render_menu(t_game *game);

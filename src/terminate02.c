@@ -105,31 +105,6 @@ void clean_textures(t_game *game)
 
 
 
-void clean_map(t_game *game)
-{
-    printf("clean_map\n");
-    if (game && game->map)
-    {
-        // Free the 2D array of map data
-        if (game->map->data)
-        {
-            for (int i = 0; i < game->map->height; i++)
-            {
-                if (game->map->data[i])
-                {
-                    free(game->map->data[i]);
-                }
-            }
-            free(game->map->data);
-            game->map->data = NULL;
-        }
-
-        // Free the map structure itself
-        free(game->map);
-        game->map = NULL;
-    }
-    printf("clean_map DONE\n");
-}
 
 
 // void	clean_floor(t_game *game)
@@ -270,60 +245,6 @@ void free_gun_textures(t_game *game)
     game->current_shooting_frame = 0;
 }
 
-void free_split_result(char **words) {
-    if (words == NULL) {
-        return;  // Handle case where words is NULL
-    }
-
-    for (int i = 0; words[i] != NULL; i++) {
-        free(words[i]);  // Free each string
-    }
-
-    free(words);  // Free the array of pointers
-}
-
-
-void freeArray(int **array, int x) {
-    int i = 0;
-
-    // Free each inner array
-    while (i < x) {
-        free(array[i]);
-        i++;
-    }
-
-    // Free the outer array
-    free(array);
-}
-void free_floor_texture_map(t_game *game)
-{
-    if (!game || !game->floor_texture_map || !game->map)
-        return;
-
-    for (int y = 0; y < game->map->height; y++)
-    {
-        if (game->floor_texture_map[y])
-        {
-            free(game->floor_texture_map[y]);
-            game->floor_texture_map[y] = NULL;
-        }
-    }
-
-    free(game->floor_texture_map);
-    game->floor_texture_map = NULL;
-}
-
-
-void free_wall_texture_map_path(t_game *game)
-{
-
-	free(game->walltextures[0].path);
-	free(game->walltextures[1].path);
-	free(game->walltextures[2].path);
-	free(game->walltextures[3].path);
-	free(game->floor_rgb[0].path);
-	free(game->sky_rgb[0].path);
-}
 
 void	cleanup(t_game *game)
 {
@@ -355,10 +276,7 @@ void	cleanup(t_game *game)
 	free_wall_texture_map_path(game);
     // free(game->strike);
 	clean_map(game);
-//	free_map(game->map);
-	// freeArray(game->cub_map_array,game->cub_map_row_count);
-
-	freeArray((game->cub_map_array),game->cub_map_row_count*2);
+	free_array((game->cub_map_array),game->cub_map_row_count*2);
 	clean_rays(game);
 	clean_mlx(game);
     cleanupAudio();

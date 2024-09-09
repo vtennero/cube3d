@@ -50,6 +50,7 @@ tmp_staticmap.c \
 keymap_collectibles.c \
 terminate01.c \
 terminate02.c \
+terminate03.c \
 menu_bonus.c \
 opening_bonus.c \
 land_bonus.c \
@@ -62,9 +63,11 @@ scripts_static.c \
 enemies_hit_bonus.c \
 strike_bonus.c \
 check_map_boundaries.c \
+flood_fill_helper.c\
 map_parse_utility.c \
 parse_map.c  \
 texture_parse.c \
+texture_parse_02.c \
 pelican_inside_bonus.c \
 health_bar_bonus.c \
 crosshair_bonus.c \
