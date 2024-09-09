@@ -67,16 +67,24 @@ void	free_floor_texture_map(t_game *game)
 
 void	free_wall_texture_map_path(t_game *game)
 {
-	free(game->walltextures[0].path);
-	free(game->walltextures[1].path);
-	free(game->walltextures[2].path);
-	free(game->walltextures[3].path);
-	free(game->floor_rgb[0].path);
-	free(game->sky_rgb[0].path);
+	if (game->walltextures[0].path)
+		free(game->walltextures[0].path);
+	if (game->walltextures[1].path)
+		free(game->walltextures[1].path);
+	if (game->walltextures[2].path)
+		free(game->walltextures[2].path);
+	if (game->walltextures[3].path)
+		free(game->walltextures[3].path);
+	if (game->floor_rgb[0].path)
+		free(game->floor_rgb[0].path);
+	if (game->sky_rgb[0].path)
+		free(game->sky_rgb[0].path);
 }
 
 void	clean_map(t_game *game)
 {
-	free_array((game->cub_map_array),(game->cub_map_row_count)*2);
-	free(game->map);
+	if (game->cub_map_array)
+		free_array((game->cub_map_array),(game->cub_map_row_count)*2);
+	if (game->map)
+		free(game->map);
 }

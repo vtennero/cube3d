@@ -122,7 +122,7 @@ int parse_map(t_game *game,char *cub_filepath)
 	printf("\nTotal Cub line count is %d",game->cub_line_count);
 	printf("\nTotal Map line count is %d",game->cub_map_row_count);
 	printf("\nTotal Map col count is %d",game->cub_map_col_count);
-	if (parse_map_to_array(game) == -1)
+	if (parse_map_to_array(game) == -1 )
 		return -1;
 	if (check_map_boundaries(game) ==-1)
 		return -1;

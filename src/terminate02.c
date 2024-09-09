@@ -283,7 +283,7 @@ void	cleanup(t_game *game)
 
 
 
-
+  
 
 
 

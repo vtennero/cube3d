@@ -1,0 +1,24 @@
+NO textures/foilagewall01.xpm
+SO textures/dmgwall01.xpm
+WE textures/dmgwall06.xpm
+EA textures/dmgwall999.xpm
+
+
+F 184,113,39
+C 51,198,227
+
+SO textures/foilagewall01.xpm
+
+SO textures/foilagewall01.xpm
+
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 S 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1

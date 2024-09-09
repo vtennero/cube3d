@@ -23,8 +23,20 @@ int main(int argc, char **argv)
     	initgame(&game);
 	else
 	{
+		free_texture_array(game->walltextures,MAX_WALL_TEXTURES,game);
+    	free_texture_array(game->floortextures,MAX_FLOOR_TEXTURES,game);
+		free_floor_texture_map(game);
+		free_wall_texture_map_path(game);
+
+		if (game->cub_map_array)
+			free_array((game->cub_map_array),(game->cub_map_row_count)*2);
+		if (game->map)
+			free(game->map);
+
 		if (game)
 			free(game);
+	
+
 		printf("Error\n");
 		printf("Map Parsing Failed\n");
 	}
