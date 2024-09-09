@@ -100,7 +100,7 @@ void draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int dr
             texY = (texY < 0) ? 0 : (texY >= obj_texture->height) ? obj_texture->height - 1 : texY;
 
             int color = get_pixel_color(texX, texY, obj_texture->width, obj_texture->height, obj_texture->data, obj_texture->tex_bpp, obj_texture->tex_line_len);
-            printf("draw_sprite_stripe: color = %d\n", color);
+            // printf("draw_sprite_stripe: color = %d\n", color);
 
             if (color != -1)
                 img_pix_put(&game->img, stripe, y, color);
