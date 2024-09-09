@@ -22,6 +22,7 @@ int	create_game_struct(t_game **game)
 	(*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->ray_list = NULL;
 	(*game)->game_sequence = 0;
+	(*game)->change_seq = 0;
 	(*game)->current_frame = 0;
 	(*game)->loop_count = 0;
 	(*game)->is_shooting = 0;

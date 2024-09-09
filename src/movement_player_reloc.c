@@ -131,7 +131,7 @@ void handle_key_w(t_game *game)
     float newX = game->player->position.x + game->player->direction.x * speed;
     float newY = game->player->position.y + game->player->direction.y * speed;
 
-    if (!detect_collision(game, newX, newY))
+    if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
     {
         update_player_position(game, newX, newY);
     }
@@ -158,7 +158,7 @@ void handle_key_s(t_game *game)
     int mapY = (int)(newY);
 
     // Check collision with buffered coordinates
-    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL)
+    if (mapX >= 0 && mapX < game->map->width && mapY >= 0 && mapY < game->map->height && game->map->data[mapY][mapX] != TILE_WALL && game->player->is_extracting == 0)
     {
         game->player->position.x = newX + game->player->direction.x * buffer; // Revert buffer
         game->player->position.y = newY + game->player->direction.y * buffer; // Revert buffer
@@ -204,7 +204,7 @@ void handle_key_a(t_game *game)
     float newX = game->player->position.x + perpX * speed;
     float newY = game->player->position.y + perpY * speed;
 
-    if (!detect_collision(game, newX, newY))
+    if (!detect_collision(game, newX, newY)  && game->player->is_extracting == 0)
     {
         update_player_position(game, newX, newY);
     }
@@ -231,7 +231,7 @@ void handle_key_d(t_game *game)
     float newX = game->player->position.x + perpX * speed;
     float newY = game->player->position.y + perpY * speed;
 
-    if (!detect_collision(game, newX, newY))
+    if (!detect_collision(game, newX, newY)  && game->player->is_extracting == 0)
     {
         update_player_position(game, newX, newY);
     }
@@ -304,7 +304,7 @@ void handle_movement_dash(t_game *game)
         float newX = game->player->position.x + game->player->direction.x * speed;
         float newY = game->player->position.y + game->player->direction.y * speed;
 
-        if (!detect_collision(game, newX, newY))
+        if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
         {
             game->player->position.x = newX;
             game->player->position.y = newY;

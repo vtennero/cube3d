@@ -12,6 +12,17 @@
 
 #include "cube3d.h"
 
+void script_skip_enter(t_game *game)
+{
+    // printf("script_skip_enter: game sequence   %d \n", game->game_sequence);
+    if (game->change_seq == 1 && game->game_sequence < 3)
+    {
+        // printf("script_skip_enter: game sequence increasing from %d to %d\n", game->game_sequence, game->game_sequence +1);
+        game->game_sequence++;
+        game->change_seq = 0;
+    }
+}
+
 void    play_bug_death(t_game *game)
 {
     int random_call = random_int(game, 6);

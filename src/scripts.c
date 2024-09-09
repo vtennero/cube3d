@@ -191,6 +191,27 @@ void    eagle_inbound(t_game *game)
     // eaglesgtrikes--
 }
 
+
+// void script_skip_enter(t_game *game)
+// {
+//     if (game->change_seq == 1)
+//         {
+//         if (game->game_sequence == 0)
+//         {
+//             reset_game_start_time(game);
+//             stopAudioFile("audio/menu02.mp3");
+//             playAudioFileWithDelay("audio/drop02.mp3", 0);
+//         }
+//         if (game->game_sequence < 3)
+//         {
+//             printf("script_skip_enter: game sequence increasing from %d to %d\n", game->game_sequence, game->game_sequence +1);
+//             game->game_sequence++;
+//         game->change_seq = 0;
+//     }
+//     }
+
+// }
+
 void    barrage_inbound(t_game *game)
 {
     game->strike[2].is_active = 1;

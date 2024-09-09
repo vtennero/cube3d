@@ -356,6 +356,7 @@ typedef struct s_game
 	t_enemy             enemies[MAX_ENEMIES];
 	int                 num_enemies;  // Current number of active enemies
 	int					game_sequence;
+	int					change_seq;
 	int					current_frame;
 	t_texture			land_texture[MAX_LAND_TEXTURES];
 	t_extract			extract[1];
@@ -790,7 +791,14 @@ void    play_barrage_shell(t_game *game);
 void script_barrage_enemies(t_game *game);
 void script_barrage_player(t_game *game);
 
-// helath bar
+// health bar
 void render_health_bar(t_game *game);
+
+// crosshair
+void render_crosshair(t_game *game);
+
+// intro
+void script_skip_enter(t_game *game);
+
 
 #endif
