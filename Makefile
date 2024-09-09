@@ -1,14 +1,14 @@
 # Compiler and flags
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -g
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 
 
 # Audio flags
-# AUDIOFLAGS = -lopenal -lmpg123
-AUDIOFLAGS =
+AUDIOFLAGS = -lopenal -lmpg123
+# AUDIOFLAGS =
 
 # Directories
 SRC_DIR = src
@@ -81,8 +81,8 @@ texture_parse_02.c \
 pelican_inside_bonus.c \
 health_bar_bonus.c \
 crosshair_bonus.c \
-audio_dummy.c \
-# audio_bonus.c \
+audio_bonus.c \
+# audio_dummy.c \
 
 
 
