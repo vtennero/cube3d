@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:43:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/06 15:27:05 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:36:57 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, 
     int total_width = (int)(STRIKE_WIDTH_FACTOR * game->screen_width / distance);
     // Ensure the total width is at least 3 pixels
     total_width = (total_width < 3) ? 3 : total_width;
-    
+
     // Make the white part wider
     int white_width = total_width / 2;
     // int red_width = (total_width - white_width) / 2;
 
-    // printf("Drawing strike: stripe=%d, drawStartY=%d, drawEndY=%d, total_width=%d\n", 
+    // printf("Drawing strike: stripe=%d, drawStartY=%d, drawEndY=%d, total_width=%d\n",
     //        stripe, drawStartY, drawEndY, total_width);
 
     for (int y = 0; y < drawEndY; y++)
@@ -77,7 +77,7 @@ void draw_strike_stripe(t_game *game, int stripe, int drawStartY, int drawEndY, 
                     // color_name = "Red (Gradient)";
                 }
                 img_pix_put(&game->img, x, y, color);
-                
+
                 // Print debug info for every 50th pixel to avoid overwhelming output
                 // if (y % 50 == 0 && i == 0)
                 // {
@@ -120,13 +120,13 @@ void render_call_strike(t_game *game, t_vector2d position)
 int get_next_airstrike_frame(t_strike *strike, int offset_index)
 {
     strike[0].frame_counts[offset_index] += strike[0].speed_multipliers[offset_index];
-    
+
     if (strike[0].frame_counts[offset_index] < 0)
         return -1;  // Indicate that nothing should be displayed
 
     int frame = (int)(strike[0].frame_counts[offset_index] / 100) % NUM_AIRSTRIKE_FRAMES;
-    
-    printf("Offset %d: Frame count %.2d, Speed %.2f, Current frame %d\n", 
+
+    printf("Offset %d: Frame count %.2d, Speed %.2f, Current frame %d\n",
            offset_index, strike[0].frame_counts[offset_index], strike[0].speed_multipliers[offset_index], frame);
 
     return frame;
@@ -159,7 +159,7 @@ void render_ongoing_strike(t_game *game)
     {
         game->strike[0].is_active = 0;
         game->strike[0].is_animating = 0;
-        
+
         // Reset frame counters and randomize initial values for next launch
         for (int i = 0; i < NUM_OFFSETS; i++)
         {
@@ -167,7 +167,7 @@ void render_ongoing_strike(t_game *game)
             // Optionally, you can also reset or randomize speed multipliers here
             // game->strike[0].speed_multipliers[i] = 5.0f + ((float)rand() / RAND_MAX) * 5.0f;
         }
-        
+
         printf("Strike deactivated and reset\n");
         return;
     }
@@ -196,9 +196,9 @@ void render_ongoing_strike(t_game *game)
         t_texture *strike_texture = &game->airstrike_textures[offset_frame];
 
         float spriteX, spriteY;
-        calculate_sprite_position(game, 
-                                  game->strike[0].position.x + offsets[i][0], 
-                                  game->strike[0].position.y + offsets[i][1], 
+        calculate_sprite_position(game,
+                                  game->strike[0].position.x + offsets[i][0],
+                                  game->strike[0].position.y + offsets[i][1],
                                   &spriteX, &spriteY);
 
         float transformX, transformY;
@@ -239,7 +239,7 @@ void render_strike(t_game *game)
 // int get_next_airstrike_frame(t_strike *strike)
 // {
 //     strike[0].frame_count++;
-    
+
 //     // Only change frame every AIRSTRIKE_ANIMATION_INTERVAL
 //     if (strike[0].frame_count % AIRSTRIKE_ANIMATION_INTERVAL != 0)
 //         return strike[0].current_frame;
@@ -292,9 +292,9 @@ void render_strike(t_game *game)
 //     {
 //         // printf("render_ongoing_strike: calcualting sprites positions for explosion %d\n", i);
 //         float spriteX, spriteY;
-//         calculate_sprite_position(game, 
-//                                   game->strike[0].position.x + offsets[i][0], 
-//                                   game->strike[0].position.y + offsets[i][1], 
+//         calculate_sprite_position(game,
+//                                   game->strike[0].position.x + offsets[i][0],
+//                                   game->strike[0].position.y + offsets[i][1],
 //                                   &spriteX, &spriteY);
 
 //         // printf("render_ongoing_strike: calcualting transform_sprite for explosion %d\n", i);
@@ -340,8 +340,8 @@ void render_strike(t_game *game)
 int get_next_napalm_frame(t_strike *strike, int offset_index)
 {
     strike->frame_counts[offset_index] += (int)(strike->speed_multipliers[offset_index] * 100);
-    
-    printf("Offset %d: Frame count %d, Speed %.2f\n", 
+
+    printf("Offset %d: Frame count %d, Speed %.2f\n",
            offset_index, strike->frame_counts[offset_index], strike->speed_multipliers[offset_index]);
 
     if (strike->frame_counts[offset_index] < 0)
@@ -386,7 +386,7 @@ void render_ongoing_napalm(t_game *game)
         float shake_offset = calculate_screen_shake(game, first_visible_frame);
         if (game->player->is_dead == 0)
             game->player->height = BASE_PLAYER_HEIGHT + shake_offset;
-        
+
         // Check if we've completed one full cycle
         if (game->strike[1].frame_counts[0] >= NUM_NAPALM_FRAMES * 50)
         {
@@ -418,9 +418,9 @@ void render_ongoing_napalm(t_game *game)
         t_texture *napalm_texture = &game->napalm_textures[current_frames[i]];
 
         float spriteX, spriteY;
-        calculate_sprite_position(game, 
-                                  game->strike[1].position.x + offsets[i][0], 
-                                  game->strike[1].position.y + offsets[i][1], 
+        calculate_sprite_position(game,
+                                  game->strike[1].position.x + offsets[i][0],
+                                  game->strike[1].position.y + offsets[i][1],
                                   &spriteX, &spriteY);
 
         float transformX, transformY;
@@ -516,9 +516,9 @@ void randomize_barrage_location(t_game *game)
     game->strike[2].delay_duration = 60 * 2; // 3 seconds at 60 FPS, adjust as needed
 
     // Debug output
-    printf("New barrage location: (%d, %d), Base position: (%f, %f)\n", 
-           new_x, new_y, 
-           game->strike[2].base_position.x, 
+    printf("New barrage location: (%d, %d), Base position: (%f, %f)\n",
+           new_x, new_y,
+           game->strike[2].base_position.x,
            game->strike[2].base_position.y);
 }
 
@@ -553,7 +553,7 @@ void render_call_barrage(t_game *game, t_vector2d position)
 int get_next_barrage_frame(t_strike *strike)
 {
     strike->frame_count++;
-    
+
     // Only change frame every AIRSTRIKE_ANIMATION_INTERVAL
     if (strike->frame_count % AIRSTRIKE_ANIMATION_INTERVAL == 0)
     {
@@ -584,9 +584,9 @@ void render_ongoing_barrage(t_game *game)
     for (int i = 0; i < 1; i++)
     {
         float spriteX, spriteY;
-        calculate_sprite_position(game, 
-                                  game->strike[2].position.x + offsets[i][0], 
-                                  game->strike[2].position.y + offsets[i][1], 
+        calculate_sprite_position(game,
+                                  game->strike[2].position.x + offsets[i][0],
+                                  game->strike[2].position.y + offsets[i][1],
                                   &spriteX, &spriteY);
 
         float transformX, transformY;
@@ -596,7 +596,7 @@ void render_ongoing_barrage(t_game *game)
 
         int spriteHeight, drawStartY, drawEndY;
         calculate_sprite_height(game, transformY / SCALE_FACTOR, &spriteHeight, &drawStartY, &drawEndY);
-        
+
         // Adjust drawStartY and drawEndY for scaling
         int centerY = (drawStartY + drawEndY) / 2;
         drawStartY = centerY - (int)((drawEndY - drawStartY) * SCALE_FACTOR / 2);
@@ -604,7 +604,7 @@ void render_ongoing_barrage(t_game *game)
 
         int spriteWidth, drawStartX, drawEndX;
         calculate_sprite_width(game, transformY / SCALE_FACTOR, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
-        
+
         // Adjust drawStartX and drawEndX for scaling
         int centerX = (drawStartX + drawEndX) / 2;
         drawStartX = centerX - (int)((drawEndX - drawStartX) * SCALE_FACTOR / 2);
@@ -652,7 +652,7 @@ void render_barrage(t_game *game)
                 game->strike[2].delay_frames++;
             }
         }
-        
+
         if (game->strike[2].is_animating)
         {
             render_ongoing_barrage(game);

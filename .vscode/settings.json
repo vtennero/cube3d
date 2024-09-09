@@ -13,7 +13,8 @@
 		"vector": "c",
 		"string_view": "c",
 		"initializer_list": "c",
-		"time.h": "c"
+		"time.h": "c",
+		"cube3d_bonus.h": "c"
 	},
 	"makefile.configureOnOpen": false
 }

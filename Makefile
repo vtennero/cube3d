@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 # Audio flags
 # AUDIOFLAGS = -lopenal -lmpg123
-AUDIOFLAGS = 
+AUDIOFLAGS =
 
 # Directories
 SRC_DIR = src
@@ -18,8 +18,8 @@ OBJ_DIR = obj
 AUDIO_LIB_DIR = audio_lib
 
 # Name of the final executable
-NAME = cube3d
-BONUS_NAME = cube3d_bonus
+NAME = cub3D
+BONUS_NAME = cub3D_bonus
 
 # Main source file variable
 MAIN = main.c
@@ -27,12 +27,17 @@ BONUS_MAIN = main_bonus.c
 
 # Shared source files
 SHARED_SRCS = debug_utils.c \
-initialization.c \
+initialization00.c \
+initialization01_bonus.c \
+initialization02_bonus.c \
+initialization03_bonus.c \
 render.c \
 render_floor.c \
+render_floor_bonus.c \
 render_walls.c \
 render_walls_bonus.c \
 render_sky.c \
+render_sky_bonus.c \
 render_gun.c \
 render_collectibles.c \
 render_objects.c \
@@ -43,7 +48,11 @@ raycasting_utils.c \
 movement.c \
 movement_mouse.c \
 movement_enemies.c \
-textures.c \
+textures00.c \
+textures01_bonus.c \
+textures02_bonus.c \
+textures03_bonus.c \
+textures04_bonus.c \
 movement_player_reloc.c \
 randomizer.c \
 tmp_staticmap.c \
@@ -63,6 +72,7 @@ scripts_static.c \
 enemies_hit_bonus.c \
 strike_bonus.c \
 check_map_boundaries.c \
+check_map_boundaries_helper.c \
 flood_fill_helper.c\
 map_parse_utility.c \
 parse_map.c  \
@@ -83,7 +93,7 @@ OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.
 BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o))
 
 # Include paths
-INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include
+INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include -I$(SRC_DIR)
 
 # MLX Flags
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11 -lm

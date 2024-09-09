@@ -12,12 +12,33 @@
 
 #include "cube3d.h"
 
-int	create_game_struct(t_game **game)
+int initgame(t_game **game)
+{
+    printf("initgame\n");
+    create_map(*game);
+    create_player(*game);
+    if ((*game)->bonus)
+    {
+        printf("*** HELLDIVERS 3D ***\n");
+        create_collectibles(*game);
+        create_extraction(*game);
+        create_enemies(*game);
+        create_supplies(*game);
+        create_strike(*game);
+    }
+    else
+        printf("*** CUB3D ***\n");
+    setup_game_mlx(*game);
+    return (1);
+}
+
+int	create_game_struct(t_game **game, int is_bonus)
 {
 	printf("initializing gamestruct\n");
-	*game = calloc(1, sizeof(t_game));
+	*game = ft_calloc(1, sizeof(t_game));
 	if (*game == NULL)
 		return (-1);
+	(*game)->bonus = is_bonus;
 	(*game)->screen_height = DEFAULT_S_HEIGHT;
 	(*game)->screen_width = DEFAULT_S_WIDTH;
 	(*game)->ray_list = NULL;
@@ -39,7 +60,6 @@ int	create_game_struct(t_game **game)
 
 void create_map_from_cub(t_game *game)
 {
-    // Allocate memory for the map structure
     t_map *map = malloc(sizeof(t_map));
     if (map == NULL)
     {
@@ -50,12 +70,11 @@ void create_map_from_cub(t_game *game)
 	map->width = ((game->cub_map_col_count + 1) / 2);
 	map->height = game->cub_map_row_count;
     printf("Set the dimensions\n");
-    // Link the map to the game structure
 	map->data = game->cub_map_array;
     game->map = map;
 	printf("copied the static map to the allocated map\n");
 
-	
+
 }
 
 
@@ -78,7 +97,7 @@ int	create_map(t_game *game)
 
     for (int i = 0; i < x; ++i) {
         for (int j = 0; j < y; ++j) {
-	
+
             printf("%d ", array_to_print[i][j]);
         }
         printf("\n");
@@ -112,31 +131,7 @@ int parse_map(t_game *game,char *cub_filepath)
     return 0;
 }
 
-// int create_strike(t_game *game)
-// {
-//     // Initialize all strikes in the array
-//     for (int i = 0; i < MAX_STRIKES; i++)
-//     {
-//         game->strike[i].position.x = 0;
-//         game->strike[i].position.y = 0;
-//         game->strike[i].is_active = 0;
-//         game->strike[i].is_launching = 0;
-//         game->strike[i].current_frame = 0;
-//         game->strike[i].frame_count = 0;
-//         game->strike[i].is_animating = 0;
-//         game->strike[i].delay_duration = 60 * 2;
-//         game->strike[i].delay_frames = 0;
-//         for (int j = 0; j < NUM_NAPALM_OFFSETS; j++)
-//         {
-//             game->strike[i].frame_counts[j] = rand() % (NUM_NAPALM_FRAMES * 100);
-//             game->strike[i].speed_multipliers[j] = 0.25f + ((float)rand() / RAND_MAX) * 0.2f;
-//             // game->strike[i].speed_multipliers[j] = 0.1f + ((float)rand() / RAND_MAX) * 0.2f;
-//         }
-//     }
 
-//     printf("Initialized %d strikes\n", MAX_STRIKES);
-//     return (1);
-// }
 
 
 int create_strike(t_game *game)
@@ -275,20 +270,20 @@ int randomize_uncollected_collectibles(t_game *game)
     int i = 0;
     int x, y;
     int collectibles_repositioned = 0;
-    
+
     while (i < game->num_collectibles)
     {
         if (game->collectibles[i].collected == 0)
         {
             x = random_int(game, game->map->width);
             y = random_int(game, game->map->height);
-            
+
             while (game->map->data[y][x] == 1)
             {
                 x = random_int(game, game->map->width);
                 y = random_int(game, game->map->height);
             }
-            
+
             game->collectibles[i].position.x = (float)x + 0.5f; // Center in the tile
             game->collectibles[i].position.y = (float)y + 0.5f; // Center in the tile
             game->collectibles[i].collected = 0; // Mark as uncollected
@@ -297,44 +292,9 @@ int randomize_uncollected_collectibles(t_game *game)
         }
         i++;
     }
-    
+
     return (collectibles_repositioned);
 }
-
-// int randomize_uncollected_supplies(t_game *game)
-// {
-//     int i = 0;
-//     int x, y;
-//     int supplies_repositioned = 0;
-    
-//     while (i < game->num_supplies)
-//     {
-//         if (game->supplies[i].collected == 0)
-//         {
-//             do {
-//                 x = random_int(game, game->map->width);
-//                 y = random_int(game, game->map->height);
-//             } while (
-//                 game->map->data[y][x] == 1 ||
-//                 (x == (int)game->extract[0].position.x && y == (int)game->extract[0].position.y) ||
-//                 (abs(x - (int)game->extract[0].position.x) <= 1 && abs(y - (int)game->extract[0].position.y) <= 1)
-//             );
-            
-//             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
-//             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
-//             game->supplies[i].collected = 0; // Mark as uncollected
-//             game->supplies[i].found = 0; // Mark as not found
-//             supplies_repositioned++;
-//         }
-//         i++;
-//     }
-    
-//     return (supplies_repositioned);
-// }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 
 // Subfunction to check if a location is valid
 int is_valid_location(t_game *game, int x, int y)
@@ -343,19 +303,19 @@ int is_valid_location(t_game *game, int x, int y)
     if (x < 0 || x >= game->map->width || y < 0 || y >= game->map->height) {
         return 0;
     }
-    
+
     // Check if the location is not an obstacle
     if (game->map->data[y][x] == 1) {
         return 0;
     }
-    
+
     // Check if the location is not the extraction point or adjacent to it
     int extract_x = (int)game->extract[0].position.x;
     int extract_y = (int)game->extract[0].position.y;
     if (abs(x - extract_x) <= 1 && abs(y - extract_y) <= 1) {
         return 0;
     }
-    
+
     return 1;
 }
 
@@ -371,22 +331,22 @@ int respawn_player(t_game *game)
         {
             int x, y;
             int valid_location_found = 0;
-            
+
             while (!valid_location_found) {
                 x = random_int(game, game->map->width);
                 y = random_int(game, game->map->height);
-                
+
                 if (is_valid_location(game, x, y)) {
                     valid_location_found = 1;
                 }
             }
-            
+
             game->player->position.x = (float)x + 0.5f; // Center in the tile
             game->player->position.y = (float)y + 0.5f; // Center in the tile
-            
+
             // Print the valid location found and the extraction location
         }
-    
+
     return (0);
 }
 
@@ -394,67 +354,35 @@ int respawn_player(t_game *game)
 int randomize_uncollected_supplies(t_game *game)
 {
     int supplies_repositioned = 0;
-    
+
     for (int i = 0; i < game->num_supplies; i++) {
         if (game->supplies[i].collected == 0) {
             int x, y;
             int valid_location_found = 0;
-            
+
             while (!valid_location_found) {
                 x = random_int(game, game->map->width);
                 y = random_int(game, game->map->height);
-                
+
                 if (is_valid_location(game, x, y)) {
                     valid_location_found = 1;
                 }
             }
-            
+
             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
             game->supplies[i].collected = 0; // Mark as uncollected
             game->supplies[i].found = 0; // Mark as not found
             supplies_repositioned++;
-            
+
             // Print the valid location found and the extraction location
-            printf("Supply placed at (%d, %d). Extraction at (%.1f, %.1f)\n", 
+            printf("Supply placed at (%d, %d). Extraction at (%.1f, %.1f)\n",
                    x, y, game->extract[0].position.x, game->extract[0].position.y);
         }
     }
-    
+
     return supplies_repositioned;
 }
-
-
-// int randomize_uncollected_supplies(t_game *game)
-// {
-//     int i = 0;
-//     int x, y;
-//     int supplies_repositioned = 0;
-    
-//     while (i < game->num_supplies)
-//     {
-//         if (game->supplies[i].collected == 0)
-//         {
-//             x = random_int(game, game->map->width);
-//             y = random_int(game, game->map->height);
-            
-//             while (game->map->data[y][x] == 1)
-//             {
-//                 x = random_int(game, game->map->width);
-//                 y = random_int(game, game->map->height);
-//             }
-            
-//             game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
-//             game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
-//             game->supplies[i].collected = 0; // Mark as uncollected
-//             game->supplies[i].found = 0; // Mark as not found
-//             supplies_repositioned++;
-//         }
-//         i++;
-//     }
-    
-//     return (supplies_repositioned);
-// }
 
 int	create_collectibles(t_game *game)
 {
@@ -488,18 +416,18 @@ int randomize_enemy_positions(t_game *game)
 {
     printf("Randomizing enemy positions\n");
     int i, x, y;
-    
+
     for (i = 0; i < game->num_enemies; i++)
     {
         do {
             x = random_int(game, game->map->width);
             y = random_int(game, game->map->height);
         } while (game->map->data[y][x] == 1); // Keep trying until we find a non-wall position
-        
+
         game->enemies[i].position.x = (float)x + 0.5f; // Center in the tile
         game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile
     }
-    
+
     printf("Enemy positions randomized\n");
     return (0);
 }

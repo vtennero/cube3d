@@ -166,11 +166,26 @@ void debug_print_rays(t_ray_node *head)
     }
 }
 
+void print_map_section(t_game *game, int center_x, int center_y, int radius)
+{
+       printf("Map section around player:\n");
+       for (int y = center_y - radius; y <= center_y + radius; y++) {
+           for (int x = center_x - radius; x <= center_x + radius; x++) {
+               if (x >= 0 && x < game->map->width && y >= 0 && y < game->map->height) {
+                   printf("%d ", game->map->data[x][y]);
+               } else {
+                   printf("# ");
+               }
+           }
+           printf("\n");
+       }
+   }
+
 void debug_texture(t_texture *texture, int x, int y)
 {
     if (!texture)
     {
-        printf("Error: Texture pointer is NULL\n");
+        printf("🚨 Error: Texture pointer is NULL\n");
         return;
     }
 

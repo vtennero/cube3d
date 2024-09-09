@@ -12,46 +12,6 @@
 
 #include "cube3d.h"
 
-void scale_gun_textures(t_game *game)
-{
-    double scale_height = game->screen_height * 0.55;
-    double scale_width = game->screen_width * 0.6;
-
-    for (int i = 0; i < game->num_gun_frames; i++)
-    {
-        t_texture *gun_texture = &game->gun_textures[i];
-
-        gun_texture->height = (int)scale_height;
-        gun_texture->width = (int)(gun_texture->width * (scale_height / gun_texture->height));
-
-        if (gun_texture->width > scale_width)
-        {
-            gun_texture->width = (int)scale_width;
-            gun_texture->height = (int)(gun_texture->height * (scale_width / gun_texture->width));
-        }
-    }
-}
-
-void scale_shooting_textures(t_game *game)
-{
-    double scale_height = game->screen_height * 0.55;
-    double scale_width = game->screen_width * 0.6;
-
-    for (int i = 0; i < game->num_gun_frames; i++)
-    {
-        t_texture *gun_texture = &game->shooting_texture[i];
-
-        gun_texture->height = (int)scale_height;
-        gun_texture->width = (int)(gun_texture->width * (scale_height / gun_texture->height));
-
-        if (gun_texture->width > scale_width)
-        {
-            gun_texture->width = (int)scale_width;
-            gun_texture->height = (int)(gun_texture->height * (scale_width / gun_texture->width));
-        }
-    }
-}
-
 void update_normal_gun_frame(t_game *game)
 {
     static int frame_counter = 0;
@@ -69,7 +29,7 @@ void update_shooting_gun_frame(t_game *game)
 {
     static int frame_counter = 0;
     const int frames_per_switch = 4;
-    const int num_shooting_frames = 4;  // Adjust this based on your actual number of shooting frames
+    const int num_shooting_frames = 4;
 
     if (frame_counter >= frames_per_switch)
     {
@@ -77,7 +37,6 @@ void update_shooting_gun_frame(t_game *game)
         frame_counter = 0;
     }
     frame_counter++;
-    // playAudioFileWithDelay("audio/gun01.wav", 0);
 
 }
 
@@ -106,7 +65,7 @@ void draw_gun_pixel(t_game *game, t_texture *gun_texture, int start_x, int start
     int tex_y = y;
     int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
 
-    if ((unsigned int)color != 0xFF000000) // Skip transparent pixels
+    if ((unsigned int)color != 0xFF000000)
         img_pix_put(&game->img, start_x + x, start_y + y, color);
 }
 

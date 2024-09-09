@@ -21,9 +21,9 @@ void render_land(t_game *game)
 
     if (land_texture->img == NULL)
     {
-        printf("Error: land texture not loaded\n");
+        printf("🚨 Error: land texture not loaded\n");
     }
-    else 
+    else
     {
     // Render the frame
     for (int y = 0; y < game->screen_height; y++)

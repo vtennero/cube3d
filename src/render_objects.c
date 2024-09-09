@@ -68,11 +68,11 @@ t_ray_node* find_ray_node(t_game *game, int stripe)
 void calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY)
 {
     *spriteHeight = abs((int)(game->screen_height / transformY)) * OBJECT_SIZE;
-    
+
     // Apply pitch offset and player height
     int pitchOffset = (int)(game->player->pitch * game->screen_height);
     int heightOffset = (int)(game->player->height * game->screen_height / transformY);
-    
+
     *drawStartY = -(*spriteHeight) / 2 + game->screen_height / 2 + pitchOffset + heightOffset;
     *drawStartY = (*drawStartY < 0) ? 0 : *drawStartY;
     *drawEndY = (*spriteHeight) / 2 + game->screen_height / 2 + pitchOffset + heightOffset;
@@ -95,12 +95,13 @@ void draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int dr
             int heightOffset = (int)(game->player->height * game->screen_height / transformY);
             int d = (y - pitchOffset - heightOffset) * 256 - game->screen_height * 128 + spriteHeight * 128;
             int texY = ((d * obj_texture->height) / spriteHeight) / 256;
-            
+
             // Ensure texY is within bounds
             texY = (texY < 0) ? 0 : (texY >= obj_texture->height) ? obj_texture->height - 1 : texY;
-            
+
             int color = get_pixel_color(texX, texY, obj_texture->width, obj_texture->height, obj_texture->data, obj_texture->tex_bpp, obj_texture->tex_line_len);
-            
+            printf("draw_sprite_stripe: color = %d\n", color);
+
             if (color != -1)
                 img_pix_put(&game->img, stripe, y, color);
         }

@@ -51,32 +51,32 @@ int close_hook(t_game *game)
 int detect_collision(t_game *game, float newX, float newY)
 {
     float buffer = 0.8; // Buffer distance to prevent entering into a wall
-    
+
     // Calculate the direction vector
     float dirX = newX - game->player->position.x;
     float dirY = newY - game->player->position.y;
-    
+
     // Normalize the direction vector
     float length = sqrt(dirX * dirX + dirY * dirY);
     if (length != 0) {
         dirX /= length;
         dirY /= length;
     }
-    
+
     // Check multiple points along the movement path
     for (float t = 0; t <= 1; t += 0.1) {
         int mapX = (int)(game->player->position.x + dirX * (length * t + buffer));
         int mapY = (int)(game->player->position.y + dirY * (length * t + buffer));
 
         // Check if within map bounds and not a wall tile
-        if (mapX < 0 || mapX >= game->map->width || 
-            mapY < 0 || mapY >= game->map->height || 
+        if (mapX < 0 || mapX >= game->map->width ||
+            mapY < 0 || mapY >= game->map->height ||
             game->map->data[mapY][mapX] == TILE_WALL)
         {
             return 1; // Collision detected
         }
     }
-    
+
     return 0; // No collision
 }
 
@@ -87,8 +87,8 @@ int detect_collision(t_game *game, float newX, float newY)
 //     int mapY = (int)(newY + game->player->direction.y * buffer);
 
 //     // Check if within map bounds and not a wall tile
-//     if (mapX >= 0 && mapX < game->map->width && 
-//         mapY >= 0 && mapY < game->map->height && 
+//     if (mapX >= 0 && mapX < game->map->width &&
+//         mapY >= 0 && mapY < game->map->height &&
 //         game->map->data[mapY][mapX] != TILE_WALL)
 //     {
 //         return 0; // No collision
@@ -176,18 +176,14 @@ void handle_key_s(t_game *game)
 
 void handle_key_up(t_game *game)
 {
-    // printf("You just pressed Up!\n");
-    if (game->player->pitch < 1)
+    if (game->player->pitch < 1 && game->bonus)
         game->player->pitch += 0.01;
-    // printf("New pitch %f\n", game->player->pitch);
 }
 
 void handle_key_down(t_game *game)
 {
-    // printf("You just pressed Down!\n");
-    if (game->player->pitch > -1)
+    if (game->player->pitch > -1 && game->bonus)
         game->player->pitch -= 0.01;
-    // printf("New pitch %f\n", game->player->pitch);
 }
 
 void handle_key_a(t_game *game)

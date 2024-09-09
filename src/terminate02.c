@@ -210,11 +210,11 @@ void free_gun_textures(t_game *game)
     {
         for (i = 0; i < game->num_gun_frames; i++)
         {
-            if (game->gun_textures[i].path)
-            {
-                free(game->gun_textures[i].path);
-                game->gun_textures[i].path = NULL;
-            }
+            // if (game->gun_textures[i].path)
+            // {
+            //     free(game->gun_textures[i].path);
+            //     game->gun_textures[i].path = NULL;
+            // }
             if (game->gun_textures[i].img)
             {
                 mlx_destroy_image(game->mlx_ptr, game->gun_textures[i].img);
@@ -228,11 +228,11 @@ void free_gun_textures(t_game *game)
     // Free shooting textures
     for (i = 0; i < MAX_SHOOTING_TEXTURES; i++)
     {
-        if (game->shooting_texture[i].path)
-        {
-            free(game->shooting_texture[i].path);
-            game->shooting_texture[i].path = NULL;
-        }
+        // if (game->shooting_texture[i].path)
+        // {
+        //     free(game->shooting_texture[i].path);
+        //     game->shooting_texture[i].path = NULL;
+        // }
         if (game->shooting_texture[i].img)
         {
             mlx_destroy_image(game->mlx_ptr, game->shooting_texture[i].img);
@@ -260,7 +260,7 @@ void	cleanup(t_game *game)
     free_texture_array(game->enemy_textures,MAX_ENEMY_TEXTURES,game);
     free_texture_array(game->coll_texture,MAX_COLLECTIBLE_TEXTURES,game);
     free_texture_array(game->menu_texture,1,game);
-    // free_texture_array(game->pelican_inside,1,game);
+    free_texture_array(game->pelican_inside,1,game);
 
     free_texture_array(game->land_texture,MAX_LAND_TEXTURES,game);
 
@@ -276,7 +276,7 @@ void	cleanup(t_game *game)
 	free_wall_texture_map_path(game);
     // free(game->strike);
 	clean_map(game);
-	free_array((game->cub_map_array),game->cub_map_row_count*2);
+	// free_array((game->cub_map_array),game->cub_map_row_count*2);
 	clean_rays(game);
 	clean_mlx(game);
     cleanupAudio();
