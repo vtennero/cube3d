@@ -77,27 +77,6 @@ void	free_wall_texture_map_path(t_game *game)
 
 void	clean_map(t_game *game)
 {
-	int	i;
-
-	i = 0;
-	ft_printf("clean_map\n");
-	if (game && game->map)
-	{
-		if (game->map->data)
-		{
-			while (i < game->map->height)
-			{
-				if (game->map->data[i])
-				{
-					free(game->map->data[i]);
-				}
-				i++;
-			}
-			free(game->map->data);
-			game->map->data = NULL;
-		}
-		free(game->map);
-		game->map = NULL;
-	}
-	ft_printf("clean_map DONE\n");
+	free_array((game->cub_map_array),(game->cub_map_row_count)*2);
+	free(game->map);
 }

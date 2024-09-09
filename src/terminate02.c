@@ -276,7 +276,6 @@ void	cleanup(t_game *game)
 	free_wall_texture_map_path(game);
     // free(game->strike);
 	clean_map(game);
-	// free_array((game->cub_map_array),game->cub_map_row_count*2);
 	clean_rays(game);
 	clean_mlx(game);
     cleanupAudio();

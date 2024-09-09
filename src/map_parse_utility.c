@@ -41,6 +41,8 @@ int	count_words_from_array(char **words)
 	{
 		count++;
 	}
+	if (count==0)
+		free_split_result(words);
 	return (count);
 }
 
@@ -119,24 +121,3 @@ int	**initialize_array(int x, int y)
 	}
 	return (cub_map_array);
 }
-
-// int** initialize_array(int x, int y) {
-// 		int i;
-// 		int **cub_map_array;
-
-// 		cub_map_array = (int **)malloc(x * sizeof(int *));
-// 		if (cub_map_array == NULL) {
-// 			// Handle memory allocation failure
-// 			exit(1);
-// 		}
-
-// 		for (i = 0; i < x; i++) {
-// 			cub_map_array[i] = (int *)calloc(y, sizeof(int));
-// 			if (cub_map_array[i] == NULL) {
-// 				// Handle memory allocation failure
-// 				exit(1);
-// 			}
-// 		}
-
-// 		return (cub_map_array);
-// 	}
