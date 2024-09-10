@@ -1,10 +1,14 @@
-
-// texture loading
-// rendering
-// add to render loop
-
-// is close to supplies
-// collection logic, hp increase, audio script
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   supplies_bonus.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/10 11:21:46 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/10 11:21:46 by vitenner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cube3d.h"
 

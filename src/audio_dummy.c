@@ -12,34 +12,32 @@
 
 #include "cube3d.h"
 
-int initializeAudio()
+int	initializeAudio(void)
 {
 	printf("non audio mode on\n");
-	return(0);
+	return (0);
 }
 
-void cleanupAudio()
+void	cleanupAudio(void)
 {
 	printf("non audio mode on\n");
 }
 
-
-int findAvailableSource()
+int	findAvailableSource(void)
 {
 	printf("non audio mode on\n");
-	return(0);
+	return (0);
 }
-int stopAudioFile(const char* filename)
+int	stopAudioFile(const char *filename)
 {
-
 	printf("non audio mode on\n");
 	(void)filename;
-	return(0);
+	return (0);
 }
 
-int playAudioFileWithDelay(const char* filename, float delayInSeconds)
+int	playAudioFileWithDelay(const char *filename, float delayInSeconds)
 {
 	printf("non audio mode on: play file %s\n", filename);
 	(void)delayInSeconds;
-	return(0);
+	return (0);
 }

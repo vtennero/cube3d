@@ -52,19 +52,19 @@ int bonus_game_loop_0(t_game *game)
 
 int bonus_game_loop_1(t_game *game)
 {
-			script_skip_enter(game);
-		handle_key_esc(game);
-		render_opening(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+	script_skip_enter(game);
+	handle_key_esc(game);
+	render_opening(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 	return (0);
 }
 
 int bonus_game_loop_2(t_game *game)
 {
-			script_skip_enter(game);
-		handle_key_esc(game);
-		render_land(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
+	script_skip_enter(game);
+	handle_key_esc(game);
+	render_land(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img.mlx_img, 0, 0);
 	return (0);
 }
 
@@ -75,6 +75,7 @@ int bonus_game_loop_3(t_game *game)
 	script_napalm_enemies(game, 1, 6);
 	script_napalm_player(game, 1, 6);
 	player_burning(game);
+	player_need_stims(game);
 	script_barrage_enemies(game);
 	script_barrage_player(game);
 	script_die(game);

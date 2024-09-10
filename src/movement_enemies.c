@@ -16,33 +16,6 @@
 #define MOVEMENT_SPEED 0.02     // Adjust this to change how far enemies move each step
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 
-void print_enemy_direction(int index, float dx, float dy)
-{
-    const char *direction;
-    
-    if (dx == 0 && dy == 0)
-        direction = "? Nope";
-    else if (dx > 0 && dy == 0)
-        direction = "East";
-    else if (dx < 0 && dy == 0)
-        direction = "West";
-    else if (dx == 0 && dy > 0)
-        direction = "South";
-    else if (dx == 0 && dy < 0)
-        direction = "North";
-    else if (dx > 0 && dy > 0)
-        direction = "Southeast";
-    else if (dx > 0 && dy < 0)
-        direction = "Northeast";
-    else if (dx < 0 && dy > 0)
-        direction = "Southwest";
-    else // dx < 0 && dy < 0
-        direction = "Northwest";
-
-    printf("Enemy %d is moving %s\n", index, direction);
-}
-
-// Function to check if a position is within a wall
 int is_wall(t_game *game, float x, float y)
 {
     int map_x = (int)x;

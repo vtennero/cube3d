@@ -192,25 +192,6 @@ void    eagle_inbound(t_game *game)
 }
 
 
-// void script_skip_enter(t_game *game)
-// {
-//     if (game->change_seq == 1)
-//         {
-//         if (game->game_sequence == 0)
-//         {
-//             reset_game_start_time(game);
-//             stopAudioFile("audio/menu02.mp3");
-//             playAudioFileWithDelay("audio/drop02.mp3", 0);
-//         }
-//         if (game->game_sequence < 3)
-//         {
-//             printf("script_skip_enter: game sequence increasing from %d to %d\n", game->game_sequence, game->game_sequence +1);
-//             game->game_sequence++;
-//         game->change_seq = 0;
-//     }
-//     }
-
-// }
 
 void    barrage_inbound(t_game *game)
 {
@@ -251,42 +232,6 @@ void    play_barrage_shell(t_game *game)
 void init_script_manager(t_game *game) {
     game->script_manager = (t_script_manager){0};
 }
-
-// void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
-//     if (game->script_manager.script_count >= MAX_SCRIPTS) {
-//         printf("Error: Maximum number of scripts reached\n");
-//         return;
-//     }
-
-//     struct timeval now;
-//     gettimeofday(&now, NULL);
-
-//     t_script new_script = {
-//         .trigger_time = {
-//             .tv_sec = now.tv_sec + delay_seconds,
-//             .tv_usec = now.tv_usec
-//         },
-//         .func = func,
-//         .is_active = 1
-//     };
-
-//     game->script_manager.scripts[game->script_manager.script_count++] = new_script;
-// }
-
-// void update_scripts(t_game *game) {
-//     struct timeval now;
-//     gettimeofday(&now, NULL);
-
-//     for (int i = 0; i < game->script_manager.script_count; i++) {
-//         t_script *script = &game->script_manager.scripts[i];
-//         if (script->is_active && 
-//             (now.tv_sec > script->trigger_time.tv_sec || 
-//             (now.tv_sec == script->trigger_time.tv_sec && now.tv_usec >= script->trigger_time.tv_usec))) {
-//             script->func(game);
-//             script->is_active = 0;
-//         }
-//     }
-// }
 
 
 void add_script(t_game *game, ScriptFunction func, int delay_seconds) {

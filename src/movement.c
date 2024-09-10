@@ -86,52 +86,78 @@ void handle_space_shoot(t_game *game)
     }
 }
 
-
 int ft_key_press(int keycode, t_game *game)
 {
     printf("ft_key_press %d\n", keycode);
-    if (keycode < MAX_KEY_CODE)
-    {
-        if (keycode == K_E)
-        {
-            // Only set the state if it's not already set
-            if (game->key_state[K_E] == 0)
-            {
-                game->key_state[K_E] = 1;
-                handle_key_e(game);  // Call the handler immediately
-            }
-        }
-        else if (keycode == K_ENTER)
-        {
-            if (game->key_state[K_ENTER] == 0)
-            {
-                game->key_state[K_ENTER] = 1;
-                handle_key_enter(game);  // Call the handler immediately
-            }
-        }
-        else if (keycode == K_2)
-        {
-            if (game->key_state[K_2] == 0)
-            {
-                game->key_state[K_2] = 1;
-                handle_key_2(game);  // Call the handler immediately
-            }
-        }
-        else if (keycode == K_3)
-        {
-            if (game->key_state[K_3] == 0)
-            {
-                game->key_state[K_3] = 1;
-                handle_key_3(game);  // Call the handler immediately
-            }
-        }
+        if (keycode == K_E && game->key_state[K_E] == 0)
+            handle_key_e(game);
+        else if (keycode == K_ENTER && game->key_state[K_ENTER] == 0)
+            handle_key_enter(game);
+        else if (keycode == K_1 && game->key_state[K_1] == 0)
+            handle_key_1(game);
+        else if (keycode == K_2 && game->key_state[K_2] == 0)
+            handle_key_2(game);
+        else if (keycode == K_3 && game->key_state[K_3] == 0)
+                handle_key_3(game);
         else
-        {
             game->key_state[keycode] = 1;
-        }
-    }
     return (0);
 }
+
+
+// int ft_key_press(int keycode, t_game *game)
+// {
+//     printf("ft_key_press %d\n", keycode);
+//     if (keycode < MAX_KEY_CODE)
+//     {
+//         if (keycode == K_E)
+//         {
+//             // Only set the state if it's not already set
+//             if (game->key_state[K_E] == 0)
+//             {
+//                 game->key_state[K_E] = 1;
+//                 handle_key_e(game);
+//             }
+//         }
+//         else if (keycode == K_ENTER)
+//         {
+//             if (game->key_state[K_ENTER] == 0)
+//             {
+//                 game->key_state[K_ENTER] = 1;
+//                 handle_key_enter(game);
+//             }
+//         }
+//         else if (keycode == K_1)
+//         {
+//             if (game->key_state[K_1] == 0)
+//             {
+//                 game->key_state[K_1] = 1;
+//                 handle_key_1(game);
+//             }
+//         }
+//         else if (keycode == K_2)
+//         {
+//             if (game->key_state[K_2] == 0)
+//             {
+//                 game->key_state[K_2] = 1;
+//                 handle_key_2(game);
+//             }
+//         }
+//         else if (keycode == K_3)
+//         {
+//             if (game->key_state[K_3] == 0)
+//             {
+//                 game->key_state[K_3] = 1;
+//                 handle_key_3(game);
+//             }
+//         }
+//         else
+//         {
+//             game->key_state[keycode] = 1;
+//         }
+//     }
+//     return (0);
+// }
 
 int ft_key_release(int keycode, t_game *game)
 {

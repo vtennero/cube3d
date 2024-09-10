@@ -126,8 +126,8 @@ int get_next_airstrike_frame(t_strike *strike, int offset_index)
 
     int frame = (int)(strike[0].frame_counts[offset_index] / 100) % NUM_AIRSTRIKE_FRAMES;
 
-    printf("Offset %d: Frame count %.2d, Speed %.2f, Current frame %d\n",
-           offset_index, strike[0].frame_counts[offset_index], strike[0].speed_multipliers[offset_index], frame);
+    // printf("Offset %d: Frame count %.2d, Speed %.2f, Current frame %d\n",
+    //        offset_index, strike[0].frame_counts[offset_index], strike[0].speed_multipliers[offset_index], frame);
 
     return frame;
 }
@@ -341,12 +341,12 @@ int get_next_napalm_frame(t_strike *strike, int offset_index)
 {
     strike->frame_counts[offset_index] += (int)(strike->speed_multipliers[offset_index] * 100);
 
-    printf("Offset %d: Frame count %d, Speed %.2f\n",
-           offset_index, strike->frame_counts[offset_index], strike->speed_multipliers[offset_index]);
+    // printf("Offset %d: Frame count %d, Speed %.2f\n",
+    //        offset_index, strike->frame_counts[offset_index], strike->speed_multipliers[offset_index]);
 
     if (strike->frame_counts[offset_index] < 0)
     {
-        printf("Offset %d: Not displaying (negative frame count)\n", offset_index);
+        // printf("Offset %d: Not displaying (negative frame count)\n", offset_index);
         return -1;
     }
 
@@ -354,11 +354,11 @@ int get_next_napalm_frame(t_strike *strike, int offset_index)
 
     if (strike->frame_counts[offset_index] >= NUM_NAPALM_FRAMES * 100)
     {
-        printf("Offset %d: Resetting frame count\n", offset_index);
+        // printf("Offset %d: Resetting frame count\n", offset_index);
         strike->frame_counts[offset_index] = 0;
     }
 
-    printf("Offset %d: Displaying frame %d\n", offset_index, frame);
+    // printf("Offset %d: Displaying frame %d\n", offset_index, frame);
     return frame;
 }
 

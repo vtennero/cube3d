@@ -20,9 +20,5 @@ void	render_respawn(t_game *game)
 		printf("player position: %f %f\n", game->player->position.x, game->player->position.y);
 		respawn_player(game);
 		printf("new player position: %f %f\n", game->player->position.x, game->player->position.y);
-
-		// printf("Deploying replacement...\n");
-		// render_land(game);
-		// game->player->is_dead = 0;
 	}
 }

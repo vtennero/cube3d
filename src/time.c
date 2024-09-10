@@ -36,17 +36,6 @@ int get_current_frame(struct timeval *start_time)
     return (current_frame < MAX_OPENING_TEXTURES) ? current_frame : MAX_OPENING_TEXTURES - 1;
 }
 
-// int get_current_frame_outro(struct timeval *start_time)
-// {
-//     struct timeval current_time;
-//     gettimeofday(&current_time, NULL);
-
-//     long elapsed_microseconds = get_elapsed_microseconds(start_time, &current_time);
-//     int current_frame = (int)(elapsed_microseconds / MICROSECONDS_PER_FRAME);
-
-//     return (current_frame < MAX_OUTRO_TEXTURES) ? current_frame : MAX_OUTRO_TEXTURES - 1;
-// }
-
 int get_current_frame_outro(struct timeval *start_time)
 {
     struct timeval current_time;

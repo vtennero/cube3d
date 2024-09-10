@@ -12,6 +12,17 @@
 
 #include "cube3d.h"
 
+void player_need_stims(t_game *game)
+{
+    int random_value;
+	random_value = random_int(game, 3);
+    if (random_value == 0 && game->player->hp <= 0.25 * MAX_HEALTH)
+    {
+        stopAudioFile("audio/stims00.mp3");
+        playAudioFileWithDelay("audio/stims00.mp3", 0);
+    }
+}
+
 void script_skip_enter(t_game *game)
 {
     // printf("script_skip_enter: game sequence   %d \n", game->game_sequence);
@@ -113,9 +124,6 @@ void script_napalm_enemies(t_game *game, int strike_no, float radius)
     float strikeX = game->strike[strike_no].position.x;
     float strikeY = game->strike[strike_no].position.y;
     
-    // Define the radius for considering an enemy "close"
-    // Assuming each tile is 1.0f x 1.0f, this radius covers the current tile and adjacent tiles
-
     for (int i = 0; i < game->num_enemies; i++)
     {
         if (!game->enemies[i].is_alive)
@@ -124,19 +132,14 @@ void script_napalm_enemies(t_game *game, int strike_no, float radius)
         float enemyX = game->enemies[i].position.x;
         float enemyY = game->enemies[i].position.y;
 
-        // Calculate the distance between the strike and the enemy
         float dx = strikeX - enemyX;
         float dy = strikeY - enemyY;
         float distance = sqrt(dx * dx + dy * dy);
 
-        // Check if the enemy is within the strike radius
         if (distance <= radius)
         {
             game->enemies[i].is_alive = 0;
-            // play_bug_death(game);
             add_script(game, play_bug_death, 0);
-            // Optionally, you can add some visual or sound effect here
-            // printf("Enemy %d struck down!\n", i);
         }
     }
 	}

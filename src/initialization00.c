@@ -51,6 +51,7 @@ int	create_game_struct(t_game **game, int is_bonus)
 	(*game)->current_gun_frame = 0;
 	(*game)->is_moving_fwd = 0;
 	(*game)->script_manager = (t_script_manager){0};
+    set_crosshair_position(*game);
 
 	printf("screen_height: %d\n", (*game)->screen_height);
     printf("screen_width: %d\n", (*game)->screen_width);
@@ -353,8 +354,6 @@ int respawn_player(t_game *game)
 
 int randomize_uncollected_supplies(t_game *game)
 {
-    int supplies_repositioned = 0;
-
     for (int i = 0; i < game->num_supplies; i++) {
         if (game->supplies[i].collected == 0) {
             int x, y;
@@ -368,20 +367,13 @@ int randomize_uncollected_supplies(t_game *game)
                     valid_location_found = 1;
                 }
             }
-
-            game->supplies[i].position.x = (float)x + 0.5f; // Center in the tile
-            game->supplies[i].position.y = (float)y + 0.5f; // Center in the tile
-            game->supplies[i].collected = 0; // Mark as uncollected
-            game->supplies[i].found = 0; // Mark as not found
-            supplies_repositioned++;
-
-            // Print the valid location found and the extraction location
-            printf("Supply placed at (%d, %d). Extraction at (%.1f, %.1f)\n",
-                   x, y, game->extract[0].position.x, game->extract[0].position.y);
+            game->supplies[i].position.x = (float)x + 0.5f;
+            game->supplies[i].position.y = (float)y + 0.5f;
+            game->supplies[i].collected = 0;
+            game->supplies[i].found = 0;
         }
     }
-
-    return supplies_repositioned;
+    return 0;
 }
 
 int	create_collectibles(t_game *game)
@@ -389,8 +381,6 @@ int	create_collectibles(t_game *game)
 	printf("initializing collectibles\n");
 	game->num_collectibles = 1;
 	randomize_uncollected_collectibles(game);
-	// game->collectibles[0].position.x = 20.5f;
-	// game->collectibles[0].position.y = 11.5f;
 	game->collectibles[0].collected = 0;
 	game->collectibles[0].found = 0;
 	printf("initialized collectibles\n");
@@ -400,8 +390,6 @@ int	create_collectibles(t_game *game)
 int	create_extraction(t_game *game)
 {
 	printf("initializing extraction\n");
-	// game->extract[0].position.x = 10.5f;
-	// game->extract[0].position.y = 11.5f;
 	randomize_extract_position(game);
 	game->extract[0].is_activated = 0;
 	game->extract[0].is_available = 0;
@@ -422,7 +410,7 @@ int randomize_enemy_positions(t_game *game)
         do {
             x = random_int(game, game->map->width);
             y = random_int(game, game->map->height);
-        } while (game->map->data[y][x] == 1); // Keep trying until we find a non-wall position
+        } while (game->map->data[y][x] == 1);
 
         game->enemies[i].position.x = (float)x + 0.5f; // Center in the tile
         game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile

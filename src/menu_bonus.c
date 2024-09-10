@@ -12,61 +12,47 @@
 
 #include "cube3d.h"
 
-// void handle_key_enter(t_game *game)
-// {
-//     if (game->key_state[K_ENTER] == 1)
-//     {
-//         printf("script_skip_enter: Pressed Enter!\n");
-//         game->change_seq = 1;
-//         // adding script
-//         add_script(game, script_skip_enter, 1);
-//     }
-// }
-
 void handle_key_enter(t_game *game)
 {
-    if (game->key_state[K_ENTER] == 1)
-    {
-        // printf("handle_key_enter: game->game_sequence = %d\n", game->game_sequence);
-        if (game->game_sequence == 0)
-        {
-            reset_game_start_time(game);
-            stopAudioFile("audio/menu02.mp3");
-            playAudioFileWithDelay("audio/drop02.mp3", 0);
-        }
-        // if (game->game_sequence < 3)
-            game->change_seq = 1;
-            // game->game_sequence++;
-    }
+	game->key_state[K_ENTER] = 1;
+	// printf("handle_key_enter: game->game_sequence = %d\n", game->game_sequence);
+	if (game->game_sequence == 0)
+	{
+		reset_game_start_time(game);
+		stopAudioFile("audio/menu02.mp3");
+		playAudioFileWithDelay("audio/drop02.mp3", 0);
+	}
+	// if (game->game_sequence < 3)
+		game->change_seq = 1;
+		// game->game_sequence++;
 }
 
-void render_menu(t_game *game)
+void	render_menu(t_game *game)
 {
-    t_texture *menu_texture = &game->menu_texture[0];
-    int x, y;
-    int color;
+	int	x;
+	int	y;
+	int	color;
+	int	tex_x;
+	int	tex_y;
 
-    if (menu_texture->img == NULL)
-    {
-        printf("Error: Menu texture not loaded\n");
-        return;
-    }
-
-    // printf("Menu texture dimensions: %dx%d\n", menu_texture->width, menu_texture->height);  // Debug print
-    // printf("game->screen_width game->screen_height %dx%d\n", game->screen_width, game->screen_height);  // Debug print
-
-    for (y = 0; y < game->screen_height; y++)
-    {
-		// printf("y loop\n");
-        for (x = 0; x < game->screen_width; x++)
-        {
-			// printf("x loop\n");
-            int tex_x = x * menu_texture->width / game->screen_width;
-            int tex_y = y * menu_texture->height / game->screen_height;
-            color = get_texture_color(menu_texture, tex_x, tex_y);
-            // if (x == 0 && y == 0)
-            //     printf("First pixel color: 0x%X\n", color);  // Debug print
-            img_pix_put(&game->img, x, y, color);
-        }
-    }
+	if (game->menu_texture[0].img == NULL)
+	{
+		printf("Error: Menu texture not loaded\n");
+		return ;
+	}
+	y = 0;
+	while (y < game->screen_height)
+	{
+		x = 0;
+		while (x < game->screen_width)
+		{
+			tex_x = x * game->menu_texture[0].width / game->screen_width;
+			tex_y = y * game->menu_texture[0].height / game->screen_height;
+			color = get_texture_color(&game->menu_texture[0], tex_x, tex_y);
+			img_pix_put(&game->img, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
+
