@@ -107,11 +107,22 @@
 #define SECOND_LOOP_REPETITIONS 40
 
 
+// loading
+#define PROGRESS_BAR_WIDTH 30
+#define MAX_TASK_NAME_LENGTH 30
+#define TOTAL_PREFIX_LENGTH 40
+
+// audio
+
+
+#define MAX_SOURCES 50
+
 /*
 ** ================== STRUCTURES ==================
 */
 
 typedef struct s_game t_game;
+
 
 // Now we can use t_game in the ScriptFunction typedef
 typedef void (*ScriptFunction)(t_game *game);
@@ -361,10 +372,14 @@ typedef struct s_health_bar
 	int height;
 } t_health_bar;
 
+
+
+
+
+
 typedef struct s_game
 {
-
-	t_script_manager script_manager;
+	t_script_manager	script_manager;
 	void				*mlx_ptr;
 	void				*win_ptr;
 	t_player			*player;

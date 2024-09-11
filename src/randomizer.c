@@ -24,9 +24,7 @@ unsigned long long xorshift64(unsigned long long *state)
 
 void initialize_game_seed(t_game *game)
 {
-    // You can set this to any arbitrary large number
     game->random_seed = 12345678901234567ULL;
-    printf("initialize_game_seed completed\n");
 }
 
 unsigned long long next_random(t_game *game)
@@ -44,7 +42,7 @@ float random_float(t_game *game)
 {
     // Generate a random 32-bit integer
     unsigned int rand_int = (unsigned int)(next_random(game) & 0xFFFFFFFF);
-    
+
     // Convert to float in range [0, 1)
     return (float)rand_int / (float)0x100000000;
 }

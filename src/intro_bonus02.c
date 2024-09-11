@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:55:30 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 13:55:47 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:53:07 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ void	initialize_randomized_frames(t_game *game)
 
 
 
-void	play_audio_on_frame(int frame_to_render)
+void	play_audio_on_frame(t_game *game, int frame_to_render)
 {
 	if (frame_to_render == 5)
-		playAudioFileWithDelay("audio/drop01.mp3", 3);
+		play_audio_file(game, "audio/drop01.mp3", 3);
 	if (frame_to_render == 30)
-		playAudioFileWithDelay("audio/drop03.mp3", 10);
+		play_audio_file(game, "audio/drop03.mp3", 10);
 }
 
 int	prepare_second_loop(t_game *game)

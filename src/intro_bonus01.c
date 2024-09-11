@@ -17,7 +17,7 @@ int	handle_first_loop(t_game *game)
 	int	frame_to_render;
 
 	frame_to_render = get_current_frame(&game->opening_start_time);
-	play_audio_on_frame(frame_to_render);
+	play_audio_on_frame(game, frame_to_render);
 	if (frame_to_render >= MAX_OPENING_TEXTURES - 1)
 		frame_to_render = prepare_second_loop(game);
 	return (frame_to_render);

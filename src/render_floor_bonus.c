@@ -41,7 +41,6 @@ int get_floor_texture_color(t_texture *texture, int x, int y)
 
 void initialize_floor_texture_weights(t_game *game)
 {
-    // float weights[] = {0.5, 0, 0, 0, 0, 0, 0.5, 0};
     float weights[] = {0.20, 0.20, 0.20, 0.20, 0.05, 0.05, 0.05, 0.05};
     game->num_floor_textures = MAX_FLOOR_TEXTURES;
 
@@ -55,9 +54,7 @@ void initialize_floor_texture_weights(t_game *game)
     {
         game->floor_texture_weights[i].weight = weights[i] / total_weight;
         game->floor_texture_weights[i].texture_index = i;
-        printf("Texture %d weight: %.4f\n", i, game->floor_texture_weights[i].weight);
     }
-    printf("initialize_floor_texture_weights completed\n");
 }
 
 int select_weighted_texture(t_game *game)
@@ -83,8 +80,6 @@ int select_weighted_texture(t_game *game)
 
 void initialize_floor_texture_map(t_game *game)
 {
-    printf("Entering initialize_floor_texture_map\n");
-    printf("Map dimensions: width=%d, height=%d\n", game->map->width, game->map->height);
 
     if (game->floor_texture_map != NULL)
     {
@@ -125,8 +120,6 @@ void initialize_floor_texture_map(t_game *game)
             // printf("Assigned texture %d at position (%d, %d)\n", selected_texture, x, y);
         }
     }
-
-    printf("initialize_floor_texture_map completed successfully\n");
 }
 
 
@@ -145,7 +138,7 @@ void render_floor_pixel(t_game *game, int x, int y, float floorX, float floorY)
 
             float fracX = floorX - cellX;
             float fracY = floorY - cellY;
-            
+
             // Use fmodf to ensure we're always within texture bounds
             int tx = (int)(fmodf(fracX * current_texture->width, current_texture->width));
             int ty = (int)(fmodf(fracY * current_texture->height, current_texture->height));
@@ -221,11 +214,11 @@ void render_floor(t_game *game)
                         float fracY = floorY - floorf(floorY);
                         float tx = fracX * current_texture->width;
                         float ty = fracY * current_texture->height;
-                        
+
                         // Ensure tx and ty are always within texture bounds
                         tx = fmodf(tx, current_texture->width);
                         ty = fmodf(ty, current_texture->height);
-                        
+
                         if (tx < 0) tx += current_texture->width;
                         if (ty < 0) ty += current_texture->height;
 

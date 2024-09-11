@@ -14,7 +14,6 @@
 
 int initgame(t_game **game)
 {
-    printf("initgame\n");
     create_map(*game);
     create_player(*game);
     if ((*game)->bonus)
@@ -25,6 +24,7 @@ int initgame(t_game **game)
         create_enemies(*game);
         create_supplies(*game);
         create_strike(*game);
+        initialize_audio(*game);
     }
     else
         printf("*** CUB3D ***\n");
@@ -34,7 +34,6 @@ int initgame(t_game **game)
 
 int	create_game_struct(t_game **game, int is_bonus)
 {
-	printf("initializing gamestruct\n");
 	*game = ft_calloc(1, sizeof(t_game));
 	if (*game == NULL)
 		return (-1);
@@ -53,9 +52,6 @@ int	create_game_struct(t_game **game, int is_bonus)
 	(*game)->script_manager = (t_script_manager){0};
     set_crosshair_position(*game);
 
-	printf("screen_height: %d\n", (*game)->screen_height);
-    printf("screen_width: %d\n", (*game)->screen_width);
-	printf("initialized gamestruct\n");
 	return (0);
 }
 
@@ -170,13 +166,11 @@ int create_strike(t_game *game)
         }
     }
 
-    printf("Initialized %d strikes\n", MAX_STRIKES);
     return (1);
 }
 
 int	create_player(t_game *game)
 {
-	printf("initializing player\n");
 	// Allocate memory for the player structure
 	t_player *player = malloc(sizeof(t_player));
 	if (player == NULL)
@@ -232,7 +226,6 @@ int	create_player(t_game *game)
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;
-	printf("initialized player\n");
 	return (0);
 }
 
@@ -325,10 +318,10 @@ int respawn_player(t_game *game)
 {
     game->player->is_burning = 0;
     game->player->hp = MAX_HEALTH;
-    stopAudioFile("audio/burn00.mp3");
-    stopAudioFile("audio/burn01.mp3");
-    stopAudioFile("audio/burn02.mp3");
-    stopAudioFile("audio/burn03.mp3");
+    stop_audio_file(game, "audio/burn00.mp3");
+    stop_audio_file(game, "audio/burn01.mp3");
+    stop_audio_file(game, "audio/burn02.mp3");
+    stop_audio_file(game, "audio/burn03.mp3");
         if (game->player->is_dead == 1)
         {
             int x, y;
@@ -379,23 +372,19 @@ int randomize_uncollected_supplies(t_game *game)
 
 int	create_collectibles(t_game *game)
 {
-	printf("initializing collectibles\n");
 	game->num_collectibles = 1;
 	randomize_uncollected_collectibles(game);
 	game->collectibles[0].collected = 0;
 	game->collectibles[0].found = 0;
-	printf("initialized collectibles\n");
 	return (0);
 }
 
 int	create_extraction(t_game *game)
 {
-	printf("initializing extraction\n");
 	randomize_extract_position(game);
 	game->extract[0].is_activated = 0;
 	game->extract[0].is_available = 0;
 	game->extract[0].is_landing = 0;
-	printf("initialized extraction\n");
 	return (0);
 }
 
@@ -403,7 +392,6 @@ int	create_extraction(t_game *game)
 
 int randomize_enemy_positions(t_game *game)
 {
-    printf("Randomizing enemy positions\n");
     int i, x, y;
 
     for (i = 0; i < game->num_enemies; i++)
@@ -417,7 +405,6 @@ int randomize_enemy_positions(t_game *game)
         game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile
     }
 
-    printf("Enemy positions randomized\n");
     return (0);
 }
 
@@ -472,7 +459,6 @@ int calculate_supplies(t_game *game)
 
 int create_enemies(t_game *game)
 {
-	printf("initializing enemies\n");
     int i;
     // float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
 
@@ -493,18 +479,13 @@ int create_enemies(t_game *game)
     {
         game->enemies[i].is_alive = 1;
     }
-	printf("initialized enemies\n");
 	randomize_enemy_positions(game);
-	printf("randomized enemies\n");
     return (0);
 }
 
 int	create_supplies(t_game *game)
 {
-	printf("initializing supplies\n");
 	game->num_supplies = calculate_supplies(game);
-    printf("game->num_supplies %d\n", game->num_supplies);
 	randomize_uncollected_supplies(game);
-	printf("initialized supplies\n");
 	return (0);
 }

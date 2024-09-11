@@ -26,10 +26,10 @@ void clean_mlx(t_game *game)
     printf("clean_mlx\n");
     if (game->img.mlx_img)
         mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
-    
+
     if (game->win_ptr)
         mlx_destroy_window(game->mlx_ptr, game->win_ptr);
-    
+
     if (game->mlx_ptr)
     {
         mlx_destroy_display(game->mlx_ptr);
@@ -50,7 +50,7 @@ void clean_texture(t_texture *textures, int num_textures)
             free(textures[i].img);
         if (textures[i].data)
             free(textures[i].data);
-        
+
         // Reset all members to ensure clean state
         textures[i].path = NULL;
         textures[i].img = NULL;
@@ -118,7 +118,7 @@ void	clean_rays(t_game *game)
     int ray_count = 0;
 
     // printf("Starting to free ray list\n");
-    
+
     if (game == NULL)
     {
         printf("Error: game pointer is NULL\n");
@@ -192,7 +192,7 @@ void free_texture_array(t_texture *texture_array, int num_items, t_game *game)
             mlx_destroy_image(game->mlx_ptr, texture_array[i].img);
             texture_array[i].img = NULL;
         }
-        // Note: We don't free texture_array[i].data separately because 
+        // Note: We don't free texture_array[i].data separately because
         // it's typically managed by MLX and freed by mlx_destroy_image
     }
     printf("free_texture_array DONE\n");
@@ -278,12 +278,12 @@ void	cleanup(t_game *game)
 	clean_map(game);
 	clean_rays(game);
 	clean_mlx(game);
-    cleanupAudio();
+    cleanup_audio(game);
 	free(game);
 
 
 
-  
+
 
 
 

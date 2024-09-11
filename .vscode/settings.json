@@ -17,7 +17,8 @@
 		"cube3d_bonus.h": "c",
 		"ios": "c",
 		"libft.h": "c",
-		"mlx.h": "c"
+		"mlx.h": "c",
+		"stdio.h": "c"
 	},
 	"makefile.configureOnOpen": false
 }
