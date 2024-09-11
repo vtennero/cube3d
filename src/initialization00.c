@@ -168,6 +168,33 @@ int create_strike(t_game *game)
 
     return (1);
 }
+void set_player_direction(t_game *game,t_player *player)
+{
+	player->direction.x = 0.0f;
+	player->direction.y = 0.0f;
+	player->plane.x = 0.0f;
+	player->plane.y = 0.0f;
+	if (game->cub_player_o==2)
+	{
+		player->direction.y = -1.0f;
+		player->plane.x = 0.66f;
+	}
+	if (game->cub_player_o==3)
+	{
+		player->direction.x = 1.0f;
+		player->plane.y = 0.66f;
+	}
+	if (game->cub_player_o==4)
+	{
+		player->direction.y = 1.0f;
+		player->plane.x = -0.66f;
+	}
+	if (game->cub_player_o==5)
+	{
+		player->direction.x = -1.0f;
+		player->plane.y = -0.66f;
+	}
+}
 
 int	create_player(t_game *game)
 {
@@ -183,33 +210,12 @@ int	create_player(t_game *game)
 	// Initialize player position
 	player->position.x = game->cub_player_y;
 	player->position.y = game->cub_player_x;
+	set_player_direction(game,player);
+  
+
+ 
 
 
-
-    // to wrap in a function
-    // Facing west (your original working setup)
-    player->direction.x = -1.0f;
-    player->direction.y = 0.0f;
-    player->plane.x = 0.0f;
-    player->plane.y = -0.66f;
-
-    // // Facing south (what we just set up)
-    // player->direction.x = 0.0f;
-    // player->direction.y = -1.0f;
-    // player->plane.x = 0.66f;
-    // player->plane.y = 0.0f;
-
-    // // Facing east
-    // player->direction.x = 1.0f;
-    // player->direction.y = 0.0f;
-    // player->plane.x = 0.0f;
-    // player->plane.y = 0.66f;
-
-    // // Facing north
-    // player->direction.x = 0.0f;
-    // player->direction.y = 1.0f;
-    // player->plane.x = -0.66f;
-    // player->plane.y = 0.0f;
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)

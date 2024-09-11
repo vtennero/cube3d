@@ -43,7 +43,7 @@ int	check_map_boundaries(t_game *game)
 			game->cub_map_row_count, (game->cub_map_col_count + 1) / 2);
 	if (!is_surrounded)
 	{
-		printf("Map isn't surrounded by wall");
+		ft_printf("Error\nMap isn't surrounded by wall");
 		return (-1);
 	}
 	return (0);
