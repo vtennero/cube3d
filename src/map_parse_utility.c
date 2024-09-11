@@ -80,7 +80,7 @@ int	check_invalid_rgb(char *word)
 		if (!ft_isinteger(words[count]) || ft_atoi(words[count]) < 0
 			|| ft_atoi(words[count]) > 255)
 		{
-			printf("Error\nRGB value must be between 0 and 255\n");
+			ft_printf("Error\nRGB value must be between 0 and 255\n");
 			free_split_result(words);
 			return (1);
 		}
@@ -106,7 +106,7 @@ int	**initialize_array(int x, int y)
 	cub_map_array = (int **)malloc(x * sizeof(int *));
 	if (cub_map_array == NULL)
 	{
-		ft_printf("Memory allocation to cub_map_array Failed!");
+		ft_printf("Error\nMemory allocation to cub_map_array Failed!");
 		exit(1);
 	}
 	while (i < x)
@@ -114,7 +114,7 @@ int	**initialize_array(int x, int y)
 		cub_map_array[i] = (int *)ft_calloc(y, sizeof(int));
 		if (cub_map_array[i] == NULL)
 		{
-			ft_printf("Memory allocation to cub_map_array[i] Failed!");
+			ft_printf("Error\nMemory allocation to cub_map_array[i] Failed!");
 			exit(1);
 		}
 		i++;

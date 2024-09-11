@@ -60,27 +60,23 @@ void create_map_from_cub(t_game *game)
     t_map *map = malloc(sizeof(t_map));
     if (map == NULL)
     {
-        fprintf(stderr, "Memory allocation failed for map structure.\n");
+        ft_printf("Error\nMemory allocation failed for map structure.\n");
         exit(1);
     }
-    printf("Allocated memory for the map structure\n");
+    ft_printf("Allocated memory for the map structure\n");
 	map->width = ((game->cub_map_col_count + 1) / 2);
 	map->height = game->cub_map_row_count;
-    printf("Set the dimensions\n");
 	map->data = game->cub_map_array;
     game->map = map;
-	printf("copied the static map to the allocated map\n");
-
-
 }
 
 
 int	create_map(t_game *game)
 {
 	// Implement map creation and initialization
-	printf("initializing map\n");
+	ft_printf("initializing map\n");
 	create_map_from_cub(game);
-	printf("initialized map\n");
+	ft_printf("initialized map\n");
 	return (0);
 }
 	int print_2d_array(t_game *game,int ** array_to_print)
@@ -106,25 +102,15 @@ int	create_map(t_game *game)
 int parse_map(t_game *game,char *cub_filepath)
 {
 	game->cub_filepath=cub_filepath;
-	printf("%s",cub_filepath);
-	printf("%s",game->cub_filepath);
 	if (read_cub_texture_and_analyze_map(game)==-1)
 		return -1;
 	if (texture_error_handling(game) == -1)
 		return -1;
 	parse_floor_sky_rgb(game);
-	printf("Sky Red is %d,Green is %d, Blue is %d, and hex int is %d",game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue,game->sky_rgb[0].hex_color);
-	printf("Floor Red is %d,Green is %d, Blue is %d, and hex int is %d",game->floor_rgb[0].red,game->floor_rgb[0].green,game->floor_rgb[0].blue,game->floor_rgb[0].hex_color);
-
-	printf("\nTotal Cub line count is %d",game->cub_line_count);
-	printf("\nTotal Map line count is %d",game->cub_map_row_count);
-	printf("\nTotal Map col count is %d",game->cub_map_col_count);
 	if (parse_map_to_array(game) == -1 )
 		return -1;
 	if (check_map_boundaries(game) ==-1)
 		return -1;
-    // Implement map creation and initialization
-
     return 0;
 }
 
