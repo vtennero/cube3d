@@ -65,7 +65,7 @@ void trigger_landing(t_game *game)
 
     // play this is pelican one mp3
     // stopAudioFile("audio/menu.mp3");
-    
+
 }
 void trigger_prelanding(t_game *game)
 {
@@ -97,14 +97,14 @@ void play_gun_sound(t_game *game)
 void    trigger_supply_take(t_game *game)
 {
     game->player->taking_supplies = 1;
-    // crazy mode 
+    // crazy mode
 	// game->player->direction.x = 0.2f;
 }
 
 void    cancel_supply_take(t_game *game)
 {
     game->player->taking_supplies = 0;
-    // crazy mode 
+    // crazy mode
 	// game->player->direction.x = -1.0f;
 
 }
@@ -124,12 +124,12 @@ void play_random_eagle_call(t_game *game)
 {
     // Generate a random number between 0 and 5
     int random_call = random_int(game, 6);
-    
+
     // Create the audio file name based on the random number
     char audio_file[] = "audio/eaglec00.mp3";
     audio_file[12] = '0' + random_call / 10;
     audio_file[13] = '0' + random_call % 10;
-    
+
     // Play the selected audio file with no delay
     playAudioFileWithDelay(audio_file, 0);
 }
@@ -234,7 +234,8 @@ void init_script_manager(t_game *game) {
 }
 
 
-void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
+void add_script(t_game *game, ScriptFunction func, int delay_seconds)
+{
     if (game->script_manager.active_script_count >= MAX_SCRIPTS) {
         printf("Error: Maximum number of active scripts reached\n");
         return;
@@ -268,14 +269,15 @@ void add_script(t_game *game, ScriptFunction func, int delay_seconds) {
     game->script_manager.active_script_count++;
 }
 
-void update_scripts(t_game *game) {
+void update_scripts(t_game *game)
+{
     struct timeval now;
     gettimeofday(&now, NULL);
 
     for (int i = 0; i < game->script_manager.script_count; i++) {
         t_script *script = &game->script_manager.scripts[i];
-        if (script->is_active && 
-            (now.tv_sec > script->trigger_time.tv_sec || 
+        if (script->is_active &&
+            (now.tv_sec > script->trigger_time.tv_sec ||
             (now.tv_sec == script->trigger_time.tv_sec && now.tv_usec >= script->trigger_time.tv_usec))) {
             script->func(game);
             script->is_active = 0;

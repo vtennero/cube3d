@@ -219,8 +219,9 @@ int	create_player(t_game *game)
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)
-	// player->height = 0.0f;
-	player->height = 0.2f;
+	player->height = 0.0f;
+    if (game->bonus == 1)
+	    player->height = 0.2f;
 	player->pitch = 0.0f;
 	player->hp = MAX_HEALTH;
 	player->is_hit = 0;

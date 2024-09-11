@@ -15,16 +15,13 @@
 void handle_key_enter(t_game *game)
 {
 	game->key_state[K_ENTER] = 1;
-	// printf("handle_key_enter: game->game_sequence = %d\n", game->game_sequence);
 	if (game->game_sequence == 0)
 	{
 		reset_game_start_time(game);
 		stopAudioFile("audio/menu02.mp3");
 		playAudioFileWithDelay("audio/drop02.mp3", 0);
 	}
-	// if (game->game_sequence < 3)
 		game->change_seq = 1;
-		// game->game_sequence++;
 }
 
 void	render_menu(t_game *game)

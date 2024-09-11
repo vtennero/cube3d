@@ -25,65 +25,75 @@ BONUS_NAME = cub3D_bonus
 MAIN = main.c
 BONUS_MAIN = main_bonus.c
 
-# Shared source files
-SHARED_SRCS = debug_utils.c \
+SHARED_SRCS = \
+audio_dummy.c \
+check_map_boundaries.c \
+check_map_boundaries_helper.c \
+debug_utils.c \
+enemies_attack_bonus00.c \
+enemies_attack_bonus01.c \
+enemies_attack_bonus02.c \
+enemies_movement_bonus00.c \
+extract_bonus.c \
+flood_fill_helper.c \
+gameplay_item_collection_bonus00.c \
+gameplay_movement00.c \
+gameplay_movement_bonus00.c \
+gameplay_movement_bonus01.c \
 initialization00.c \
-initialization01_bonus.c \
-initialization02_bonus.c \
-initialization03_bonus.c \
-render.c \
-render_floor.c \
-render_floor_bonus.c \
-render_walls.c \
-render_walls_bonus.c \
-render_sky.c \
-render_sky_bonus.c \
-render_gun.c \
-render_collectibles.c \
-render_objects.c \
-supplies_bonus.c \
-render_enemies.c \
+initialization_bonus00.c \
+initialization_bonus01.c \
+initialization_bonus02.c \
+interface_crosshair_bonus.c \
+interface_health_bar_bonus.c \
+intro_bonus00.c \
+intro_bonus01.c \
+intro_bonus02.c \
+map_parse_utility.c \
+menu_bonus.c \
+movement_mouse.c \
+napalm_bonus.c \
+outro_bonus.c \
+parse_map.c \
+pelican_inside_bonus.c \
+randomizer.c \
+randomizer_bonus00.c \
 raycasting.c \
 raycasting_utils.c \
-movement.c \
-movement_mouse.c \
-movement_enemies.c \
-textures00.c \
-textures01_bonus.c \
-textures02_bonus.c \
-textures03_bonus.c \
-textures04_bonus.c \
-movement_player_reloc.c \
-randomizer.c \
-tmp_staticmap.c \
-keymap_collectibles.c \
-terminate01.c \
-terminate02.c \
-terminate03.c \
-menu_bonus.c \
-opening_bonus.c \
-land_bonus.c \
-outro_bonus.c \
-time.c \
-extract_bonus.c \
+render.c \
+render_bonus00.c \
+render_bonus01.c \
+render_bonus02.c \
+render_bonus03.c \
+render_bonus04.c \
+render_collectibles.c \
+render_enemies.c \
+render_floor.c \
+render_floor_bonus.c \
+render_gun.c \
+render_objects.c \
+render_sky.c \
+render_sky_bonus.c \
+render_walls.c \
+render_walls_bonus.c \
 respawn_bonus.c \
 scripts.c \
 scripts_static.c \
-enemies_hit_bonus.c \
 strike_bonus.c \
-check_map_boundaries.c \
-check_map_boundaries_helper.c \
-flood_fill_helper.c\
-map_parse_utility.c \
-parse_map.c  \
+supplies_bonus.c \
+terminate01.c \
+terminate02.c \
+terminate03.c \
 texture_parse.c \
 texture_parse_02.c \
-pelican_inside_bonus.c \
-health_bar_bonus.c \
-crosshair_bonus.c \
-audio_dummy.c \
+textures00.c \
+textures_load_bonus00.c \
+textures_load_bonus01.c \
+textures_load_bonus02.c \
+textures_load_bonus03.c \
+textures_load_bonus04.c \
+time.c \
 # audio_bonus.c \
-
 
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)

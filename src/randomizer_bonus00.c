@@ -1,12 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_collision_bonus.c                         :+:      :+:    :+:   */
+/*   randomizer_bonus00.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 17:45:08 by toto              #+#    #+#             */
-/*   Updated: 2024/08/11 17:45:08 by toto             ###   ########.fr       */
+/*   Created: 2024/09/11 15:51:45 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/11 15:52:18 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cube3d.h"
+
+int	random_0_to_3(t_game *game)
+{
+	(void)game;
+	return (random_int(game, 4));
+}

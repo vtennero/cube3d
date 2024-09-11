@@ -35,12 +35,12 @@ float calc_rotation_angle(int dx, float speed)
 	return dx * speed;
 }
 
-void rotate_vector(float *x, float *y, float angle)
-{
-	float old_x = *x;
-	*x = old_x * cos(angle) - *y * sin(angle);
-	*y = old_x * sin(angle) + *y * cos(angle);
-}
+// void rotate_vector(float *x, float *y, float angle)
+// {
+// 	float old_x = *x;
+// 	*x = old_x * cos(angle) - *y * sin(angle);
+// 	*y = old_x * sin(angle) + *y * cos(angle);
+// }
 
 void rotate_player(t_game *game, float angle)
 {

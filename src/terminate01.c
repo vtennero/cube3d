@@ -18,7 +18,9 @@ void handle_key_esc(t_game *game)
 		cleanup(game);
 }
 
-void handle_cross_key(t_game *game)
+int close_hook(t_game *game)
 {
-	cleanup(game);
+    ft_printf("Close button clicked, exiting...\n");
+    cleanup(game);
+    return (0);
 }

@@ -218,7 +218,7 @@ void	print_alive_enemies(t_game *game)
 void print_enemy_direction(int index, float dx, float dy)
 {
     const char *direction;
-    
+
     if (dx == 0 && dy == 0)
         direction = "? Nope";
     else if (dx > 0 && dy == 0)
@@ -239,4 +239,43 @@ void print_enemy_direction(int index, float dx, float dy)
         direction = "Northwest";
 
     printf("Enemy %d is moving %s\n", index, direction);
+}
+
+void print_frame_info(int frame_to_render)
+{
+    printf("render opening frame to render %d\n", frame_to_render);
+}
+
+const char *get_cardinal_direction(float x, float y)
+{
+    float angle = atan2(y, x); // Get angle in radians from x-axis
+    if (angle < 0)
+    {
+        angle += 2 * M_PI; // Normalize angle to be between 0 and 2*pi
+    }
+
+    // Define angle thresholds for cardinal directions
+    const float pi_8 = M_PI / 8; // Pi divided by 8 (22.5 degrees in radians)
+    if (angle < pi_8 || angle > 15 * pi_8)
+        return "East";
+    else if (angle < 3 * pi_8)
+        return "North-East";
+    else if (angle < 5 * pi_8)
+        return "North";
+    else if (angle < 7 * pi_8)
+        return "North-West";
+    else if (angle < 9 * pi_8)
+        return "West";
+    else if (angle < 11 * pi_8)
+        return "South-West";
+    else if (angle < 13 * pi_8)
+        return "South";
+    else
+        return "South-East";
+}
+void print_movement_direction(t_game *game)
+{
+	if (game->player->direction.y < 0 && fabs(game->player->direction.y) > fabs(game->player->direction.x)) {
+		printf("You are moving north\n");
+	}
 }

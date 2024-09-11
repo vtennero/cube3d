@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   crosshair_bonus.c                                  :+:      :+:    :+:   */
+/*   interface_crosshair_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 12:05:46 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/09 12:12:50 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/11 14:18:02 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/11 14:18:02 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void draw_dot(t_game *game, t_vector2d center)
         x = center.x - DOT_RADIUS;
         while (x <= center.x + DOT_RADIUS)
         {
-            if ((x - center.x) * (x - center.x) + 
+            if ((x - center.x) * (x - center.x) +
                 (y - center.y) * (y - center.y) <= DOT_RADIUS * DOT_RADIUS)
             {
                 img_pix_put(&game->img, x, y, CROSSHAIR_COLOR);
