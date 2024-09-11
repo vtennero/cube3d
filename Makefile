@@ -34,7 +34,6 @@ enemies_attack_bonus01.c \
 enemies_attack_bonus02.c \
 enemies_movement_bonus00.c \
 extract_bonus.c \
-flood_fill_helper.c \
 gameplay_item_collection_bonus00.c \
 gameplay_movement00.c \
 gameplay_movement_bonus00.c \
@@ -69,11 +68,10 @@ render_bonus03.c \
 render_bonus04.c \
 render_collectibles.c \
 render_enemies.c \
-render_floor.c \
 render_floor_bonus.c \
 render_gun.c \
 render_objects.c \
-render_sky.c \
+render_sky_floor.c \
 render_sky_bonus.c \
 render_walls.c \
 render_walls_bonus.c \
