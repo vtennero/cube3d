@@ -14,95 +14,91 @@
 
 void load_gun_textures(t_game *game)
 {
-    game->gun_textures = malloc(sizeof(t_texture) * MAX_GUN_TEXTURES);
-    char path[] = "textures/gun/frame00.xpm";
-    char *digits = &path[18];
-    int frame = 1;
+	game->gun_textures = malloc(sizeof(t_texture) * MAX_GUN_TEXTURES);
+	char path[] = "textures/gun/frame00.xpm";
+	char *digits = &path[18];
+	int frame = 1;
 
-    while (frame <= MAX_GUN_TEXTURES)
-    {
-        update_progress_bar(frame, MAX_GUN_TEXTURES, "Loading gun textures");
-
-        digits[0] = '0' + (frame / 10);
-        digits[1] = '0' + (frame % 10);
-
-        game->gun_textures[frame - 1].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->gun_textures[frame - 1].width, &game->gun_textures[frame - 1].height);
-        if (game->gun_textures[frame - 1].img == NULL)
-        {
-            game->num_gun_frames = frame - 1;
-            break;
-        }
-
-        game->gun_textures[frame - 1].data = mlx_get_data_addr(game->gun_textures[frame - 1].img, &game->gun_textures[frame - 1].tex_bpp, &game->gun_textures[frame - 1].tex_line_len, &game->gun_textures[frame - 1].tex_endian);
-        frame++;
-    }
-
-    if (frame > MAX_GUN_TEXTURES)
-        game->num_gun_frames = MAX_GUN_TEXTURES;
-
-    update_progress_bar(MAX_GUN_TEXTURES, MAX_GUN_TEXTURES, "Loading gun textures");
+	while (frame <= MAX_GUN_TEXTURES)
+	{
+		update_progress_bar(frame, MAX_GUN_TEXTURES, "Loading gun textures");
+		digits[0] = '0' + (frame / 10);
+		digits[1] = '0' + (frame % 10);
+		game->gun_textures[frame - 1].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->gun_textures[frame - 1].width, &game->gun_textures[frame - 1].height);
+		if (game->gun_textures[frame - 1].img == NULL)
+		{
+			game->num_gun_frames = frame - 1;
+			break;
+		}
+		game->gun_textures[frame - 1].data = mlx_get_data_addr(game->gun_textures[frame - 1].img, &game->gun_textures[frame - 1].tex_bpp, &game->gun_textures[frame - 1].tex_line_len, &game->gun_textures[frame - 1].tex_endian);
+		frame++;
+	}
+	if (frame > MAX_GUN_TEXTURES)
+		game->num_gun_frames = MAX_GUN_TEXTURES;
+	update_progress_bar(MAX_GUN_TEXTURES, MAX_GUN_TEXTURES, "Loading gun textures");
 }
 
 int load_extract_textures(t_game *game)
 {
-    static char *file_names[] = {
-        "textures/extract/extract00.xpm",
-        "textures/extract/extract01.xpm",
-        "textures/extract/extract02.xpm",
-        "textures/extract/extract03.xpm"
-    };
-    const int num_textures = sizeof(file_names) / sizeof(file_names[0]);
+	static char *file_names[] = {
+		"textures/extract/extract00.xpm",
+		"textures/extract/extract01.xpm",
+		"textures/extract/extract02.xpm",
+		"textures/extract/extract03.xpm"
+	};
+	const int num_textures = sizeof(file_names) / sizeof(file_names[0]);
 
-    for (int i = 0; i < num_textures; i++)
-    {
-        update_progress_bar(i + 1, num_textures, "Loading extract textures");
+	for (int i = 0; i < num_textures; i++)
+	{
+		update_progress_bar(i + 1, num_textures, "Loading extract textures");
 
-        t_texture *texture = &game->extract_texture[i];
+		t_texture *texture = &game->extract_texture[i];
 
-        texture->path = file_names[i];
-        texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path, &texture->width, &texture->height);
-        if (!texture->img)
-            return (0);
-        texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
-    }
+		texture->path = file_names[i];
+		texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path, &texture->width, &texture->height);
+		if (!texture->img)
+			return (0);
+		texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+	}
 
-    return (1);
+	return (1);
 }
-
 void load_floor_textures(t_game *game)
 {
-    char *floor_texture_paths[] = {
-        "textures/floor/main01.xpm",
-        "textures/floor/main02.xpm",
-        "textures/floor/main03.xpm",
-        "textures/floor/main04.xpm",
-        "textures/floor/metal01.xpm",
-        "textures/floor/metal02.xpm",
-        "textures/floor/sand01.xpm",
-        "textures/floor/sand02.xpm"
-    };
+    char path[] = "textures/floor/floor00.xpm";
+    int first_digit, second_digit;
+    int texture_count = 0;
 
-    for (int i = 0; i < MAX_FLOOR_TEXTURES; i++)
+    get_last_two_digit_indexes(path, &first_digit, &second_digit);
+
+    while (texture_count < MAX_FLOOR_TEXTURES)
     {
-        update_progress_bar(i + 1, MAX_FLOOR_TEXTURES, "Loading floor textures");
+        update_progress_bar(texture_count + 1, MAX_FLOOR_TEXTURES, "Loading floor textures");
 
-        game->floortextures[i].img = mlx_xpm_file_to_image(
+        game->floortextures[texture_count].img = mlx_xpm_file_to_image(
             game->mlx_ptr,
-            floor_texture_paths[i],
-            &game->floortextures[i].width,
-            &game->floortextures[i].height);
+            path,
+            &game->floortextures[texture_count].width,
+            &game->floortextures[texture_count].height);
 
-        if (!game->floortextures[i].img)
-        {
-            // Handle error without fprintf
+        if (!game->floortextures[texture_count].img)
             exit(EXIT_FAILURE);
-        }
 
-        game->floortextures[i].data = mlx_get_data_addr(
-            game->floortextures[i].img,
-            &game->floortextures[i].tex_bpp,
-            &game->floortextures[i].tex_line_len,
-            &game->floortextures[i].tex_endian);
+        game->floortextures[texture_count].data = mlx_get_data_addr(
+            game->floortextures[texture_count].img,
+            &game->floortextures[texture_count].tex_bpp,
+            &game->floortextures[texture_count].tex_line_len,
+            &game->floortextures[texture_count].tex_endian);
+
+        texture_count++;
+
+        // Increment the number in the path
+        path[second_digit]++;
+        if (path[second_digit] > '9')
+        {
+            path[second_digit] = '0';
+            path[first_digit]++;
+        }
     }
 }
 

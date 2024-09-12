@@ -12,50 +12,39 @@
 
 #include "cube3d.h"
 
-
-
-void update_progress_bar(int current, int total, const char *task_name)
+void	update_progress_bar(int current, int total, const char *task_name)
 {
-    static int last_printed_length = 0;
-    float progress = (float)current / total;
-    int bar_width = (int)(progress * PROGRESS_BAR_WIDTH);
+	static int	last_printed_length = 0;
+	float		progress;
+	int			bar_width;
+	int			printed_length;
+	int			task_name_length;
 
-    // Move cursor to the beginning of the line
-    printf("\r");
-
-    // Clear the previous line
-    for (int i = 0; i < last_printed_length; i++) {
-        printf(" ");
-    }
-    printf("\r");
-
-    // Construct the new progress bar
-    int printed_length = 0;
-    int task_name_length = strlen(task_name);
-
-    // Truncate task name if it's too long
-    if (task_name_length > MAX_TASK_NAME_LENGTH) {
-        task_name_length = MAX_TASK_NAME_LENGTH;
-    }
-
-    // Print task name left-aligned in a field of TOTAL_PREFIX_LENGTH
-    printed_length += printf("%-*.*s", TOTAL_PREFIX_LENGTH, task_name_length, task_name);
-
-    printed_length += printf("[");
-    for (int i = 0; i < PROGRESS_BAR_WIDTH; i++) {
-        if (i < bar_width) printed_length += printf("#");
-        else printed_length += printf(" ");
-    }
-    printed_length += printf("] %.1f%%", progress * 100.0f);
-
-    // If completed, move to next line
-    if (current == total) {
-        printf("\n");
-    }
-
-    // Remember the length of the printed line for the next update
-    last_printed_length = printed_length;
+	progress = (float)current / total;
+	bar_width = (int)(progress * PROGRESS_BAR_WIDTH);
+	printf("\r");
+	for (int i = 0; i < last_printed_length; i++)
+		printf(" ");
+	printf("\r");
+	printed_length = 0;
+	task_name_length = strlen(task_name);
+	if (task_name_length > MAX_TASK_NAME_LENGTH)
+		task_name_length = MAX_TASK_NAME_LENGTH;
+	printed_length += printf("%-*.*s", TOTAL_PREFIX_LENGTH, task_name_length, task_name);
+	printed_length += printf("[");
+	for (int i = 0; i < PROGRESS_BAR_WIDTH; i++)
+	{
+		if (i < bar_width)
+			printed_length += printf("#");
+		else
+			printed_length += printf(" ");
+	}
+	printed_length += printf("] %.1f%%", progress * 100.0f);
+	if (current == total)
+		printf("\n");
+	last_printed_length = printed_length;
 }
+
 
 void load_wall_textures(t_game *game)
 {
