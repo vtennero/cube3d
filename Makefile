@@ -118,7 +118,7 @@ all: $(LIBFT) $(MLX_LIB) $(NAME)
 
 bonus: $(LIBFT) $(MLX_LIB) $(BONUS_NAME)
 
-helldiver: $(LIBFT) $(MLX_LIB) $(HELLDIVER_NAME)
+helldivers3d: $(LIBFT) $(MLX_LIB) $(HELLDIVER_NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
