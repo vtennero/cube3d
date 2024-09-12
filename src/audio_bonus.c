@@ -12,30 +12,30 @@
 
 #include "cube3d.h"
 #include "cube3d_audio_bonus.h"
-
 int initialize_audio(t_game *game)
 {
-    game->audio = malloc(sizeof(t_audio_manager));
-    t_audio_manager *audio = (t_audio_manager *)game->audio;
-    if (!(t_audio_manager *)game->audio) {
+    t_audio_manager *audio = malloc(sizeof(t_audio_manager));
+    if (!audio) {
         fprintf(stderr, "Failed to allocate memory for audio manager\n");
         return -1;
     }
+    game->audio = audio;
 
-    (t_audio_manager *)game->audio->device = alcOpenDevice(NULL);
-    if (!(t_audio_manager *)game->audio->device) {
+    audio->device = alcOpenDevice(NULL);
+    if (!audio->device) {
         fprintf(stderr, "Unable to open default device\n");
-        free((t_audio_manager *)game->audio);
+        free(audio);
+        game->audio = NULL;
         return -1;
     }
-    (t_audio_manager *)game->audio->context = alcCreateContext((t_audio_manager *)game->audio->device, NULL);
-    alcMakeContextCurrent((t_audio_manager *)game->audio->context);
+    audio->context = alcCreateContext(audio->device, NULL);
+    alcMakeContextCurrent(audio->context);
 
-    alGenSources(MAX_SOURCES, (t_audio_manager *)game->audio->sources);
-    (t_audio_manager *)game->audio->source_count = MAX_SOURCES;
+    alGenSources(MAX_SOURCES, audio->sources);
+    audio->source_count = MAX_SOURCES;
 
     for (int i = 0; i < MAX_SOURCES; i++) {
-        gettimeofday(&(t_audio_manager *)game->audio->last_play_time[i], NULL);
+        gettimeofday(&audio->last_play_time[i], NULL);
     }
 
     mpg123_init();
@@ -44,31 +44,34 @@ int initialize_audio(t_game *game)
 
 void cleanup_audio(t_game *game)
 {
-    if (!(t_audio_manager *)game->audio) return;
+    if (!game->audio) return;
+    t_audio_manager *audio = (t_audio_manager *)game->audio;
 
-    if ((t_audio_manager *)game->audio->source_count > 0) {
-        for (int i = 0; i < (t_audio_manager *)game->audio->source_count; i++) {
-            alSourceStop((t_audio_manager *)game->audio->sources[i]);
-            alDeleteSources(1, &(t_audio_manager *)game->audio->sources[i]);
+    if (audio->source_count > 0) {
+        for (int i = 0; i < audio->source_count; i++) {
+            alSourceStop(audio->sources[i]);
+            alDeleteSources(1, &audio->sources[i]);
         }
     }
-    if ((t_audio_manager *)game->audio->context) {
+    if (audio->context) {
         alcMakeContextCurrent(NULL);
-        alcDestroyContext((t_audio_manager *)game->audio->context);
+        alcDestroyContext(audio->context);
     }
-    if ((t_audio_manager *)game->audio->device) {
-        alcCloseDevice((t_audio_manager *)game->audio->device);
+    if (audio->device) {
+        alcCloseDevice(audio->device);
     }
     mpg123_exit();
-    free((t_audio_manager *)game->audio);
-    (t_audio_manager *)game->audio = NULL;
+    free(audio);
+    game->audio = NULL;
 }
 
 int find_available_source(t_game *game)
 {
+    t_audio_manager *audio = (t_audio_manager *)game->audio;
+
     ALint state;
-    for (int i = 0; i < (t_audio_manager *)game->audio->source_count; i++) {
-        alGetSourcei((t_audio_manager *)game->audio->sources[i], AL_SOURCE_STATE, &state);
+    for (int i = 0; i < audio->source_count; i++) {
+        alGetSourcei(audio->sources[i], AL_SOURCE_STATE, &state);
         if (state != AL_PLAYING) {
             return i;
         }
@@ -78,6 +81,7 @@ int find_available_source(t_game *game)
 
 int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
 {
+    t_audio_manager *audio = (t_audio_manager *)game->audio;
     int sourceIndex;
     struct timeval currentTime;
     double timeSinceLastPlay;
@@ -99,8 +103,8 @@ int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
     }
 
     gettimeofday(&currentTime, NULL);
-    timeSinceLastPlay = (currentTime.tv_sec - (t_audio_manager *)game->audio->last_play_time[sourceIndex].tv_sec)
-        + (currentTime.tv_usec - (t_audio_manager *)game->audio->last_play_time[sourceIndex].tv_usec) / 1000000.0;
+    timeSinceLastPlay = (currentTime.tv_sec - audio->last_play_time[sourceIndex].tv_sec)
+        + (currentTime.tv_usec - audio->last_play_time[sourceIndex].tv_usec) / 1000000.0;
 
     if (timeSinceLastPlay < delayInSeconds) {
         delayInSeconds -= timeSinceLastPlay;
@@ -129,17 +133,17 @@ int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
     format = (channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
     alBufferData(buffer, format, totalBuffer, totalSize, rate);
 
-    alSourcei((t_audio_manager *)game->audio->sources[sourceIndex], AL_BUFFER, buffer);
+    alSourcei(audio->sources[sourceIndex], AL_BUFFER, buffer);
     if (delayInSeconds > 0) {
-        alSourcef((t_audio_manager *)game->audio->sources[sourceIndex], AL_SEC_OFFSET, -delayInSeconds);
+        alSourcef(audio->sources[sourceIndex], AL_SEC_OFFSET, -delayInSeconds);
     }
-    alSourcePlay((t_audio_manager *)game->audio->sources[sourceIndex]);
+    alSourcePlay(audio->sources[sourceIndex]);
 
-    gettimeofday(&(t_audio_manager *)game->audio->last_play_time[sourceIndex], NULL);
+    gettimeofday(&audio->last_play_time[sourceIndex], NULL);
 
-    strncpy((t_audio_manager *)game->audio->playing_tracks[sourceIndex].filename, filename, 255);
-    (t_audio_manager *)game->audio->playing_tracks[sourceIndex].filename[255] = '\0';
-    (t_audio_manager *)game->audio->playing_tracks[sourceIndex].source_index = sourceIndex;
+    strncpy(audio->playing_tracks[sourceIndex].filename, filename, 255);
+    audio->playing_tracks[sourceIndex].filename[255] = '\0';
+    audio->playing_tracks[sourceIndex].source_index = sourceIndex;
 
     free(totalBuffer);
     free(buffer_data);
@@ -150,10 +154,12 @@ int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
 
 int stop_audio_file(t_game *game, const char *filename)
 {
+    t_audio_manager *audio = (t_audio_manager *)game->audio;
+
     for (int i = 0; i < MAX_SOURCES; i++) {
-        if (strcmp((t_audio_manager *)game->audio->playing_tracks[i].filename, filename) == 0) {
-            alSourceStop((t_audio_manager *)game->audio->sources[(t_audio_manager *)game->audio->playing_tracks[i].source_index]);
-            (t_audio_manager *)game->audio->playing_tracks[i].filename[0] = '\0';
+        if (strcmp(audio->playing_tracks[i].filename, filename) == 0) {
+            alSourceStop(audio->sources[audio->playing_tracks[i].source_index]);
+            audio->playing_tracks[i].filename[0] = '\0';
             return 0;
         }
     }
