@@ -31,7 +31,7 @@ int	check_order_in_row(int **array, int row, int col_count, int direction)
 			found_one = 1;
 		else if (array[row][j] == 0 && !found_one)
 		{
-			ft_printf("Row %d Col %d is not valid.\n", row, j);
+			ft_printf("Error\nRow %d Col %d is not valid.\n", row, j);
 			return (0);
 		}
 		j += direction;
@@ -55,7 +55,7 @@ int	check_order_in_column(int **array, int col, int row_count, int direction)
 			found_one = 1;
 		else if (array[i][col] == 0 && !found_one)
 		{
-			ft_printf("Col %d Row %d is not valid.\n", col, i);
+			ft_printf("Error\nCol %d Row %d is not valid.\n", col, i);
 			return (0);
 		}
 		i += direction;
@@ -85,6 +85,6 @@ int	validate_map(int *valid, int **array, int row_count, int col_count)
 		j++;
 	}
 	if (*valid)
-		printf("All rows and columns are valid.\n");
+		ft_printf("All rows and columns are valid.\n");
 	return (*valid);
 }

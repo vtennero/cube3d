@@ -56,7 +56,7 @@ int	loop_thru_line_in_map_array(t_game *game)
 	fd = open(game->cub_filepath, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("Error \nCould not open file");
+		perror("Error\nCould not open file");
 		return (-1);
 	}
 	line = get_next_line(fd);
@@ -84,8 +84,6 @@ int	check_player_position_helper(t_game *game, int i, int j, int *player_found)
 			game->cub_player_x = i;
 			game->cub_player_y = j;
 			game->cub_player_o = game->cub_map_array[i][j];
-			printf("i is %d and j is %d  and player_found = %d \n", i, j,
-				*player_found);
 		}
 		else
 			return (-1);
@@ -127,21 +125,17 @@ int	parse_map_to_array(t_game *game)
 
 	game->cub_map_array = initialize_array(game->cub_map_row_count * 2,
 			(game->cub_map_col_count + 1));
-	print_2d_array(game, game->cub_map_array);
 	loop_thru_line_in_map_array(game);
-	print_2d_array(game, game->cub_map_array);
 	check_status = check_player_postion_and_map_char(game);
 	if (check_status != 1)
 	{
 		if (check_status == 0)
-			printf("No player postion is detected!");
+			ft_printf("Error\nNo player postion is detected!");
 		if (check_status == -1)
-			printf("2 Player postion detected!");
+			ft_printf("Error\n2 Player postion detected!");
 		if (check_status == -2)
-			printf("Invalid character in map detected!");
+			ft_printf("Error\nInvalid character in map detected!");
 		return (-1);
 	}
-	printf("player position is %d,%d and the orientation is %d\n",
-		game->cub_player_x, game->cub_player_y, game->cub_player_o);
 	return (1);
 }

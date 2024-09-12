@@ -116,8 +116,8 @@ void play_random_strike_sound(t_game *game)
 	audio_file[13] = '0' + random_strike;
 
 	// Play the selected audio file with no delay
-	playAudioFileWithDelay(audio_file, 0);
-	playAudioFileWithDelay("audio/orbitalcall.mp3", 0);
+	play_audio_file(game, audio_file, 0);
+	play_audio_file(game, "audio/orbitalcall.mp3", 0);
 }
 
 
@@ -136,8 +136,8 @@ int handle_mouse_click(int button, int x, int y, void *param)
 		if (random_value == 0)
 		{
 			printf("Get some get some\n");
-			stopAudioFile("audio/getsome.mp3");
-			playAudioFileWithDelay("audio/getsome.mp3", 0);
+			stop_audio_file(game, "audio/getsome.mp3");
+			play_audio_file(game, "audio/getsome.mp3", 0);
 			// play audio
 		}
 	}

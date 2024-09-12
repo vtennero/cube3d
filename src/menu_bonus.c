@@ -18,8 +18,8 @@ void handle_key_enter(t_game *game)
 	if (game->game_sequence == 0)
 	{
 		reset_game_start_time(game);
-		stopAudioFile("audio/menu02.mp3");
-		playAudioFileWithDelay("audio/drop02.mp3", 0);
+		stop_audio_file(game, "audio/menu02.mp3");
+		play_audio_file(game, "audio/drop02.mp3", 0);
 	}
 		game->change_seq = 1;
 }

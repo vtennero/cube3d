@@ -205,12 +205,12 @@ void	setup_bonus_assets(t_game *game)
 	initialize_game_seed(game);
 	initialize_floor_texture_weights(game);
 	initialize_floor_texture_map(game);
-	initializeAudio();
+	initialize_audio(game);
 }
 
 void	setup_bonus_scripts(t_game *game)
 {
-	playAudioFileWithDelay("audio/menu.mp3", 2);
+	play_audio_file(game, "audio/menu.mp3", 2);
 	add_script(game, menu_background, 5);
 	add_script(game, menu_background_voice, 10);
 }
@@ -221,6 +221,11 @@ void	setup_bonus_hooks(t_game *game)
 	mlx_hook(game->win_ptr, 5, 1L << 3, handle_mouse_release, game);
 }
 
+// void	setup_core_assets(game)
+// {
+
+// }
+
 int setup_game_mlx(t_game *game)
 {
 
@@ -230,13 +235,13 @@ int setup_game_mlx(t_game *game)
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (0);
+	load_textures(game);
 	game->win_ptr = mlx_new_window(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT, "Helldivers 3D");
 	if (game->win_ptr == NULL)
 	{
 		free(game->win_ptr);
 		return (0);
 	}
-	load_textures(game);
 	game->img.mlx_img = mlx_new_image(game->mlx_ptr, DEFAULT_S_WIDTH, DEFAULT_S_HEIGHT);
 	game->img.addr = mlx_get_data_addr(game->img.mlx_img, &game->img.bpp, &game->img.line_len, &game->img.endian);
 	mlx_hook(game->win_ptr, 2, 1L << 0, ft_key_press, game);

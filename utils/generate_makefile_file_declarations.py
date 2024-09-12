@@ -10,7 +10,10 @@ c_files = [f for f in os.listdir(src_dir) if f.endswith(".c")]
 # Sort the files alphabetically
 c_files.sort()
 
-# Move 'audio_bonus.c' to the end of the list if it exists
+if "audio_dummy.c" in c_files:
+    c_files.remove("audio_dummy.c")
+    c_files.append("audio_dummy.c")
+
 if "audio_bonus.c" in c_files:
     c_files.remove("audio_bonus.c")
     c_files.append("audio_bonus.c")

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:59:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 16:10:21 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:21:06 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,6 @@ void handle_key_s(t_game *game)
     }
     game->is_moving_fwd = 1;
 }
-
-
-
-
 void handle_key_a(t_game *game)
 {
 	// printf("You just pressed A!\n");

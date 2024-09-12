@@ -12,7 +12,6 @@
 
 #include "cube3d.h"
 
-
 float calculate_dynamic_buffer(t_player *player, float base_speed)
 {
 	// Calculate buffer based on the dot product of direction and plane vectors

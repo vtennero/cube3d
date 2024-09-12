@@ -14,7 +14,6 @@
 
 int initgame(t_game **game)
 {
-    printf("initgame\n");
     create_map(*game);
     create_player(*game);
     if ((*game)->bonus)
@@ -25,6 +24,7 @@ int initgame(t_game **game)
         create_enemies(*game);
         create_supplies(*game);
         create_strike(*game);
+        initialize_audio(*game);
     }
     else
         printf("*** CUB3D ***\n");
@@ -34,7 +34,6 @@ int initgame(t_game **game)
 
 int	create_game_struct(t_game **game, int is_bonus)
 {
-	printf("initializing gamestruct\n");
 	*game = ft_calloc(1, sizeof(t_game));
 	if (*game == NULL)
 		return (-1);
@@ -53,9 +52,6 @@ int	create_game_struct(t_game **game, int is_bonus)
 	(*game)->script_manager = (t_script_manager){0};
     set_crosshair_position(*game);
 
-	printf("screen_height: %d\n", (*game)->screen_height);
-    printf("screen_width: %d\n", (*game)->screen_width);
-	printf("initialized gamestruct\n");
 	return (0);
 }
 
@@ -64,27 +60,23 @@ void create_map_from_cub(t_game *game)
     t_map *map = malloc(sizeof(t_map));
     if (map == NULL)
     {
-        fprintf(stderr, "Memory allocation failed for map structure.\n");
+        ft_printf("Error\nMemory allocation failed for map structure.\n");
         exit(1);
     }
-    printf("Allocated memory for the map structure\n");
+    ft_printf("Allocated memory for the map structure\n");
 	map->width = ((game->cub_map_col_count + 1) / 2);
 	map->height = game->cub_map_row_count;
-    printf("Set the dimensions\n");
 	map->data = game->cub_map_array;
     game->map = map;
-	printf("copied the static map to the allocated map\n");
-
-
 }
 
 
 int	create_map(t_game *game)
 {
 	// Implement map creation and initialization
-	printf("initializing map\n");
+	ft_printf("initializing map\n");
 	create_map_from_cub(game);
-	printf("initialized map\n");
+	ft_printf("initialized map\n");
 	return (0);
 }
 	int print_2d_array(t_game *game,int ** array_to_print)
@@ -110,25 +102,15 @@ int	create_map(t_game *game)
 int parse_map(t_game *game,char *cub_filepath)
 {
 	game->cub_filepath=cub_filepath;
-	printf("%s",cub_filepath);
-	printf("%s",game->cub_filepath);
 	if (read_cub_texture_and_analyze_map(game)==-1)
 		return -1;
 	if (texture_error_handling(game) == -1)
 		return -1;
 	parse_floor_sky_rgb(game);
-	printf("Sky Red is %d,Green is %d, Blue is %d, and hex int is %d",game->sky_rgb[0].red,game->sky_rgb[0].green,game->sky_rgb[0].blue,game->sky_rgb[0].hex_color);
-	printf("Floor Red is %d,Green is %d, Blue is %d, and hex int is %d",game->floor_rgb[0].red,game->floor_rgb[0].green,game->floor_rgb[0].blue,game->floor_rgb[0].hex_color);
-
-	printf("\nTotal Cub line count is %d",game->cub_line_count);
-	printf("\nTotal Map line count is %d",game->cub_map_row_count);
-	printf("\nTotal Map col count is %d",game->cub_map_col_count);
 	if (parse_map_to_array(game) == -1 )
 		return -1;
 	if (check_map_boundaries(game) ==-1)
 		return -1;
-    // Implement map creation and initialization
-
     return 0;
 }
 
@@ -170,13 +152,38 @@ int create_strike(t_game *game)
         }
     }
 
-    printf("Initialized %d strikes\n", MAX_STRIKES);
     return (1);
+}
+void set_player_direction(t_game *game,t_player *player)
+{
+	player->direction.x = 0.0f;
+	player->direction.y = 0.0f;
+	player->plane.x = 0.0f;
+	player->plane.y = 0.0f;
+	if (game->cub_player_o==2)
+	{
+		player->direction.y = -1.0f;
+		player->plane.x = 0.66f;
+	}
+	if (game->cub_player_o==3)
+	{
+		player->direction.x = 1.0f;
+		player->plane.y = 0.66f;
+	}
+	if (game->cub_player_o==4)
+	{
+		player->direction.y = 1.0f;
+		player->plane.x = -0.66f;
+	}
+	if (game->cub_player_o==5)
+	{
+		player->direction.x = -1.0f;
+		player->plane.y = -0.66f;
+	}
 }
 
 int	create_player(t_game *game)
 {
-	printf("initializing player\n");
 	// Allocate memory for the player structure
 	t_player *player = malloc(sizeof(t_player));
 	if (player == NULL)
@@ -189,33 +196,12 @@ int	create_player(t_game *game)
 	// Initialize player position
 	player->position.x = game->cub_player_y;
 	player->position.y = game->cub_player_x;
+	set_player_direction(game,player);
+  
+
+ 
 
 
-
-    // to wrap in a function
-    // Facing west (your original working setup)
-    player->direction.x = -1.0f;
-    player->direction.y = 0.0f;
-    player->plane.x = 0.0f;
-    player->plane.y = -0.66f;
-
-    // // Facing south (what we just set up)
-    // player->direction.x = 0.0f;
-    // player->direction.y = -1.0f;
-    // player->plane.x = 0.66f;
-    // player->plane.y = 0.0f;
-
-    // // Facing east
-    // player->direction.x = 1.0f;
-    // player->direction.y = 0.0f;
-    // player->plane.x = 0.0f;
-    // player->plane.y = 0.66f;
-
-    // // Facing north
-    // player->direction.x = 0.0f;
-    // player->direction.y = 1.0f;
-    // player->plane.x = -0.66f;
-    // player->plane.y = 0.0f;
 
 	// Initialize pitch (not needed for basic raycasting,
 		// useful for up/down look)
@@ -232,7 +218,6 @@ int	create_player(t_game *game)
 	// player->pitch = 0;
 	// Assign the player to the game structure
 	game->player = player;
-	printf("initialized player\n");
 	return (0);
 }
 
@@ -325,10 +310,10 @@ int respawn_player(t_game *game)
 {
     game->player->is_burning = 0;
     game->player->hp = MAX_HEALTH;
-    stopAudioFile("audio/burn00.mp3");
-    stopAudioFile("audio/burn01.mp3");
-    stopAudioFile("audio/burn02.mp3");
-    stopAudioFile("audio/burn03.mp3");
+    stop_audio_file(game, "audio/burn00.mp3");
+    stop_audio_file(game, "audio/burn01.mp3");
+    stop_audio_file(game, "audio/burn02.mp3");
+    stop_audio_file(game, "audio/burn03.mp3");
         if (game->player->is_dead == 1)
         {
             int x, y;
@@ -379,23 +364,19 @@ int randomize_uncollected_supplies(t_game *game)
 
 int	create_collectibles(t_game *game)
 {
-	printf("initializing collectibles\n");
 	game->num_collectibles = 1;
 	randomize_uncollected_collectibles(game);
 	game->collectibles[0].collected = 0;
 	game->collectibles[0].found = 0;
-	printf("initialized collectibles\n");
 	return (0);
 }
 
 int	create_extraction(t_game *game)
 {
-	printf("initializing extraction\n");
 	randomize_extract_position(game);
 	game->extract[0].is_activated = 0;
 	game->extract[0].is_available = 0;
 	game->extract[0].is_landing = 0;
-	printf("initialized extraction\n");
 	return (0);
 }
 
@@ -403,7 +384,6 @@ int	create_extraction(t_game *game)
 
 int randomize_enemy_positions(t_game *game)
 {
-    printf("Randomizing enemy positions\n");
     int i, x, y;
 
     for (i = 0; i < game->num_enemies; i++)
@@ -417,7 +397,6 @@ int randomize_enemy_positions(t_game *game)
         game->enemies[i].position.y = (float)y + 0.5f; // Center in the tile
     }
 
-    printf("Enemy positions randomized\n");
     return (0);
 }
 
@@ -472,7 +451,6 @@ int calculate_supplies(t_game *game)
 
 int create_enemies(t_game *game)
 {
-	printf("initializing enemies\n");
     int i;
     // float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
 
@@ -493,18 +471,13 @@ int create_enemies(t_game *game)
     {
         game->enemies[i].is_alive = 1;
     }
-	printf("initialized enemies\n");
 	randomize_enemy_positions(game);
-	printf("randomized enemies\n");
     return (0);
 }
 
 int	create_supplies(t_game *game)
 {
-	printf("initializing supplies\n");
 	game->num_supplies = calculate_supplies(game);
-    printf("game->num_supplies %d\n", game->num_supplies);
 	randomize_uncollected_supplies(game);
-	printf("initialized supplies\n");
 	return (0);
 }

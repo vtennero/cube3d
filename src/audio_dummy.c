@@ -12,32 +12,50 @@
 
 #include "cube3d.h"
 
-int	initializeAudio(void)
+int initialize_audio(t_game *game)
 {
-	printf("non audio mode on\n");
+	printf("initialize_audio: Audio is deactivated in this configuration. \
+Run helldivers3d to activate audio.\n");
+	(void)game;
 	return (0);
 }
 
-void	cleanupAudio(void)
+void cleanup_audio(t_game *game)
 {
-	printf("non audio mode on\n");
+	printf("cleanup_audio: Audio is deactivated in this configuration. \
+Run helldivers3d to activate audio.\n");
+	(void)game;
 }
 
-int	findAvailableSource(void)
+int find_available_source(t_game *game)
 {
-	printf("non audio mode on\n");
+	printf("find_available_source: Audio is deactivated in this configuration. \
+Run helldivers3d to activate audio.\n");
+	(void)game;
 	return (0);
 }
-int	stopAudioFile(const char *filename)
+
+int stop_audio_file(t_game *game, const char *filename)
 {
-	printf("non audio mode on\n");
+	printf("stop_audio_file: Audio is deactivated in this configuration. \
+Run helldivers3d to activate audio.\n");
+	(void)game;
 	(void)filename;
 	return (0);
 }
 
-int	playAudioFileWithDelay(const char *filename, float delayInSeconds)
+int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
 {
-	printf("non audio mode on: play file %s\n", filename);
+	printf("play_audio_file: Audio is deactivated in this configuration. \
+Run helldivers3d to activate audio. Attempted to play file %s\n", filename);
 	(void)delayInSeconds;
+	(void)game;
 	return (0);
+}
+
+int init_game_audio_struct(t_game *game)
+{
+    game->audio = NULL;
+    printf("init_game_audio_struct: Audio initialization skipped in non-helldiver mode.\n");
+    return 0;
 }

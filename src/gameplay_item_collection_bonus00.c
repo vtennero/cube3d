@@ -56,14 +56,14 @@ void handle_key_e(t_game *game)
 	{
 		game->collectibles[0].collected = 1;
 		game->extract[0].is_available = 1;
-		playAudioFileWithDelay("audio/samplepickup.mp3", 0);
+		play_audio_file(game, "audio/samplepickup.mp3", 0);
 		add_script(game, sample_acquired, 1);
 		add_script(game, extraction_available, 5);
 	}
 	else if (is_player_close_to_extract(game) && game->extract->is_available)
 	{
-		playAudioFileWithDelay("audio/extract01.mp3", 0);
-		playAudioFileWithDelay("audio/extractkeyboard.mp3", 0);
+		play_audio_file(game, "audio/extract01.mp3", 0);
+		play_audio_file(game, "audio/extractkeyboard.mp3", 0);
 		game->extract[0].is_available = 0;
 		game->extract[0].is_activated = 1;
 		add_script(game, trigger_extract_music, 1);
@@ -121,7 +121,7 @@ void	handle_key_3(t_game *game)
 		game->strike[2].base_position.y = game->center_floor_coords.y;
 		game->strike[2].base_position.x = game->center_floor_coords.x;
 		game->strike[2].is_launching = 1;
-		playAudioFileWithDelay("audio/orbitalcall.mp3", 0);
+		play_audio_file(game, "audio/orbitalcall.mp3", 0);
 		add_script(game, barrage_inbound, BARRAGE_CALL_IN_TIME);
 		add_script(game, play_barrage_shell,
 			BARRAGE_CALL_IN_TIME - 2);

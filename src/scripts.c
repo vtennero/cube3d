@@ -23,30 +23,30 @@ void    get_hit(t_game *game)
 void    menu_background(t_game *game)
 {
     if (game->game_sequence == 0)
-        playAudioFileWithDelay("audio/menu02.mp3", 2);
+        play_audio_file(game, "audio/menu02.mp3", 2);
 }
 
 void    menu_background_voice(t_game *game)
 {
     if (game->game_sequence == 0)
-        playAudioFileWithDelay("audio/menu03.mp3", 2);
+        play_audio_file(game, "audio/menu03.mp3", 2);
 }
 
 void    sample_acquired(t_game *game)
 {
-    playAudioFileWithDelay("audio/raresampleacquired.mp3", 2);
+    play_audio_file(game, "audio/raresampleacquired.mp3", 2);
     (void)game;
 }
 
 void trigger_extract_victory(t_game *game)
 {
-    playAudioFileWithDelay("audio/extract05.mp3", 0);
+    play_audio_file(game, "audio/extract05.mp3", 0);
     (void)game;
 }
 
 void trigger_extract_music(t_game *game)
 {
-    playAudioFileWithDelay("audio/extractmusic00.mp3", 0);
+    play_audio_file(game, "audio/extractmusic00.mp3", 0);
     (void)game;
 }
 
@@ -61,33 +61,33 @@ void trigger_landing(t_game *game)
     game->extract[0].is_landing = 1;
     game->extract[0].is_activated = 0;
     printf("landing sequence initiated\n");
-    playAudioFileWithDelay("audio/pelican00.mp3", 0);
+    play_audio_file(game, "audio/pelican00.mp3", 0);
 
     // play this is pelican one mp3
-    // stopAudioFile("audio/menu.mp3");
+    // stop_audio_file(game, "audio/menu.mp3");
 
 }
 void trigger_prelanding(t_game *game)
 {
     (void)game;
     printf("prelanding warning\n");
-    playAudioFileWithDelay("audio/eta.mp3", 0);
+    play_audio_file(game, "audio/eta.mp3", 0);
 }
 
 void extraction_available(t_game *game)
 {
     (void)game;
     if (game->extract[0].is_activated == 0)
-        playAudioFileWithDelay("audio/extractionready.mp3", 0);
+        play_audio_file(game, "audio/extractionready.mp3", 0);
 }
 
 
 void play_gun_sound(t_game *game)
 {
-    // stopAudioFile("audio/gun02.mp3");
-    // playAudioFileWithDelay("audio/gun02.mp3", 0);
-    stopAudioFile("audio/tmafir00.mp3");
-    playAudioFileWithDelay("audio/tmafir00.mp3", 0);
+    // stop_audio_file(game, "audio/gun02.mp3");
+    // play_audio_file(game, "audio/gun02.mp3", 0);
+    stop_audio_file(game, "audio/tmafir00.mp3");
+    play_audio_file(game, "audio/tmafir00.mp3", 0);
     // If we're still shooting, schedule the next sound
     if (game->is_shooting) {
         add_script(game, play_gun_sound, 0); // 0 second delay for continuous fire
@@ -117,7 +117,7 @@ void    trigger_gunshots(t_game *game)
 
 // void    eagle_voice_post_strike(t_game *game)
 // {
-//     playAudioFileWithDelay("audio/eagle")
+//     play_audio_file(game, "audio/eagle")
 // }
 
 void play_random_eagle_call(t_game *game)
@@ -131,7 +131,7 @@ void play_random_eagle_call(t_game *game)
     audio_file[13] = '0' + random_call % 10;
 
     // Play the selected audio file with no delay
-    playAudioFileWithDelay(audio_file, 0);
+    play_audio_file(game, audio_file, 0);
 }
 
 void    remove_napalm(t_game *game)
@@ -153,7 +153,7 @@ void    delay_napalm_hit(t_game *game)
 
 void    napalm_bombs(t_game *game)
 {
-    // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
+    // play_audio_file(game, "audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
     add_script(game, delay_napalm_hit, 1);
 }
@@ -164,7 +164,7 @@ void    napalm_inbound(t_game *game)
 
     // play audio, choose audio
     add_script(game, napalm_bombs, 0);
-    playAudioFileWithDelay("audio/eagles00.mp3", 0);
+    play_audio_file(game, "audio/eagles00.mp3", 0);
 
 
     // eaglesgtrikes--
@@ -172,7 +172,7 @@ void    napalm_inbound(t_game *game)
 
 void    eagle_bombs(t_game *game)
 {
-    // playAudioFileWithDelay("audio/eaglec00.mp3", 0);
+    // play_audio_file(game, "audio/eaglec00.mp3", 0);
     play_random_eagle_call(game);
     add_script(game, delay_strike_hit, 1);
 }
@@ -185,7 +185,7 @@ void    eagle_inbound(t_game *game)
 
     // play audio, choose audio
     add_script(game, eagle_bombs, 0);
-    playAudioFileWithDelay("audio/eagles00.mp3", 0);
+    play_audio_file(game, "audio/eagles00.mp3", 0);
 
 
     // eaglesgtrikes--
@@ -204,7 +204,7 @@ void    barrage_inbound(t_game *game)
     audio_file[25] = '0' + random_call % 10;
 
     // Play the selected audio file with no delay
-    playAudioFileWithDelay(audio_file, 0);
+    play_audio_file(game, audio_file, 0);
 
 }
 
@@ -226,7 +226,7 @@ void    play_barrage_shell(t_game *game)
 
     // add_script(game, play_barrage_shell,1);
     // Play the selected audio file with no delay
-    playAudioFileWithDelay(audio_file, 0);
+    play_audio_file(game, audio_file, 0);
 }
 
 void init_script_manager(t_game *game) {

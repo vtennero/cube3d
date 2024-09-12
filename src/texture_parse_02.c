@@ -17,7 +17,7 @@
 
 int	handle_error(const char *message, int error_code)
 {
-	perror(message);
+	ft_printf(message);
 	return (error_code);
 }
 
@@ -57,12 +57,12 @@ int	texture_error_handling(t_game *game)
 	texture_access_check(game, &error);
 	if (game->floor_rgb[0].path && check_invalid_rgb(game->floor_rgb[0].path))
 	{
-		printf("Failed to parse Floor texture\n");
+		ft_printf("Error\nFailed to parse Floor texture\n");
 		error = -1;
 	}
 	if (game->sky_rgb[0].path && check_invalid_rgb(game->sky_rgb[0].path))
 	{
-		printf("Failed to parse Sky texture\n");
+		ft_printf("Error\nFailed to parse Sky texture\n");
 		error = -1;
 	}
 	if ((game->walltextures[0].path) && (game->walltextures[1].path)
@@ -95,6 +95,5 @@ int	all_paths_set(t_game *game)
 	{
 		return (0);
 	}
-	ft_printf("All path set!");
 	return (1);
 }
