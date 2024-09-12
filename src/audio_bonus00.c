@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/12 16:23:24 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:25:32 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,26 +158,26 @@ static mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
 	return (mh);
 }
 
-// static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
-// {
-// 	size_t			buffer_size;
-// 	unsigned char	*buffer_data;
-// 	char			*total_buffer;
-// 	size_t			done;
+static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
+{
+	size_t			buffer_size;
+	unsigned char	*buffer_data;
+	char			*total_buffer;
+	size_t			done;
 
-// 	buffer_size = mpg123_outblock(mh);
-// 	buffer_data = malloc(buffer_size * sizeof(unsigned char));
-// 	total_buffer = NULL;
-// 	*total_size = 0;
-// 	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK)
-// 	{
-// 		total_buffer = realloc(total_buffer, *total_size + done);
-// 		memcpy(total_buffer + *total_size, buffer_data, done);
-// 		*total_size += done;
-// 	}
-// 	free(buffer_data);
-// 	return (total_buffer);
-// }
+	buffer_size = mpg123_outblock(mh);
+	buffer_data = malloc(buffer_size * sizeof(unsigned char));
+	total_buffer = NULL;
+	*total_size = 0;
+	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK)
+	{
+		total_buffer = realloc(total_buffer, *total_size + done);
+		memcpy(total_buffer + *total_size, buffer_data, done);
+		*total_size += done;
+	}
+	free(buffer_data);
+	return (total_buffer);
+}
 
 static ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
 				int channels, long rate)
@@ -211,47 +211,25 @@ static void	cleanup_mpg123(mpg123_handle *mh)
 	mpg123_delete(mh);
 }
 
-static char *decode_mp3(mpg123_handle *mh, size_t *total_size)
-{
-    char *total_buffer = NULL;
-
-    total_buffer = decode_mp3_internal(mh, total_size);
-    if (!total_buffer)
-    {
-        cleanup_mpg123(mh);
-        return (NULL);
-    }
-    return (total_buffer);
-}
-
-static int get_audio_format_and_create_buffer(mpg123_handle *mh, const char *total_buffer, size_t total_size, ALuint *buffer)
-{
-    long    rate;
-    int     channels;
-    int     encoding;
-
-    mpg123_getformat(mh, &rate, &channels, &encoding);
-    *buffer = create_al_buffer(total_buffer, total_size, channels, rate);
-    return (0);
-}
-
-static void process_audio(t_audio_manager *audio, int source_index, ALuint buffer, const char *filename)
-{
-    play_and_record_audio(audio, source_index, buffer, filename);
-}
-
-static int process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
+static int    process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
                 int source_index, const char *filename)
 {
-    size_t  total_size;
+    size_t    total_size;
     char    *total_buffer;
-    ALuint  buffer;
+    long    rate;
+    int        channels;
+    int        encoding;
+    ALuint    buffer;
 
     total_buffer = decode_mp3(mh, &total_size);
     if (!total_buffer)
+    {
+        cleanup_mpg123(mh);
         return (-1);
-    get_audio_format_and_create_buffer(mh, total_buffer, total_size, &buffer);
-    process_audio(audio, source_index, buffer, filename);
+    }
+    mpg123_getformat(mh, &rate, &channels, &encoding);
+    buffer = create_al_buffer(total_buffer, total_size, channels, rate);
+    play_and_record_audio(audio, source_index, buffer, filename);
     free(total_buffer);
     return (0);
 }
