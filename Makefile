@@ -4,11 +4,8 @@ CFLAGS = -Wall -Wextra -Werror
 # CFLAGS = -Wall -Wextra -Werror -g
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
-
-
 # Audio flags
-# AUDIOFLAGS = -lopenal -lmpg123
-AUDIOFLAGS =
+AUDIOFLAGS = -lopenal -lmpg123
 
 # Directories
 SRC_DIR = src
@@ -17,13 +14,15 @@ MLX_DIR = mlx
 OBJ_DIR = obj
 AUDIO_LIB_DIR = audio_lib
 
-# Name of the final executable
+# Name of the final executables
 NAME = cub3D
 BONUS_NAME = cub3D_bonus
+HELLDIVER_NAME = helldivers3D
 
 # Main source file variable
 MAIN = main.c
 BONUS_MAIN = main_bonus.c
+HELLDIVER_MAIN = main_bonus.c
 
 SHARED_SRCS = \
 check_map_boundaries.c \
@@ -91,16 +90,15 @@ textures_load_bonus00.c \
 textures_load_bonus01.c \
 textures_load_bonus02.c \
 textures_load_bonus03.c \
-textures_load_bonus04.c \
-audio_dummy.c \
-# audio_bonus.c \
-
+textures_load_bonus04.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
-# Object files for main and bonus executables
-OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o))
-BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o))
+# Object files for main, bonus, and helldiver executables
+OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
+BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
+HELLDIVER_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(HELLDIVER_MAIN:.c=.o)) $(OBJ_DIR)/audio_bonus.o
+
 
 # Include paths
 INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include -I$(SRC_DIR)
@@ -114,9 +112,13 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # MLX library
 MLX_LIB = $(MLX_DIR)/libmlx_$(shell uname).a
 
-.PHONY: all clean fclean re bonus
+.PHONY: all bonus helldiver clean fclean re
 
-all: $(LIBFT) $(MLX_LIB) $(NAME) copy_libs
+all: $(LIBFT) $(MLX_LIB) $(NAME)
+
+bonus: $(LIBFT) $(MLX_LIB) $(BONUS_NAME)
+
+helldiver: $(LIBFT) $(MLX_LIB) $(HELLDIVER_NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
@@ -129,15 +131,13 @@ $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -include $(SRC_DIR)/cube3d.h
 
-copy_libs:
-	@mkdir -p $(AUDIO_LIB_DIR)
-	@cp /usr/lib/x86_64-linux-gnu/libopenal.so.1 $(AUDIO_LIB_DIR)/ || true
-	@cp /usr/lib/x86_64-linux-gnu/libmpg123.so.0 $(AUDIO_LIB_DIR)/ || true
+$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h
 
-bonus:
-	$(MAKE) MAIN=$(BONUS_MAIN) NAME=$(BONUS_NAME) all
+$(HELLDIVER_NAME): $(HELLDIVER_OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -DHELLDIVER $(HELLDIVER_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h -include $(SRC_DIR)/cube3d_audio_bonus.h
 
 clean:
 	rm -f $(OBJ_DIR)/*.o
@@ -145,7 +145,7 @@ clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME) $(BONUS_NAME)
+	rm -f $(NAME) $(BONUS_NAME) $(HELLDIVER_NAME)
 	rm -rf $(AUDIO_LIB_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 

@@ -60,33 +60,33 @@ def extract_function_declarations(directory='../src'):
     except FileNotFoundError:
         print("xclip is not installed. Please install it using: sudo apt-get install xclip")
 
-    # Update cube3d.h
+    # New functionality: Update cube3d.h
     update_cube3d_header(output_file)
 
 def update_cube3d_header(declarations_file):
     header_file = "../src/cube3d.h"
 
-    # Read the current content of cube3d.h
-    with open(header_file, 'r') as file:
-        content = file.read()
-
     # Read the function declarations
     with open(declarations_file, 'r') as file:
         declarations = file.read()
 
-    # Find the start and end markers
-    start_marker = "// FUNCTION DECLARATIONS START"
-    end_marker = "// FUNCTION DECLARATIONS END"
+    # Create the new content for cube3d.h
+    new_content = f"""#ifndef CUBE3D_H
+# define CUBE3D_H
 
-    # Replace the content between the markers
-    pattern = re.compile(f"{start_marker}.*?{end_marker}", re.DOTALL)
-    new_content = pattern.sub(f"{start_marker}\n{declarations}\n{end_marker}", content)
+#include "cube3d_bonus.h"
+
+// function declarations we copied
+{declarations}
+
+#endif
+"""
 
     # Write the new content to cube3d.h
     with open(header_file, 'w') as file:
         file.write(new_content)
 
-    print(f"Updated {header_file} with the new function declarations")
+    print(f"Updated {header_file} with the new structure and function declarations")
 
 # Run the function
 extract_function_declarations()

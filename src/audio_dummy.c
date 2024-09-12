@@ -53,3 +53,9 @@ Run helldivers3d to activate audio. Attempted to play file %s\n", filename);
 	return (0);
 }
 
+int init_game_audio_struct(t_game *game)
+{
+    game->audio = NULL;
+    printf("init_game_audio_struct: Audio initialization skipped in non-helldiver mode.\n");
+    return 0;
+}
