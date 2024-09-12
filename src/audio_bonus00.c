@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/12 15:45:42 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:10:35 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	allocate_audio_manager(t_game *game)
 	audio = malloc(sizeof(t_audio_manager));
 	if (!audio)
 	{
-		fprintf(stderr, "Failed to allocate memory for audio manager\n");
+		printf("Failed to allocate memory for audio manager\n");
 		return (-1);
 	}
 	game->audio = audio;
@@ -32,7 +32,7 @@ static int	initialize_openal(t_audio_manager *audio)
 	audio->device = alcOpenDevice(NULL);
 	if (!audio->device)
 	{
-		fprintf(stderr, "Unable to open default device\n");
+		printf("Unable to open default device\n");
 		return (-1);
 	}
 	audio->context = alcCreateContext(audio->device, NULL);
@@ -69,142 +69,244 @@ int	initialize_audio(t_game *game)
 	return (0);
 }
 
-
-void cleanup_audio(t_game *game)
+void	cleanup_audio_sources(t_audio_manager *audio)
 {
-	t_audio_manager *audio = game->audio;
-	if (!audio) return;
+	int	i;
 
-	if (audio->source_count > 0) {
-		for (int i = 0; i < audio->source_count; i++) {
+	if (audio->source_count > 0)
+	{
+		i = 0;
+		while (i < audio->source_count)
+		{
 			alSourceStop(audio->sources[i]);
 			alDeleteSources(1, &audio->sources[i]);
+			i++;
 		}
 	}
-	if (audio->context) {
+}
+
+void	cleanup_audio_context(t_audio_manager *audio)
+{
+	if (audio->context)
+	{
 		alcMakeContextCurrent(NULL);
 		alcDestroyContext(audio->context);
 	}
-	if (audio->device) {
+}
+
+void	cleanup_audio_device(t_audio_manager *audio)
+{
+	if (audio->device)
 		alcCloseDevice(audio->device);
-	}
+}
+
+void	cleanup_audio(t_game *game)
+{
+	t_audio_manager	*audio;
+
+	audio = game->audio;
+	if (!audio)
+		return ;
+	cleanup_audio_sources(audio);
+	cleanup_audio_context(audio);
+	cleanup_audio_device(audio);
 	mpg123_exit();
 	free(audio);
 	game->audio = NULL;
 }
 
-int find_available_source(t_game *game)
+int	find_available_source(t_game *game)
 {
-	t_audio_manager *audio = game->audio;
-	ALint state;
-	for (int i = 0; i < audio->source_count; i++) {
+	t_audio_manager	*audio;
+	ALint			state;
+	int				i;
+
+	audio = game->audio;
+	i = 0;
+	while (i < audio->source_count)
+	{
 		alGetSourcei(audio->sources[i], AL_SOURCE_STATE, &state);
-		if (state != AL_PLAYING) {
-			return i;
-		}
+		if (state != AL_PLAYING)
+			return (i);
+		i++;
 	}
-	return -1; // No available source
+	return (-1);
 }
 
-
-
-static int find_and_prepare_source(t_game *game, const char *filename)
+static int	find_and_prepare_source(t_game *game, const char *filename)
 {
-	int sourceIndex = find_available_source(game);
-	if (sourceIndex == -1) {
-		fprintf(stderr, "No available sources to play audio\n");
-		return -1;
+	int	source_index;
+
+	source_index = find_available_source(game);
+	if (source_index == -1)
+	{
+		printf("No available sources to play audio\n");
+		return (-1);
 	}
-	printf("Playing audio %s on source %d\n", filename, sourceIndex);
-	return sourceIndex;
+	printf("Playing audio %s on source %d\n", filename, source_index);
+	return (source_index);
 }
 
-static mpg123_handle *initialize_mpg123(const char *filename, long *rate, int *channels, int *encoding)
+static mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
+						int *channels, int *encoding)
 {
-	mpg123_handle *mh = mpg123_new(NULL, NULL);
+	mpg123_handle	*mh;
+
+	mh = mpg123_new(NULL, NULL);
 	mpg123_open(mh, filename);
 	mpg123_getformat(mh, rate, channels, encoding);
-	return mh;
+	return (mh);
 }
 
-static char *decode_mp3(mpg123_handle *mh, size_t *totalSize)
+static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 {
-	size_t buffer_size = mpg123_outblock(mh);
-	unsigned char *buffer_data = malloc(buffer_size * sizeof(unsigned char));
-	char *totalBuffer = NULL;
-	*totalSize = 0;
-	size_t done;
+	size_t			buffer_size;
+	unsigned char	*buffer_data;
+	char			*total_buffer;
+	size_t			done;
 
-	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK) {
-		totalBuffer = realloc(totalBuffer, *totalSize + done);
-		memcpy(totalBuffer + *totalSize, buffer_data, done);
-		*totalSize += done;
+	buffer_size = mpg123_outblock(mh);
+	buffer_data = malloc(buffer_size * sizeof(unsigned char));
+	total_buffer = NULL;
+	*total_size = 0;
+	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK)
+	{
+		total_buffer = realloc(total_buffer, *total_size + done);
+		memcpy(total_buffer + *total_size, buffer_data, done);
+		*total_size += done;
 	}
-
 	free(buffer_data);
-	return totalBuffer;
+	return (total_buffer);
 }
 
-static ALuint create_al_buffer(char *totalBuffer, size_t totalSize, int channels, long rate)
+static ALuint	create_al_buffer(char *total_buffer, size_t total_size,
+				int channels, long rate)
 {
-	ALuint buffer;
+	ALuint	buffer;
+	ALenum	format;
+
 	alGenBuffers(1, &buffer);
-	ALenum format = (channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-	alBufferData(buffer, format, totalBuffer, totalSize, rate);
-	return buffer;
+	if (channels == 1)
+		format = AL_FORMAT_MONO16;
+	else
+		format = AL_FORMAT_STEREO16;
+	alBufferData(buffer, format, total_buffer, total_size, rate);
+	return (buffer);
 }
 
-static void play_and_record_audio(t_audio_manager *audio, int sourceIndex, ALuint buffer, const char *filename)
+static void	play_and_record_audio(t_audio_manager *audio, int source_index,
+				ALuint buffer, const char *filename)
 {
-	alSourcei(audio->sources[sourceIndex], AL_BUFFER, buffer);
-	alSourcePlay(audio->sources[sourceIndex]);
-
-	gettimeofday(&audio->last_play_time[sourceIndex], NULL);
-
-	strncpy(audio->playing_tracks[sourceIndex].filename, filename, 255);
-	audio->playing_tracks[sourceIndex].filename[255] = '\0';
-	audio->playing_tracks[sourceIndex].source_index = sourceIndex;
+	alSourcei(audio->sources[source_index], AL_BUFFER, buffer);
+	alSourcePlay(audio->sources[source_index]);
+	gettimeofday(&audio->last_play_time[source_index], NULL);
+	strncpy(audio->playing_tracks[source_index].filename, filename, 255);
+	audio->playing_tracks[source_index].filename[255] = '\0';
+	audio->playing_tracks[source_index].source_index = source_index;
 }
-int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
+
+static void	cleanup_mpg123(mpg123_handle *mh)
 {
-	(void)delayInSeconds;  // Unused parameter
-	t_audio_manager *audio = game->audio;
-	int sourceIndex = find_and_prepare_source(game, filename);
-	if (sourceIndex == -1) return -1;
-
-	long rate;
-	int channels, encoding;
-	mpg123_handle *mh = initialize_mpg123(filename, &rate, &channels, &encoding);
-	if (!mh) return -1;
-
-	size_t totalSize;
-	char *totalBuffer = decode_mp3(mh, &totalSize);
-	if (!totalBuffer) {
-		mpg123_close(mh);
-		mpg123_delete(mh);
-		return -1;
-	}
-
-	ALuint buffer = create_al_buffer(totalBuffer, totalSize, channels, rate);
-
-	play_and_record_audio(audio, sourceIndex, buffer, filename);
-	free(totalBuffer);
 	mpg123_close(mh);
 	mpg123_delete(mh);
-	return 0;
 }
 
-
-int stop_audio_file(t_game *game, const char *filename)
+static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 {
-	t_audio_manager *audio = game->audio;
-	for (int i = 0; i < MAX_SOURCES; i++) {
-		if (strcmp(audio->playing_tracks[i].filename, filename) == 0) {
+	char	*total_buffer;
+
+	total_buffer = decode_mp3_internal(mh, total_size);
+	if (!total_buffer)
+	{
+		cleanup_mpg123(mh);
+		return (NULL);
+	}
+	return (total_buffer);
+}
+
+static void	get_audio_format(mpg123_handle *mh, long *rate, int *chan, int *enc)
+{
+	mpg123_getformat(mh, rate, chan, enc);
+}
+
+static ALuint	create_buf(const char *t_buf, size_t t_size, int chan, long r)
+{
+	return (create_al_buffer(t_buf, t_size, chan, r));
+}
+
+static void	process_audio(t_audio_manager *audio, int src, ALuint buf, \
+const char *file)
+{
+	play_and_record_audio(audio, src, buf, file);
+}
+
+static ALuint	prepare_audio_buffer(mpg123_handle *mh, size_t *total_size)
+{
+	char	*total_buffer;
+	long	rate;
+	int		channels;
+	int		encoding;
+	ALuint	buffer;
+
+	total_buffer = decode_mp3(mh, total_size);
+	if (!total_buffer)
+		return (0);
+	get_audio_format(mh, &rate, &channels, &encoding);
+	buffer = create_buf(total_buffer, *total_size, channels, rate);
+	free(total_buffer);
+	return (buffer);
+}
+
+static int	process_audio_data(mpg123_handle *mh, \
+t_audio_manager *audio, int src, const char *file)
+{
+	size_t	total_size;
+	ALuint	buffer;
+
+	buffer = prepare_audio_buffer(mh, &total_size);
+	if (buffer == 0)
+		return (-1);
+	process_audio(audio, src, buffer, file);
+	return (0);
+}
+
+int	play_audio_file(t_game *game, const char *filename, float delay_in_seconds)
+{
+	t_audio_manager	*audio;
+	int				source_index;
+	mpg123_handle	*mh;
+	int				result;
+
+	(void)delay_in_seconds;
+	audio = game->audio;
+	source_index = find_and_prepare_source(game, filename);
+	if (source_index == -1)
+		return (-1);
+	mh = initialize_mpg123(filename, NULL, NULL, NULL);
+	if (!mh)
+		return (-1);
+	result = process_audio_data(mh, audio, source_index, filename);
+	cleanup_mpg123(mh);
+	return (result);
+}
+
+int	stop_audio_file(t_game *game, const char *filename)
+{
+	t_audio_manager	*audio;
+	int				i;
+
+	audio = game->audio;
+	i = 0;
+	while (i < MAX_SOURCES)
+	{
+		if (strcmp(audio->playing_tracks[i].filename, filename) == 0)
+		{
 			alSourceStop(audio->sources[audio->playing_tracks[i].source_index]);
 			audio->playing_tracks[i].filename[0] = '\0';
-			return 0;
+			return (0);
 		}
+		i++;
 	}
-	fprintf(stderr, "stop_audio_file: Audio file %s not found or not playing\n", filename);
-	return -1;
+	printf("stop_audio_file: Audio  %s not found or not playing\n", filename);
+	return (-1);
 }

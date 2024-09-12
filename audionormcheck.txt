@@ -1,108 +1,19 @@
 audio_bonus00.c: Error!
-Error: CONSECUTIVE_NEWLINES (line:  72, col:   1):	Consecutive newlines
-Error: SPACE_BEFORE_FUNC    (line:  73, col:   5):	space before function name
-Error: SPACE_REPLACE_TAB    (line:  75, col:  20):	Found space when expecting tab
-Error: DECL_ASSIGN_LINE     (line:  75, col:  28):	Declaration and assignation on a single line
-Error: NL_AFTER_VAR_DECL    (line:  76, col:   1):	Variable declarations must be followed by a newline
-Error: SPACE_AFTER_KW       (line:  76, col:  17):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  76, col:  17):	Missing space after keyword
-Error: TOO_FEW_TAB          (line:  76, col:  17):	Missing tabs for indent level
-Error: TOO_MANY_INSTR       (line:  76, col:  17):	Too many instructions on a single line
-Error: EXP_NEWLINE          (line:  76, col:  23):	Expected newline after control structure
-Error: EMPTY_LINE_FUNCTION  (line:  77, col:   1):	Empty line in function
-Error: NO_SPC_AFR_PAR       (line:  78, col:  32):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line:  78, col:  34):	Missing tabs for indent level
-Error: FORBIDDEN_CS         (line:  79, col:   9):	Forbidden control structure
-Error: NO_SPC_AFR_PAR       (line:  79, col:  53):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line:  79, col:  55):	Missing tabs for indent level
-Error: NO_SPC_AFR_PAR       (line:  84, col:  23):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line:  84, col:  25):	Missing tabs for indent level
-Error: NO_SPC_AFR_PAR       (line:  88, col:  22):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line:  88, col:  24):	Missing tabs for indent level
-Error: TOO_MANY_FUNCS       (line:  96, col:   1):	Too many functions in file
-Error: SPACE_BEFORE_FUNC    (line:  96, col:   4):	space before function name
-Error: SPACE_REPLACE_TAB    (line:  98, col:  20):	Found space when expecting tab
-Error: DECL_ASSIGN_LINE     (line:  98, col:  28):	Declaration and assignation on a single line
-Error: SPACE_REPLACE_TAB    (line:  99, col:  10):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  99, col:  11):	Misaligned variable declaration
-Error: NL_AFTER_VAR_DECL    (line: 100, col:   1):	Variable declarations must be followed by a newline
-Error: FORBIDDEN_CS         (line: 100, col:   5):	Forbidden control structure
-Error: NO_SPC_AFR_PAR       (line: 100, col:  49):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 100, col:  51):	Missing tabs for indent level
-Error: NO_SPC_AFR_PAR       (line: 102, col:  32):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 102, col:  34):	Missing tabs for indent level
-Error: RETURN_PARENTHESIS   (line: 103, col:  20):	Return value must be in parenthesis
-Error: RETURN_PARENTHESIS   (line: 106, col:  12):	Return value must be in parenthesis
-Error: WRONG_SCOPE_COMMENT  (line: 106, col:  16):	Comment is invalid in this scope
-Error: WRONG_SCOPE_COMMENT  (line: 106, col:  16):	Comment is invalid in this scope
-Error: TOO_MANY_FUNCS       (line: 109, col:   1):	Too many functions in file
-Error: SPACE_BEFORE_FUNC    (line: 109, col:   4):	space before function name
-Error: CONSECUTIVE_SPC      (line: 111, col:  26):	Two or more consecutives spaces
-Error: WRONG_SCOPE_COMMENT  (line: 111, col:  28):	Comment is invalid in this scope
-Error: WRONG_SCOPE_COMMENT  (line: 111, col:  28):	Comment is invalid in this scope
-Error: VAR_DECL_START_FUNC  (line: 112, col:   1):	Variable declaration not at start of function
-Error: SPACE_REPLACE_TAB    (line: 112, col:  20):	Found space when expecting tab
-Error: DECL_ASSIGN_LINE     (line: 112, col:  28):	Declaration and assignation on a single line
-Error: SPACE_REPLACE_TAB    (line: 113, col:   8):	Found space when expecting tab
-Error: FORBIDDEN_CHAR_NAME  (line: 113, col:   9):	user defined identifiers should contain only lowercase characters, digits or '_'
-Error: MISALIGNED_VAR_DECL  (line: 113, col:   9):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line: 114, col:  18):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 114, col:  19):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line: 115, col:  18):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 115, col:  19):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line: 116, col:  11):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 116, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 117, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 117, col:  11):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 117, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 118, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 118, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 118, col:  10):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 119, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 119, col:  11):	Found space when expecting tab
-Error: FORBIDDEN_CHAR_NAME  (line: 119, col:  12):	user defined identifiers should contain only lowercase characters, digits or '_'
-Error: MISALIGNED_VAR_DECL  (line: 119, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 120, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 120, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 120, col:  10):	Misaligned variable declaration
-Error: FORBIDDEN_CHAR_NAME  (line: 120, col:  11):	user defined identifiers should contain only lowercase characters, digits or '_'
-Error: TOO_MANY_VARS_FUNC   (line: 121, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 121, col:  11):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 121, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 122, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 122, col:  11):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 122, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_VARS_FUNC   (line: 123, col:   1):	Too many variables declarations in a function
-Error: SPACE_REPLACE_TAB    (line: 123, col:   8):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line: 123, col:   9):	Misaligned variable declaration
-Error: MULT_DECL_LINE       (line: 123, col:  17):	Multiple declarations on a single line
-Error: NO_SPC_AFR_PAR       (line: 126, col:  26):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 126, col:  28):	Missing tabs for indent level
-Error: RETURN_PARENTHESIS   (line: 128, col:  16):	Return value must be in parenthesis
-Error: EMPTY_LINE_FUNCTION  (line: 130, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 132, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 136, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 139, col:   1):	Empty line in function
-Error: NO_SPC_AFR_PAR       (line: 142, col:  73):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 142, col:  75):	Missing tabs for indent level
-Error: EMPTY_LINE_FUNCTION  (line: 147, col:   1):	Empty line in function
-Error: TERNARY_FBIDDEN      (line: 149, col:  30):	Ternaries are forbidden
-Error: EMPTY_LINE_FUNCTION  (line: 151, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 154, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 156, col:   1):	Empty line in function
-Error: EMPTY_LINE_FUNCTION  (line: 160, col:   1):	Empty line in function
-Error: RETURN_PARENTHESIS   (line: 165, col:  12):	Return value must be in parenthesis
-Error: TOO_MANY_LINES       (line: 166, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_FUNCS       (line: 168, col:   1):	Too many functions in file
-Error: SPACE_BEFORE_FUNC    (line: 168, col:   4):	space before function name
-Error: SPACE_REPLACE_TAB    (line: 170, col:  20):	Found space when expecting tab
-Error: DECL_ASSIGN_LINE     (line: 170, col:  28):	Declaration and assignation on a single line
-Error: NL_AFTER_VAR_DECL    (line: 171, col:   1):	Variable declarations must be followed by a newline
-Error: FORBIDDEN_CS         (line: 171, col:   5):	Forbidden control structure
-Error: NO_SPC_AFR_PAR       (line: 171, col:  41):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 171, col:  43):	Missing tabs for indent level
-Error: NO_SPC_AFR_PAR       (line: 172, col:  69):	Extra space after parenthesis (brace/bracket)
-Error: TOO_FEW_TAB          (line: 172, col:  71):	Missing tabs for indent level
-Error: RETURN_PARENTHESIS   (line: 175, col:  20):	Return value must be in parenthesis
-Error: LINE_TOO_LONG        (line: 178, col:  82):	line too long
-Error: RETURN_PARENTHESIS   (line: 179, col:  12):	Return value must be in parenthesis
+Error: TOO_MANY_FUNCS       (line:  88, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line:  97, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 103, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 118, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 136, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 150, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 161, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 182, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 197, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 208, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 214, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 227, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 232, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 237, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 243, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 260, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 273, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 293, col:   1):	Too many functions in file
