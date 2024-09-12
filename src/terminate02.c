@@ -85,32 +85,6 @@ void clean_textures(t_game *game)
 }
 
 
-
-
-
-// void free_map(t_game *game) {
-//     if (game->map != NULL) {
-//         if (game-map->data != NULL) {
-//             // Free each row
-//             for (int i = 0; i < game->screen_height; i++) {
-//                 free(map->data[i]);
-//             }
-//             // Free the array of rows
-//             free(map->data);
-//         }
-//         // Free the map structure
-//         free(map);
-//     }
-// }
-
-
-
-
-
-// void	clean_floor(t_game *game)
-// 	int					**floor_texture_map;
-
-
 void	clean_rays(t_game *game)
 {
     struct s_ray_node *current;

@@ -12,10 +12,11 @@
 
 #include "cube3d.h"
 
+
 int initgame(t_game **game)
 {
     create_map(*game);
-    create_player(*game);
+	create_player(*game);
     if ((*game)->bonus)
     {
         printf("*** HELLDIVERS 3D ***\n");
@@ -73,7 +74,6 @@ void create_map_from_cub(t_game *game)
 
 int	create_map(t_game *game)
 {
-	// Implement map creation and initialization
 	ft_printf("initializing map\n");
 	create_map_from_cub(game);
 	ft_printf("initialized map\n");
@@ -98,7 +98,6 @@ int	create_map(t_game *game)
 	return 1;
 }
 
-
 int parse_map(t_game *game,char *cub_filepath)
 {
 	game->cub_filepath=cub_filepath;
@@ -113,9 +112,6 @@ int parse_map(t_game *game,char *cub_filepath)
 		return -1;
     return 0;
 }
-
-
-
 
 int create_strike(t_game *game)
 {
@@ -137,7 +133,6 @@ int create_strike(t_game *game)
             for (int j = 0; j < NUM_OFFSETS; j++)
             {
                 game->strike[i].frame_counts[j] = rand() % (NUM_AIRSTRIKE_FRAMES * 100);
-                // game->strike[i].speed_multipliers[j] = 10.0f + ((float)rand() / RAND_MAX) * 5.0f;  // Speed between 5 and 10
                 game->strike[i].speed_multipliers[j] = 15.0f + ((float)rand() / RAND_MAX) * 10.0f;  // Speed between 15 and 25
             }
 
@@ -184,27 +179,18 @@ void set_player_direction(t_game *game,t_player *player)
 
 int	create_player(t_game *game)
 {
-	// Allocate memory for the player structure
-	t_player *player = malloc(sizeof(t_player));
+	t_player *player;
+
+	player = malloc(sizeof(t_player));
 	if (player == NULL)
 	{
 		fprintf(stderr, "Failed to allocate memory for the player.\n");
-		exit(1); // or handle the error as appropriate
+		exit(1); 
 	}
+	player->position.x = (game->cub_player_y)+0.5;
+	player->position.y = (game->cub_player_x)+0.50;
 
-
-	// Initialize player position
-	player->position.x = game->cub_player_y;
-	player->position.y = game->cub_player_x;
 	set_player_direction(game,player);
-  
-
- 
-
-
-
-	// Initialize pitch (not needed for basic raycasting,
-		// useful for up/down look)
 	player->height = 0.0f;
     if (game->bonus == 1)
 	    player->height = 0.2f;
@@ -215,8 +201,6 @@ int	create_player(t_game *game)
     player->is_dead = 0;
     player->is_extracting = 0;
     player->is_burning = 0;
-	// player->pitch = 0;
-	// Assign the player to the game structure
 	game->player = player;
 	return (0);
 }
@@ -248,7 +232,6 @@ int randomize_extract_position(t_game *game)
 
     game->extract[0].position.x = (float)x + 0.5f; // Center in the tile
     game->extract[0].position.y = (float)y + 0.5f; // Center in the tile
-
     return 1; // Return 1 to indicate successful repositioning
 }
 
@@ -379,7 +362,6 @@ int	create_extraction(t_game *game)
 	game->extract[0].is_landing = 0;
 	return (0);
 }
-
 
 
 int randomize_enemy_positions(t_game *game)
