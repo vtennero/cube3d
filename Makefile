@@ -6,10 +6,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 # Audio flags
 AUDIOFLAGS = -lopenal -lmpg123
-<<<<<<< HEAD
-# AUDIOFLAGS =
-=======
->>>>>>> 770ed192ca4cc8192f2ee9bb43bbbcae2de307f9
 
 # Directories
 SRC_DIR = src
@@ -94,14 +90,7 @@ textures_load_bonus00.c \
 textures_load_bonus01.c \
 textures_load_bonus02.c \
 textures_load_bonus03.c \
-<<<<<<< HEAD
-textures_load_bonus04.c \
-time.c \
-audio_bonus.c \
-# audio_dummy.c \
-=======
 textures_load_bonus04.c
->>>>>>> 770ed192ca4cc8192f2ee9bb43bbbcae2de307f9
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
