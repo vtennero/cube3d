@@ -32,5 +32,6 @@ Compiles the complete game with full audio support. This version requires additi
 ### Gameplay
 - Scripts/Game Events: Death, Burning, Respawn, Health, Shooting, Objectives, Localized Player Airstrikes
 - Enemies with pathfinding and randomized location respawn
+- Mission Logic: Collect the Sample, Call Extraction, Survive, Extract
 
 

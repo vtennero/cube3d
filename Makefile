@@ -97,7 +97,7 @@ SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 # Object files for main, bonus, and helldiver executables
 OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
 BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
-HELLDIVER_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(HELLDIVER_MAIN:.c=.o)) $(OBJ_DIR)/audio_bonus.o
+HELLDIVER_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(HELLDIVER_MAIN:.c=.o)) $(OBJ_DIR)/audio_bonus00.o
 
 
 # Include paths
@@ -137,7 +137,7 @@ $(BONUS_NAME): $(BONUS_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h
 
 $(HELLDIVER_NAME): $(HELLDIVER_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -DHELLDIVER $(HELLDIVER_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h -include $(SRC_DIR)/cube3d_audio_bonus.h
+	$(CC) $(CFLAGS) -DHELLDIVER $(HELLDIVER_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h -include $(SRC_DIR)/cube3d_audio_bonus00.h
 
 clean:
 	rm -f $(OBJ_DIR)/*.o

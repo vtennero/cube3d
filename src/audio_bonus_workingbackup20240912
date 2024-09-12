@@ -12,6 +12,7 @@
 
 #include "cube3d.h"
 #include "cube3d_audio_bonus.h"
+
 int initialize_audio(t_game *game)
 {
     t_audio_manager *audio = malloc(sizeof(t_audio_manager));
