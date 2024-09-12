@@ -84,7 +84,7 @@ void	free_wall_texture_map_path(t_game *game)
 void	clean_map(t_game *game)
 {
 	if (game->cub_map_array)
-		free_array((game->cub_map_array),(game->cub_map_row_count)*2);
+		free_array((game->cub_map_array), (game->cub_map_row_count) * 2);
 	if (game->map)
 		free(game->map);
 }

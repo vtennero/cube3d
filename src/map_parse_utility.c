@@ -41,7 +41,7 @@ int	count_words_from_array(char **words)
 	{
 		count++;
 	}
-	if (count==0)
+	if (count == 0)
 		free_split_result(words);
 	return (count);
 }

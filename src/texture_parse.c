@@ -91,7 +91,8 @@ int	check_line(t_game *game, char *line, int *map_start)
 	if (word_count != 2 && *map_start == 0)
 	{
 		free_split_result(words);
-		return (handle_error("Error\nInvalid characters in texture parsing\n", -1));
+		return (handle_error("Error\nInvalid characters in texture parsing\n",
+				-1));
 	}
 	assign_textures(game, words);
 	free_split_result(words);

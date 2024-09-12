@@ -18,15 +18,14 @@
 int	floodfill(t_game *game, int **filled_map, int i, int j)
 {
 	int	is_surrounded;
-	// printf("i is %d and j is %d",i,j);
-	if (i < 0 || i >= game->cub_map_row_count || j < 0 || j >= ((game->cub_map_col_count+1)/2))
+
+	if (i < 0 || i >= game->cub_map_row_count || j < 0
+		|| j >= ((game->cub_map_col_count + 1) / 2))
 		return (0);
-	if (game->cub_map_array[i][j] == 1|| filled_map[i][j] == 1)
+	if (game->cub_map_array[i][j] == 1 || filled_map[i][j] == 1)
 		return (1);
 	else
 		filled_map[i][j] = 1;
-	// print_2d_array(game,filled_map);
-
 	is_surrounded = 1;
 	is_surrounded &= floodfill(game, filled_map, i - 1, j);
 	is_surrounded &= floodfill(game, filled_map, i + 1, j);
@@ -34,8 +33,6 @@ int	floodfill(t_game *game, int **filled_map, int i, int j)
 	is_surrounded &= floodfill(game, filled_map, i, j + 1);
 	return (is_surrounded);
 }
-
-
 
 int	parse_char_to_int(char chars)
 {
@@ -59,16 +56,17 @@ int	parse_char_to_int(char chars)
 int	check_map_boundaries(t_game *game)
 {
 	int	is_surrounded;
-int	**filled_map;
-	is_surrounded = 1;
-int x;
-int y;
+	int	**filled_map;
+	int	x;
+	int	y;
 
+	is_surrounded = 1;
 	x = game->cub_player_x;
 	y = game->cub_player_y;
-	filled_map=initialize_array(game->cub_map_row_count , (game->cub_map_col_count + 1)/2); 
+	filled_map = initialize_array(game->cub_map_row_count,
+			(game->cub_map_col_count + 1) / 2);
 	is_surrounded = floodfill(game, filled_map, x, y);
-	free_array(filled_map,game->cub_map_row_count);
+	free_array(filled_map, game->cub_map_row_count);
 	if (!is_surrounded)
 	{
 		ft_printf("Error\nMap isn't surrounded by wall\n");
