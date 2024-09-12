@@ -18,7 +18,8 @@
 		"ios": "c",
 		"libft.h": "c",
 		"mlx.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"audio_bonus_workingbackup20240912": "c"
 	},
 	"makefile.configureOnOpen": false
 }

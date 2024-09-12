@@ -591,6 +591,7 @@ int	get_pixel_color(int x, int y, int width, int height, char *data, int bpp, in
 int	handle_mouse_click(int button, int x, int y, void *param);
 int	handle_mouse_move(int x, int y, t_game *game);
 int	handle_mouse_release(int button, int x, int y, void *param);
+int	init_game_audio_struct(t_game *game);
 int	initgame(t_game **game);
 int	initialize_audio(t_game *game);
 int	is_close_enough(t_game *game, t_enemy *enemy);
