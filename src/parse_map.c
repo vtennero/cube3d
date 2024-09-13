@@ -119,7 +119,6 @@ int	check_player_postion_and_map_char(t_game *game)
 }
 
 int	parse_map_to_array(t_game *game)
-
 {
 	int	check_status;
 
