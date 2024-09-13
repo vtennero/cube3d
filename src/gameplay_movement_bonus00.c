@@ -50,7 +50,7 @@ int	detect_collision(t_game *game, float newX, float newY)
 	dirY = newY - game->player->position.y;
 	length = sqrt(dirX * dirX + dirY * dirY);
 	t = 0;
-	if (game->bonus == 0 || !normalize_direction(&dirX, &dirY, length))
+	if (!normalize_direction(&dirX, &dirY, length))
 		return (0);
 	while (t <= 1)
 	{

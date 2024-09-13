@@ -12,68 +12,69 @@
 
 #include "cube3d.h"
 
-void	update_progress_bar(int current, int total, const char *task_name)
-{
-	static int	last_printed_length = 0;
-	float		progress;
-	int			bar_width;
-	int			printed_length;
-	int			task_name_length;
+// void	update_progress_bar(int current, int total, const char *task_name)
+// {
+// 	static int	last_printed_length = 0;
+// 	float		progress;
+// 	int			bar_width;
+// 	int			printed_length;
+// 	int			task_name_length;
 
-	progress = (float)current / total;
-	bar_width = (int)(progress * PROGRESS_BAR_WIDTH);
-	printf("\r");
-	for (int i = 0; i < last_printed_length; i++)
-		printf(" ");
-	printf("\r");
-	printed_length = 0;
-	task_name_length = strlen(task_name);
-	if (task_name_length > MAX_TASK_NAME_LENGTH)
-		task_name_length = MAX_TASK_NAME_LENGTH;
-	printed_length += printf("%-*.*s", TOTAL_PREFIX_LENGTH, task_name_length, task_name);
-	printed_length += printf("[");
-	for (int i = 0; i < PROGRESS_BAR_WIDTH; i++)
+// 	progress = (float)current / total;
+// 	bar_width = (int)(progress * PROGRESS_BAR_WIDTH);
+// 	printf("\r");
+// 	for (int i = 0; i < last_printed_length; i++)
+// 		printf(" ");
+// 	printf("\r");
+// 	printed_length = 0;
+// 	task_name_length = strlen(task_name);
+// 	if (task_name_length > MAX_TASK_NAME_LENGTH)
+// 		task_name_length = MAX_TASK_NAME_LENGTH;
+// 	printed_length += printf("%-*.*s", TOTAL_PREFIX_LENGTH, task_name_length, task_name);
+// 	printed_length += printf("[");
+// 	for (int i = 0; i < PROGRESS_BAR_WIDTH; i++)
+// 	{
+// 		if (i < bar_width)
+// 			printed_length += printf("#");
+// 		else
+// 			printed_length += printf(" ");
+// 	}
+// 	printed_length += printf("] %.1f%%", progress * 100.0f);
+// 	if (current == total)
+// 		printf("\n");
+// 	last_printed_length = printed_length;
+// }
+
+void	load_texture(t_game *game, t_texture *texture, char *path)
+{
+	texture->img = mlx_xpm_file_to_image(
+		game->mlx_ptr, path, &texture->width, &texture->height);
+	if (!texture->img)
 	{
-		if (i < bar_width)
-			printed_length += printf("#");
-		else
-			printed_length += printf(" ");
+		ft_putstr_fd("Failed to load texture: ", 2);
+		ft_putendl_fd(path, 2);
+		exit(EXIT_FAILURE);
 	}
-	printed_length += printf("] %.1f%%", progress * 100.0f);
-	if (current == total)
-		printf("\n");
-	last_printed_length = printed_length;
+	texture->data = mlx_get_data_addr(texture->img,
+			&texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
 }
 
 
-void load_wall_textures(t_game *game)
+void	load_wall_textures(t_game *game)
 {
-    int i = NORTH;
-    int total_textures = WEST - NORTH + 1;
+	int	i;
+	int	total_textures;
 
-    while (i <= WEST)
-    {
-        game->walltextures[i].img = mlx_xpm_file_to_image(
-                game->mlx_ptr,
-                game->walltextures[i].path,
-                &game->walltextures[i].width,
-                &game->walltextures[i].height);
-        if (!game->walltextures[i].img)
-        {
-            ft_putstr_fd("Failed to load wall texture: ", 2);
-            ft_putendl_fd(game->walltextures[i].path, 2);
-            exit(EXIT_FAILURE);
-        }
-        game->walltextures[i].data = mlx_get_data_addr(
-                game->walltextures[i].img,
-                &game->walltextures[i].tex_bpp,
-                &game->walltextures[i].tex_line_len,
-                &game->walltextures[i].tex_endian);
-
-        update_progress_bar(i - NORTH + 1, total_textures, "Loading wall textures");
-        i++;
-    }
+	i = NORTH;
+	total_textures = WEST - NORTH + 1;
+	while (i <= WEST)
+	{
+		load_texture(game, &game->walltextures[i], game->walltextures[i].path);
+		update_progress_bar(game, i - NORTH + 1, total_textures, "Loading wall textures");
+		i++;
+	}
 }
+
 
 
 void	load_bonus_textures(t_game *game)

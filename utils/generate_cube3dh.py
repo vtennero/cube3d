@@ -18,7 +18,7 @@ def extract_function_declarations(directory='../src'):
     unique_declarations = set()
 
     for filename in os.listdir(directory):
-        if filename.endswith('.c'):
+        if filename.endswith('.c') and filename != 'audio_bonus00.c':  # Ignore audio_bonus00.c
             with open(os.path.join(directory, filename), 'r') as file:
                 content = file.read()
 

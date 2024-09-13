@@ -39,6 +39,13 @@ gameplay_movement_bonus00.c \
 gameplay_movement_bonus01.c \
 gameplay_movement_bonus02.c \
 gameplay_movement_bonus03.c \
+gameplay_movement_bonus04.c \
+gameplay_scripts_static_bonus00.c \
+gameplay_scripts_static_bonus01.c \
+gameplay_scripts_static_bonus02.c \
+gameplay_scripts_static_bonus03.c \
+gameplay_scripts_static_bonus04.c \
+gameplay_scripts_static_bonus05.c \
 initialization00.c \
 initialization_bonus00.c \
 initialization_bonus01.c \
@@ -50,7 +57,6 @@ intro_bonus01.c \
 intro_bonus02.c \
 map_parse_utility.c \
 menu_bonus.c \
-movement_mouse.c \
 napalm_bonus.c \
 outro_bonus.c \
 parse_map.c \
@@ -77,7 +83,6 @@ render_walls_bonus.c \
 respawn_bonus.c \
 scripts.c \
 scripts_bonus00.c \
-scripts_static.c \
 strike_bonus.c \
 supplies_bonus.c \
 terminate01.c \
@@ -90,7 +95,8 @@ textures_load_bonus00.c \
 textures_load_bonus01.c \
 textures_load_bonus02.c \
 textures_load_bonus03.c \
-textures_load_bonus04.c
+textures_load_bonus04.c \
+qol_bonus.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 

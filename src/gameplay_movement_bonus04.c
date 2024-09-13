@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_mouse.c                                   :+:      :+:    :+:   */
+/*   gameplay_movement_bonus04.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/08 17:56:04 by toto              #+#    #+#             */
-/*   Updated: 2024/09/09 17:56:10 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/13 12:49:53 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/13 12:49:53 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
-
 
 void init_last_pos(int x, int y, int *last_x, int *last_y)
 {
@@ -30,17 +29,10 @@ void calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, int *dy)
 	*last_y = y;
 }
 
-float calc_rotation_angle(int dx, float speed)
+float calc_rotation_angle(int dx)
 {
-	return dx * speed;
+	return dx * MOUSE_ROT_SPEED;
 }
-
-// void rotate_vector(float *x, float *y, float angle)
-// {
-// 	float old_x = *x;
-// 	*x = old_x * cos(angle) - *y * sin(angle);
-// 	*y = old_x * sin(angle) + *y * cos(angle);
-// }
 
 void rotate_player(t_game *game, float angle)
 {
@@ -52,9 +44,9 @@ void rotate_player(t_game *game, float angle)
 
 }
 
-void adjust_pitch(t_game *game, int dy, float speed)
+void adjust_pitch(t_game *game, int dy)
 {
-	float change = -dy * speed;
+	float change = -dy * MOUSE_PITCH_SPEED;
 	if (game->player->is_extracting == 0)
 	{
 		if (fabs(change) > 0.001)
@@ -66,45 +58,50 @@ void adjust_pitch(t_game *game, int dy, float speed)
 
 }
 
-int handle_mouse_move(int x, int y, t_game *game)
+t_vector2d get_mouse_position(t_game *game)
 {
-	// static int last_x = -1;
-	// static int last_y = -1;
+    int x, y;
+    mlx_mouse_get_pos(game->mlx_ptr, game->win_ptr, &x, &y);
+    return (t_vector2d){x, y};
+}
+
+t_vector2d calculate_mouse_delta(t_vector2d current_pos, t_vector2d center)
+{
+    return (t_vector2d){current_pos.x - center.x, current_pos.y - center.y};
+}
+
+void center_mouse(t_game *game, t_vector2d center)
+{
+    mlx_mouse_move(game->mlx_ptr, game->win_ptr, (int)center.x, (int)center.y);
+}
+
+
+
+int	handle_mouse_move(int x, int y, t_game *game)
+{
+	t_vector2d		center;
+	t_vector2d		current_pos;
+	t_vector2d		delta;
+	float			angle;
+
 	(void)x;
 	(void)y;
-
-	int dx, dy;
-	float angle;
-	float rot_speed = 0.005;  // Half of the original value
-	float pitch_speed = 0.001;
-	int center_x = DEFAULT_S_WIDTH / 2;
-	int center_y = DEFAULT_S_HEIGHT / 2;
-
-	// Get the current mouse position
-	int current_x, current_y;
-	mlx_mouse_get_pos(game->mlx_ptr, game->win_ptr, &current_x, &current_y);
-
-	// Calculate the delta from the center
-	dx = current_x - center_x;
-	dy = current_y - center_y;
-
-	// Only process if there's actual movement
-	if (dx != 0 || dy != 0)
+	center.x = DEFAULT_S_WIDTH / 2;
+	center.y = DEFAULT_S_HEIGHT / 2;
+	current_pos = get_mouse_position(game);
+	delta = calculate_mouse_delta(current_pos, center);
+	if (delta.x != 0 || delta.y != 0)
 	{
-		angle = calc_rotation_angle(dx, rot_speed);
+		angle = calc_rotation_angle(delta.x);
 		if (fabs(angle) > 0.001)
-		{
 			rotate_player(game, angle);
-		}
-
-		adjust_pitch(game, dy, pitch_speed);
-
-		// Move the mouse back to the center
-		mlx_mouse_move(game->mlx_ptr, game->win_ptr, center_x, center_y);
+		adjust_pitch(game, delta.y);
+		center_mouse(game, center);
 	}
-
 	return (0);
 }
+
+
 
 void play_random_strike_sound(t_game *game)
 {

@@ -38,6 +38,7 @@ int	create_game_struct(t_game **game, int is_bonus)
 	*game = ft_calloc(1, sizeof(t_game));
 	if (*game == NULL)
 		return (-1);
+	(*game)->loading = 0;
 	(*game)->bonus = is_bonus;
 	(*game)->screen_height = DEFAULT_S_HEIGHT;
 	(*game)->screen_width = DEFAULT_S_WIDTH;
@@ -185,7 +186,7 @@ int	create_player(t_game *game)
 	if (player == NULL)
 	{
 		fprintf(stderr, "Failed to allocate memory for the player.\n");
-		exit(1); 
+		exit(1);
 	}
 	player->position.x = (game->cub_player_y)+0.5;
 	player->position.y = (game->cub_player_x)+0.50;

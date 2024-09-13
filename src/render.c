@@ -145,7 +145,7 @@ static void run_dmg_script(t_game *game)
     script_barrage_enemies(game);
     script_barrage_player(game);
     script_die(game);
-    script_strike_enemies(game);
+    script_strike_enemies(game, 0, 5);
 }
 
 static void run_collectible_script(t_game *game)

@@ -21,7 +21,7 @@ void load_gun_textures(t_game *game)
 
 	while (frame <= MAX_GUN_TEXTURES)
 	{
-		update_progress_bar(frame, MAX_GUN_TEXTURES, "Loading gun textures");
+		update_progress_bar(game, frame, MAX_GUN_TEXTURES, "Loading gun textures");
 		digits[0] = '0' + (frame / 10);
 		digits[1] = '0' + (frame % 10);
 		game->gun_textures[frame - 1].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->gun_textures[frame - 1].width, &game->gun_textures[frame - 1].height);
@@ -35,7 +35,7 @@ void load_gun_textures(t_game *game)
 	}
 	if (frame > MAX_GUN_TEXTURES)
 		game->num_gun_frames = MAX_GUN_TEXTURES;
-	update_progress_bar(MAX_GUN_TEXTURES, MAX_GUN_TEXTURES, "Loading gun textures");
+	update_progress_bar(game, MAX_GUN_TEXTURES, MAX_GUN_TEXTURES, "Loading gun textures");
 }
 
 int load_extract_textures(t_game *game)
@@ -50,7 +50,7 @@ int load_extract_textures(t_game *game)
 
 	for (int i = 0; i < num_textures; i++)
 	{
-		update_progress_bar(i + 1, num_textures, "Loading extract textures");
+		update_progress_bar(game, i + 1, num_textures, "Loading extract textures");
 
 		t_texture *texture = &game->extract_texture[i];
 
@@ -63,43 +63,29 @@ int load_extract_textures(t_game *game)
 
 	return (1);
 }
-void load_floor_textures(t_game *game)
+
+void	load_floor_textures(t_game *game)
 {
-    char path[] = "textures/floor/floor00.xpm";
-    int first_digit, second_digit;
-    int texture_count = 0;
+	char	path[] = "textures/floor/floor00.xpm";
+	int		f_digit;
+	int		s_digit;
+	int		texcount;
 
-    get_last_two_digit_indexes(path, &first_digit, &second_digit);
-
-    while (texture_count < MAX_FLOOR_TEXTURES)
-    {
-        update_progress_bar(texture_count + 1, MAX_FLOOR_TEXTURES, "Loading floor textures");
-
-        game->floortextures[texture_count].img = mlx_xpm_file_to_image(
-            game->mlx_ptr,
-            path,
-            &game->floortextures[texture_count].width,
-            &game->floortextures[texture_count].height);
-
-        if (!game->floortextures[texture_count].img)
-            exit(EXIT_FAILURE);
-
-        game->floortextures[texture_count].data = mlx_get_data_addr(
-            game->floortextures[texture_count].img,
-            &game->floortextures[texture_count].tex_bpp,
-            &game->floortextures[texture_count].tex_line_len,
-            &game->floortextures[texture_count].tex_endian);
-
-        texture_count++;
-
-        // Increment the number in the path
-        path[second_digit]++;
-        if (path[second_digit] > '9')
-        {
-            path[second_digit] = '0';
-            path[first_digit]++;
-        }
-    }
+	texcount = 0;
+	get_last_two_digit_indexes(path, &f_digit, &s_digit);
+	while (texcount < MAX_FLOOR_TEXTURES)
+	{
+		update_progress_bar(game, texcount + 1, MAX_FLOOR_TEXTURES,
+			"Loading floor textures");
+		load_texture(game, &game->floortextures[texcount], path);
+		texcount++;
+		path[s_digit]++;
+		if (path[s_digit] > '9')
+		{
+			path[s_digit] = '0';
+			path[f_digit]++;
+		}
+	}
 }
 
 int load_extract_texture(t_game *game, char *path)

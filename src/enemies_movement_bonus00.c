@@ -16,18 +16,6 @@
 #define MOVEMENT_SPEED 0.02     // Adjust this to change how far enemies move each step
 #define STOP_DISTANCE 2.0f  // Adjust this value to change how close enemies get to the player
 
-int is_wall(t_game *game, float x, float y)
-{
-    int map_x = (int)x;
-    int map_y = (int)y;
-
-    if (map_x < 0 || map_x >= game->map->width || map_y < 0 || map_y >= game->map->height)
-        return 1; // Treat out of bounds as a wall
-
-    return game->map->data[map_y][map_x] == '1';
-}
-
-
 static int should_move(unsigned long long *enemy_seed)
 {
     return xorshift64(enemy_seed) % 1000000 < MOVEMENT_PROBABILITY;

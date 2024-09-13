@@ -70,7 +70,7 @@ void calc_delta_dist(t_game *game, t_ray_node *ray)
        (void)game;
        ray->ray.deltaDistX = (ray->ray.rayDirX == 0) ? 1e30 : fabs(1 / ray->ray.rayDirX);
        ray->ray.deltaDistY = (ray->ray.rayDirY == 0) ? 1e30 : fabs(1 / ray->ray.rayDirY);
-       
+
     //    printf("Ray %d: deltaDistX=%.4f, deltaDistY=%.4f\n",               ray->ray.x, ray->ray.deltaDistX, ray->ray.deltaDistY);
    }
 
@@ -85,35 +85,46 @@ static int is_out_of_bounds(t_game *game, t_ray *ray)
             ray->mapY < 0 || ray->mapY >= game->map->height);
 }
 
-// Helper function to handle epsilon case
-static void handle_epsilon_case(t_game *game, t_ray *ray)
+static int	is_within_map_bounds(t_game *game, int x, int y)
 {
-    int next_x = ray->mapX + ray->stepX;
-    int next_y = ray->mapY + ray->stepY;
-    
-    if (next_x >= 0 && next_x < game->map->width && 
-        next_y >= 0 && next_y < game->map->height)
-    {
-        if (game->map->data[next_x][ray->mapY] == 1 &&
-            game->map->data[ray->mapX][next_y] == 1)
-        {
-            ray->sideDistX += ray->deltaDistX;
-            ray->mapX += ray->stepX;
-            ray->side = 0;
-        }
-        else if (game->map->data[next_x][ray->mapY] == 1)
-        {
-            ray->sideDistY += ray->deltaDistY;
-            ray->mapY += ray->stepY;
-            ray->side = 1;
-        }
-        else
-        {
-            ray->sideDistX += ray->deltaDistX;
-            ray->mapX += ray->stepX;
-            ray->side = 0;
-        }
-    }
+	return (x >= 0 && x < game->map->width
+		&& y >= 0 && y < game->map->height);
+}
+
+static void	update_ray_x(t_ray *ray)
+{
+	ray->sideDistX += ray->deltaDistX;
+	ray->mapX += ray->stepX;
+	ray->side = 0;
+}
+
+static void	update_ray_y(t_ray *ray)
+{
+	ray->sideDistY += ray->deltaDistY;
+	ray->mapY += ray->stepY;
+	ray->side = 1;
+}
+
+static void	handle_corner_case(t_game *game, t_ray *ray, int next_x, int next_y)
+{
+	if (game->map->data[next_x][ray->mapY] == 1
+		&& game->map->data[ray->mapX][next_y] == 1)
+		update_ray_x(ray);
+	else if (game->map->data[next_x][ray->mapY] == 1)
+		update_ray_y(ray);
+	else
+		update_ray_x(ray);
+}
+
+static void	handle_epsilon_case(t_game *game, t_ray *ray)
+{
+	int	next_x;
+	int	next_y;
+
+	next_x = ray->mapX + ray->stepX;
+	next_y = ray->mapY + ray->stepY;
+	if (is_within_map_bounds(game, next_x, next_y))
+		handle_corner_case(game, ray, next_x, next_y);
 }
 
 // Helper function to move the ray
@@ -134,40 +145,59 @@ static void move_ray(t_ray *ray)
 }
 
 
-
-static int check_wall_hit(t_game *game, t_ray *ray, int *prev_mapX, int *prev_mapY)
+static void	set_wall_face(t_ray *ray)
 {
-    if (game->map->data[ray->mapY][ray->mapX] == 1)  // Note the order: Y then X
-    {
-        if (ray->side == 0) // EW wall
-            ray->wall_face = (ray->stepX > 0) ? EAST : WEST;
-        else // NS wall
-            ray->wall_face = (ray->stepY > 0) ? SOUTH : NORTH;
-        return 1;
-    }
-    // Check for transition from space to wall
-    else if ((*prev_mapX != ray->mapX || *prev_mapY != ray->mapY) &&
-             game->map->data[*prev_mapY][*prev_mapX] == 0 &&  // Note the order: Y then X
-             game->map->data[ray->mapY][ray->mapX] == 1)      // Note the order: Y then X
-    {
-        // Adjust ray position to the exact hit point
-        if (ray->side == 0)
-        {
-            ray->sideDistX -= ray->deltaDistX;
-            ray->mapX = *prev_mapX;
-        }
-        else
-        {
-            ray->sideDistY -= ray->deltaDistY;
-            ray->mapY = *prev_mapY;
-        }
-        return 1;
-    }
-    *prev_mapX = ray->mapX;
-    *prev_mapY = ray->mapY;
-    return 0;
+	if (ray->side == 0)
+		ray->wall_face = (ray->stepX > 0) ? EAST : WEST;
+	else
+		ray->wall_face = (ray->stepY > 0) ? SOUTH : NORTH;
 }
 
+static int	is_wall(t_game *game, int mapY, int mapX)
+{
+	return (game->map->data[mapY][mapX] == 1);
+}
+
+
+static int	is_space_to_wall_transition(t_game *game, t_ray *ray,
+		int prev_mapX, int prev_mapY)
+{
+	return ((prev_mapX != ray->mapX || prev_mapY != ray->mapY)
+		&& !is_wall(game, prev_mapY, prev_mapX)
+		&& is_wall(game, ray->mapY, ray->mapX));
+}
+
+static void	adjust_ray_position(t_ray *ray, int *prev_mapX, int *prev_mapY)
+{
+	if (ray->side == 0)
+	{
+		ray->sideDistX -= ray->deltaDistX;
+		ray->mapX = *prev_mapX;
+	}
+	else
+	{
+		ray->sideDistY -= ray->deltaDistY;
+		ray->mapY = *prev_mapY;
+	}
+}
+
+static int	check_wall_hit(t_game *game, t_ray *ray,
+		int *prev_mapX, int *prev_mapY)
+{
+	if (is_wall(game, ray->mapY, ray->mapX))
+	{
+		set_wall_face(ray);
+		return (1);
+	}
+	else if (is_space_to_wall_transition(game, ray, *prev_mapX, *prev_mapY))
+	{
+		adjust_ray_position(ray, prev_mapX, prev_mapY);
+		return (1);
+	}
+	*prev_mapX = ray->mapX;
+	*prev_mapY = ray->mapY;
+	return (0);
+}
 
 void perform_dda(t_game *game, t_ray_node *ray)
 {
@@ -216,17 +246,17 @@ void calc_draw_parameters(t_game *game, t_ray_node *ray)
 {
     int pitch_offset = (int)(game->player->pitch * game->screen_height);
     // int pitch_offset = -(int)(game->player->pitch * game->screen_height);
-    
+
     ray->ray.lineHeight = (int)(game->screen_height / ray->ray.perpWallDist);
-    
+
     // Adjust for player height
     int height_offset = (int)(game->player->height * game->screen_height / ray->ray.perpWallDist);
-    
+
     // Adjust drawStart and drawEnd based on pitch and height
     ray->ray.draw_start = -ray->ray.lineHeight / 2 + game->screen_height / 2 + pitch_offset + height_offset;
     if (ray->ray.draw_start < 0)
         ray->ray.draw_start = 0;
-    
+
     ray->ray.draw_end = ray->ray.lineHeight / 2 + game->screen_height / 2 + pitch_offset + height_offset;
     if (ray->ray.draw_end >= game->screen_height)
         ray->ray.draw_end = game->screen_height - 1;

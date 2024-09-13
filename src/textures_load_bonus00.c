@@ -33,7 +33,7 @@ void load_outro_textures(t_game *game)
 		}
 		game->outro_texture[i].data = mlx_get_data_addr(game->outro_texture[i].img, &game->outro_texture[i].tex_bpp, &game->outro_texture[i].tex_line_len, &game->outro_texture[i].tex_endian);
 
-		update_progress_bar(i + 1, MAX_OUTRO_TEXTURES, "Loading outro textures");
+		update_progress_bar(game, i + 1, MAX_OUTRO_TEXTURES, "Loading outro textures");
 	}
 }
 void load_enemy_textures(t_game *game, const char *path_format, int num_textures)
@@ -44,7 +44,7 @@ void load_enemy_textures(t_game *game, const char *path_format, int num_textures
 
 	for (int i = 0; i < num_textures; i++)
 	{
-		update_progress_bar(i + 1, num_textures, "Loading enemy textures");
+		update_progress_bar(game, i + 1, num_textures, "Loading enemy textures");
 
 		char path[256];
 		sprintf(path, path_format, i);
@@ -66,7 +66,7 @@ void load_opening_textures(t_game *game, const char *path_format, int num_textur
 
 	for (int i = 0; i < num_textures; i++)
 	{
-		update_progress_bar(i + 1, num_textures, "Loading opening textures");
+		update_progress_bar(game, i + 1, num_textures, "Loading opening textures");
 
 		char path[256];
 		sprintf(path, path_format, i);
@@ -88,7 +88,7 @@ void load_land_textures(t_game *game, const char *path_format, int num_textures)
 
 	for (int i = 0; i < num_textures; i++)
 	{
-		update_progress_bar(i + 1, num_textures, "Loading land textures");
+		update_progress_bar(game, i + 1, num_textures, "Loading land textures");
 
 		char path[256];
 		sprintf(path, path_format, i);
@@ -104,7 +104,7 @@ void load_land_textures(t_game *game, const char *path_format, int num_textures)
 
 void load_collectible_texture(t_game *game, const char *texture_path)
 {
-	update_progress_bar(0, 1, "Loading collectible texture");
+	update_progress_bar(game, 0, 1, "Loading collectible texture");
 
 	game->coll_texture[0].img = mlx_xpm_file_to_image(
 			game->mlx_ptr,
@@ -123,6 +123,6 @@ void load_collectible_texture(t_game *game, const char *texture_path)
 			&game->coll_texture[0].tex_line_len,
 			&game->coll_texture[0].tex_endian);
 
-	update_progress_bar(1, 1, "Loading collectible texture");
+	update_progress_bar(game, 1, 1, "Loading collectible texture");
 }
 

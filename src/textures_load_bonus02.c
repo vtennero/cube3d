@@ -51,7 +51,7 @@ void load_strike_textures(t_game *game)
         game->airstrike_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->airstrike_textures[i].width, &game->airstrike_textures[i].height);
         game->airstrike_textures[i].data = mlx_get_data_addr(game->airstrike_textures[i].img, &game->airstrike_textures[i].tex_bpp, &game->airstrike_textures[i].tex_line_len, &game->airstrike_textures[i].tex_endian);
 
-        update_progress_bar(i + 1, num_textures, "Loading strike textures");
+        update_progress_bar(game, i + 1, num_textures, "Loading strike textures");
     }
 }
 
@@ -68,7 +68,7 @@ void load_napalm_textures(t_game *game)
         game->napalm_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->napalm_textures[i].width, &game->napalm_textures[i].height);
         game->napalm_textures[i].data = mlx_get_data_addr(game->napalm_textures[i].img, &game->napalm_textures[i].tex_bpp, &game->napalm_textures[i].tex_line_len, &game->napalm_textures[i].tex_endian);
 
-        update_progress_bar(i + 1, num_textures, "Loading napalm textures");
+        update_progress_bar(game, i + 1, num_textures, "Loading napalm textures");
     }
 }
 
@@ -83,7 +83,7 @@ void load_shooting_textures(t_game *game)
         game->shooting_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->shooting_texture[i].width, &game->shooting_texture[i].height);
         game->shooting_texture[i].data = mlx_get_data_addr(game->shooting_texture[i].img, &game->shooting_texture[i].tex_bpp, &game->shooting_texture[i].tex_line_len, &game->shooting_texture[i].tex_endian);
 
-        update_progress_bar(i + 1, MAX_SHOOTING_TEXTURES, "Loading shooting textures");
+        update_progress_bar(game, i + 1, MAX_SHOOTING_TEXTURES, "Loading shooting textures");
     }
 }
 
