@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/13 14:33:32 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/14 21:25:14 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -624,7 +624,7 @@ int	random_int(t_game *game, int max);
 int	randomize_dead_enemy_positions(t_game *game);
 int	randomize_enemy_positions(t_game *game);
 int	randomize_extract_position(t_game *game);
-int	randomize_uncollected_collectibles(t_game *game);
+void randomize_uncollected_collectibles(t_game *game,int *collectibles_repositioned);
 int	randomize_uncollected_supplies(t_game *game);
 int	render(t_game *game);
 int	respawn_player(t_game *game);

@@ -17,8 +17,11 @@
 
 int	create_collectibles(t_game *game)
 {
+	int	collectibles_repositioned;
+
+	collectibles_repositioned = 0;
 	game->num_collectibles = 1;
-	randomize_uncollected_collectibles(game);
+	randomize_uncollected_collectibles(game, &collectibles_repositioned);
 	game->collectibles[0].collected = 0;
 	game->collectibles[0].found = 0;
 	return (0);
