@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   initialization03_bonus.c                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/09/09 15:27:50 by vitenner          #+#    #+#             */
 /*   Updated: 2024/09/09 15:27:51 by vitenner         ###   ########.fr       */
 /*                                                                            */
@@ -12,53 +15,47 @@
 
 #include "cube3d.h"
 
-int is_valid_location(t_game *game, int x, int y)
+int	is_valid_location(t_game *game, int x, int y)
 {
-    // Check if the location is within map bounds
-    if (x < 0 || x >= game->map->width || y < 0 || y >= game->map->height) {
-        return 0;
-    }
+	int	extract_x;
+	int	extract_y;
 
-    // Check if the location is not an obstacle
-    if (game->map->data[y][x] == 1) {
-        return 0;
-    }
-
-    // Check if the location is not the extraction point or adjacent to it
-    int extract_x = (int)game->extract[0].position.x;
-    int extract_y = (int)game->extract[0].position.y;
-    if (abs(x - extract_x) <= 1 && abs(y - extract_y) <= 1) {
-        return 0;
-    }
-
-    return 1;
+	if (x < 0 || x >= game->map->width || y < 0 || y >= game->map->height)
+	{
+		return (0);
+	}
+	if (game->map->data[y][x] == 1)
+		return (0);
+	extract_x = (int)game->extract[0].position.x;
+	extract_y = (int)game->extract[0].position.y;
+	if (abs(x - extract_x) <= 1 && abs(y - extract_y) <= 1)
+		return (0);
+	return (1);
 }
 
-
-int create_enemies(t_game *game)
+int	create_enemies(t_game *game)
 {
-    int i;
-    // float y_positions[] = {13.0f, 14.0f, 15.0f, 16.0f, 17.0f};
+	int	i;
 
-    game->num_enemies = calculate_enemy_count(game);
-    // game->num_enemies = 5;
-
-    for (i = 0; i < MAX_ENEMIES; i++)
-    {
-        // game->enemies[i].position.x = 19.0f;
-        // game->enemies[i].position.y = y_positions[i];
-        game->enemies[i].is_alive = 0;
-        game->enemies[i].frame_count = 0;
-        game->enemies[i].current_frame = 0;
-        game->enemies[i].momentum = 0;
-        game->enemies[i].animation_steps = 0;
-    }
-	for (i = 0; i < game->num_enemies; i++)
-    {
-        game->enemies[i].is_alive = 1;
-    }
+	i = 0;
+	game->num_enemies = calculate_enemy_count(game);
+	while (i < MAX_ENEMIES)
+	{
+		game->enemies[i].is_alive = 0;
+		game->enemies[i].frame_count = 0;
+		game->enemies[i].current_frame = 0;
+		game->enemies[i].momentum = 0;
+		game->enemies[i].animation_steps = 0;
+		i++;
+	}
+	i = 0;
+	while (i < game->num_enemies)
+	{
+		game->enemies[i].is_alive = 1;
+		i++;
+	}
 	randomize_enemy_positions(game);
-    return (0);
+	return (0);
 }
 
 int	create_supplies(t_game *game)

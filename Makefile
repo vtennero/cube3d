@@ -56,6 +56,7 @@ intro_bonus00.c \
 intro_bonus01.c \
 intro_bonus02.c \
 map_parse_utility.c \
+map_parse_utility_02.c \
 menu_bonus.c \
 napalm_bonus.c \
 outro_bonus.c \
