@@ -153,8 +153,6 @@ void render_ongoing_strike(t_game *game)
     int min_index = get_min_starting_index(&game->strike[0]);
     int current_frame = get_next_airstrike_frame(&game->strike[0], min_index);
 
-    printf("Min index: %d, Current frame: %d\n", min_index, current_frame);
-
     if (game->strike[0].frame_counts[min_index] >= NUM_AIRSTRIKE_FRAMES * 100)
     {
         game->strike[0].is_active = 0;

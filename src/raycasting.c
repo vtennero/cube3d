@@ -17,7 +17,7 @@ t_ray_node *addRay(t_ray_node **head)
 	t_ray_node *newNode = ft_calloc(1, sizeof(t_ray_node));
 	if (newNode == NULL)
 	{
-		fprintf(stderr, "Error allocating memory for new node.\n");
+		printf("Error allocating memory for new node.\n");
 		return NULL;
 	}
 
@@ -81,40 +81,6 @@ t_vector2d clamp_coordinates_to_map(t_vector2d coords, t_map *map)
 	coords.y = fmax(0, fmin(coords.y, map->height - 1));
 	return coords;
 }
-
-// t_vector2d calculate_floor_coordinates(t_game *game, t_ray_node *center_ray)
-// {
-// 	t_vector2d floor_coords;
-// 	float rayDirX = center_ray->ray.rayDirX;
-// 	float rayDirY = center_ray->ray.rayDirY;
-// 	float pitch = game->player->pitch;
-// 	float player_height = game->player->height;
-
-// 	// Calculate the vertical position of the center pixel
-// 	int screen_center_y = DEFAULT_S_HEIGHT / 2;
-// 	int pitch_pixel_offset = -(int)(pitch * DEFAULT_S_HEIGHT);
-// 	int p = screen_center_y - (DEFAULT_S_HEIGHT / 2) + pitch_pixel_offset;
-
-// 	// Calculate the distance to the floor point
-// 	float posZ = 0.5f * DEFAULT_S_HEIGHT * (1.0f + player_height * 2);
-// 	float rowDistance = posZ / p;
-
-// 	// If we're looking up (negative pitch), use a far distance
-// 	if (rowDistance < 0 || !isfinite(rowDistance))
-// 	{
-// 		rowDistance = MAX_DISTANCE;
-// 	}
-
-// 	// Calculate floor coordinates
-// 	floor_coords.x = game->player->position.x + rowDistance * rayDirX;
-// 	floor_coords.y = game->player->position.y + rowDistance * rayDirY;
-
-// 	// Ensure coordinates are within map bounds
-// 	floor_coords.x = fmax(0, fmin(floor_coords.x, game->map->width - 1));
-// 	floor_coords.y = fmax(0, fmin(floor_coords.y, game->map->height - 1));
-
-// 	return floor_coords;
-// }
 void calculate_and_print_center_ray(t_game *game, t_ray_node *center_ray)
 {
 	t_vector2d floor_coords = calculate_floor_coordinates(game, center_ray);

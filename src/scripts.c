@@ -5,34 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 14:55:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/08/27 12:16:16 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/17 16:14:19 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/17 16:14:19 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-
-void    get_hit(t_game *game)
+void	get_hit(t_game *game)
 {
 	if (game->player->hp)
 		game->player->hp--;
 	game->player->is_hit = 0;
 }
 
-void    menu_background(t_game *game)
+void	menu_background(t_game *game)
 {
 	if (game->game_sequence == 0)
 		play_audio_file(game, "audio/menu02.mp3", 2);
 }
 
-void    menu_background_voice(t_game *game)
+void	menu_background_voice(t_game *game)
 {
 	if (game->game_sequence == 0)
 		play_audio_file(game, "audio/menu03.mp3", 2);
 }
 
-void    sample_acquired(t_game *game)
+void	sample_acquired(t_game *game)
 {
 	play_audio_file(game, "audio/raresampleacquired.mp3", 2);
 	(void)game;
@@ -94,14 +93,14 @@ void play_gun_sound(t_game *game)
 	}
 }
 
-void    trigger_supply_take(t_game *game)
+void	trigger_supply_take(t_game *game)
 {
 	game->player->taking_supplies = 1;
 	// crazy mode
 	// game->player->direction.x = 0.2f;
 }
 
-void    cancel_supply_take(t_game *game)
+void	cancel_supply_take(t_game *game)
 {
 	game->player->taking_supplies = 0;
 	// crazy mode
@@ -109,15 +108,15 @@ void    cancel_supply_take(t_game *game)
 
 }
 
-void    trigger_gunshots(t_game *game)
+void	trigger_gunshots(t_game *game)
 {
 	if (game->is_shooting)
 		add_script(game, play_gun_sound, 3);
 }
 
-// void    eagle_voice_post_strike(t_game *game)
+// void	eagle_voice_post_strike(t_game *game)
 // {
-//     play_audio_file(game, "audio/eagle")
+//	 play_audio_file(game, "audio/eagle")
 // }
 
 void play_random_eagle_call(t_game *game)
@@ -134,31 +133,31 @@ void play_random_eagle_call(t_game *game)
 	play_audio_file(game, audio_file, 0);
 }
 
-void    remove_napalm(t_game *game)
+void	remove_napalm(t_game *game)
 {
 	game->strike[1].is_active = 0;
 }
 
-void    delay_strike_hit(t_game *game)
+void	delay_strike_hit(t_game *game)
 {
 	game->strike[0].is_active = 1;
 
 }
 
-void    delay_napalm_hit(t_game *game)
+void	delay_napalm_hit(t_game *game)
 {
 	game->strike[1].is_active = 1;
 
 }
 
-void    napalm_bombs(t_game *game)
+void	napalm_bombs(t_game *game)
 {
 	// play_audio_file(game, "audio/eaglec00.mp3", 0);
 	play_random_eagle_call(game);
 	add_script(game, delay_napalm_hit, 1);
 }
 
-void    napalm_inbound(t_game *game)
+void	napalm_inbound(t_game *game)
 {
 	game->strike[1].is_launching = 0;
 
@@ -170,7 +169,7 @@ void    napalm_inbound(t_game *game)
 	// eaglesgtrikes--
 }
 
-void    eagle_bombs(t_game *game)
+void	eagle_bombs(t_game *game)
 {
 	// play_audio_file(game, "audio/eaglec00.mp3", 0);
 	play_random_eagle_call(game);
@@ -179,7 +178,7 @@ void    eagle_bombs(t_game *game)
 
 
 
-void    eagle_inbound(t_game *game)
+void	eagle_inbound(t_game *game)
 {
 	game->strike[0].is_launching = 0;
 
@@ -193,7 +192,7 @@ void    eagle_inbound(t_game *game)
 
 
 
-void    barrage_inbound(t_game *game)
+void	barrage_inbound(t_game *game)
 {
 	game->strike[2].is_active = 1;
 	int random_call = random_int(game, 1);
@@ -208,14 +207,14 @@ void    barrage_inbound(t_game *game)
 
 }
 
-void    stop_barrage(t_game *game)
+void	stop_barrage(t_game *game)
 {
 	game->strike[2].is_active = 0;
 	game->strike[2].is_launching = 0;
 	printf("Barrage over\n");
 }
 
-void    play_barrage_shell(t_game *game)
+void	play_barrage_shell(t_game *game)
 {
 	int random_call = random_int(game, 2);
 
@@ -233,90 +232,54 @@ void init_script_manager(t_game *game) {
 	game->script_manager = (t_script_manager){0};
 }
 
-
-// void add_script(t_game *game, ScriptFunction func, int delay_seconds)
-// {
-// 	if (game->script_manager.active_script_count >= MAX_SCRIPTS) {
-// 		printf("Error: Maximum number of active scripts reached\n");
-// 		return;
-// 	}
-
-// 	struct timeval now;
-// 	gettimeofday(&now, NULL);
-
-// 	// Find an inactive slot or use the next available slot
-// 	int slot = -1;
-// 	for (int i = 0; i < game->script_manager.script_count; i++) {
-// 		if (!game->script_manager.scripts[i].is_active) {
-// 			slot = i;
-// 			break;
-// 		}
-// 	}
-// 	if (slot == -1) {
-// 		slot = game->script_manager.script_count++;
-// 	}
-
-// 	t_script new_script = {
-// 		.trigger_time = {
-// 			.tv_sec = now.tv_sec + delay_seconds,
-// 			.tv_usec = now.tv_usec
-// 		},
-// 		.func = func,
-// 		.is_active = 1
-// 	};
-
-// 	game->script_manager.scripts[slot] = new_script;
-// 	game->script_manager.active_script_count++;
-// }
-
 void add_script(t_game *game, ScriptFunction func, int delay_seconds)
 {
-    if (is_script_limit_reached(game)) {
-        printf("Error: Maximum number of active scripts reached\n");
-        return;
-    }
+	if (is_script_limit_reached(game)) {
+		printf("Error: Maximum number of active scripts reached\n");
+		return;
+	}
 
-    struct timeval now;
-    gettimeofday(&now, NULL);
+	struct timeval now;
+	gettimeofday(&now, NULL);
 
-    int slot = find_available_slot(game);
-    t_script new_script = create_new_script(func, &now, delay_seconds);
+	int slot = find_available_slot(game);
+	t_script new_script = create_new_script(func, &now, delay_seconds);
 
-    add_script_to_manager(game, &new_script, slot);
+	add_script_to_manager(game, &new_script, slot);
 }
 
 int is_script_limit_reached(t_game *game)
 {
-    return game->script_manager.active_script_count >= MAX_SCRIPTS;
+	return game->script_manager.active_script_count >= MAX_SCRIPTS;
 }
 
 int find_available_slot(t_game *game)
 {
-    for (int i = 0; i < game->script_manager.script_count; i++) {
-        if (!game->script_manager.scripts[i].is_active) {
-            return i;
-        }
-    }
-    return game->script_manager.script_count++;
+	for (int i = 0; i < game->script_manager.script_count; i++) {
+		if (!game->script_manager.scripts[i].is_active) {
+			return i;
+		}
+	}
+	return game->script_manager.script_count++;
 }
 
 t_script create_new_script(ScriptFunction func, struct timeval *now, int delay_seconds)
 {
-    t_script new_script = {
-        .trigger_time = {
-            .tv_sec = now->tv_sec + delay_seconds,
-            .tv_usec = now->tv_usec
-        },
-        .func = func,
-        .is_active = 1
-    };
-    return new_script;
+	t_script new_script = {
+		.trigger_time = {
+			.tv_sec = now->tv_sec + delay_seconds,
+			.tv_usec = now->tv_usec
+		},
+		.func = func,
+		.is_active = 1
+	};
+	return new_script;
 }
 
 void add_script_to_manager(t_game *game, t_script *new_script, int slot)
 {
-    game->script_manager.scripts[slot] = *new_script;
-    game->script_manager.active_script_count++;
+	game->script_manager.scripts[slot] = *new_script;
+	game->script_manager.active_script_count++;
 }
 
 void update_scripts(t_game *game)

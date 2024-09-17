@@ -17,9 +17,13 @@ int	get_texture_color(t_texture *texture, int x, int y)
 	int	pixel_pos;
 	int	color;
 
+	if (texture->width == 0 || texture->height == 0 || texture->data == NULL)
+		return 0xFF0000;
 	x = x % texture->width;
 	y = y % texture->height;
 	pixel_pos = y * texture->tex_line_len + x * (texture->tex_bpp / 8);
+	if (pixel_pos < 0 || pixel_pos >= (texture->height * texture->tex_line_len))
+		return 0xFF0000;
 	color = *(int *)(texture->data + pixel_pos);
 	return (color);
 }

@@ -17,13 +17,13 @@ int get_floor_texture_color(t_texture *texture, int x, int y)
 {
     if (!texture || !texture->data)
     {
-        fprintf(stderr, "Error: Invalid texture in get_floor_texture_color\n");
+        printf("Error: Invalid texture in get_floor_texture_color\n");
         return 0;
     }
 
     if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
     {
-        // fprintf(stderr, "Error: Texture coordinates out of bounds: x=%d, y=%d, texture size=%dx%d\n",
+        // printf("Error: Texture coordinates out of bounds: x=%d, y=%d, texture size=%dx%d\n",
         // x, y, texture->width, texture->height);
         return 0;
     }
@@ -32,7 +32,7 @@ int get_floor_texture_color(t_texture *texture, int x, int y)
     if (index < 0 || index >= texture->tex_line_len * texture->height)
     {
         // debug_texture(texture, x, y);
-        fprintf(stderr, "Error: Texture index out of bounds: %d\n", index);
+        printf("Error: Texture index out of bounds: %d\n", index);
         return 0;
     }
 
@@ -61,7 +61,7 @@ int select_weighted_texture(t_game *game)
 {
     if (game->num_floor_textures <= 0)
     {
-        fprintf(stderr, "Error: No floor textures available\n");
+        printf("Error: No floor textures available\n");
         return 0;
     }
 
@@ -94,7 +94,7 @@ void initialize_floor_texture_map(t_game *game)
     game->floor_texture_map = malloc(game->map->height * sizeof(int *));
     if (game->floor_texture_map == NULL)
     {
-        fprintf(stderr, "Failed to allocate memory for floor_texture_map\n");
+        printf("Failed to allocate memory for floor_texture_map\n");
         exit(EXIT_FAILURE);
     }
 
@@ -103,7 +103,7 @@ void initialize_floor_texture_map(t_game *game)
         game->floor_texture_map[y] = malloc(game->map->width * sizeof(int));
         if (game->floor_texture_map[y] == NULL)
         {
-            fprintf(stderr, "Failed to allocate memory for floor_texture_map row %d\n", y);
+            printf("Failed to allocate memory for floor_texture_map row %d\n", y);
             // Free previously allocated rows
             for (int i = 0; i < y; i++)
             {
@@ -165,7 +165,7 @@ void render_floor(t_game *game)
 {
     if (!game || !game->player || !game->map || !game->floor_texture_map)
     {
-        fprintf(stderr, "Error: Invalid game state in render_floor\n");
+        printf("Error: Invalid game state in render_floor\n");
         return;
     }
 

@@ -1,4 +1,3 @@
-initialization_bonus01.c: Error!
 render.c: Error!
 scripts.c: Error!
 textures_load_bonus01.c: Error!
@@ -26,7 +25,6 @@ Error: TOO_MANY_LINES       (line: 523, col:   1):	Function has more than 25 lin
 Error: TOO_MANY_LINES       (line: 632, col:   1):	Function has more than 25 lines
 enemies_attack_bonus02.c: Error!
 audio_bonus00.c: Error!
-initialization_bonus00.c: Error!
 gameplay_movement_bonus01.c: Error!
 qol_bonus.c: Error!
 interface_crosshair_bonus.c: Error!
@@ -36,8 +34,6 @@ gameplay_movement_bonus02.c: Error!
 gameplay_scripts_static_bonus05.c: Error!
 render_walls_bonus.c: Error!
 interface_health_bar_bonus.c: Error!
-initialization00.c: Error!
-initialization_bonus02.c: Error!
 enemies_attack_bonus01.c: Error!
 intro_bonus01.c: Error!
 gameplay_item_collection_bonus00.c: Error!
@@ -48,7 +44,6 @@ supplies_bonus.c: Error!
 intro_bonus00.c: Error!
 terminate02.c: Error!
 Error: TOO_MANY_LINES       (line: 220, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 265, col:   1):	Function has more than 25 lines
 menu_bonus.c: Error!
 pelican_inside_bonus.c: Error!
 Error: TOO_MANY_LINES       (line:  46, col:   1):	Function has more than 25 lines
@@ -61,7 +56,7 @@ napalm_bonus.c: Error!
 textures_load_bonus03.c: Error!
 gameplay_scripts_static_bonus00.c: Error!
 outro_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  50, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line:  47, col:   1):	Function has more than 25 lines
 textures_load_bonus04.c: Error!
 render_enemies.c: Error!
 Error: TOO_MANY_LINES       (line:  72, col:   1):	Function has more than 25 lines
@@ -73,8 +68,10 @@ cube3d_audio_bonus.h: Error!
 audio_dummy.c: Error!
 gameplay_scripts_static_bonus02.c: Error!
 cube3d_bonus.h: Error!
+debug_utils.c: Error!
 enemies_movement_bonus00.c: Error!
 cube3d.h: Error!
+map_parse_utility_02.c: Error!
 extract_bonus.c: Error!
 Error: TOO_MANY_LINES       (line:  65, col:   1):	Function has more than 25 lines
 Error: TOO_MANY_LINES       (line: 108, col:   1):	Function has more than 25 lines

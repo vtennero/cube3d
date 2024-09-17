@@ -89,6 +89,7 @@ supplies_bonus.c \
 terminate01.c \
 terminate02.c \
 terminate03.c \
+terminate04.c \
 texture_parse.c \
 texture_parse_02.c \
 textures_load00.c \

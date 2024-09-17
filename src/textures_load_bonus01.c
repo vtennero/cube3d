@@ -12,13 +12,14 @@
 
 #include "cube3d.h"
 
-void load_gun_textures(t_game *game)
+int load_gun_textures(t_game *game)
 {
 	game->gun_textures = malloc(sizeof(t_texture) * MAX_GUN_TEXTURES);
-	char path[] = "textures/gun/frame00.xpm";
+	char path[24];
 	char *digits = &path[18];
 	int frame = 1;
 
+    ft_strcpy(path, "textures/gun/frame00.xpm");
 	while (frame <= MAX_GUN_TEXTURES)
 	{
 		update_progress_bar(game, frame, MAX_GUN_TEXTURES, "Loading gun textures");
@@ -35,7 +36,7 @@ void load_gun_textures(t_game *game)
 	}
 	if (frame > MAX_GUN_TEXTURES)
 		game->num_gun_frames = MAX_GUN_TEXTURES;
-	update_progress_bar(game, MAX_GUN_TEXTURES, MAX_GUN_TEXTURES, "Loading gun textures");
+	return (0);
 }
 
 int load_extract_textures(t_game *game)
@@ -57,20 +58,21 @@ int load_extract_textures(t_game *game)
 		texture->path = file_names[i];
 		texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path, &texture->width, &texture->height);
 		if (!texture->img)
-			return (0);
+			return (texture_err_message(game));
 		texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
 	}
 
-	return (1);
+	return (0);
 }
 
-void	load_floor_textures(t_game *game)
+int	load_floor_textures(t_game *game)
 {
-	char	path[] = "textures/floor/floor00.xpm";
+	char	path[26];
 	int		f_digit;
 	int		s_digit;
 	int		texcount;
 
+	ft_strcpy(path, "textures/floor/floor00.xpm");
 	texcount = 0;
 	get_last_two_digit_indexes(path, &f_digit, &s_digit);
 	while (texcount < MAX_FLOOR_TEXTURES)
@@ -86,26 +88,19 @@ void	load_floor_textures(t_game *game)
 			path[f_digit]++;
 		}
 	}
+	return (0);
 }
 
-int load_extract_texture(t_game *game, char *path)
+int load_menu_texture(t_game *game)
 {
-	t_texture *texture = &game->extract_texture[0];
-	texture->path = path;
-	texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
-	if (!texture->img)
-		return (0);
-	texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
-	return (1);
-}
+	char	path[22];
 
-int load_menu_texture(t_game *game, char *path)
-{
+	ft_strcpy(path, "textures/menu/menu.xpm");
 	t_texture *texture = &game->menu_texture[0];
 	texture->path = path;
 	texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width, &texture->height);
 	if (!texture->img)
-		return (0);
+		return (texture_err_message(game));
 	texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
-	return (1);
+	return (0);
 }

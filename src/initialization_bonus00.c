@@ -35,7 +35,7 @@ void	strike_helper(t_game *game, int i, int *j)
 					* 100);
 			game->strike[i].speed_multipliers[*j] = 15.0f + ((float)rand()
 					/ RAND_MAX) * 10.0f;
-			j++;
+			(*j)++;
 		}
 	}
 }

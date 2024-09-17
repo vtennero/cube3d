@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   initialization03_bonus.c                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+      
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/09/09 15:27:50 by vitenner          #+#    #+#             */
 /*   Updated: 2024/09/09 15:27:51 by vitenner         ###   ########.fr       */
@@ -72,6 +72,7 @@ int	randomize_uncollected_supplies(t_game *game)
 	int	y;
 	int	valid_location_found;
 
+	i = 0;
 	while (i < game->num_supplies)
 	{
 		if (game->supplies[i].collected == 0)

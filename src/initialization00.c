@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: toto <toto@student.42.fr>                  +#+  +:+      
+/*   By: toto <toto@student.42.fr>                  +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/04/09 17:55:07 by vitenner          #+#    #+#             */
 /*   Updated: 2024/05/07 12:04:37 by toto             ###   ########.fr       */
@@ -114,7 +114,7 @@ int	create_player(t_game *game)
 	player = malloc(sizeof(t_player));
 	if (player == NULL)
 	{
-		fprintf(stderr, "Failed to allocate memory for the player.\n");
+		printf("Failed to allocate memory for the player.\n");
 		exit(1);
 	}
 	player->position.x = (game->cub_player_y) + 0.5;

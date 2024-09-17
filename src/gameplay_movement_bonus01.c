@@ -12,39 +12,72 @@
 
 #include "cube3d.h"
 
-float calculate_dynamic_buffer(t_player *player, float base_speed)
+const char	*get_cardinal_direction(float x, float y)
 {
-	// Calculate buffer based on the dot product of direction and plane vectors
-	float dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
-	float plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y * player->plane.y);
-	float dot_product = player->direction.x * player->plane.x + player->direction.y * player->plane.y;
+	float	angle;
+	float	pi_8;
 
-	float cosine_angle = dot_product / (dir_mag * plane_mag);
-	float dynamic_buffer = base_speed * (1 - fabs(cosine_angle)); // Reduce buffer as angle approaches 90 degrees
-	// printf("dynamic buffer %f\n", dynamic_buffer);
-	return dynamic_buffer;
+	angle = atan2(y, x);
+	if (angle < 0)
+		angle += 2 * M_PI;
+	pi_8 = M_PI / 8;
+	if (angle < pi_8 || angle > 15 * pi_8)
+		return ("East");
+	else if (angle < 3 * pi_8)
+		return ("North-East");
+	else if (angle < 5 * pi_8)
+		return ("North");
+	else if (angle < 7 * pi_8)
+		return ("North-West");
+	else if (angle < 9 * pi_8)
+		return ("West");
+	else if (angle < 11 * pi_8)
+		return ("South-West");
+	else if (angle < 13 * pi_8)
+		return ("South");
+	return ("South-East");
 }
 
-// Rotate a vector by a given angle
+float calculate_dynamic_buffer(t_player *player, float base_speed)
+{
+	float dir_mag;
+	float plane_mag;
+	float dot_product;
+	float cosine_angle;
+	float dynamic_buffer;
+
+	dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
+	plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y * player->plane.y);
+	dot_product = player->direction.x * player->plane.x + player->direction.y * player->plane.y;
+	cosine_angle = dot_product / (dir_mag * plane_mag);
+	dynamic_buffer = base_speed * (1 - fabs(cosine_angle));
+	return (dynamic_buffer);
+}
 void rotate_vector(float *x, float *y, float angle)
 {
-	float old_x = *x;
-	float old_y = *y;
+	float old_x;
+	float old_y;
+
+	old_x = *x;
+	old_y = *y;
 	*x = old_x * cos(angle) - old_y * sin(angle);
 	*y = old_x * sin(angle) + old_y * cos(angle);
 }
 
-// New function to calculate rotation
 void calculate_rotation(t_game *game, float angle)
 {
+	const char *direction;
+
+	direction = NULL;
 	rotate_player(game, angle);
-
-	printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-	const char *direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
-	printf("Facing direction: %s\n", direction);
-
-	print_movement_direction(game);
+	if (game->bonus == 0)
+	{
+		printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
+		direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+		printf("Facing direction: %s\n", direction);
+	}
 }
+
 
 
 

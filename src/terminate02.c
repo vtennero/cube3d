@@ -15,252 +15,149 @@
 
 void	clean_player(t_game *game)
 {
-    printf("clean_player\n");
 	free(game->player);
 	game->player = NULL;
-    printf("clean_player DONE\n");
 }
 
 void clean_mlx(t_game *game)
 {
-    printf("clean_mlx\n");
-    if (game->img.mlx_img)
-        mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
+	if (game->img.mlx_img)
+		mlx_destroy_image(game->mlx_ptr, game->img.mlx_img);
 
-    if (game->win_ptr)
-        mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	if (game->win_ptr)
+		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
 
-    if (game->mlx_ptr)
-    {
-        mlx_destroy_display(game->mlx_ptr);
-        free(game->mlx_ptr);
-    }
-    printf("clean_mlx DONE\n");
-
+	if (game->mlx_ptr)
+	{
+		mlx_destroy_display(game->mlx_ptr);
+		free(game->mlx_ptr);
+	}
 }
-void clean_texture(t_texture *textures, int num_textures)
-{
-    int i;
-	printf("cleaning %d textures\n", num_textures);
-    for (i = 0; i < num_textures; i++)
-    {
-        if (textures[i].path)
-            free(textures[i].path);
-        if (textures[i].img)
-            free(textures[i].img);
-        if (textures[i].data)
-            free(textures[i].data);
-
-        // Reset all members to ensure clean state
-        textures[i].path = NULL;
-        textures[i].img = NULL;
-        textures[i].data = NULL;
-        textures[i].width = 0;
-        textures[i].height = 0;
-        textures[i].tex_bpp = 0;
-        textures[i].tex_line_len = 0;
-        textures[i].tex_endian = 0;
-    }
-}
-
-void clean_textures(t_game *game)
-{
-    printf("clean_textures\n");
-    clean_texture(game->walltextures, MAX_WALL_TEXTURES);
-    clean_texture(game->floortextures, MAX_FLOOR_TEXTURES);
-    clean_texture(game->skytexture, MAX_SKY_TEXTURES);
-    clean_texture(game->enemy_textures, MAX_ENEMY_TEXTURES);
-    clean_texture(game->coll_texture, MAX_COLLECTIBLE_TEXTURES);
-
-    // Handle gun textures separately as they're dynamically allocated
-    if (game->gun_textures)
-    {
-        clean_texture(game->gun_textures, game->num_gun_frames);
-        free(game->gun_textures);
-        game->gun_textures = NULL;
-        game->num_gun_frames = 0;
-        game->current_gun_frame = 0;
-    }
-    printf("clean_textures DONE\n");
-}
-
-
 void	clean_rays(t_game *game)
 {
-    struct s_ray_node *current;
-    struct s_ray_node *next;
-    int ray_count = 0;
+	struct s_ray_node *current;
+	struct s_ray_node *next;
+	int ray_count = 0;
 
-    // printf("Starting to free ray list\n");
+	if (game == NULL)
+	{
+		printf("Error: game pointer is NULL\n");
+		return;
+	}
 
-    if (game == NULL)
-    {
-        printf("Error: game pointer is NULL\n");
-        return;
-    }
+	current = game->ray_list;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+		ray_count++;
+	}
 
-    current = game->ray_list;
-    while (current != NULL)
-    {
-        // printf("About to free ray %d at address %p\n", ray_count, (void*)current);
-        next = current->next;
-        free(current);
-        // printf("Freed ray %d\n", ray_count);
-        current = next;
-        ray_count++;
-    }
-
-    game->ray_list = NULL;
-    // printf("Finished freeing ray list. Total rays freed: %d\n", ray_count);
+	game->ray_list = NULL;
 }
 
 
-// void	clean_(t_game *game)
-// void	clean_(t_game *game)
-// void	clean_(t_game *game)
-// void	clean_(t_game *game)
-// void	clean_(t_game *game)
-
-
-// void cleanup_strike_textures(t_game *game)
-// {
-//     for (int i = 0; i < NUM_AIRSTRIKE_FRAMES; i++)
-//     {
-//         if (game->airstrike_textures[i].img)
-//             mlx_destroy_image(game->mlx_ptr, game->airstrike_textures[i].img);
-//     }
-//     free(game->airstrike_textures);
-// }
-
-// void free_texture_array(t_texture *textures, int num_items, t_game*game)
-// {
-//     printf("free_texture_array %d items\n", num_items);
-//     for (int i = 0; i < num_items; i++)
-//     {
-//         if (textures[i].img != NULL)
-//         {
-//             mlx_destroy_image(game->mlx_ptr, textures[i].img);  // Free the image resource
-//             textures[i].img = NULL;  // Set the pointer to NULL to avoid dangling pointers
-//         }
-//     }
-//     printf("free_texture_array DONE\n");
-// }
+void destroy_texture_in_array(t_game *game, t_texture *texture)
+{
+	if (texture->img)
+	{
+		mlx_destroy_image(game->mlx_ptr, texture->img);
+		texture->img = NULL;
+	}
+}
 
 void free_texture_array(t_texture *texture_array, int num_items, t_game *game)
 {
-    int i;
+	int i;
 
-    printf("free_texture_array\n");
-    if (!game || !texture_array)
-        return;
+	if (!game || !texture_array)
+		return;
 
-    for (i = 0; i < num_items; i++)
-    {
-        // if (texture_array[i].path)
-        // {
-        //     free(texture_array[i].path);
-        //     texture_array[i].path = NULL;
-        // }
-        if (texture_array[i].img)
-        {
-            mlx_destroy_image(game->mlx_ptr, texture_array[i].img);
-            texture_array[i].img = NULL;
-        }
-        // Note: We don't free texture_array[i].data separately because
-        // it's typically managed by MLX and freed by mlx_destroy_image
-    }
-    printf("free_texture_array DONE\n");
+	for (i = 0; i < num_items; i++)
+		destroy_texture_in_array(game, &texture_array[i]);
 }
 
+void destroy_texture(t_game *game, t_texture *texture)
+{
+	if (texture->img)
+	{
+		mlx_destroy_image(game->mlx_ptr, texture->img);
+		texture->img = NULL;
+	}
+}
+
+void free_gun_texture_frames(t_game *game)
+{
+	int i;
+
+	if (!game->gun_textures)
+		return;
+	for (i = 0; i < game->num_gun_frames; i++)
+		destroy_texture(game, &game->gun_textures[i]);
+	free(game->gun_textures);
+	game->gun_textures = NULL;
+}
+
+void free_shooting_textures(t_game *game)
+{
+	int i;
+
+	for (i = 0; i < MAX_SHOOTING_TEXTURES; i++)
+		destroy_texture(game, &game->shooting_texture[i]);
+}
+
+void reset_gun_frames(t_game *game)
+{
+	game->num_gun_frames = 0;
+	game->current_gun_frame = 0;
+	game->current_shooting_frame = 0;
+}
+void free_sky_texture(t_game *game)
+{
+	destroy_texture_in_array(game, &game->sky_texture);
+}
 void free_gun_textures(t_game *game)
 {
-    int i;
-
-    if (!game)
-        return;
-
-    // Free regular gun textures
-    if (game->gun_textures)
-    {
-        for (i = 0; i < game->num_gun_frames; i++)
-        {
-            // if (game->gun_textures[i].path)
-            // {
-            //     free(game->gun_textures[i].path);
-            //     game->gun_textures[i].path = NULL;
-            // }
-            if (game->gun_textures[i].img)
-            {
-                mlx_destroy_image(game->mlx_ptr, game->gun_textures[i].img);
-                game->gun_textures[i].img = NULL;
-            }
-        }
-        free(game->gun_textures);
-        game->gun_textures = NULL;
-    }
-
-    // Free shooting textures
-    for (i = 0; i < MAX_SHOOTING_TEXTURES; i++)
-    {
-        // if (game->shooting_texture[i].path)
-        // {
-        //     free(game->shooting_texture[i].path);
-        //     game->shooting_texture[i].path = NULL;
-        // }
-        if (game->shooting_texture[i].img)
-        {
-            mlx_destroy_image(game->mlx_ptr, game->shooting_texture[i].img);
-            game->shooting_texture[i].img = NULL;
-        }
-    }
-
-    game->num_gun_frames = 0;
-    game->current_gun_frame = 0;
-    game->current_shooting_frame = 0;
+	if (!game)
+		return;
+	free_gun_texture_frames(game);
+	free_shooting_textures(game);
+	reset_gun_frames(game);
 }
-
+void	free_texture_arrays(t_game *game)
+{
+	free_texture_array(game->walltextures,MAX_WALL_TEXTURES,game);
+	free_texture_array(game->floortextures,MAX_FLOOR_TEXTURES,game);
+	free_texture_array(game->enemy_textures,MAX_ENEMY_TEXTURES,game);
+	free_texture_array(game->coll_texture,MAX_COLLECTIBLE_TEXTURES,game);
+	free_texture_array(game->menu_texture,1,game);
+	free_texture_array(game->pelican_inside,1,game);
+	free_texture_array(game->land_texture,MAX_LAND_TEXTURES,game);
+	free_texture_array(game->extract_texture,4,game);
+	free_texture_array(game->supplies_texture,1,game);
+	free_texture_array(game->opening_texture,MAX_OPENING_TEXTURES,game);
+	free_texture_array(game->outro_texture,MAX_OUTRO_TEXTURES,game);
+	free_texture_array(game->shooting_texture,MAX_SHOOTING_TEXTURES,game);
+	free_texture_array(game->airstrike_textures,NUM_AIRSTRIKE_FRAMES,game);
+	free_texture_array(game->napalm_textures,NUM_NAPALM_FRAMES,game);
+	free_gun_textures(game);
+	free_sky_texture(game);
+	free_floor_texture_map(game);
+	free_wall_texture_map_path(game);
+}
 
 void	cleanup(t_game *game)
 {
 	printf("cleanup\n");
 	clean_player(game);
-	// clean_textures(game);
-	// clean_floor();
-
-
-    free_texture_array(game->walltextures,MAX_WALL_TEXTURES,game);
-    free_texture_array(game->floortextures,MAX_FLOOR_TEXTURES,game);
-    free_texture_array(game->skytexture,MAX_SKY_TEXTURES,game);
-    free_texture_array(game->enemy_textures,MAX_ENEMY_TEXTURES,game);
-    free_texture_array(game->coll_texture,MAX_COLLECTIBLE_TEXTURES,game);
-    free_texture_array(game->menu_texture,1,game);
-    free_texture_array(game->pelican_inside,1,game);
-
-    free_texture_array(game->land_texture,MAX_LAND_TEXTURES,game);
-
-    free_texture_array(game->extract_texture,4,game);
-    free_texture_array(game->supplies_texture,1,game);
-    free_texture_array(game->opening_texture,MAX_OPENING_TEXTURES,game);
-
-    free_texture_array(game->outro_texture,MAX_OUTRO_TEXTURES,game);
-    free_texture_array(game->shooting_texture,MAX_SHOOTING_TEXTURES,game);
-    free_texture_array(game->airstrike_textures,NUM_AIRSTRIKE_FRAMES,game);
-    free_gun_textures(game);
-    free_floor_texture_map(game);
-	free_wall_texture_map_path(game);
-    // free(game->strike);
+	free_texture_arrays(game);
+	// free(game->strike);
 	clean_map(game);
 	clean_rays(game);
 	clean_mlx(game);
-    cleanup_audio(game);
+	cleanup_audio(game);
 	free(game);
-
-
-
-
-
-
-
 	exit(0);
 }
 

@@ -42,7 +42,7 @@ int	initialize_audio(void)
 	device = alcOpenDevice(NULL);
 	if (!device)
 	{
-		fprintf(stderr, "Unable to open default device\n");
+		printf("Unable to open default device\n");
 		return (-1);
 	}
 	context = alcCreateContext(device, NULL);
@@ -113,7 +113,7 @@ int	stop_audio_file(const char *filename)
 			return (0);
 		}
 	}
-	fprintf(stderr, "stop_audio_file: Audio file %s not found or not playing\n",
+	printf("stop_audio_file: Audio file %s not found or not playing\n",
 		filename);
 	return (-1);
 }
@@ -137,7 +137,7 @@ int	play_audio_file(const char *filename, float delayInSeconds)
 	sourceIndex = find_available_source();
 	if (sourceIndex == -1)
 	{
-		fprintf(stderr, "No available sources to play audio\n");
+		printf("No available sources to play audio\n");
 		return (-1);
 	}
 	gettimeofday(&currentTime, NULL);

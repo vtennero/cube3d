@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:59:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 16:21:06 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:17:33 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,68 +98,36 @@ static void update_player_position(t_game *game, float newX, float newY)
 }
 void handle_key_w(t_game *game)
 {
-	// printf("You just pressed W!\n");
-
 	float speed = 0.1;  // Speed of movement, adjust as necessary
 	float newX = game->player->position.x + game->player->direction.x * speed;
 	float newY = game->player->position.y + game->player->direction.y * speed;
-
 	if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
-	{
 		update_player_position(game, newX, newY);
-	}
-	else
-	{
-		printf("Collision detected! Close to a wall.\n");
-	}
 	game->is_moving_fwd = 1;
-	// update_gun_state(game);
-	// print_game_map(game);
-	// print_movement_direction(game);
-	// game->is_moving_fwd = 0;
 }
 
 void handle_key_s(t_game *game)
 {
-    float speed = 0.1;  // Speed of movement, adjust as necessary
-    float newX = game->player->position.x - game->player->direction.x * speed;
-    float newY = game->player->position.y - game->player->direction.y * speed;
-
-    if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
-    {
-        update_player_position(game, newX, newY);
-    }
-    else
-    {
-        printf("Collision detected! Close to a wall.\n");
-    }
-    game->is_moving_fwd = 1;
+	float speed = 0.1;  // Speed of movement, adjust as necessary
+	float newX = game->player->position.x - game->player->direction.x * speed;
+	float newY = game->player->position.y - game->player->direction.y * speed;
+	if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
+		update_player_position(game, newX, newY);
+	game->is_moving_fwd = 1;
 }
 void handle_key_a(t_game *game)
 {
-	// printf("You just pressed A!\n");
 
 	float speed = 0.1; // Control the speed of strafing
 
-	// Calculate the left perpendicular vector relative to the player's direction
 	float perpX = game->player->direction.y; // Use positive y component of the direction
 	float perpY = -game->player->direction.x; // Use negative x component of the direction
 
-	// Calculate the new position by moving left relative to the current facing direction
 	float newX = game->player->position.x + perpX * speed;
 	float newY = game->player->position.y + perpY * speed;
 
 	if (!detect_collision(game, newX, newY)  && game->player->is_extracting == 0)
-	{
 		update_player_position(game, newX, newY);
-	}
-	else
-	{
-		printf("Collision detected or Out of Map movement\n");
-	}
-
-	// print_movement_direction(game);
-	// print_game_map(game);
 }
 
 void handle_key_d(t_game *game)
