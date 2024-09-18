@@ -46,6 +46,7 @@ int	create_enemies(t_game *game)
 		game->enemies[i].current_frame = 0;
 		game->enemies[i].momentum = 0;
 		game->enemies[i].animation_steps = 0;
+		game->enemies[i].still_frames = 0;
 		i++;
 	}
 	i = 0;
@@ -65,31 +66,33 @@ int	create_supplies(t_game *game)
 	return (0);
 }
 
+void	randomize_single_supply(t_game *game, t_supplies *supply)
+{
+	int	x;
+	int	y;
+
+	while (1)
+	{
+		x = random_int(game, game->map->width);
+		y = random_int(game, game->map->height);
+		if (is_valid_location(game, x, y))
+			break ;
+	}
+	supply->position.x = (float)x + 0.5f;
+	supply->position.y = (float)y + 0.5f;
+	supply->collected = 0;
+	supply->found = 0;
+}
+
 int	randomize_uncollected_supplies(t_game *game)
 {
 	int	i;
-	int	x;
-	int	y;
-	int	valid_location_found;
 
 	i = 0;
 	while (i < game->num_supplies)
 	{
 		if (game->supplies[i].collected == 0)
-		{
-			valid_location_found = 0;
-			while (!valid_location_found)
-			{
-				x = random_int(game, game->map->width);
-				y = random_int(game, game->map->height);
-				if (is_valid_location(game, x, y))
-					valid_location_found = 1;
-			}
-			game->supplies[i].position.x = (float)x + 0.5f;
-			game->supplies[i].position.y = (float)y + 0.5f;
-			game->supplies[i].collected = 0;
-			game->supplies[i].found = 0;
-		}
+			randomize_single_supply(game, &game->supplies[i]);
 		i++;
 	}
 	return (0);

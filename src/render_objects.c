@@ -56,7 +56,7 @@ int is_sprite_in_front(float transformY, int stripe, int screen_width)
 }
 
 // Find ray node for current stripe
-t_ray_node* find_ray_node(t_game *game, int stripe)
+t_ray_node  *find_ray_node(t_game *game, int stripe)
 {
     t_ray_node *current = game->ray_list;
     while (current && current->ray.x != stripe)

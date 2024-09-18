@@ -18,11 +18,11 @@ Error: TOO_MANY_LINES       (line: 234, col:   1):	Function has more than 25 lin
 render_gun.c: Error!
 respawn_bonus.c: Error!
 strike_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  89, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 223, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 445, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 523, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 632, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line:  88, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line: 220, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line: 340, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line: 418, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line: 526, col:   1):	Function has more than 25 lines
 enemies_attack_bonus02.c: Error!
 audio_bonus00.c: Error!
 gameplay_movement_bonus01.c: Error!
@@ -43,26 +43,19 @@ render_objects.c: Error!
 supplies_bonus.c: Error!
 intro_bonus00.c: Error!
 terminate02.c: Error!
-Error: TOO_MANY_LINES       (line: 220, col:   1):	Function has more than 25 lines
 menu_bonus.c: Error!
-pelican_inside_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  46, col:   1):	Function has more than 25 lines
 raycasting.c: Error!
 intro_bonus02.c: Error!
 gameplay_movement_bonus04.c: Error!
-render_sky_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  87, col:   1):	Function has more than 25 lines
 napalm_bonus.c: Error!
 textures_load_bonus03.c: Error!
 gameplay_scripts_static_bonus00.c: Error!
-outro_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  47, col:   1):	Function has more than 25 lines
-textures_load_bonus04.c: Error!
 render_enemies.c: Error!
-Error: TOO_MANY_LINES       (line:  72, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 155, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line:  68, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_LINES       (line: 129, col:   1):	Function has more than 25 lines
 gameplay_scripts_static_bonus01.c: Error!
 terminate01.c: Error!
+render_bonus00.c: Error!
 textures_load_bonus00.c: Error!
 cube3d_audio_bonus.h: Error!
 audio_dummy.c: Error!
@@ -73,7 +66,4 @@ enemies_movement_bonus00.c: Error!
 cube3d.h: Error!
 map_parse_utility_02.c: Error!
 extract_bonus.c: Error!
-Error: TOO_MANY_LINES       (line:  65, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 108, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 165, col:   1):	Function has more than 25 lines
 gameplay_movement00.c: Error!

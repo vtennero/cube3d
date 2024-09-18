@@ -14,35 +14,35 @@
 
 void check_texture_loaded(t_texture *texture)
 {
-    if (texture->img == NULL)
-    {
-        printf("🚨 Error: land texture not loaded\n");
-    }
+	if (texture->img == NULL)
+	{
+		printf("🚨 Error: land texture not loaded\n");
+	}
 }
 
 void render_frame(t_game *game, t_texture *opening_texture)
 {
-    for (int y = 0; y < game->screen_height; y++)
-    {
-        for (int x = 0; x < game->screen_width; x++)
-        {
-            int tex_x = x * opening_texture->width / game->screen_width;
-            int tex_y = y * opening_texture->height / game->screen_height;
-            int color = get_texture_color(opening_texture, tex_x, tex_y);
-            img_pix_put(&game->img, x, y, color);
-        }
-    }
+	for (int y = 0; y < game->screen_height; y++)
+	{
+		for (int x = 0; x < game->screen_width; x++)
+		{
+			int tex_x = x * opening_texture->width / game->screen_width;
+			int tex_y = y * opening_texture->height / game->screen_height;
+			int color = get_texture_color(opening_texture, tex_x, tex_y);
+			img_pix_put(&game->img, x, y, color);
+		}
+	}
 }
 void check_last_frame(t_game *game, int frame_to_render)
 {
-    if (frame_to_render == MAX_LAND_TEXTURES - 1)
-    {
-        game->game_sequence = 3;
-        game->current_frame = 0;
-        game->player->is_dead = 0;
-        game->player->hp = MAX_HEALTH;
-        play_land_voice(game);
-    }
+	if (frame_to_render == MAX_LAND_TEXTURES - 1)
+	{
+		game->game_sequence = 3;
+		game->current_frame = 0;
+		game->player->is_dead = 0;
+		game->player->hp = MAX_HEALTH;
+		play_land_voice(game);
+	}
 }
 
 void	render_land(t_game *game)

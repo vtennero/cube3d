@@ -78,7 +78,8 @@ render_floor_bonus.c \
 render_gun.c \
 render_objects.c \
 render_sky_floor.c \
-render_sky_bonus.c \
+render_sky_bonus00.c \
+render_sky_bonus01.c \
 render_walls.c \
 render_walls_bonus.c \
 respawn_bonus.c \

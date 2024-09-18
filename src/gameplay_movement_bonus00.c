@@ -78,12 +78,12 @@ void handle_movement_down(t_game *game)
 }
 void handle_key_up(t_game *game)
 {
-	if (game->player->pitch < 1 && game->bonus)
+	if (game->player->pitch < 1 && game->bonus && !game->player->is_extracting)
 		game->player->pitch += 0.01;
 }
 
 void handle_key_down(t_game *game)
 {
-	if (game->player->pitch > -1 && game->bonus)
+	if (game->player->pitch > -1 && game->bonus && !game->player->is_extracting)
 		game->player->pitch -= 0.01;
 }
