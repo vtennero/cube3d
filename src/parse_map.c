@@ -29,6 +29,8 @@ int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 			game->cub_map_array[*map_line][j] = parse_char_to_int(line[i]);
 			j++;
 		}
+		else if (i <= game->cub_map_col_count && parse_char_to_int(line[i]) != 9)
+			return (-1);
 		i++;
 	}
 	while (i <= game->cub_map_col_count)
@@ -64,7 +66,13 @@ int	loop_thru_line_in_map_array(t_game *game)
 	{
 		if ((line_count >= game->cub_line_count - game->cub_map_row_count)
 			&& (map_line <= game->cub_map_row_count))
-			parse_line_to_map_array(line, game, &map_line);
+		{
+			if (parse_line_to_map_array(line, game, &map_line) == -1)
+				{
+				free(line);
+				return (-1);
+				}
+		}	
 		line_count++;
 		free(line);
 		line = get_next_line(fd);
@@ -124,7 +132,8 @@ int	parse_map_to_array(t_game *game)
 
 	game->cub_map_array = initialize_array(game->cub_map_row_count * 2,
 			(game->cub_map_col_count + 1));
-	loop_thru_line_in_map_array(game);
+	if (loop_thru_line_in_map_array(game) == -1)
+		return (handle_error("Error\nInvalid chracter detected in map!",-1));
 	check_status = check_player_postion_and_map_char(game);
 	if (check_status != 1)
 	{

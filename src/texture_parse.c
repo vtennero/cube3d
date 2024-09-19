@@ -24,7 +24,7 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 	map_start = 0;
 	game->cub_fd = open(game->cub_filepath, O_RDONLY);
 	if (game->cub_fd < 0)
-		return (handle_error("Error\nCould not open file", -1));
+		return (handle_error("Error\nCould not open file\n", -1));
 	line = get_next_line(game->cub_fd);
 	while (line != NULL)
 	{
@@ -106,10 +106,14 @@ int	check_line(t_game *game, char *line, int *map_start)
 		((ft_strcmp(words[0], "NO") !=0) && (ft_strcmp(words[0], "EA") !=0) && (ft_strcmp(words[0], "SO") !=0) && 
 		 (ft_strcmp(words[0], "WE") !=0) && (ft_strcmp(words[0], "F") !=0) && (ft_strcmp(words[0], "C") !=0) )
 		))
-	{
+	{	
+		if ((ft_strcmp(words[0], "F") ==0) || (ft_strcmp(words[0], "C") ==0))
+			ft_printf("Error\nRGB value must be 3 values between 0 and 255, "
+			"separated by comma (e.g. 0,125,255)\n");
+		else			
+			ft_printf("Error\nInvalid characters in texture parsing\n");
 		free_split_result(words);
-		return (handle_error("Error\nInvalid characters in texture parsing\n",
-				-1));
+		return (-1);
 	}
 	if (assign_textures(game, words)==-1)
 	{
