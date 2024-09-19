@@ -15,20 +15,25 @@
 
 #include "cube3d.h"
 
+
 int	read_cub_texture_and_analyze_map(t_game *game)
 {
-	char	*line;
-	int		map_start;
+	char *line;
+	int map_start;
 
 	map_start = 0;
 	game->cub_fd = open(game->cub_filepath, O_RDONLY);
 	if (game->cub_fd < 0)
-		return (handle_error("Error \nCould not open file", -1));
+		return (handle_error("Error\nCould not open file", -1));
 	line = get_next_line(game->cub_fd);
 	while (line != NULL)
 	{
 		game->cub_line_count++;
-		check_line(game, line, &map_start);
+		if (check_line(game, line, &map_start) == -1)
+		{
+			free(line);
+			return (-1);
+		}
 		if (map_start == 1)
 		{
 			if ((int)(ft_strlen(line)) > game->cub_map_col_count)
@@ -39,6 +44,7 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 		line = get_next_line(game->cub_fd);
 	}
 	close(game->cub_fd);
+	
 	return (1);
 }
 
@@ -51,29 +57,36 @@ int	assign_texture(char **words, char **path, char *texture)
 	{
 		if (*path)
 		{
-			free(*path);
-			ft_printf("Overriding texture set for %s\n", texture);
+			ft_printf("Error\n %s already set!\n", texture);
+			return (-1);
 		}
-		*path = ft_strdup(words[1]);
+		else
+			*path = ft_strdup(words[1]);
 	}
 	return (1);
 }
 
 int	assign_textures(t_game *game, char **words)
 {
-	assign_texture(words, &(game->walltextures[0].path), "NO");
-	assign_texture(words, &(game->walltextures[1].path), "EA");
-	assign_texture(words, &(game->walltextures[2].path), "SO");
-	assign_texture(words, &(game->walltextures[3].path), "WE");
-	assign_texture(words, &(game->floor_rgb[0].path), "F");
-	assign_texture(words, &(game->sky_rgb[0].path), "C");
+	if (assign_texture(words, &(game->walltextures[0].path), "NO") == -1)
+		return (-1);
+	if (assign_texture(words, &(game->walltextures[1].path), "EA") == -1)
+		return (-1);
+	if (assign_texture(words, &(game->walltextures[2].path), "SO") == -1)
+		return (-1);
+	if (assign_texture(words, &(game->walltextures[3].path), "WE") == -1)
+		return (-1);
+	if (assign_texture(words, &(game->floor_rgb[0].path), "F") == -1)
+		return (-1);
+	if (assign_texture(words, &(game->sky_rgb[0].path), "C") == -1)
+		return (-1);
 	return (1);
 }
 
 int	check_line(t_game *game, char *line, int *map_start)
 {
-	char	**words;
-	int		word_count;
+	char **words;
+	int word_count;
 
 	line = trim_whitespace(line);
 	words = ft_split(line, ' ');
@@ -86,7 +99,7 @@ int	check_line(t_game *game, char *line, int *map_start)
 	{
 		*map_start = 1;
 		free_split_result(words);
-		return (-1);
+		return (1);
 	}
 	if (word_count != 2 && *map_start == 0)
 	{
@@ -94,7 +107,11 @@ int	check_line(t_game *game, char *line, int *map_start)
 		return (handle_error("Error\nInvalid characters in texture parsing\n",
 				-1));
 	}
-	assign_textures(game, words);
+	if (assign_textures(game, words)==-1)
+	{
+		free_split_result(words);
+		return (-1);
+	}
 	free_split_result(words);
 	return (0);
 }
