@@ -91,6 +91,7 @@ int	check_line(t_game *game, char *line, int *map_start)
 	line = trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count = count_words_from_array(words);
+
 	if (word_count == 0)
 		return (0);
 	if (((ft_strcmp(words[0], "0") == 0) || (ft_strcmp(words[0], "1") == 0))
@@ -101,7 +102,10 @@ int	check_line(t_game *game, char *line, int *map_start)
 		free_split_result(words);
 		return (1);
 	}
-	if (word_count != 2 && *map_start == 0)
+	if ( *map_start == 0 && (word_count != 2 || 
+		((ft_strcmp(words[0], "NO") !=0) && (ft_strcmp(words[0], "EA") !=0) && (ft_strcmp(words[0], "SO") !=0) && 
+		 (ft_strcmp(words[0], "WE") !=0) && (ft_strcmp(words[0], "F") !=0) && (ft_strcmp(words[0], "C") !=0) )
+		))
 	{
 		free_split_result(words);
 		return (handle_error("Error\nInvalid characters in texture parsing\n",
