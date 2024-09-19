@@ -15,11 +15,10 @@
 
 #include "cube3d.h"
 
-
 int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 {
-	int j;
-	int i;
+	int	j;
+	int	i;
 
 	i = 0;
 	j = 0;
@@ -35,25 +34,17 @@ int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 			return (-1);
 		i++;
 	}
-	while (i <= game->cub_map_col_count)
-	{
-		if (i % 2 == 0)
-		{
-			game->cub_map_array[*map_line][j] = 9;
-			j++;
-		}
-		i++;
-	}
+	fill_lagging_zero(i, j, game, map_line);
 	(*map_line)++;
 	return (1);
 }
 
 int	loop_thru_line_in_map_array(t_game *game)
 {
-	int fd;
-	int line_count;
-	int map_line;
-	char *line;
+	int		fd;
+	int		line_count;
+	int		map_line;
+	char	*line;
 
 	map_line = 0;
 	line_count = 0;
@@ -97,9 +88,9 @@ int	check_player_position_helper(t_game *game, int i, int j, int *player_found)
 
 int	check_player_postion_and_map_char(t_game *game)
 {
-	int i;
-	int j;
-	int player_found;
+	int	i;
+	int	j;
+	int	player_found;
 
 	i = 0;
 	j = 0;
@@ -124,12 +115,13 @@ int	check_player_postion_and_map_char(t_game *game)
 
 int	parse_map_to_array(t_game *game)
 {
-	int check_status;
+	int	check_status;
 
 	game->cub_map_array = initialize_array(game->cub_map_row_count * 2,
 			(game->cub_map_col_count + 1));
 	if (loop_thru_line_in_map_array(game) == -1)
-		return (handle_error("Error\nInvalid chracter detected in map!\n", -1));
+		return (handle_error("Error\nInvalid chracter detected in map!\n",
+				-1));
 	check_status = check_player_postion_and_map_char(game);
 	if (check_status != 1)
 	{
@@ -143,4 +135,3 @@ int	parse_map_to_array(t_game *game)
 	}
 	return (1);
 }
-

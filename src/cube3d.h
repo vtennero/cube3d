@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 06:52:00 by cliew            ###   ########.fr       */
+/*   Updated: 2024/09/20 07:07:50 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -853,6 +853,7 @@ void	draw_top_crosshair(t_game *game, t_vector2d center);
 void	enemies_hit(t_game *game);
 void	enemy_hit_attempt(t_game *game, t_enemy *enemy, int index);
 void	extraction_available(t_game *game);
+void	fill_lagging_zero(int i, int j, t_game *game, int *map_line);
 void	free_gun_texture_frames(t_game *game);
 void	free_gun_textures(t_game *game);
 void	free_shooting_textures(t_game *game);

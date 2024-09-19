@@ -78,3 +78,16 @@ int	check_map_error(int *map_start, int word_count, char **words)
 	}
 	return (1);
 }
+
+void	fill_lagging_zero(int i, int j, t_game *game, int *map_line)
+{
+	while (i <= game->cub_map_col_count)
+	{
+		if (i % 2 == 0)
+		{
+			game->cub_map_array[*map_line][j] = 9;
+			j++;
+		}
+		i++;
+	}
+}
