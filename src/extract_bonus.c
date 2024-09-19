@@ -41,21 +41,6 @@ int *white_width)
 		*white_width = *total_width / 2;
 }
 
-int	calculate_color(int i, int total_width, int white_width)
-{
-	float	gradient;
-	int		blue_value;
-
-	if (i == 0 || (i >= -white_width / 2 && i < white_width / 2))
-		return (0xFFFFFF);
-	else
-	{
-		gradient = 1.0f - (float)abs(i) / (total_width / 2);
-		blue_value = 128 + (int)(127 * gradient);
-		return (blue_value);
-	}
-}
-
 void	draw_stripe_pixel(t_game *game, int x, int y, int color)
 {
 	if (x >= 0 && x < game->screen_width)
@@ -68,6 +53,7 @@ void	draw_extract_stripe(t_game *game, int s, int start_y, float d)
 	int	white_width;
 	int	y;
 	int	i;
+	int	color;
 
 	calculate_widths(game, d, &total_width, &white_width);
 	y = 0;
@@ -76,8 +62,8 @@ void	draw_extract_stripe(t_game *game, int s, int start_y, float d)
 		i = -total_width / 2;
 		while (i < total_width / 2)
 		{
-			draw_stripe_pixel(game, s + i, y, \
-			calculate_color(i, total_width, white_width));
+			color = calculate_color_with_base(i, total_width, white_width, 0x0000FF);
+			draw_stripe_pixel(game, s + i, y, color);
 			i++;
 		}
 		y++;
