@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/19 15:41:13 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 06:52:00 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -818,6 +818,7 @@ void	calculate_vector(t_game *game, int enemy_index, float *dx, float *dy);
 void	center_mouse(t_game *game, t_vector2d center);
 void	check_last_frame(t_game *game, int frame_to_render);
 void	check_texture_loaded(t_texture *texture);
+int		check_map_error(int *map_start, int word_count, char **words);
 void	clean_mlx(t_game *game);
 void	cleanup_audio(t_game *game);
 void	clear_previous_output(int last_printed_length);
@@ -857,6 +858,8 @@ void	free_gun_textures(t_game *game);
 void	free_shooting_textures(t_game *game);
 void	free_sky_texture(t_game *game);
 void	free_texture_array(t_texture *texture_array, int num_items, t_game *game);
+int		free_and_return(char *line, int ret);
+int		freesplit_and_return(char	**words,int ret);
 void	handle_frame_specific_actions(t_game *game, int current_frame);
 void	handle_key_a(t_game *game);
 void	handle_key_d(t_game *game);

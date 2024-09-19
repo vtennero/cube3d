@@ -15,11 +15,10 @@
 
 #include "cube3d.h"
 
-
 int	read_cub_texture_and_analyze_map(t_game *game)
 {
-	char *line;
-	int map_start;
+	char	*line;
+	int		map_start;
 
 	map_start = 0;
 	game->cub_fd = open(game->cub_filepath, O_RDONLY);
@@ -30,10 +29,7 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 	{
 		game->cub_line_count++;
 		if (check_line(game, line, &map_start) == -1)
-		{
-			free(line);
-			return (-1);
-		}
+			return (free_and_return(line, -1));
 		if (map_start == 1)
 		{
 			if ((int)(ft_strlen(line)) > game->cub_map_col_count)
@@ -44,7 +40,6 @@ int	read_cub_texture_and_analyze_map(t_game *game)
 		line = get_next_line(game->cub_fd);
 	}
 	close(game->cub_fd);
-	
 	return (1);
 }
 
@@ -85,13 +80,12 @@ int	assign_textures(t_game *game, char **words)
 
 int	check_line(t_game *game, char *line, int *map_start)
 {
-	char **words;
-	int word_count;
+	char	**words;
+	int		word_count;
 
 	line = trim_whitespace(line);
 	words = ft_split(line, ' ');
 	word_count = count_words_from_array(words);
-
 	if (word_count == 0)
 		return (0);
 	if (((ft_strcmp(words[0], "0") == 0) || (ft_strcmp(words[0], "1") == 0))
@@ -99,27 +93,11 @@ int	check_line(t_game *game, char *line, int *map_start)
 		&& all_paths_set(game) == 1 && *map_start == 0)
 	{
 		*map_start = 1;
-		free_split_result(words);
-		return (1);
+		return (freesplit_and_return(words, 1));
 	}
-	if ( *map_start == 0 && (word_count != 2 || 
-		((ft_strcmp(words[0], "NO") !=0) && (ft_strcmp(words[0], "EA") !=0) && (ft_strcmp(words[0], "SO") !=0) && 
-		 (ft_strcmp(words[0], "WE") !=0) && (ft_strcmp(words[0], "F") !=0) && (ft_strcmp(words[0], "C") !=0) )
-		))
-	{	
-		if ((ft_strcmp(words[0], "F") ==0) || (ft_strcmp(words[0], "C") ==0))
-			ft_printf("Error\nRGB value must be 3 values between 0 and 255, "
-			"separated by comma (e.g. 0,125,255)\n");
-		else			
-			ft_printf("Error\nInvalid characters in texture parsing\n");
-		free_split_result(words);
-		return (-1);
-	}
-	if (assign_textures(game, words)==-1)
-	{
-		free_split_result(words);
-		return (-1);
-	}
-	free_split_result(words);
-	return (0);
+	if (check_map_error(map_start, word_count, words) == -1)
+		return (freesplit_and_return(words, -1));
+	if (assign_textures(game, words) == -1)
+		return (freesplit_and_return(words, -1));
+	return (freesplit_and_return(words, 0));
 }

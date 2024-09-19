@@ -15,7 +15,6 @@
 
 #include "cube3d.h"
 
-
 int	handle_error(const char *message, int error_code)
 {
 	ft_printf(message);
@@ -52,7 +51,7 @@ void	texture_access_check(t_game *game, int *error)
 
 int	texture_error_handling(t_game *game)
 {
-	int error;
+	int	error;
 
 	error = 0;
 	texture_access_check(game, &error);
@@ -77,7 +76,7 @@ int	texture_error_handling(t_game *game)
 
 int	all_paths_set(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 4)

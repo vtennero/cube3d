@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: cliew <cliew@student.42.fr>                +#+  +:+      
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/07/13 12:42:15 by cliew             #+#    #+#             */
 /*   Updated: 2024/08/27 15:17:58 by cliew            ###   ########.fr       */
@@ -15,10 +15,11 @@
 
 #include "cube3d.h"
 
+
 int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 {
-	int	j;
-	int	i;
+	int j;
+	int i;
 
 	i = 0;
 	j = 0;
@@ -29,7 +30,8 @@ int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 			game->cub_map_array[*map_line][j] = parse_char_to_int(line[i]);
 			j++;
 		}
-		else if (i <= game->cub_map_col_count && parse_char_to_int(line[i]) != 9)
+		else if (i <= game->cub_map_col_count
+			&& parse_char_to_int(line[i]) != 9)
 			return (-1);
 		i++;
 	}
@@ -48,19 +50,16 @@ int	parse_line_to_map_array(char *line, t_game *game, int *map_line)
 
 int	loop_thru_line_in_map_array(t_game *game)
 {
-	int		fd;
-	int		line_count;
-	int		map_line;
-	char	*line;
+	int fd;
+	int line_count;
+	int map_line;
+	char *line;
 
 	map_line = 0;
 	line_count = 0;
 	fd = open(game->cub_filepath, O_RDONLY);
 	if (fd < 0)
-	{
-		perror("Error\nCould not open file");
-		return (-1);
-	}
+		return (handle_error("Error\nCould not open file", -1));
 	line = get_next_line(fd);
 	while ((line != NULL))
 	{
@@ -68,11 +67,8 @@ int	loop_thru_line_in_map_array(t_game *game)
 			&& (map_line <= game->cub_map_row_count))
 		{
 			if (parse_line_to_map_array(line, game, &map_line) == -1)
-				{
-				free(line);
-				return (-1);
-				}
-		}	
+				return (free_and_return(line, -1));
+		}
 		line_count++;
 		free(line);
 		line = get_next_line(fd);
@@ -101,9 +97,9 @@ int	check_player_position_helper(t_game *game, int i, int j, int *player_found)
 
 int	check_player_postion_and_map_char(t_game *game)
 {
-	int	i;
-	int	j;
-	int	player_found;
+	int i;
+	int j;
+	int player_found;
 
 	i = 0;
 	j = 0;
@@ -128,12 +124,12 @@ int	check_player_postion_and_map_char(t_game *game)
 
 int	parse_map_to_array(t_game *game)
 {
-	int	check_status;
+	int check_status;
 
 	game->cub_map_array = initialize_array(game->cub_map_row_count * 2,
 			(game->cub_map_col_count + 1));
 	if (loop_thru_line_in_map_array(game) == -1)
-		return (handle_error("Error\nInvalid chracter detected in map!",-1));
+		return (handle_error("Error\nInvalid chracter detected in map!\n", -1));
 	check_status = check_player_postion_and_map_char(game);
 	if (check_status != 1)
 	{
@@ -147,3 +143,4 @@ int	parse_map_to_array(t_game *game)
 	}
 	return (1);
 }
+
