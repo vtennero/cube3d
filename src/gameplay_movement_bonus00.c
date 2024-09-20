@@ -23,13 +23,13 @@ int	normalize_direction(float *dirX, float *dirY, float length)
 	return (0);
 }
 
-int	check_collision_at_point(t_game *game, float dirX, float dirY, float t, float buffer)
+int	check_collision_at_point(t_game *game, t_vector2d dir, float t, float buffer)
 {
 	int	mapX;
 	int	mapY;
 
-	mapX = (int)(game->player->position.x + dirX * (t + buffer));
-	mapY = (int)(game->player->position.y + dirY * (t + buffer));
+	mapX = (int)(game->player->position.x + dir.x * (t + buffer));
+	mapY = (int)(game->player->position.y + dir.y * (t + buffer));
 	if (mapX < 0 || mapX >= game->map->width ||
 		mapY < 0 || mapY >= game->map->height ||
 		game->map->data[mapY][mapX] == TILE_WALL)
@@ -39,22 +39,21 @@ int	check_collision_at_point(t_game *game, float dirX, float dirY, float t, floa
 
 int	detect_collision(t_game *game, float newX, float newY)
 {
-	float	dirX;
-	float	dirY;
-	float	length;
-	float	t;
-	float	buffer;
+	t_vector2d	dir;
+	float		length;
+	float		t;
+	float		buffer;
 
 	buffer = 0.8;
-	dirX = newX - game->player->position.x;
-	dirY = newY - game->player->position.y;
-	length = sqrt(dirX * dirX + dirY * dirY);
+	dir.x = newX - game->player->position.x;
+	dir.y = newY - game->player->position.y;
+	length = sqrt(dir.x * dir.x + dir.y * dir.y);
 	t = 0;
-	if (!normalize_direction(&dirX, &dirY, length))
+	if (!normalize_direction(&dir.x, &dir.y, length))
 		return (0);
 	while (t <= 1)
 	{
-		if (check_collision_at_point(game, dirX, dirY, length * t, buffer))
+		if (check_collision_at_point(game, dir, length * t, buffer))
 			return (1);
 		t += 0.1;
 	}

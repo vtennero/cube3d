@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:59:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/17 15:17:33 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:20:42 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,14 @@ int ft_key_release(int keycode, t_game *game)
 	if (keycode < MAX_KEY_CODE)
 	{
 		game->key_state[keycode] = 0;
-		if (keycode != K_E)  // Don't reset is_moving_fwd for E key
-		{
+		if (keycode != K_E)
 			game->is_moving_fwd = 0;
-		}
 	}
 	return (0);
 }
 
 int ft_key_press(int keycode, t_game *game)
 {
-	printf("ft_key_press %d\n", keycode);
 		if (keycode == K_E && game->key_state[K_E] == 0 && game->bonus)
 			handle_key_e(game);
 		else if (keycode == K_ENTER && game->key_state[K_ENTER] == 0 && game->bonus)
@@ -96,74 +93,67 @@ static void update_player_position(t_game *game, float newX, float newY)
 	game->player->position.x = newX;
 	game->player->position.y = newY;
 }
-void handle_key_w(t_game *game)
+
+void	handle_key_w(t_game *game)
 {
-	float speed = 0.1;  // Speed of movement, adjust as necessary
-	float newX = game->player->position.x + game->player->direction.x * speed;
-	float newY = game->player->position.y + game->player->direction.y * speed;
-	if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
-		update_player_position(game, newX, newY);
+	float	new_x;
+	float	new_y;
+
+	new_x = game->player->position.x + game->player->direction.x * PLAYER_M_SPEED;
+	new_y = game->player->position.y + game->player->direction.y * PLAYER_M_SPEED;
+	if (!detect_collision(game, new_x, new_y) && game->player->is_extracting == 0)
+		update_player_position(game, new_x, new_y);
 	game->is_moving_fwd = 1;
 }
 
-void handle_key_s(t_game *game)
+void	handle_key_s(t_game *game)
 {
-	float speed = 0.1;  // Speed of movement, adjust as necessary
-	float newX = game->player->position.x - game->player->direction.x * speed;
-	float newY = game->player->position.y - game->player->direction.y * speed;
-	if (!detect_collision(game, newX, newY) && game->player->is_extracting == 0)
-		update_player_position(game, newX, newY);
+	float	new_x;
+	float	new_y;
+
+	new_x = game->player->position.x - game->player->direction.x * PLAYER_M_SPEED;
+	new_y = game->player->position.y - game->player->direction.y * PLAYER_M_SPEED;
+	if (!detect_collision(game, new_x, new_y) && game->player->is_extracting == 0)
+		update_player_position(game, new_x, new_y);
 	game->is_moving_fwd = 1;
 }
-void handle_key_a(t_game *game)
+
+void	handle_key_a(t_game *game)
 {
+	float	perp_x;
+	float	perp_y;
+	float	new_x;
+	float	new_y;
 
-	float speed = 0.1; // Control the speed of strafing
-
-	float perpX = game->player->direction.y; // Use positive y component of the direction
-	float perpY = -game->player->direction.x; // Use negative x component of the direction
-
-	float newX = game->player->position.x + perpX * speed;
-	float newY = game->player->position.y + perpY * speed;
-
-	if (!detect_collision(game, newX, newY)  && game->player->is_extracting == 0)
-		update_player_position(game, newX, newY);
+	perp_x = game->player->direction.y;
+	perp_y = -game->player->direction.x;
+	new_x = game->player->position.x + perp_x * PLAYER_M_SPEED;
+	new_y = game->player->position.y + perp_y * PLAYER_M_SPEED;
+	if (!detect_collision(game, new_x, new_y) && game->player->is_extracting == 0)
+		update_player_position(game, new_x, new_y);
 }
 
-void handle_key_d(t_game *game)
+void	handle_key_d(t_game *game)
 {
-	// printf("You just pressed D!\n");
+	float	perp_x;
+	float	perp_y;
+	float	new_x;
+	float	new_y;
 
-	float speed = 0.1;
-
-	// Derive the perpendicular (right) direction vector
-	float perpX = -game->player->direction.y; // Negative y component
-	float perpY = game->player->direction.x;  // Positive x component
-
-	// Calculate the new position by moving right to the direction the player is facing
-	float newX = game->player->position.x + perpX * speed;
-	float newY = game->player->position.y + perpY * speed;
-
-	if (!detect_collision(game, newX, newY)  && game->player->is_extracting == 0)
-	{
-		update_player_position(game, newX, newY);
-	}
-	else
-	{
-		printf("Collision/Out of Map movement\n");
-	}
-
-	// print_movement_direction(game);
-	// print_game_map(game);
+	perp_x = -game->player->direction.y;
+	perp_y = game->player->direction.x;
+	new_x = game->player->position.x + perp_x * PLAYER_M_SPEED;
+	new_y = game->player->position.y + perp_y * PLAYER_M_SPEED;
+	if (!detect_collision(game, new_x, new_y) && game->player->is_extracting == 0)
+		update_player_position(game, new_x, new_y);
 }
+
 void handle_key_left(t_game *game)
 {
-	float angle = -0.0872665; // -5 degrees in radians (counterclockwise)
-	calculate_rotation(game, angle);
+	calculate_rotation(game, -PLAYER_R_ANGLE);
 }
 
 void handle_key_right(t_game *game)
 {
-	float angle = 0.0872665; // 5 degrees in radians (clockwise)
-	calculate_rotation(game, angle);
+	calculate_rotation(game, PLAYER_R_ANGLE);
 }

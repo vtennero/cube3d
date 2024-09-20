@@ -21,14 +21,6 @@ void init_last_pos(int x, int y, int *last_x, int *last_y)
 	}
 }
 
-void calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, int *dy)
-{
-	*dx = x - *last_x;
-	*dy = y - *last_y;
-	*last_x = x;
-	*last_y = y;
-}
-
 float calc_rotation_angle(int dx)
 {
 	return dx * MOUSE_ROT_SPEED;

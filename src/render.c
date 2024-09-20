@@ -122,7 +122,7 @@ static void run_rendering(t_game *game)
 	render_supplies(game);
 	render_extract(game);
 	render_enemies(game);
-	render_strike(game);
+	render_eagle_strike(game);
 	render_napalm(game);
 	render_barrage(game);
 	render_gun(game);

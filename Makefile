@@ -46,6 +46,14 @@ gameplay_scripts_static_bonus02.c \
 gameplay_scripts_static_bonus03.c \
 gameplay_scripts_static_bonus04.c \
 gameplay_scripts_static_bonus05.c \
+gameplay_scripts_bonus00.c \
+gameplay_scripts_bonus01.c \
+gameplay_scripts_bonus02.c \
+gameplay_scripts_bonus03.c \
+render_effects_strike00_bonus00.c \
+render_effects_strike01_bonus00.c \
+render_effects_strike02_bonus00.c \
+render_effects_strikes_bonus00.c \
 initialization00.c \
 initialization_bonus00.c \
 initialization_bonus01.c \
@@ -67,6 +75,7 @@ randomizer_bonus00.c \
 raycasting.c \
 raycasting_utils.c \
 render.c \
+render_assets_bonus00.c \
 render_bonus00.c \
 render_bonus01.c \
 render_bonus02.c \
@@ -83,9 +92,6 @@ render_sky_bonus01.c \
 render_walls.c \
 render_walls_bonus.c \
 respawn_bonus.c \
-scripts.c \
-scripts_bonus00.c \
-strike_bonus.c \
 supplies_bonus.c \
 terminate01.c \
 terminate02.c \

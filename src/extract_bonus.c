@@ -26,7 +26,7 @@ void	render_single_tile(t_game *game, t_vector2d tile_pos, int tex_index)
 	t_texture	*extract_texture;
 
 	extract_texture = &game->extract_texture[tex_index];
-	col_render_sprite_common(game, tile_pos, extract_texture);
+	render_sprite_common(game, tile_pos, extract_texture);
 }
 
 void	calculate_widths(t_game *game, float distance, int *total_width, \
@@ -90,9 +90,9 @@ void	render_extract_ray(t_sprite_render_context *ctx)
 {
 	float	distance;
 
-	col_calculate_sprite_transforms(ctx);
-	col_calculate_sprite_dimensions(ctx);
-	if (is_sprite_in_front(ctx->calc.transform_y, \
+	calc_sprite_transforms(ctx);
+	calc_sprite_dimensions(ctx);
+	if (is_sprite_in_front(ctx->calc.transform.y, \
 	ctx->calc.sprite_screen_x, ctx->game->screen_width))
 	{
 		distance = calculate_distance_to_player(ctx->game, ctx->position);
@@ -105,9 +105,9 @@ void	render_active_extract(t_game *game)
 {
 	t_sprite_render_context	ctx;
 
-	col_initialize_sprite_render_context(&ctx, game, \
+	init_sprite_render_context(&ctx, game, \
 	game->extract[0].position, &game->extract_texture[0]);
-	col_render_sprite_common(ctx.game, ctx.position, ctx.texture);
+	render_sprite_common(ctx.game, ctx.position, ctx.texture);
 	if (game->extract[0].is_available == 1)
 		render_extract_ray(&ctx);
 }
@@ -130,13 +130,13 @@ void	render_extract_multi_tile(t_game *game, t_vector2d base)
 	int						i;
 
 	calculate_perpendicular(game, &perp.x, &perp.y);
-	col_initialize_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	i = 0;
 	while (i < EXTRACT_N_TILES)
 	{
 		ctx.position = calculate_tile_position(base, perp, i);
 		ctx.texture = &game->extract_texture[i + 1];
-		col_render_sprite_common(ctx.game, ctx.position, ctx.texture);
+		render_sprite_common(ctx.game, ctx.position, ctx.texture);
 		i++;
 	}
 }

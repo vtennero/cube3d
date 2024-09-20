@@ -149,10 +149,9 @@ void	free_texture_arrays(t_game *game)
 
 void	cleanup(t_game *game)
 {
-	printf("cleanup\n");
+	printf("Terminating...\n");
 	clean_player(game);
 	free_texture_arrays(game);
-	// free(game->strike);
 	clean_map(game);
 	clean_rays(game);
 	clean_mlx(game);

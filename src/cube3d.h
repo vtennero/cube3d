@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/19 15:41:13 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:18:46 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@
 
 #define COLLECTION_DISTANCE 1.0f
 
-#define BARRAGE_CALL_IN_TIME 8
-#define BARRAGE_DURATION 30
+
 
 
 #define FIRST_LOOP_START 0
@@ -104,11 +103,19 @@
 #define MOUSE_ROT_SPEED 0.005
 #define MOUSE_PITCH_SPEED 0.001
 
+#define PLAYER_M_SPEED 0.1
+#define PLAYER_R_ANGLE 0.0872665
 
 #define E_N_FRAMES 14
 #define E_ANIM_INT 5
 #define E_JUMP_INT 75
 #define E_MOVE_INT 120
+#define E_MOVEMENT_PROBABILITY 999500
+#define E_MOVEMENT_SPEED 0.04
+#define E_STOP_DISTANCE 2.0f
+#define E_STOP_DURATION 150
+#define E_STOP_PROBABILITY 5000
+
 
 #define EXTRACT_N_TILES 3
 #define EXTRACT_OFFSET 0.98f
@@ -118,6 +125,11 @@
 #define STRIKE_SHAKE_DURATION 30 // Number of frames the shake effect lasts
 #define STRIKE_SHAKE_INTENSITY 0.3f // Maximum shake offset
 #define STRIKE_BARRAGE_SCALE 2.0f // Base player height
+#define BARRAGE_CALL_IN_TIME 8
+#define BARRAGE_DURATION 30
+
+#define SUPP_DIST 2.0f
+#define SUPP_T_EPS 0.5f
 
 /*
 ** ================== STRUCTURES ==================
@@ -147,18 +159,25 @@ typedef struct s_vector2d
 	float x, y;
 }						t_vector2d;
 
-typedef struct s_floor_ray {
-    float rayDirX0;
-    float rayDirY0;
-    float rayDirX1;
-    float rayDirY1;
-    float rowDistance;
-    float floorStepX;
-    float floorStepY;
-    float floorX;
-    float floorY;
-} t_floor_ray;
+// typedef struct s_floor_ray {
+//     float rayDirX0;
+//     float rayDirY0;
+//     float rayDirX1;
+//     float rayDirY1;
+//     float rowDistance;
+//     float floorStepX;
+//     float floorStepY;
+//     float floorX;
+//     float floorY;
+// } t_floor_ray;
 
+typedef struct s_floor_ray {
+    t_vector2d rayDir0;
+    t_vector2d rayDir1;
+    t_vector2d floorStep;
+    t_vector2d floor;
+    float rowDistance;
+} t_floor_ray;
 
 typedef struct s_texture_weight
 {
@@ -277,7 +296,7 @@ typedef struct s_enemy
 	int				momentum;
 	int				animation_steps;
 	int				is_alive;
-	int				still_frames;
+	int				stop_counter;
 	} t_enemy;
 
 typedef enum e_direction
@@ -361,19 +380,19 @@ typedef struct s_health_bar
 	int height;
 } t_health_bar;
 
+
+
 typedef struct s_sprite_calc
 {
-	float sprite_x;
-	float sprite_y;
-	float transform_x;
-	float transform_y;
-	int sprite_screen_x;
-	int sprite_height;
-	int sprite_width;
-	int draw_start_y;
-	int draw_end_y;
-	int draw_start_x;
-	int draw_end_x;
+    t_vector2d sprite;
+    t_vector2d transform;
+    int sprite_screen_x;
+    int sprite_height;
+    int sprite_width;
+    int draw_start_y;
+    int draw_end_y;
+    int draw_start_x;
+    int draw_end_x;
 } t_sprite_calc;
 
 typedef struct s_sprite_render_context
@@ -519,6 +538,8 @@ typedef struct s_keymap
 // FUNCTION DECLARATIONS START
 char	*trim_whitespace(char *str);
 const	char	*get_cardinal_direction(float x, float y);
+double	calculate_initial_tex_pos(t_ray *ray, t_game *game, double step);
+double	calculate_tex_step(t_texture *texture, double lineHeight);
 float	calculate_angle(t_game *game);
 float	calculate_distance(t_vector2d point1, t_vector2d point2);
 float	calculate_distance_to_player(t_game *game, t_vector2d position);
@@ -531,6 +552,7 @@ float	calculate_new_position_y(t_game *game, float dy, float bump_distance);
 float	calculate_screen_shake(t_game *game, int current_frame);
 float	random_float(t_game *game);
 float	vector2d_distance_squared(t_vector2d a, t_vector2d b);
+int	**allocate_floor_texture_map(t_game *game);
 int	**initialize_array(int x, int y);
 int	all_paths_set(t_game *game);
 int	assign_texture(char **words, char **path, char *texture);
@@ -541,7 +563,7 @@ int	calculate_frame(long elapsed_microseconds, int max_textures);
 int	calculate_supplies(t_game *game);
 int	calculate_tx(t_sky_render *sky, int j);
 int	calculate_ty(t_sky_render *sky, int i);
-int	check_collision_at_point(t_game *game, float dirX, float dirY, float t, float buffer);
+int	check_collision_at_point(t_game *game, t_vector2d dir, float t, float buffer);
 int	check_invalid_rgb(char *word);
 int	check_line(t_game *game, char *line, int *map_start);
 int	check_map_boundaries(t_game *game);
@@ -608,9 +630,9 @@ int	bonus_game_loop_2(t_game *game);
 int	bonus_game_loop_3(t_game *game);
 int	bonus_game_loop_4(t_game *game);
 int	calculate_center_pixel_position(float pitch);
-int	calculate_floor_color(t_game *game, t_floor_ray *floor_ray, int x);
+int	calculate_floor_pixel_color(t_game *game, t_vector2d floor);
+int	calculate_floor_start(t_game *game);
 int	calculate_move_chance(int momentum_strength);
-int	calculate_sprite_screen_x(t_game *game, float transformX, float transformY);
 int	close_hook(t_game *game);
 int	core_game_loop(t_game *game);
 int	create_game_window(t_game *game);
@@ -623,21 +645,21 @@ int	ft_key_press(int keycode, t_game *game);
 int	ft_key_release(int keycode, t_game *game);
 int	get_floor_texture_color(t_texture *texture, int x, int y);
 int	get_floor_texture_index(t_game *game, int cellX, int cellY);
-int	get_min_starting_index(t_strike *strike);
-int	get_next_airstrike_frame(t_strike *strike, int offset_index);
+int	get_min_starting_index_eagle(t_strike *strike);
 int	get_next_barrage_frame(t_strike *strike);
+int	get_next_eagle_frame(t_strike *strike, int offset_index);
 int	get_next_enemy_frame(t_enemy *enemy);
 int	get_next_napalm_frame(t_strike *strike, int offset_index);
-int	get_pixel_color(int x, int y, int width, int height, char *data, int bpp, int line_len);
+int	get_pixel_color(t_sprite_render_context *ctx, int tex_x, int tex_y);
 int	handle_mouse_click(int button, int x, int y, void *param);
 int	handle_mouse_release(int button, int x, int y, void *param);
 int	handle_periodic_jump(t_enemy *enemy);
 int	init_game_audio_struct(t_game *game);
 int	initialize_audio(t_game *game);
 int	initialize_barrage(t_game *game);
+int	initialize_eagle_strike(t_game *game);
 int	initialize_mlx(t_game *game);
 int	initialize_napalm(t_game *game, int current_frames[]);
-int	initialize_strike(t_game *game);
 int	is_close_enough(t_game *game, t_enemy *enemy);
 int	is_script_limit_reached(t_game *game);
 int	is_sprite_in_front(float transformY, int stripe, int screen_width);
@@ -666,6 +688,7 @@ int	select_weighted_texture(t_game *game);
 int	setup_game_mlx(t_game *game);
 int	should_attempt_hit(unsigned long long *enemy_seed);
 int	stop_audio_file(t_game *game, const char *filename);
+int	validate_game_state(t_game *game);
 long	get_elapsed_microseconds(struct timeval *start, struct timeval *end);
 t_ray_node	*find_ray_node(t_game *game, int stripe);
 t_ray_node	*addRay(t_ray_node **head);
@@ -687,7 +710,6 @@ unsigned	long long xorshift64(unsigned long long *state);
 void	barrage_inbound(t_game *game);
 void	calculate_perpendicular(t_game *game, float *perp_x, float *perp_y);
 void	calculate_sky_range(t_sky_render *sky);
-void	calculate_tex_values(t_ray *ray, t_texture *texture, t_game *game, double *texPos, double *step);
 void	calculate_widths(t_game *game, float distance, int *total_width, \
 int *white_width);
 void	cancel_supply_take(t_game *game);
@@ -701,10 +723,11 @@ void	cleanup(t_game *game);
 void	delay_napalm_hit(t_game *game);
 void	delay_strike_hit(t_game *game);
 void	draw_extract_stripe(t_game *game, int s, int start_y, float d);
-void	draw_strike_stripe(t_game *game, int stripe, int draw_end_y, float distance);
+void	draw_strike_call(t_game *game, int stripe, int draw_end_y, float distance);
 void	draw_stripe_pixel(t_game *game, int x, int y, int color);
 void	eagle_bombs(t_game *game);
 void	eagle_inbound(t_game *game);
+void	fill_floor_texture_map(t_game *game);
 void	free_array(int **array, int x);
 void	free_floor_texture_map(t_game *game);
 void	free_split_result(char **words);
@@ -713,6 +736,7 @@ void	free_wall_texture_map_path(t_game *game);
 void	get_hit(t_game *game);
 void	handle_key_3(t_game *game);
 void	img_pix_put(t_img *img, int x, int y, int color);
+void	initialize_floor_texture_map(t_game *game);
 void	initialize_randomized_frames(t_game *game);
 void	load_bonus_textures(t_game *game);
 void	load_textures(t_game *game);
@@ -743,7 +767,6 @@ void	render_opening(t_game *game);
 void	render_outro(t_game *game);
 void	render_pelican_inside(t_game *game);
 void	render_pixel(t_game *game, t_texture *texture, t_vector2d screen);
-void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game);
 void	render_respawn(t_game *game);
 void	render_single_tile(t_game *game, t_vector2d tile_pos, int tex_index);
 void	render_sky(t_game *game);
@@ -789,7 +812,6 @@ void	adjust_pitch(t_game *game, int dy);
 void	apply_barrage_screen_shake(t_game *game, int current_frame);
 void	apply_napalm_screen_shake(t_game *game, int first_visible_frame);
 void	apply_reduced_bump(t_game *game, float dx, float dy, float *bump_distance);
-void	apply_screen_shake(t_game *game, int current_frame);
 void	bump_player(t_game *game, int enemy_index);
 void	calc_camera_x(t_game *game, t_ray_node *ray);
 void	calc_delta_dist(t_game *game, t_ray_node *ray);
@@ -797,23 +819,27 @@ void	calc_draw_parameters(t_game *game, t_ray_node *ray);
 void	calc_line_height(t_game *game, t_ray_node *ray);
 void	calc_map_x(t_game *game, t_ray_node *ray);
 void	calc_map_y(t_game *game, t_ray_node *ray);
-void	calc_mouse_delta(int x, int y, int *last_x, int *last_y, int *dx, int *dy);
 void	calc_perp_wall_dist(t_game *game, t_ray_node *ray);
 void	calc_ray_dir_x(t_game *game, t_ray_node *ray);
 void	calc_ray_dir_y(t_game *game, t_ray_node *ray);
 void	calc_side_dist(t_game *game, t_ray_node *ray);
+void	calc_sprite_dimensions(t_sprite_render_context *ctx);
+void	calc_sprite_height(t_sprite_render_context *ctx);
+void	calc_sprite_position(t_sprite_render_context *ctx);
+void	calc_sprite_screen_x(t_sprite_render_context *ctx);
+void	calc_sprite_transforms(t_sprite_render_context *ctx);
+void	calc_sprite_width(t_sprite_render_context *ctx);
 void	calc_texture_x(t_game *game, t_ray_node *ray);
 void	calc_wall_hit(t_game *game, t_ray_node *ray);
 void	calculate_and_print_center_ray(t_game *game, t_ray_node *center_ray);
 void	calculate_barrage_sprite_dimensions(t_game *game, float transformY, t_sprite_calc *calc);
-void	calculate_barrage_sprite_position(t_game *game, t_vector2d *position, float *spriteX, float *spriteY);
-void	calculate_barrage_sprite_screen_x(t_game *game, float transformX, float transformY, int *spriteScreenX);
-void	calculate_gun_position(t_game *game, t_texture *gun_texture, int *start_x, int *start_y);
+void	calculate_barrage_sprite_position(t_game *game, t_vector2d *position, t_vector2d *sprite);
+void	calculate_barrage_sprite_screen_x(t_game *game, t_vector2d transform, int *spriteScreenX);
+void	calculate_floor_ray_params(t_game *game, t_floor_ray *floor_ray, int y);
+void	calculate_gun_position(t_game *game, t_texture *gun_texture, t_vector2d *start);
 void	calculate_health_bar_dimensions(t_game *game, t_health_bar *bar);
 void	calculate_rotation(t_game *game, float angle);
-void	calculate_sprite_height(t_game *game, float transformY, int *spriteHeight, int *drawStartY, int *drawEndY);
-void	calculate_sprite_position(t_game *game, float object_x, float object_y, float *spriteX, float *spriteY);
-void	calculate_sprite_width(t_game *game, float transformY, int spriteScreenX, int *spriteWidth, int *drawStartX, int *drawEndX);
+void	calculate_texture_coordinates(t_texture *texture, t_vector2d floor, float *tx, float *ty);
 void	calculate_vector(t_game *game, int enemy_index, float *dx, float *dy);
 void	center_mouse(t_game *game, t_vector2d center);
 void	check_last_frame(t_game *game, int frame_to_render);
@@ -821,34 +847,23 @@ void	check_texture_loaded(t_texture *texture);
 void	clean_mlx(t_game *game);
 void	cleanup_audio(t_game *game);
 void	clear_previous_output(int last_printed_length);
-void	col_calculate_sprite_dimensions(t_sprite_render_context *ctx);
-void	col_calculate_sprite_height(t_sprite_render_context *ctx);
-void	col_calculate_sprite_position(t_sprite_render_context *ctx);
-void	col_calculate_sprite_screen_x(t_sprite_render_context *ctx);
-void	col_calculate_sprite_transforms(t_sprite_render_context *ctx);
-void	col_calculate_sprite_width(t_sprite_render_context *ctx);
-void	col_draw_sprite_stripe(t_sprite_render_context *ctx, int stripe);
-void	col_initialize_sprite_render_context(t_sprite_render_context *ctx, t_game *game, t_vector2d position, t_texture *texture);
-void	col_render_sprite(t_sprite_render_context *ctx);
-void	col_render_sprite_common(t_game *game, t_vector2d position, t_texture *texture);
-void	col_transform_sprite(t_sprite_render_context *ctx);
 void	create_game_image(t_game *game);
 void	dash_player(t_game *game, float speed);
-void	debug_output(t_vector2d new_position, t_vector2d base_position);
 void	destroy_texture(t_game *game, t_texture *texture);
 void	destroy_texture_in_array(t_game *game, t_texture *texture);
 void	draw_bottom_crosshair(t_game *game, t_vector2d center);
 void	draw_crosshair_line(t_game *game, t_vector2d start, t_vector2d end);
 void	draw_dot(t_game *game, t_vector2d center);
-void	draw_gun_pixel(t_game *game, t_texture *gun_texture, int start_x, int start_y, int x, int y);
+void	draw_gun_pixel(t_game *game, t_texture *gun_texture, t_vector2d start, t_vector2d pos);
 void	draw_health_bar_border(t_game *game, t_health_bar *bar);
 void	draw_health_bar_fill(t_game *game, t_health_bar *bar);
 void	draw_health_bar_leftright(t_game *game, t_health_bar *bar);
 void	draw_health_bar_topbottom(t_game *game, t_health_bar *bar);
 void	draw_left_crosshair(t_game *game, t_vector2d center);
 void	draw_right_crosshair(t_game *game, t_vector2d center);
-void	draw_sprite_stripe(t_game *game, t_texture *obj_texture, int stripe, int drawStartY, int drawEndY, int spriteHeight, int spriteWidth, int spriteScreenX, float transformY);
+void	draw_sprite_stripe(t_sprite_render_context *ctx, int stripe);
 void	draw_top_crosshair(t_game *game, t_vector2d center);
+void	eagle_apply_screen_shake(t_game *game, int current_frame);
 void	enemies_hit(t_game *game);
 void	enemy_hit_attempt(t_game *game, t_enemy *enemy, int index);
 void	extraction_available(t_game *game);
@@ -857,6 +872,7 @@ void	free_gun_textures(t_game *game);
 void	free_shooting_textures(t_game *game);
 void	free_sky_texture(t_game *game);
 void	free_texture_array(t_texture *texture_array, int num_items, t_game *game);
+void	handle_enemy_stop(t_enemy *enemy, unsigned long long *enemy_seed);
 void	handle_frame_specific_actions(t_game *game, int current_frame);
 void	handle_key_a(t_game *game);
 void	handle_key_d(t_game *game);
@@ -879,16 +895,18 @@ void	handle_movement_strafe_left(t_game *game);
 void	handle_movement_strafe_right(t_game *game);
 void	handle_movement_up(t_game *game);
 void	handle_normal_transition(t_enemy *enemy);
-void	init_floor_ray(t_game *game, t_floor_ray *floor_ray, int y);
+void	increment_and_update(t_game *game, int *current_task, int total_tasks, const char *task_name);
 void	init_last_pos(int x, int y, int *last_x, int *last_y);
-void	initialize_floor_texture_map(t_game *game);
+void	init_sprite_render_context(t_sprite_render_context *ctx, t_game *game, t_vector2d position, t_texture *texture);
 void	initialize_floor_texture_weights(t_game *game);
 void	initialize_game_seed(t_game *game);
+void	move_enemy(t_game *game, t_enemy *enemy, unsigned long long *enemy_seed);
 void	normalize_vector(float *dx, float *dy);
 void	perform_dda(t_game *game, t_ray_node *ray);
 void	play_gun_sound(t_game *game);
 void	play_random_eagle_call(t_game *game);
 void	play_random_strike_sound(t_game *game);
+void	print_barrage_loc(t_vector2d new_position, t_vector2d base_position);
 void	randomize_barrage_location(t_game *game);
 void	relocate_enemies(t_game *game);
 void	relocate_enemy(t_game *game, t_enemy *enemy, int index);
@@ -898,9 +916,12 @@ void	render_call_strike(t_game *game, t_vector2d position);
 void	render_collectible(t_game *game, t_vector2d position);
 void	render_collectibles(t_game *game);
 void	render_crosshair(t_game *game);
+void	render_eagle_sprites(t_game *game);
+void	render_eagle_strike(t_game *game);
 void	render_enemies(t_game *game);
 void	render_enemy(t_game *game, t_enemy *enemy);
 void	render_floor(t_game *game);
+void	render_floor_line(t_game *game, t_floor_ray *floor_ray, int y);
 void	render_frame(t_game *game, t_texture *opening_texture);
 void	render_gun(t_game *game);
 void	render_health_bar(t_game *game);
@@ -908,11 +929,12 @@ void	render_hit(t_game *game);
 void	render_napalm(t_game *game);
 void	render_napalm_sprites(t_game *game, int current_frames[]);
 void	render_ongoing_barrage(t_game *game);
+void	render_ongoing_eagle(t_game *game);
 void	render_ongoing_napalm(t_game *game);
-void	render_ongoing_strike(t_game *game);
+void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game);
 void	render_single_sprite(t_sprite_render_context *ctx);
-void	render_strike(t_game *game);
-void	render_strike_sprites(t_game *game);
+void	render_sprite(t_sprite_render_context *ctx);
+void	render_sprite_common(t_game *game, t_vector2d position, t_texture *texture);
 void	render_supplies(t_game *game);
 void	render_supply(t_game *game, t_vector2d position);
 void	render_supply_take(t_game *game);
@@ -925,14 +947,14 @@ void	run_raycasting_calculation_1(t_game *game, t_ray_node *current);
 void	run_raycasting_calculation_2(t_game *game, t_ray_node *current);
 void	run_raycasting_calculation_3(t_game *game, t_ray_node *current);
 void	set_crosshair_position(t_game *game);
-void	setup_barrage_sprite_context(t_sprite_render_context *ctx, t_game *game, t_vector2d offset, t_texture *texture);
+void	setup_barrage_sprite_context(t_sprite_render_context *ctx, t_game *game, t_vector2d position, t_texture *texture);
 void	setup_bonus_features(t_game *game);
 void	setup_game_hooks(t_game *game);
 void	setup_napalm_sprite_context(t_sprite_render_context *ctx, t_game *game, t_vector2d offset, t_texture *texture);
 void	setup_sprite_context(t_sprite_render_context *ctx, t_game *game, t_vector2d offset, t_texture *texture);
 void	testscript(t_game *game);
-void	transform_barrage_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
-void	transform_sprite(t_game *game, float spriteX, float spriteY, float *transformX, float *transformY);
+void	transf_sprite(t_sprite_render_context *ctx);
+void	transform_barrage_sprite(t_game *game, t_vector2d sprite, t_vector2d *transform);
 void	trigger_extract_music(t_game *game);
 void	trigger_extract_victory(t_game *game);
 void	trigger_landing(t_game *game);

@@ -6,11 +6,17 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:34:44 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/13 14:35:03 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:10:49 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+void increment_and_update(t_game *game, int *current_task, int total_tasks, const char *task_name)
+{
+    (*current_task)++;
+    update_progress_bar(game, *current_task, total_tasks, task_name);
+}
 
 void clear_previous_output(int last_printed_length)
 {

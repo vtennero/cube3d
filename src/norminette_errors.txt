@@ -12,18 +12,14 @@ audio_dummy01.c: Error!
 randomizer.c: Error!
 raycasting_utils.c: Error!
 render_floor_bonus.c: Error!
-Error: TOO_MANY_LINES       (line: 123, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 162, col:   1):	Function has more than 25 lines
-Error: TOO_MANY_LINES       (line: 234, col:   1):	Function has more than 25 lines
 render_gun.c: Error!
-respawn_bonus.c: Error!
-strike_bonus.c: Error!
 enemies_attack_bonus02.c: Error!
 audio_bonus00.c: Error!
 gameplay_movement_bonus01.c: Error!
 qol_bonus.c: Error!
 render_assets_bonus00.c: Error!
 interface_crosshair_bonus.c: Error!
+gameplay_enemies_bonus00.c: Error!
 main.c: Error!
 enemies_attack_bonus00.c: Error!
 gameplay_movement_bonus02.c: Error!
@@ -61,3 +57,8 @@ cube3d.h: Error!
 map_parse_utility_02.c: Error!
 extract_bonus.c: Error!
 gameplay_movement00.c: Error!
+gameplay_scripts_strikes_bonus00.c: Error!
+render_effects_strikes_bonus00.c: Error!
+render_effects_strike00_bonus00.c: Error!
+render_effects_strike01_bonus00.c: Error!
+render_effects_strike02_bonus00.c: Error!

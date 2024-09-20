@@ -33,29 +33,66 @@ void	update_tex_pos(double *texPos, double step)
 	*texPos += step;
 }
 
-void	calculate_tex_values(t_ray *ray, t_texture *texture, t_game *game, double *texPos, double *step)
+// void	calculate_tex_values(t_ray *ray, t_texture *texture, t_game *game, double *texPos, double *step)
+// {
+// 	*step = 1.0 * texture->height / ray->lineHeight;
+// 	*texPos = (ray->draw_start - (int)(game->player->pitch * game->screen_height)
+// 			- (int)(game->player->height * game->screen_height / ray->perpWallDist)
+// 			- game->screen_height / 2 + ray->lineHeight / 2) * (*step);
+// }
+
+// void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
+// {
+// 	int		y;
+// 	int		texY;
+// 	int		color;
+// 	int		texX;
+// 	double	step;
+// 	double	texPos;
+
+// 	calculate_tex_values(&ray, texture, game, &texPos, &step);
+// 	y = ray.draw_start;
+// 	while (y < ray.draw_end)
+// 	{
+// 		texY = (int)texPos & (texture->height - 1);
+// 		update_tex_pos(&texPos, step);
+// 		texX = (int)((double)ray.texX * texture->width / 1024) & (texture->width - 1);
+// 		color = get_texture_color(texture, texX, texY);
+// 		img_pix_put(img, ray.x, y, color);
+// 		y++;
+// 	}
+// }
+
+double calculate_tex_step(t_texture *texture, double lineHeight)
 {
-	*step = 1.0 * texture->height / ray->lineHeight;
-	*texPos = (ray->draw_start - (int)(game->player->pitch * game->screen_height)
-			- (int)(game->player->height * game->screen_height / ray->perpWallDist)
-			- game->screen_height / 2 + ray->lineHeight / 2) * (*step);
+	return 1.0 * texture->height / lineHeight;
 }
 
-void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
+// Calculate the initial texture position
+double calculate_initial_tex_pos(t_ray *ray, t_game *game, double step)
 {
-	int		y;
-	int		texY;
-	int		color;
-	int		texX;
-	double	step;
-	double	texPos;
+	return (ray->draw_start - (int)(game->player->pitch * game->screen_height)
+			- (int)(game->player->height * game->screen_height / ray->perpWallDist)
+			- game->screen_height / 2 + ray->lineHeight / 2) * step;
+}
 
-	calculate_tex_values(&ray, texture, game, &texPos, &step);
+void render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
+{
+	int     y;
+	int     texY;
+	int     color;
+	int     texX;
+	double  step;
+	double  texPos;
+
+	step = calculate_tex_step(texture, ray.lineHeight);
+	texPos = calculate_initial_tex_pos(&ray, game, step);
 	y = ray.draw_start;
 	while (y < ray.draw_end)
 	{
 		texY = (int)texPos & (texture->height - 1);
-		update_tex_pos(&texPos, step);
+		texPos += step;
+		// update_tex_pos(&texPos, step);
 		texX = (int)((double)ray.texX * texture->width / 1024) & (texture->width - 1);
 		color = get_texture_color(texture, texX, texY);
 		img_pix_put(img, ray.x, y, color);

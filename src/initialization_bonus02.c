@@ -46,7 +46,7 @@ int	create_enemies(t_game *game)
 		game->enemies[i].current_frame = 0;
 		game->enemies[i].momentum = 0;
 		game->enemies[i].animation_steps = 0;
-		game->enemies[i].still_frames = 0;
+		game->enemies[i].stop_counter = 0;
 		i++;
 	}
 	i = 0;

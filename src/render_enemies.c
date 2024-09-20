@@ -49,7 +49,6 @@ int calculate_move_chance(int momentum_strength)
 {
 	if (momentum_strength >= 2) return 80;
 	if (momentum_strength == 1) return 65;
-	printf("momentum strength %d\n", momentum_strength);
 	return 0;
 	// return 50;
 }
@@ -102,16 +101,11 @@ int get_next_enemy_frame(t_enemy *enemy)
 	return enemy->current_frame;
 }
 
-
-
-
-// ----------------------------------------
-
 void render_enemy(t_game *game, t_enemy *enemy)
 {
 	int current_frame = get_next_enemy_frame(enemy);
 	t_texture *enemy_texture = &game->enemy_textures[current_frame];
-	col_render_sprite_common(game, enemy->position, enemy_texture);
+	render_sprite_common(game, enemy->position, enemy_texture);
 	// render_sprite_common(game, enemy->position, enemy_texture);
 }
 
@@ -125,50 +119,6 @@ void render_enemies(t_game *game)
 		}
 	}
 }
-
-// void check_enemy_at_center(t_game *game)
-// {
-// 	float centerX = game->screen_width / 2.0f;
-// 	float centerY = game->screen_height / 2.0f;
-
-// 	for (int i = 0; i < game->num_enemies; i++)
-// 	{
-// 		if (!game->enemies[i].is_alive)
-// 			continue;
-
-// 		float spriteX, spriteY;
-// 		calculate_sprite_position(game, game->enemies[i].position.x, game->enemies[i].position.y, &spriteX, &spriteY);
-
-// 		float transformX, transformY;
-// 		transform_sprite(game, spriteX, spriteY, &transformX, &transformY);
-
-// 		int spriteScreenX = calculate_sprite_screen_x(game, transformX, transformY);
-
-// 		int spriteHeight, drawStartY, drawEndY;
-// 		calculate_sprite_height(game, transformY, &spriteHeight, &drawStartY, &drawEndY);
-
-// 		int spriteWidth, drawStartX, drawEndX;
-// 		calculate_sprite_width(game, transformY, spriteScreenX, &spriteWidth, &drawStartX, &drawEndX);
-
-// 		// Check if the center of the screen is within the enemy's sprite boundaries
-// 		if (centerX >= drawStartX && centerX < drawEndX &&
-// 			centerY >= drawStartY && centerY < drawEndY && game->enemies[i].is_alive )
-// 		{
-// 			// printf("Aiming at enemy %d\n", i);
-// 			if (game->is_shooting)
-// 			{
-// 				game->enemies[i].is_alive = 0;
-// 				// play_bug_death(game);
-// 				add_script(game, play_bug_death, 0);
-// 			}
-// 			return;  // Exit the function after finding the first enemy at the center
-// 		}
-// 	}
-
-// 	// If no enemy is found at the center
-// 	// printf("No enemy at the center of the screen\n");
-// }
-
 static int	is_point_in_sprite(float x, float y, const t_sprite_calc *calc)
 {
 	return (x >= calc->draw_start_x && x < calc->draw_end_x &&
@@ -195,10 +145,10 @@ void	check_enemy_at_center(t_game *game)
 	{
 		if (game->enemies[i].is_alive)
 		{
-			col_initialize_sprite_render_context(&ctx, game,
+			init_sprite_render_context(&ctx, game,
 				game->enemies[i].position, 0);
-			col_calculate_sprite_transforms(&ctx);
-			col_calculate_sprite_dimensions(&ctx);
+			calc_sprite_transforms(&ctx);
+			calc_sprite_dimensions(&ctx);
 			if (is_point_in_sprite(center_x, center_y, &ctx.calc))
 			{
 				if (game->is_shooting)

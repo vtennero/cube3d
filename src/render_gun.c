@@ -52,21 +52,67 @@ t_texture *select_gun_texture(t_game *game)
 	}
 }
 
-void calculate_gun_position(t_game *game, t_texture *gun_texture, int *start_x, int *start_y)
+// void calculate_gun_position(t_game *game, t_texture *gun_texture, int *start_x, int *start_y)
+// {
+// 	int offset = gun_texture->width / 4;
+// 	*start_x = game->screen_width - gun_texture->width + offset;
+// 	*start_y = game->screen_height - gun_texture->height;
+// }
+
+// void draw_gun_pixel(t_game *game, t_texture *gun_texture, int start_x, int start_y, int x, int y)
+// {
+// 	int tex_x = x;
+// 	int tex_y = y;
+// 	int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
+
+// 	if ((unsigned int)color != 0xFF000000)
+// 		img_pix_put(&game->img, start_x + x, start_y + y, color);
+// }
+
+// void update_gun_state(t_game *game)
+// {
+// 	if (game->is_shooting)
+// 	{
+// 		update_shooting_gun_frame(game);
+// 	}
+// 	else
+// 	{
+// 		if(game->is_moving_fwd)
+// 			update_normal_gun_frame(game);
+// 	}
+// }
+
+// void render_gun(t_game *game)
+// {
+// 	t_texture *gun_texture = select_gun_texture(game);
+// 	int start_x, start_y;
+// 	calculate_gun_position(game, gun_texture, &start_x, &start_y);
+
+// 	for (int y = 0; y < gun_texture->height; y++)
+// 	{
+// 		for (int x = 0; x < gun_texture->width; x++)
+// 		{
+// 			if (start_x + x < game->screen_width)
+// 				draw_gun_pixel(game, gun_texture, start_x, start_y, x, y);
+// 		}
+// 	}
+// }
+
+void calculate_gun_position(t_game *game, t_texture *gun_texture, t_vector2d *start)
 {
 	int offset = gun_texture->width / 4;
-	*start_x = game->screen_width - gun_texture->width + offset;
-	*start_y = game->screen_height - gun_texture->height;
+	start->x = game->screen_width - gun_texture->width + offset;
+	start->y = game->screen_height - gun_texture->height;
 }
 
-void draw_gun_pixel(t_game *game, t_texture *gun_texture, int start_x, int start_y, int x, int y)
+void draw_gun_pixel(t_game *game, t_texture *gun_texture, t_vector2d start, t_vector2d pos)
 {
-	int tex_x = x;
-	int tex_y = y;
+	int tex_x = pos.x;
+	int tex_y = pos.y;
 	int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
 
 	if ((unsigned int)color != 0xFF000000)
-		img_pix_put(&game->img, start_x + x, start_y + y, color);
+		img_pix_put(&game->img, start.x + pos.x, start.y + pos.y, color);
 }
 
 void update_gun_state(t_game *game)
@@ -85,16 +131,18 @@ void update_gun_state(t_game *game)
 void render_gun(t_game *game)
 {
 	t_texture *gun_texture = select_gun_texture(game);
-	int start_x, start_y;
-	calculate_gun_position(game, gun_texture, &start_x, &start_y);
+	t_vector2d start, size, pos;
+	calculate_gun_position(game, gun_texture, &start);
 
-	for (int y = 0; y < gun_texture->height; y++)
+	size.x = gun_texture->width;
+	size.y = gun_texture->height;
+
+	for (pos.y = 0; pos.y < size.y; pos.y++)
 	{
-		for (int x = 0; x < gun_texture->width; x++)
+		for (pos.x = 0; pos.x < size.x; pos.x++)
 		{
-			if (start_x + x < game->screen_width)
-				draw_gun_pixel(game, gun_texture, start_x, start_y, x, y);
+			if (start.x + pos.x < game->screen_width)
+				draw_gun_pixel(game, gun_texture, start, pos);
 		}
 	}
 }
-
