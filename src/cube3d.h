@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 17:18:46 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:33:06 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -844,6 +844,7 @@ void	calculate_vector(t_game *game, int enemy_index, float *dx, float *dy);
 void	center_mouse(t_game *game, t_vector2d center);
 void	check_last_frame(t_game *game, int frame_to_render);
 void	check_texture_loaded(t_texture *texture);
+int		check_map_error(int *map_start, int word_count, char **words);
 void	clean_mlx(t_game *game);
 void	cleanup_audio(t_game *game);
 void	clear_previous_output(int last_printed_length);
@@ -867,12 +868,15 @@ void	eagle_apply_screen_shake(t_game *game, int current_frame);
 void	enemies_hit(t_game *game);
 void	enemy_hit_attempt(t_game *game, t_enemy *enemy, int index);
 void	extraction_available(t_game *game);
+void	fill_lagging_zero(int i, int j, t_game *game, int *map_line);
 void	free_gun_texture_frames(t_game *game);
 void	free_gun_textures(t_game *game);
 void	free_shooting_textures(t_game *game);
 void	free_sky_texture(t_game *game);
 void	free_texture_array(t_texture *texture_array, int num_items, t_game *game);
 void	handle_enemy_stop(t_enemy *enemy, unsigned long long *enemy_seed);
+int		free_and_return(char *line, int ret);
+int		freesplit_and_return(char	**words,int ret);
 void	handle_frame_specific_actions(t_game *game, int current_frame);
 void	handle_key_a(t_game *game);
 void	handle_key_d(t_game *game);
