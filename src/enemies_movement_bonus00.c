@@ -12,64 +12,64 @@
 
 #include "cube3d.h"
 
-static int should_move(unsigned long long *enemy_seed)
+static int	should_move(unsigned long long *enemy_seed)
 {
-	return xorshift64(enemy_seed) % 1000000 < E_MOVEMENT_PROBABILITY;
+	return (xorshift64(enemy_seed) % 1000000 < E_MOVEMENT_PROBABILITY);
 }
 
-static void calculate_direction(t_game *game, t_enemy *enemy, float *dx, float *dy)
+static void	calculate_direction(t_game *game, t_enemy *enemy, t_vector2d *direction)
 {
-	float player_x = game->player->position.x;
-	float player_y = game->player->position.y;
+	t_vector2d	player_pos;
+	t_vector2d	vector;
+	float		distance_to_player;
 
-	float vector_x = player_x - enemy->position.x;
-	float vector_y = player_y - enemy->position.y;
-
-	float distance_to_player = sqrt(vector_x * vector_x + vector_y * vector_y);
-
+	player_pos.x = game->player->position.x;
+	player_pos.y = game->player->position.y;
+	vector.x = player_pos.x - enemy->position.x;
+	vector.y = player_pos.y - enemy->position.y;
+	distance_to_player = sqrt(vector.x * vector.x + vector.y * vector.y);
 	if (distance_to_player > E_STOP_DISTANCE)
 	{
-		vector_x /= distance_to_player;
-		vector_y /= distance_to_player;
-
-		*dx = vector_x * E_MOVEMENT_SPEED;
-		*dy = vector_y * E_MOVEMENT_SPEED;
+		vector.x /= distance_to_player;
+		vector.y /= distance_to_player;
+		direction->x = vector.x * E_MOVEMENT_SPEED;
+		direction->y = vector.y * E_MOVEMENT_SPEED;
 	}
-	else {
-		*dx = 0;
-		*dy = 0;
-	}
-}
-
-static int check_wall_collision(t_game *game, t_enemy *enemy, float dx, float dy)
-{
-	float speed = sqrt(dx*dx + dy*dy);  // Calculate the speed of movement
-	float direction_x = dx / speed;     // Normalize direction
-	float direction_y = dy / speed;
-
-	float newX = enemy->position.x + dx;
-	float newY = enemy->position.y + dy;
-
-	// Use E_STOP_DISTANCE as the buffer
-	int mapX = (int)(newX + direction_x * E_STOP_DISTANCE);
-	int mapY = (int)(newY + direction_y * E_STOP_DISTANCE);
-
-	// Check if the new position is within map bounds and not a wall
-	if (mapX >= 0 && mapX < game->map->width &&
-		mapY >= 0 && mapY < game->map->height &&
-		game->map->data[mapY][mapX] != TILE_WALL)
+	else
 	{
-		return 0;  // Not a wall, can move
+		direction->x = 0;
+		direction->y = 0;
 	}
-
-	return 1;  // Wall detected, can't move
 }
 
-static void update_position(t_enemy *enemy, float dx, float dy)
+static int	check_wall_collision(t_game *game, t_enemy *enemy, t_vector2d direction)
 {
-	enemy->position.x += dx;
-	enemy->position.y += dy;
+	float		speed;
+	t_vector2d	normalized_direction;
+	t_vector2d	new_pos;
+	int			map_x;
+	int			map_y;
+
+	speed = sqrt(direction.x * direction.x + direction.y * direction.y);
+	normalized_direction.x = direction.x / speed;
+	normalized_direction.y = direction.y / speed;
+	new_pos.x = enemy->position.x + direction.x;
+	new_pos.y = enemy->position.y + direction.y;
+	map_x = (int)(new_pos.x + normalized_direction.x * E_STOP_DISTANCE);
+	map_y = (int)(new_pos.y + normalized_direction.y * E_STOP_DISTANCE);
+	if (map_x >= 0 && map_x < game->map->width &&
+		map_y >= 0 && map_y < game->map->height &&
+		game->map->data[map_y][map_x] != TILE_WALL)
+		return (0);
+	return (1);
 }
+
+static void update_position(t_enemy *enemy, t_vector2d direction)
+{
+	enemy->position.x += direction.x;
+	enemy->position.y += direction.y;
+}
+
 
 static void update_momentum(t_enemy *enemy, float dx)
 {
@@ -88,7 +88,6 @@ void relocate_enemies(t_game *game)
 			relocate_enemy(game, &game->enemies[i], i);
 		}
 	}
-
 }
 
 void handle_enemy_stop(t_enemy *enemy, unsigned long long *enemy_seed)
@@ -104,13 +103,13 @@ void move_enemy(t_game *game, t_enemy *enemy, unsigned long long *enemy_seed)
 {
 	if (should_move(enemy_seed))
 	{
-		float dx = 0, dy = 0;
-		calculate_direction(game, enemy, &dx, &dy);
+		t_vector2d direction = {0, 0};
+		calculate_direction(game, enemy, &direction);
 
-		if (!check_wall_collision(game, enemy, dx, dy))
+		if (!check_wall_collision(game, enemy, direction))
 		{
-			update_position(enemy, dx, dy);
-			update_momentum(enemy, dx);
+			update_position(enemy, direction);
+			update_momentum(enemy, direction.x);
 		}
 	}
 }
