@@ -6,41 +6,44 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:48:45 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 16:50:00 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:41:13 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-t_vector2d generate_random_offset(t_game *game, float proximity_radius)
+t_vector2d	generate_random_offset(t_game *game, float proximity_radius)
 {
-	float angle = random_float(game) * 2 * M_PI;
-	float distance = random_float(game) * proximity_radius;
+	float		angle;
+	float		distance;
+	t_vector2d	offset;
 
-	t_vector2d offset;
+	angle = random_float(game) * 2 * M_PI;
+	distance = random_float(game) * proximity_radius;
 	offset.x = cosf(angle) * distance;
 	offset.y = sinf(angle) * distance;
-
-	return offset;
+	return (offset);
 }
 
-t_vector2d calculate_new_position(t_vector2d base_position, t_vector2d offset)
+t_vector2d	calculate_new_position(t_vector2d base_position, t_vector2d offset)
 {
-	t_vector2d new_position;
+	t_vector2d	new_position;
+
 	new_position.x = base_position.x + offset.x;
 	new_position.y = base_position.y + offset.y;
-	return new_position;
+	return (new_position);
 }
 
-t_vector2d clamp_position(t_vector2d position, int map_width, int map_height)
+t_vector2d	clamp_position(t_vector2d position, int map_width, int map_height)
 {
-	t_vector2d clamped;
+	t_vector2d	clamped;
+
 	clamped.x = fmax(0, fmin(position.x, map_width - 1));
 	clamped.y = fmax(0, fmin(position.y, map_height - 1));
-	return clamped;
+	return (clamped);
 }
 
-void reset_strike_parameters(t_strike *strike)
+void	reset_strike_parameters(t_strike *strike)
 {
 	strike->frame_count = 0;
 	strike->current_frame = 0;
@@ -48,9 +51,8 @@ void reset_strike_parameters(t_strike *strike)
 	strike->is_launching = 1;
 	strike->is_animating = 0;
 	strike->delay_frames = 0;
-	strike->delay_duration = 60 * 2; // 3 seconds at 60 FPS, adjust as needed
+	strike->delay_duration = 60 * 2;
 }
-
 
 void print_barrage_loc(t_vector2d new_position, t_vector2d base_position)
 {
@@ -119,7 +121,6 @@ void adjust_barrage_sprite_dimensions_for_scaling(t_sprite_calc *calc)
 	calc->draw_start_x = centerX - (int)(widthDiff * STRIKE_BARRAGE_SCALE / 2);
 	calc->draw_end_x = centerX + (int)(widthDiff * STRIKE_BARRAGE_SCALE / 2);
 }
-
 
 int initialize_barrage(t_game *game)
 {
@@ -217,10 +218,7 @@ void setup_barrage_sprite_context(t_sprite_render_context *ctx, t_game *game, t_
 	init_sprite_render_context(ctx, game, position, texture);
 	calc_sprite_transforms(ctx);
 	calc_sprite_dimensions(ctx);
-
-	// Adjust for STRIKE_BARRAGE_SCALE
 	adjust_barrage_sprite_dimensions_for_scaling(&ctx->calc);
-
 	ctx->calc.sprite_height *= STRIKE_BARRAGE_SCALE;
 	ctx->calc.sprite_width *= STRIKE_BARRAGE_SCALE;
 }
