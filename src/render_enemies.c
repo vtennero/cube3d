@@ -22,8 +22,8 @@ int handle_periodic_jump(t_enemy *enemy)
 {
 	if (enemy->animation_steps >= E_JUMP_INT && (rand() % 100) < 10)
 	{
-		int jump = (rand() % 6) + 5;  // Jump 5-10 frames
-		if (rand() % 2 == 0) jump = -jump;  // 50% chance to jump backwards
+		int jump = (rand() % 6) + 5;
+		if (rand() % 2 == 0) jump = -jump;
 		enemy->current_frame = (enemy->current_frame + jump + E_N_FRAMES) % E_N_FRAMES;
 		enemy->momentum = 0;
 		enemy->animation_steps = 0;
@@ -50,7 +50,6 @@ int calculate_move_chance(int momentum_strength)
 	if (momentum_strength >= 2) return 80;
 	if (momentum_strength == 1) return 65;
 	return 0;
-	// return 50;
 }
 
 void update_frame_and_momentum(t_enemy *enemy, int direction, int move)
@@ -71,11 +70,8 @@ void update_frame_and_momentum(t_enemy *enemy, int direction, int move)
 void handle_normal_transition(t_enemy *enemy)
 {
 	int roll = rand() % 100;
-	// if (roll < 70)
 	if (roll < 95)
-	{
-		// adjust_momentum(enemy);
-	}
+		adjust_momentum(enemy);
 	else
 	{
 		int direction = determine_direction(enemy);
@@ -106,7 +102,6 @@ void render_enemy(t_game *game, t_enemy *enemy)
 	int current_frame = get_next_enemy_frame(enemy);
 	t_texture *enemy_texture = &game->enemy_textures[current_frame];
 	render_sprite_common(game, enemy->position, enemy_texture);
-	// render_sprite_common(game, enemy->position, enemy_texture);
 }
 
 void render_enemies(t_game *game)
@@ -114,9 +109,7 @@ void render_enemies(t_game *game)
 	for (int i = 0; i < game->num_enemies; i++)
 	{
 		if (game->enemies[i].is_alive)
-		{
 			render_enemy(game, &game->enemies[i]);
-		}
 	}
 }
 static int	is_point_in_sprite(float x, float y, const t_sprite_calc *calc)
