@@ -2,11 +2,14 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   gameplay_movement_bonus00.c                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 15:08:07 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 15:08:07 by vitenner         ###   ########.fr       */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
+/*   Created: 2024/09/21 16:53:03 by cliew             #+#    #+#             */
+/*   Updated: 2024/09/21 16:53:03 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +26,17 @@ int	normalize_direction(float *dirX, float *dirY, float length)
 	return (0);
 }
 
-int	check_collision_at_point(t_game *game, t_vector2d dir, float t, float buffer)
+int	check_collision_at_point(t_game *game, t_vector2d dir, float t,
+		float buffer)
 {
-	int	mapX;
-	int	mapY;
+	int	map_x;
+	int	map_y;
 
-	mapX = (int)(game->player->position.x + dir.x * (t + buffer));
-	mapY = (int)(game->player->position.y + dir.y * (t + buffer));
-	if (mapX < 0 || mapX >= game->map->width ||
-		mapY < 0 || mapY >= game->map->height ||
-		game->map->data[mapY][mapX] == TILE_WALL)
+	map_x = (int)(game->player->position.x + dir.x * (t + buffer));
+	map_y = (int)(game->player->position.y + dir.y * (t + buffer));
+	if (map_x < 0 || map_x >= game->map->width || map_y < 0
+		|| map_y >= game->map->height
+		|| game->map->data[map_y][map_x] == TILE_WALL)
 		return (1);
 	return (0);
 }
@@ -60,7 +64,7 @@ int	detect_collision(t_game *game, float newX, float newY)
 	return (0);
 }
 
-void handle_movement_up(t_game *game)
+void	handle_movement_up(t_game *game)
 {
 	if (game->key_state[K_UP] == 1)
 	{
@@ -68,21 +72,23 @@ void handle_movement_up(t_game *game)
 	}
 }
 
-void handle_movement_down(t_game *game)
+void	handle_movement_down(t_game *game)
 {
 	if (game->key_state[K_DOWN] == 1)
 	{
 		handle_key_down(game);
 	}
 }
-void handle_key_up(t_game *game)
+
+void	handle_key_up(t_game *game)
 {
 	if (game->player->pitch < 1 && game->bonus && !game->player->is_extracting)
 		game->player->pitch += 0.01;
 }
 
-void handle_key_down(t_game *game)
+void	handle_key_down(t_game *game)
 {
-	if (game->player->pitch > -1 && game->bonus && !game->player->is_extracting)
+	if (game->player->pitch > -1 && game->bonus
+		&& !game->player->is_extracting)
 		game->player->pitch -= 0.01;
 }

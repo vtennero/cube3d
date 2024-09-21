@@ -62,7 +62,8 @@ void	draw_extract_stripe(t_game *game, int s, int start_y, float d)
 		i = -total_width / 2;
 		while (i < total_width / 2)
 		{
-			color = calculate_color_with_base(i, total_width, white_width, 0x0000FF);
+			color = calculate_color_with_base \
+			(i, total_width, white_width, 0x0000FF);
 			draw_stripe_pixel(game, s + i, y, color);
 			i++;
 		}

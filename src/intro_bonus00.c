@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   intro_bonus00.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/09/11 13:44:40 by vitenner          #+#    #+#             */
 /*   Updated: 2024/09/11 13:44:40 by vitenner         ###   ########.fr       */
 /*                                                                            */
@@ -12,7 +15,7 @@
 
 #include "cube3d.h"
 
-void check_texture_loaded(t_texture *texture)
+void	check_texture_loaded(t_texture *texture)
 {
 	if (texture->img == NULL)
 	{
@@ -20,7 +23,7 @@ void check_texture_loaded(t_texture *texture)
 	}
 }
 
-void render_frame(t_game *game, t_texture *opening_texture)
+void	render_frame(t_game *game, t_texture *opening_texture)
 {
 	for (int y = 0; y < game->screen_height; y++)
 	{
@@ -33,7 +36,7 @@ void render_frame(t_game *game, t_texture *opening_texture)
 		}
 	}
 }
-void check_last_frame(t_game *game, int frame_to_render)
+void	check_last_frame(t_game *game, int frame_to_render)
 {
 	if (frame_to_render == MAX_LAND_TEXTURES - 1)
 	{
@@ -47,8 +50,8 @@ void check_last_frame(t_game *game, int frame_to_render)
 
 void	render_land(t_game *game)
 {
-	int			frame_to_render;
-	t_texture	*land_texture;
+	int frame_to_render;
+	t_texture *land_texture;
 
 	frame_to_render = get_current_frame(&game->opening_start_time);
 	land_texture = &game->land_texture[frame_to_render];

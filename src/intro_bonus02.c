@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intro_bonus02.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:55:30 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 18:53:07 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:46:13 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ void	initialize_randomized_frames(t_game *game)
 	{
 		j = random_int(game, i + 1);
 		temp = game->opening_state.randomized_frames[i];
-		game->opening_state.randomized_frames[i] = game->opening_state.randomized_frames[j];
+		game->opening_state.randomized_frames[i] = \
+		game->opening_state.randomized_frames[j];
 		game->opening_state.randomized_frames[j] = temp;
 		i--;
 	}
 	game->opening_state.randomized_frames_initialized = 1;
 }
-
-
 
 void	play_audio_on_frame(t_game *game, int frame_to_render)
 {
@@ -56,8 +55,6 @@ int	prepare_second_loop(t_game *game)
 	return (game->opening_state.randomized_frames[0]);
 }
 
-
-
 void	check_second_loop_end(t_game *game)
 {
 	if (game->opening_state.second_loop_count >= SECOND_LOOP_REPETITIONS)
@@ -70,5 +67,3 @@ void	check_second_loop_end(t_game *game)
 	else
 		reset_game_start_time(game);
 }
-
-

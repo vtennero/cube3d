@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   audio_dummy.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/08/27 11:39:22 by vitenner          #+#    #+#             */
 /*   Updated: 2024/09/01 14:45:11 by vitenner         ###   ########.fr       */
 /*                                                                            */
@@ -12,7 +15,7 @@
 
 #include "cube3d.h"
 
-int initialize_audio(t_game *game)
+int	initialize_audio(t_game *game)
 {
 	printf("initialize_audio: Audio is deactivated in this configuration. \
 Run helldivers3d to play with audio.\n");
@@ -20,14 +23,14 @@ Run helldivers3d to play with audio.\n");
 	return (0);
 }
 
-void cleanup_audio(t_game *game)
+void	cleanup_audio(t_game *game)
 {
 	printf("cleanup_audio: Audio is deactivated in this configuration. \
 Run helldivers3d to play with audio.\n");
 	(void)game;
 }
 
-int find_available_source(t_game *game)
+int	find_available_source(t_game *game)
 {
 	printf("find_available_source: Audio is deactivated in this configuration. \
 Run helldivers3d to play with audio.\n");
@@ -35,7 +38,7 @@ Run helldivers3d to play with audio.\n");
 	return (0);
 }
 
-int stop_audio_file(t_game *game, const char *filename)
+int	stop_audio_file(t_game *game, const char *filename)
 {
 	printf("stop_audio_file: Audio is deactivated in this configuration. \
 Run helldivers3d to play with audio.\n");
@@ -44,18 +47,20 @@ Run helldivers3d to play with audio.\n");
 	return (0);
 }
 
-int play_audio_file(t_game *game, const char *filename, float delayInSeconds)
+int	play_audio_file(t_game *game, const char *filename, float delayInSeconds)
 {
 	printf("play_audio_file: Audio is deactivated in this configuration. \
-Run helldivers3d to play with audio. Attempted to play file %s\n", filename);
+Run helldivers3d to play with audio. Attempted to play file %s\n",
+		filename);
 	(void)delayInSeconds;
 	(void)game;
 	return (0);
 }
 
-int init_game_audio_struct(t_game *game)
+int	init_game_audio_struct(t_game *game)
 {
-    game->audio = NULL;
-    printf("init_game_audio_struct: Audio initialization skipped in non-helldiver mode.\n");
-    return 0;
+	game->audio = NULL;
+	printf("init_game_audio_struct: Audio initialization skipped \
+	 in non-helldiver mode.\n");
+	return (0);
 }
