@@ -12,29 +12,27 @@
 
 #include "cube3d.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_game *game;
+	t_game	*game;
 
-    game = NULL;
-
-    create_game_struct(&game, 0);
-	if (argc>1 && parse_map(game,argv[1]) != -1)
-    	initgame(&game);
+	game = NULL;
+	create_game_struct(&game, 0);
+	if (argc > 1 && parse_map(game, argv[1]) != -1)
+		initgame(&game);
 	else
 	{
-		free_texture_array(game->walltextures,MAX_WALL_TEXTURES,game);
-    	free_texture_array(game->floortextures,MAX_FLOOR_TEXTURES,game);
+		free_texture_array(game->walltextures, MAX_WALL_TEXTURES, game);
+		free_texture_array(game->floortextures, MAX_FLOOR_TEXTURES, game);
 		free_floor_texture_map(game);
 		free_wall_texture_map_path(game);
 		if (game->cub_map_array)
-			free_array((game->cub_map_array),(game->cub_map_row_count)*2);
+			free_array((game->cub_map_array), (game->cub_map_row_count) * 2);
 		if (game->map)
 			free(game->map);
-
 		if (game)
 			free(game);
 		ft_printf("Error\nMap Parsing Failed\n");
 	}
-    return (0);
+	return (0);
 }
