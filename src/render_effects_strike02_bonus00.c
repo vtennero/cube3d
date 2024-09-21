@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike02_bonus00.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:48:45 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 17:46:09 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:54:51 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ void	render_barrage_sprite(t_game *game, int current_frame)
 	t_texture				*strike_texture;
 
 	position = game->strike[2].position;
-	strike_texture = &game->airstrike_textures[current_frame];
+	strike_texture = &game->as_txture[current_frame];
 	setup_barrage_sprite_context(&ctx, game, position, strike_texture);
 	render_sprite(&ctx);
 }

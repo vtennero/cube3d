@@ -44,7 +44,7 @@ t_texture *select_gun_texture(t_game *game)
 {
 	if (game->is_shooting)
 	{
-		return &game->shooting_texture[game->current_shooting_frame];
+		return &game->sht_txture[game->current_shooting_frame];
 	}
 	else
 	{

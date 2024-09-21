@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike01_bonus00.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:51:06 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 16:35:58 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:59:11 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void render_napalm_sprites(t_game *game, int current_frames[])
 		if (current_frames[i] == -1)
 			continue;
 
-		setup_napalm_sprite_context(&ctx, game, offsets[i], &game->napalm_textures[current_frames[i]]);
+		setup_napalm_sprite_context(&ctx, game, offsets[i], &game->np_txture[current_frames[i]]);
 		render_single_sprite(&ctx);
 	}
 }

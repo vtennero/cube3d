@@ -50,7 +50,7 @@ void	scale_shooting_textures(t_game *game)
 	i = 0;
 	while (i < game->num_gun_frames)
 	{
-		gun_texture = &game->shooting_texture[i];
+		gun_texture = &game->sht_txture[i];
 		gun_texture->height = (int)s_h;
 		gun_texture->width = (int)(gun_texture->width * \
 		(s_h / gun_texture->height));

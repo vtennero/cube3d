@@ -104,7 +104,7 @@ void free_shooting_textures(t_game *game)
 	int i;
 
 	for (i = 0; i < MAX_SHOOTING_TEXTURES; i++)
-		destroy_texture(game, &game->shooting_texture[i]);
+		destroy_texture(game, &game->sht_txture[i]);
 }
 
 void reset_gun_frames(t_game *game)
@@ -138,9 +138,9 @@ void	free_texture_arrays(t_game *game)
 	free_texture_array(game->supplies_texture,1,game);
 	free_texture_array(game->opening_texture,MAX_OPENING_TEXTURES,game);
 	free_texture_array(game->outro_texture,MAX_OUTRO_TEXTURES,game);
-	free_texture_array(game->shooting_texture,MAX_SHOOTING_TEXTURES,game);
-	free_texture_array(game->airstrike_textures,NUM_AIRSTRIKE_FRAMES,game);
-	free_texture_array(game->napalm_textures,NUM_NAPALM_FRAMES,game);
+	free_texture_array(game->sht_txture,MAX_SHOOTING_TEXTURES,game);
+	free_texture_array(game->as_txture,NUM_AIRSTRIKE_FRAMES,game);
+	free_texture_array(game->np_txture,NUM_NAPALM_FRAMES,game);
 	free_gun_textures(game);
 	free_sky_texture(game);
 	free_floor_texture_map(game);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 17:33:06 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:01:18 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,9 +449,9 @@ typedef struct s_game
 	t_texture			supplies_texture[1];
 	t_texture			opening_texture[MAX_OPENING_TEXTURES];
 	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
-	t_texture			shooting_texture[MAX_SHOOTING_TEXTURES];
-	t_texture			airstrike_textures[NUM_AIRSTRIKE_FRAMES];
-	t_texture			napalm_textures[NUM_NAPALM_FRAMES];
+	t_texture			sht_txture[MAX_SHOOTING_TEXTURES];
+	t_texture			as_txture[NUM_AIRSTRIKE_FRAMES];
+	t_texture			np_txture[NUM_NAPALM_FRAMES];
 	t_texture			sky_texture;
 	struct timeval		opening_start_time;
 	int					loop_count;
