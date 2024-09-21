@@ -60,14 +60,15 @@ int	load_extract_textures(t_game *game)
 		"textures/extract/extract01.xpm", "textures/extract/extract02.xpm",
 		"textures/extract/extract03.xpm"};
 	const int	num_textures = sizeof(file_names) / sizeof(file_names[0]);
+	int			i;
+	t_texture	*texture;
 
-	for (int i = 0; i < num_textures; i++)
+	i = 0;
+	while (i < num_textures)
 	{
-		update_progress_bar(game, i + 1, num_textures,
-			"Loading extract textures");
-
-		t_texture *texture = &game->extract_texture[i];
-
+		update_progress_bar(game, i + 1, num_textures, \
+		"Loading extract textures");
+		texture = &game->extract_texture[i];
 		texture->path = file_names[i];
 		texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path,
 				&texture->width, &texture->height);
@@ -75,17 +76,17 @@ int	load_extract_textures(t_game *game)
 			return (texture_err_message(game));
 		texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp,
 				&texture->tex_line_len, &texture->tex_endian);
+		i++;
 	}
-
 	return (0);
 }
 
 int	load_floor_textures(t_game *game)
 {
-	char path[26];
-	int f_digit;
-	int s_digit;
-	int texcount;
+	char	path[26];
+	int		f_digit;
+	int		s_digit;
+	int		texcount;
 
 	ft_strcpy(path, "textures/floor/floor00.xpm");
 	texcount = 0;
@@ -108,10 +109,11 @@ int	load_floor_textures(t_game *game)
 
 int	load_menu_texture(t_game *game)
 {
-	char path[22];
+	char		path[22];
+	t_texture	*texture;
 
+	texture = &game->menu_texture[0];
 	ft_strcpy(path, "textures/menu/menu.xpm");
-	t_texture *texture = &game->menu_texture[0];
 	texture->path = path;
 	texture->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &texture->width,
 			&texture->height);
