@@ -12,37 +12,41 @@
 
 #include "cube3d.h"
 
+int	gun_texture_frame_update(t_game *game, int frame, char *digits, char *path)
+{
+	digits[0] = '0' + (frame / 10);
+	digits[1] = '0' + (frame % 10);
+	game->gun_textures[frame - 1].img = mlx_xpm_file_to_image(game->mlx_ptr,
+			path, &game->gun_textures[frame - 1].width,
+			&game->gun_textures[frame - 1].height);
+	if (game->gun_textures[frame - 1].img == NULL)
+	{
+		game->num_gun_frames = frame - 1;
+		return (-1);
+	}
+	game->gun_textures[frame
+		- 1].data = mlx_get_data_addr(game->gun_textures[frame - 1].img,
+			&game->gun_textures[frame - 1].tex_bpp, &game->gun_textures[frame
+			- 1].tex_line_len, &game->gun_textures[frame - 1].tex_endian);
+	return (0);
+}
 
 int	load_gun_textures(t_game *game)
 {
-	char path[24];
-	char *digits;
-	int frame;
+	char	path[24];
+	char	*digits;
+	int		frame;
 
 	digits = &path[18];
 	frame = 1;
 	game->gun_textures = malloc(sizeof(t_texture) * MAX_GUN_TEXTURES);
-
 	ft_strcpy(path, "textures/gun/frame00.xpm");
 	while (frame <= MAX_GUN_TEXTURES)
 	{
 		update_progress_bar(game, frame, MAX_GUN_TEXTURES,
 			"Loading gun textures");
-		digits[0] = '0' + (frame / 10);
-		digits[1] = '0' + (frame % 10);
-		game->gun_textures[frame - 1].img = mlx_xpm_file_to_image(game->mlx_ptr,
-				path, &game->gun_textures[frame - 1].width,
-				&game->gun_textures[frame - 1].height);
-		if (game->gun_textures[frame - 1].img == NULL)
-		{
-			game->num_gun_frames = frame - 1;
+		if (gun_texture_frame_update(game, frame, digits, path) == -1)
 			break ;
-		}
-		game->gun_textures[frame
-			- 1].data = mlx_get_data_addr(game->gun_textures[frame - 1].img,
-				&game->gun_textures[frame - 1].tex_bpp,
-				&game->gun_textures[frame - 1].tex_line_len,
-				&game->gun_textures[frame - 1].tex_endian);
 		frame++;
 	}
 	if (frame > MAX_GUN_TEXTURES)
@@ -52,10 +56,10 @@ int	load_gun_textures(t_game *game)
 
 int	load_extract_textures(t_game *game)
 {
-	static char *file_names[] = {"textures/extract/extract00.xpm",
+	static char	*file_names[] = {"textures/extract/extract00.xpm",
 		"textures/extract/extract01.xpm", "textures/extract/extract02.xpm",
 		"textures/extract/extract03.xpm"};
-	const int num_textures = sizeof(file_names) / sizeof(file_names[0]);
+	const int	num_textures = sizeof(file_names) / sizeof(file_names[0]);
 
 	for (int i = 0; i < num_textures; i++)
 	{
