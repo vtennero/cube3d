@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 14:28:29 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/09 14:28:29 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/21 17:13:31 by cliew             #+#    #+#             */
+/*   Updated: 2024/09/21 17:13:31 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_game *game;
+	t_game	*game;
 
-    game = NULL;
-
-    create_game_struct(&game, 1);
-	if (argc>1 && parse_map(game,argv[1])!=-1)
-    	initgame(&game);
+	game = NULL;
+	create_game_struct(&game, 1);
+	if (argc > 1 && parse_map(game, argv[1]) != -1)
+		initgame(&game);
 	else
 	{
 		if (game)
@@ -28,5 +27,5 @@ int main(int argc, char **argv)
 		printf("Error\n");
 		printf("Map Parsing Failed\n");
 	}
-    return (0);
+	return (0);
 }

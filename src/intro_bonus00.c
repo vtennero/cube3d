@@ -25,17 +25,28 @@ void	check_texture_loaded(t_texture *texture)
 
 void	render_frame(t_game *game, t_texture *opening_texture)
 {
-	for (int y = 0; y < game->screen_height; y++)
+	int	y;
+	int	x;
+	int	tex_x;
+	int	tex_y;
+	int	color;
+
+	y = 0;
+	while (y < game->screen_height)
 	{
-		for (int x = 0; x < game->screen_width; x++)
+		x = 0;
+		while (x < game->screen_width)
 		{
-			int tex_x = x * opening_texture->width / game->screen_width;
-			int tex_y = y * opening_texture->height / game->screen_height;
-			int color = get_texture_color(opening_texture, tex_x, tex_y);
+			tex_x = x * opening_texture->width / game->screen_width;
+			tex_y = y * opening_texture->height / game->screen_height;
+			color = get_texture_color(opening_texture, tex_x, tex_y);
 			img_pix_put(&game->img, x, y, color);
+			x++;
 		}
+		y++;
 	}
 }
+
 void	check_last_frame(t_game *game, int frame_to_render)
 {
 	if (frame_to_render == MAX_LAND_TEXTURES - 1)
@@ -50,8 +61,8 @@ void	check_last_frame(t_game *game, int frame_to_render)
 
 void	render_land(t_game *game)
 {
-	int frame_to_render;
-	t_texture *land_texture;
+	int			frame_to_render;
+	t_texture	*land_texture;
 
 	frame_to_render = get_current_frame(&game->opening_start_time);
 	land_texture = &game->land_texture[frame_to_render];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameplay_scripts_static_bonus00.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:00:18 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 16:59:11 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:09:20 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ float	calculate_distance(t_vector2d point1, t_vector2d point2)
 	return (sqrt(delta.x * delta.x + delta.y * delta.y));
 }
 
-void	check_and_kill_enemy(t_game *game, int enemy_index, t_vector2d strike_pos, float radius)
+void	check_and_kill_enemy(t_game *game, int enemy_index, \
+t_vector2d strike_pos, float radius)
 {
 	t_vector2d	enemy_pos;
 	float		distance;
@@ -248,7 +249,8 @@ void	script_found_supplies(t_game *game)
 	int	found;
 
 	found = find_closest_supply(game);
-	if (game->game_sequence == 3 && found >= 0 && game->supplies[found].found == 0)
+	if (game->game_sequence == 3 && found >= 0 && \
+	game->supplies[found].found == 0)
 	{
 		play_audio_file(game, "audio/supplies00.mp3", 0);
 		game->supplies[found].found = 1;
@@ -260,7 +262,8 @@ void	script_take_supplies(t_game *game)
 	int	found;
 
 	found = find_supply_on_player_tile(game);
-	if (game->game_sequence == 3 && found >= 0 && game->supplies[found].collected == 0)
+	if (game->game_sequence == 3 && found >= 0 && \
+	game->supplies[found].collected == 0)
 	{
 		printf("restored health\n");
 		play_audio_file(game, "audio/stims02.mp3", 0);

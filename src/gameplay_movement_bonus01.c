@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameplay_movement_bonus01.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 15:07:58 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/11 15:07:58 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/21 17:14:21 by cliew             #+#    #+#             */
+/*   Updated: 2024/09/21 17:14:21 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,29 @@ const char	*get_cardinal_direction(float x, float y)
 	return ("South-East");
 }
 
-float calculate_dynamic_buffer(t_player *player, float base_speed)
+float	calculate_dynamic_buffer(t_player *player, float base_speed)
 {
-	float dir_mag;
-	float plane_mag;
-	float dot_product;
-	float cosine_angle;
-	float dynamic_buffer;
+	float	dir_mag;
+	float	plane_mag;
+	float	dot_product;
+	float	cosine_angle;
+	float	dynamic_buffer;
 
-	dir_mag = sqrt(player->direction.x * player->direction.x + player->direction.y * player->direction.y);
-	plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y * player->plane.y);
-	dot_product = player->direction.x * player->plane.x + player->direction.y * player->plane.y;
+	dir_mag = sqrt(player->direction.x * player->direction.x
+			+ player->direction.y * player->direction.y);
+	plane_mag = sqrt(player->plane.x * player->plane.x + player->plane.y
+			* player->plane.y);
+	dot_product = player->direction.x * player->plane.x + player->direction.y
+		* player->plane.y;
 	cosine_angle = dot_product / (dir_mag * plane_mag);
 	dynamic_buffer = base_speed * (1 - fabs(cosine_angle));
 	return (dynamic_buffer);
 }
-void rotate_vector(float *x, float *y, float angle)
+
+void	rotate_vector(float *x, float *y, float angle)
 {
-	float old_x;
-	float old_y;
+	float	old_x;
+	float	old_y;
 
 	old_x = *x;
 	old_y = *y;
@@ -64,21 +68,18 @@ void rotate_vector(float *x, float *y, float angle)
 	*y = old_x * sin(angle) + old_y * cos(angle);
 }
 
-void calculate_rotation(t_game *game, float angle)
+void	calculate_rotation(t_game *game, float angle)
 {
-	const char *direction;
+	const char	*direction;
 
 	direction = NULL;
 	rotate_player(game, angle);
 	if (game->bonus == 0)
 	{
-		printf("New direction.x = %f, New direction.y = %f\n", game->player->direction.x, game->player->direction.y);
-		direction = get_cardinal_direction(game->player->direction.x, game->player->direction.y);
+		printf("New direction.x = %f, New direction.y = %f\n",
+			game->player->direction.x, game->player->direction.y);
+		direction = get_cardinal_direction(game->player->direction.x,
+				game->player->direction.y);
 		printf("Facing direction: %s\n", direction);
 	}
 }
-
-
-
-
-
