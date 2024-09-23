@@ -12,7 +12,7 @@
 
 #include "cube3d.h"
 
-void init_last_pos(int x, int y, int *last_x, int *last_y)
+void	init_last_pos(int x, int y, int *last_x, int *last_y)
 {
 	if (*last_x == -1 || *last_y == -1)
 	{
@@ -21,24 +21,26 @@ void init_last_pos(int x, int y, int *last_x, int *last_y)
 	}
 }
 
-float calc_rotation_angle(int dx)
+float	calc_rotation_angle(int dx)
 {
-	return dx * MOUSE_ROT_SPEED;
+	return (dx * MOUSE_ROT_SPEED);
 }
 
-void rotate_player(t_game *game, float angle)
+void	rotate_player(t_game *game, float angle)
 {
 	if (game->player->is_extracting == 0)
 	{
-		rotate_vector(&game->player->direction.x, &game->player->direction.y, angle);
+		rotate_vector(&game->player->direction.x, \
+		&game->player->direction.y, angle);
 		rotate_vector(&game->player->plane.x, &game->player->plane.y, angle);
 	}
-
 }
 
-void adjust_pitch(t_game *game, int dy)
+void	adjust_pitch(t_game *game, int dy)
 {
-	float change = -dy * MOUSE_PITCH_SPEED;
+	float	change;
+
+	change = -dy * MOUSE_PITCH_SPEED;
 	if (game->player->is_extracting == 0)
 	{
 		if (fabs(change) > 0.001)
@@ -47,27 +49,26 @@ void adjust_pitch(t_game *game, int dy)
 			game->player->pitch = fmax(-1.0, fmin(1.0, game->player->pitch));
 		}
 	}
-
 }
 
-t_vector2d get_mouse_position(t_game *game)
+t_vector2d	get_mouse_position(t_game *game)
 {
-    int x, y;
-    mlx_mouse_get_pos(game->mlx_ptr, game->win_ptr, &x, &y);
-    return (t_vector2d){x, y};
+	int	x;
+	int	y;
+
+	mlx_mouse_get_pos(game->mlx_ptr, game->win_ptr, &x, &y);
+	return ((t_vector2d){x, y});
 }
 
-t_vector2d calculate_mouse_delta(t_vector2d current_pos, t_vector2d center)
+t_vector2d	calculate_mouse_delta(t_vector2d current_pos, t_vector2d center)
 {
-    return (t_vector2d){current_pos.x - center.x, current_pos.y - center.y};
+	return ((t_vector2d){current_pos.x - center.x, current_pos.y - center.y});
 }
 
-void center_mouse(t_game *game, t_vector2d center)
+void	center_mouse(t_game *game, t_vector2d center)
 {
-    mlx_mouse_move(game->mlx_ptr, game->win_ptr, (int)center.x, (int)center.y);
+	mlx_mouse_move(game->mlx_ptr, game->win_ptr, (int)center.x, (int)center.y);
 }
-
-
 
 int	handle_mouse_move(int x, int y, t_game *game)
 {
@@ -93,53 +94,48 @@ int	handle_mouse_move(int x, int y, t_game *game)
 	return (0);
 }
 
-
-
-void play_random_strike_sound(t_game *game)
+void	play_random_strike_sound(t_game *game)
 {
-	// Generate a random number between 0 and 2
-	int random_strike = random_int(game, 3);
+	char	audio_file[18];
+	int		random_strike;
 
-	// Create the audio file name based on the random number
-	char audio_file[] = "audio/strike00.mp3";
+	ft_strcpy(audio_file, "audio/strike00.mp3");
+	random_strike = random_int(game, 3);
 	audio_file[13] = '0' + random_strike;
-
-	// Play the selected audio file with no delay
 	play_audio_file(game, audio_file, 0);
 	play_audio_file(game, "audio/orbitalcall.mp3", 0);
 }
 
-
-int handle_mouse_click(int button, int x, int y, void *param)
+int	handle_mouse_click(int button, int x, int y, void *param)
 {
-	t_game *game = (t_game *)param;
+	t_game	*game;
+	int		random_value;
+
+	game = (t_game *)param;
 	if (button == 1 && game->game_sequence == 3)
 	{
-		printf("Shooting at position (%d, %d)\n", x, y);
-
 		game->is_shooting = 1;
-		int random_value = random_int(game, 6);
+		random_value = random_int(game, 6);
 		play_gun_sound(game);
-
-		// If the random value is 0 (25% chance), print the special text
 		if (random_value == 0)
 		{
-			printf("Get some get some\n");
 			stop_audio_file(game, "audio/getsome.mp3");
 			play_audio_file(game, "audio/getsome.mp3", 0);
-			// play audio
 		}
 	}
 	return (0);
 }
 
-int handle_mouse_release(int button, int x, int y, void *param)
+int	handle_mouse_release(int button, int x, int y, void *param)
 {
-	t_game *game = (t_game *)param;
+	t_game	*game;
 
+	game = (t_game *)param;
 	(void)y;
 	(void)x;
 	if (button == 1)
+	{
 		game->is_shooting = 0;
+	}
 	return (0);
 }

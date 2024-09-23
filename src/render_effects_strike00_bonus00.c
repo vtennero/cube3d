@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike00_bonus00.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:49:42 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/21 17:54:45 by cliew            ###   ########.fr       */
+/*   Updated: 2024/09/23 15:34:15 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,15 @@ int	initialize_eagle_strike(t_game *game)
 int	get_min_starting_index_eagle(t_strike *strike)
 {
 	int	min_index;
+	int	i;
 
 	min_index = 0;
-	for (int i = 1; i < NUM_OFFSETS; i++)
+	i = 1;
+	while (i < NUM_OFFSETS)
 	{
 		if (strike->frame_counts[i] < strike->frame_counts[min_index])
-		{
 			min_index = i;
-		}
+		i++;
 	}
 	return (min_index);
 }
