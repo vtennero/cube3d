@@ -12,9 +12,9 @@
 
 #include "cube3d.h"
 
-void print_barrage_loc(t_vector2d new_position, t_vector2d base_position)
+void	print_barrage_loc(t_vector2d new_position, t_vector2d base_position)
 {
 	printf("New barrage location: (%f, %f), Base position: (%f, %f)\n",
-		   new_position.x, new_position.y,
-		   base_position.x, base_position.y);
+		new_position.x, new_position.y,
+		base_position.x, base_position.y);
 }

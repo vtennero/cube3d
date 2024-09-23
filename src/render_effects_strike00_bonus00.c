@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:49:42 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 15:34:15 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:35:39 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,22 @@ void	render_eagle_sprites(t_game *game)
 						{-2, 0}, {0, 2}, {0, -2}};
 	t_sprite_render_context	ctx;
 	int						offset_frame;
+	int						i;
 
 	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
-	for (int i = 0; i < NUM_OFFSETS; i++)
+	i = 0;
+	while (i < NUM_OFFSETS)
 	{
 		offset_frame = get_next_eagle_frame(&game->strike[0], i);
 		if (offset_frame == -1)
+		{
+			i++;
 			continue ;
-		setup_sprite_context(&ctx, game, offsets[i],
-			&game->as_txture[offset_frame]);
+		}
+		setup_sprite_context(&ctx, game, offsets[i], \
+		&game->as_txture[offset_frame]);
 		render_single_sprite(&ctx);
+		i++;
 	}
 }
 
@@ -81,7 +87,7 @@ int	get_next_eagle_frame(t_strike *strike, int offset_index)
 	strike[0].frame_counts[offset_index]
 		+= strike[0].speed_multipliers[offset_index];
 	if (strike[0].frame_counts[offset_index] < 0)
-		return (-1); // Indicate that nothing should be displayed
+		return (-1);
 	frame = (int)(strike[0].frame_counts[offset_index] / 100)
 		% NUM_AIRSTRIKE_FRAMES;
 	return (frame);
@@ -93,7 +99,7 @@ void	render_ongoing_eagle(t_game *game)
 
 	current_frame = initialize_eagle_strike(game);
 	if (current_frame == -1)
-		return ; // Strike not active or needs reset
+		return ;
 	eagle_apply_screen_shake(game, current_frame);
 	render_eagle_sprites(game);
 }

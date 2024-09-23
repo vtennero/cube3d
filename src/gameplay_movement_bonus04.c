@@ -111,6 +111,8 @@ int	handle_mouse_click(int button, int x, int y, void *param)
 	t_game	*game;
 	int		random_value;
 
+	(void)x;
+	(void)y;
 	game = (t_game *)param;
 	if (button == 1 && game->game_sequence == 3)
 	{

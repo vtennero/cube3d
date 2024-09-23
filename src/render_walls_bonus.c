@@ -29,9 +29,9 @@ int	get_texture_color(t_texture *texture, int x, int y)
 	return (color);
 }
 
-void	update_tex_pos(double *texPos, double step)
+void	update_tex_pos(double *tex_pos, double step)
 {
-	*texPos += step;
+	*tex_pos += step;
 }
 
 double	calculate_tex_step(t_texture *texture, double line_h)
@@ -49,33 +49,31 @@ double	calculate_initial_tex_pos(t_ray *ray, t_game *game, double step)
 
 void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
 {
-	int	y;
-	int	tex_y;
-	int	color;
-	int tex_x;
-	double step;
-	double texPos;
+	t_vector2d	pos;
+	t_vector2d	tex;
+	int			color;
+	double		step;
+	double		tex_pos;
 
 	step = calculate_tex_step(texture, ray.line_h);
-	texPos = calculate_initial_tex_pos(&ray, game, step);
-	y = ray.draw_start;
-	while (y < ray.draw_end)
+	tex_pos = calculate_initial_tex_pos(&ray, game, step);
+	pos.y = ray.draw_start;
+	while (pos.y < ray.draw_end)
 	{
-		tex_y = (int)texPos & (texture->height - 1);
-		texPos += step;
-		// update_tex_pos(&texPos, step);
-		tex_x = (int)((double)ray.tex_x * texture->width / 1024) & (texture->width
-				- 1);
-		color = get_texture_color(texture, tex_x, tex_y);
-		img_pix_put(img, ray.x, y, color);
-		y++;
+		tex.y = (int)tex_pos & (texture->height - 1);
+		tex_pos += step;
+		tex.x = (int)((double)ray.tex_x * texture->width \
+		/ 1024) & (texture->width - 1);
+		color = get_texture_color(texture, tex.x, tex.y);
+		img_pix_put(img, ray.x, pos.y, color);
+		pos.y++;
 	}
 }
 
 void	render_walls(t_game *game)
 {
-	t_ray_node *current;
-	t_texture *used_texture;
+	t_ray_node	*current;
+	t_texture	*used_texture;
 
 	current = game->ray_list;
 	while (current != NULL)

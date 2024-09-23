@@ -66,7 +66,6 @@ intro_bonus02.c \
 map_parse_utility.c \
 map_parse_utility_02.c \
 menu_bonus.c \
-napalm_bonus.c \
 outro_bonus.c \
 parse_map.c \
 pelican_inside_bonus.c \

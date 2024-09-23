@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 17:01:00 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 17:01:01 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:39:51 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	reset_game_start_time(t_game *game)
 
 long	get_elapsed_microseconds(struct timeval *start, struct timeval *end)
 {
-	return ((end->tv_sec - start->tv_sec) * 1000000 +
-			(end->tv_usec - start->tv_usec));
+	return ((end->tv_sec - start->tv_sec) * 1000000 \
+	+ (end->tv_usec - start->tv_usec));
 }
 
 int	calculate_frame(long elapsed_microseconds, int max_textures)
@@ -31,7 +31,14 @@ int	calculate_frame(long elapsed_microseconds, int max_textures)
 	int	current_frame;
 
 	current_frame = (int)(elapsed_microseconds / MICROSECONDS_PER_FRAME);
-	return (current_frame < max_textures) ? current_frame : max_textures - 1;
+	if (current_frame < max_textures)
+	{
+		return (current_frame);
+	}
+	else
+	{
+		return (max_textures - 1);
+	}
 }
 
 int	get_current_frame(struct timeval *start_time)

@@ -12,37 +12,39 @@
 
 #include "cube3d.h"
 
-unsigned long long xorshift64(unsigned long long *state)
+unsigned long long	xorshift64(unsigned long long *state)
 {
-    unsigned long long x = *state;
-    x ^= x << 13;
-    x ^= x >> 7;
-    x ^= x << 17;
-    *state = x;
-    return x;
+	unsigned long long	x;
+
+	x = *state;
+	x ^= x << 13;
+	x ^= x >> 7;
+	x ^= x << 17;
+	*state = x;
+	return (x);
 }
 
-void initialize_game_seed(t_game *game)
+void	initialize_game_seed(t_game *game)
 {
-    game->random_seed = 12345678901234567ULL;
+	game->random_seed = 12345678901234567ULL;
 }
 
-unsigned long long next_random(t_game *game)
+unsigned long long	next_random(t_game *game)
 {
-    game->random_seed = (game->random_seed * 6364136223846793005ULL + 1442695040888963407ULL) & 0xFFFFFFFFFFFFFFFFULL;
-    return game->random_seed;
+	game->random_seed = (game->random_seed \
+	* 6364136223846793005ULL + 1442695040888963407ULL) & 0xFFFFFFFFFFFFFFFFULL;
+	return (game->random_seed);
 }
 
-int random_int(t_game *game, int max)
+int	random_int(t_game *game, int max)
 {
-    return (int)(next_random(game) % max);
+	return ((int)(next_random(game) % max));
 }
 
-float random_float(t_game *game)
+float	random_float(t_game *game)
 {
-    // Generate a random 32-bit integer
-    unsigned int rand_int = (unsigned int)(next_random(game) & 0xFFFFFFFF);
+	unsigned int	rand_int;
 
-    // Convert to float in range [0, 1)
-    return (float)rand_int / (float)0x100000000;
+	rand_int = (unsigned int)(next_random(game) & 0xFFFFFFFF);
+	return ((float)rand_int / (float)0x100000000);
 }

@@ -12,21 +12,22 @@
 
 #include "cube3d.h"
 
-void dash_player(t_game *game, float speed)
+void	dash_player(t_game *game, float speed)
 {
-	float new_x;
-	float new_y;
+	float	new_x;
+	float	new_y;
 
 	new_x = game->player->position.x + game->player->direction.x * speed;
 	new_y = game->player->position.y + game->player->direction.y * speed;
-	if (!detect_collision(game, new_x, new_y) && game->player->is_extracting == 0)
+	if (!detect_collision(game, new_x, new_y) && \
+	game->player->is_extracting == 0)
 	{
 		game->player->position.x = new_x;
 		game->player->position.y = new_y;
 	}
 }
 
-void handle_movement_dash(t_game *game)
+void	handle_movement_dash(t_game *game)
 {
 	if (game->key_state[K_SHIFT] == 1)
 	{

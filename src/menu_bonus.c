@@ -12,7 +12,7 @@
 
 #include "cube3d.h"
 
-void handle_key_enter(t_game *game)
+void	handle_key_enter(t_game *game)
 {
 	game->key_state[K_ENTER] = 1;
 	if (game->game_sequence == 0)
@@ -21,7 +21,7 @@ void handle_key_enter(t_game *game)
 		stop_audio_file(game, "audio/menu02.mp3");
 		play_audio_file(game, "audio/drop02.mp3", 0);
 	}
-		game->change_seq = 1;
+	game->change_seq = 1;
 }
 
 void	render_menu(t_game *game)
@@ -52,4 +52,3 @@ void	render_menu(t_game *game)
 		y++;
 	}
 }
-
