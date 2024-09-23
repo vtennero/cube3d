@@ -1,5 +1,4 @@
 Error summary:
-qol_bonus.c                        :   88 error(s) (  88 total)
 terminate02.c                      :   65 error(s) (  73 total)
 textures_load_bonus00.c            :   60 error(s) (  60 total)
 audio_bonus00.c                    :   54 error(s) (  67 total)
