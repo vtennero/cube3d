@@ -12,137 +12,101 @@
 
 #include "cube3d.h"
 
-void update_normal_gun_frame(t_game *game)
+void	update_normal_gun_frame(t_game *game)
 {
-	static int frame_counter = 0;
-	const int frames_per_switch = 4;
+	int	frames_per_switch;
 
-	if (frame_counter >= frames_per_switch)
+	frames_per_switch = 4;
+	if (game->normal_gun_frame_counter >= frames_per_switch)
 	{
-		game->current_gun_frame = (game->current_gun_frame + 1) % game->num_gun_frames;
-		frame_counter = 0;
+		game->current_gun_frame = (game->current_gun_frame \
+		+ 1) % game->num_gun_frames;
+		game->normal_gun_frame_counter = 0;
 	}
-	frame_counter++;
+	game->normal_gun_frame_counter++;
 }
 
-void update_shooting_gun_frame(t_game *game)
+void	update_shooting_gun_frame(t_game *game)
 {
-	static int frame_counter = 0;
-	const int frames_per_switch = 4;
-	const int num_shooting_frames = 4;
+	int	frames_per_switch;
+	int	num_shooting_frames;
 
-	if (frame_counter >= frames_per_switch)
+	frames_per_switch = 4;
+	num_shooting_frames = 4;
+	if (game->shooting_gun_frame_counter >= frames_per_switch)
 	{
-		game->current_shooting_frame = (game->current_shooting_frame + 1) % num_shooting_frames;
-		frame_counter = 0;
+		game->current_shooting_frame \
+		= (game->current_shooting_frame + 1) % num_shooting_frames;
+		game->shooting_gun_frame_counter = 0;
 	}
-	frame_counter++;
-
+	game->shooting_gun_frame_counter++;
 }
 
-t_texture *select_gun_texture(t_game *game)
+t_texture	*select_gun_texture(t_game *game)
 {
 	if (game->is_shooting)
-	{
-		return &game->sht_txture[game->current_shooting_frame];
-	}
+		return (&game->sht_txture[game->current_shooting_frame]);
 	else
-	{
-		return &game->gun_textures[game->current_gun_frame];
-	}
+		return (&game->gun_textures[game->current_gun_frame]);
 }
 
-// void calculate_gun_position(t_game *game, t_texture *gun_texture, int *start_x, int *start_y)
-// {
-// 	int offset = gun_texture->width / 4;
-// 	*start_x = game->screen_width - gun_texture->width + offset;
-// 	*start_y = game->screen_height - gun_texture->height;
-// }
-
-// void draw_gun_pixel(t_game *game, t_texture *gun_texture, int start_x, int start_y, int x, int y)
-// {
-// 	int tex_x = x;
-// 	int tex_y = y;
-// 	int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
-
-// 	if ((unsigned int)color != 0xFF000000)
-// 		img_pix_put(&game->img, start_x + x, start_y + y, color);
-// }
-
-// void update_gun_state(t_game *game)
-// {
-// 	if (game->is_shooting)
-// 	{
-// 		update_shooting_gun_frame(game);
-// 	}
-// 	else
-// 	{
-// 		if(game->is_moving_fwd)
-// 			update_normal_gun_frame(game);
-// 	}
-// }
-
-// void render_gun(t_game *game)
-// {
-// 	t_texture *gun_texture = select_gun_texture(game);
-// 	int start_x, start_y;
-// 	calculate_gun_position(game, gun_texture, &start_x, &start_y);
-
-// 	for (int y = 0; y < gun_texture->height; y++)
-// 	{
-// 		for (int x = 0; x < gun_texture->width; x++)
-// 		{
-// 			if (start_x + x < game->screen_width)
-// 				draw_gun_pixel(game, gun_texture, start_x, start_y, x, y);
-// 		}
-// 	}
-// }
-
-void calculate_gun_position(t_game *game, t_texture *gun_texture, t_vector2d *start)
+void	calculate_gun_position(t_game *game, t_texture \
+*gun_texture, t_vector2d *start)
 {
-	int offset = gun_texture->width / 4;
+	int	offset;
+
+	offset = gun_texture->width / 4;
 	start->x = game->screen_width - gun_texture->width + offset;
 	start->y = game->screen_height - gun_texture->height;
 }
 
-void draw_gun_pixel(t_game *game, t_texture *gun_texture, t_vector2d start, t_vector2d pos)
+void	draw_gun_pixel(t_game *game, t_texture *gun_texture, \
+t_vector2d start, t_vector2d pos)
 {
-	int tex_x = pos.x;
-	int tex_y = pos.y;
-	int color = *(int *)(gun_texture->data + (tex_y * gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
+	int	tex_x;
+	int	tex_y;
+	int	color;
 
+	tex_x = pos.x;
+	tex_y = pos.y;
+	color = *(int *)(gun_texture->data + (tex_y \
+	* gun_texture->tex_line_len + tex_x * (gun_texture->tex_bpp / 8)));
 	if ((unsigned int)color != 0xFF000000)
 		img_pix_put(&game->img, start.x + pos.x, start.y + pos.y, color);
 }
 
-void update_gun_state(t_game *game)
+void	update_gun_state(t_game *game)
 {
 	if (game->is_shooting)
-	{
 		update_shooting_gun_frame(game);
-	}
 	else
 	{
-		if(game->is_moving_fwd)
+		if (game->is_moving_fwd)
 			update_normal_gun_frame(game);
 	}
 }
 
-void render_gun(t_game *game)
+void	render_gun(t_game *game)
 {
-	t_texture *gun_texture = select_gun_texture(game);
-	t_vector2d start, size, pos;
-	calculate_gun_position(game, gun_texture, &start);
+	t_texture	*gun_texture;
+	t_vector2d	start;
+	t_vector2d	size;
+	t_vector2d	pos;
 
+	gun_texture = select_gun_texture(game);
+	calculate_gun_position(game, gun_texture, &start);
 	size.x = gun_texture->width;
 	size.y = gun_texture->height;
-
-	for (pos.y = 0; pos.y < size.y; pos.y++)
+	pos.y = 0;
+	while (pos.y < size.y)
 	{
-		for (pos.x = 0; pos.x < size.x; pos.x++)
+		pos.x = 0;
+		while (pos.x < size.x)
 		{
 			if (start.x + pos.x < game->screen_width)
 				draw_gun_pixel(game, gun_texture, start, pos);
+			pos.x++;
 		}
+		pos.y++;
 	}
 }

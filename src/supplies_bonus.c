@@ -12,83 +12,96 @@
 
 #include "cube3d.h"
 
-void render_supply_take(t_game *game)
+void	render_supply_take(t_game *game)
 {
-	int x, y;
-	int solid_white = 0xFFFFFF;
+	int	x;
+	int	y;
+	int	solid_white;
 
+	solid_white = 0xFFFFFF;
 	if (game->player->taking_supplies)
 	{
-		for (y = 0; y < game->screen_height; y++)
-	{
-		for (x = 0; x < game->screen_width; x++)
+		y = 0;
+		while (y < game->screen_height)
 		{
-			if ((x + y) % 3 == 0)
+			x = 0;
+			while (x < game->screen_width)
 			{
-				img_pix_put(&game->img, x, y, solid_white);
+				if ((x + y) % 3 == 0)
+					img_pix_put(&game->img, x, y, solid_white);
+				x++;
 			}
+			y++;
 		}
 	}
-	}
-
 }
 
-int find_closest_supply(t_game *game)
+int	find_closest_supply(t_game *game)
 {
-	int closest_index = -1;
-	float closest_distance_squared = SUPP_DIST * SUPP_DIST;
+	int		closest_index;
+	float	closest_distance;
+	int		i;
+	float	distance;
 
-	for (int i = 0; i < game->num_supplies; i++)
+	closest_index = -1;
+	closest_distance = SUPP_DIST;
+	i = 0;
+	while (i < game->num_supplies)
 	{
 		if (!game->supplies[i].collected)
 		{
-			float dx = game->player->position.x - game->supplies[i].position.x;
-			float dy = game->player->position.y - game->supplies[i].position.y;
-
-			float distance_squared = dx * dx + dy * dy;
-
-			if (distance_squared <= closest_distance_squared)
+			distance = calculate_distance(game->player->position, \
+			game->supplies[i].position);
+			if (distance <= closest_distance)
 			{
-				closest_distance_squared = distance_squared;
+				closest_distance = distance;
 				closest_index = i;
 			}
 		}
+		i++;
 	}
-
-	return closest_index;
+	return (closest_index);
 }
 
-
-int find_supply_on_player_tile(t_game *game)
+int	find_supply_on_player_tile(t_game *game)
 {
-	for (int i = 0; i < game->num_supplies; i++)
+	int	i;
+
+	i = 0;
+	while (i < game->num_supplies)
 	{
 		if (!game->supplies[i].collected)
 		{
-			if (fabs(game->player->position.x - game->supplies[i].position.x) < SUPP_T_EPS &&
-				fabs(game->player->position.y - game->supplies[i].position.y) < SUPP_T_EPS)
-			{
-				return i;
-			}
+			if (fabs(game->player->position.x \
+			- game->supplies[i].position.x) < SUPP_T_EPS \
+			&& fabs(game->player->position.y \
+				- game->supplies[i].position.y) < SUPP_T_EPS)
+				return (i);
 		}
+		i++;
 	}
-
-	return -1;
+	return (-1);
 }
 
-void render_supply(t_game *game, t_vector2d position)
+void	render_supply(t_game *game, t_vector2d position)
 {
-	t_texture *supply_texture = &game->supplies_texture[0];
+	t_texture	*supply_texture;
+
+	supply_texture = &game->supplies_texture[0];
 	render_sprite_common(game, position, supply_texture);
 }
 
-
-void render_supplies(t_game *game)
+void	render_supplies(t_game *game)
 {
-	for (int i = 0; i < game->num_supplies; i++)
+	int	i;
+
+	i = 0;
+	while (i < game->num_supplies)
 	{
 		if (!game->supplies[i].collected)
+		{
 			render_supply(game, game->supplies[i].position);
+		}
+		i++;
 	}
 }
-

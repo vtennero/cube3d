@@ -48,6 +48,8 @@ int	create_game_struct(t_game **game, int is_bonus)
 	(*game)->game_sequence = 0;
 	(*game)->change_seq = 0;
 	(*game)->current_frame = 0;
+	(*game)->normal_gun_frame_counter = 0;
+	(*game)->shooting_gun_frame_counter = 0;
 	(*game)->loop_count = 0;
 	(*game)->is_shooting = 0;
 	(*game)->current_shooting_frame = 0;
