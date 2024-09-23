@@ -6,31 +6,29 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:43:33 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/12 13:53:27 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:46:36 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CUBE3D_AUDIO_BONUS_H
 # define CUBE3D_AUDIO_BONUS_H
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <mpg123.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+# include <AL/al.h>
+# include <AL/alc.h>
+# include <mpg123.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
 
-#define MAX_SOURCES 50
+# define MAX_SOURCES 50
 
-
-typedef struct	s_audio_track
+typedef struct s_audio_track
 {
 	char	filename[256];
 	int		source_index;
 }				t_audio_track;
 
-typedef struct	s_audio_manager
+typedef struct s_audio_manager
 {
 	ALCdevice		*device;
 	ALCcontext		*context;
@@ -40,5 +38,11 @@ typedef struct	s_audio_manager
 	t_audio_track	playing_tracks[MAX_SOURCES];
 }				t_audio_manager;
 
+typedef struct s_audio_format
+{
+	long	rate;
+	int		channels;
+	int		encoding;
+}			t_audio_format;
 
 #endif

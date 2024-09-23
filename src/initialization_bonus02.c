@@ -39,7 +39,7 @@ int	create_enemies(t_game *game)
 
 	i = 0;
 	game->num_enemies = calculate_enemy_count(game);
-	while (i < MAX_ENEMIES)
+	while (i < E_N)
 	{
 		game->enemies[i].is_alive = 0;
 		game->enemies[i].frame_count = 0;

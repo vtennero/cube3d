@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   textures00.c                                       :+:      :+:    :+:   */
+/*   textures_load00.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 15:29:32 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/09 15:29:32 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/23 16:51:08 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/23 16:51:08 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	load_texture(t_game *game, t_texture *texture, char *path)
 {
-	texture->img = mlx_xpm_file_to_image(
-		game->mlx_ptr, path, &texture->width, &texture->height);
+	texture->img = mlx_xpm_file_to_image(game->mlx_ptr, \
+	path, &texture->width, &texture->height);
 	if (!texture->img)
 	{
 		ft_putstr_fd("Failed to load texture: ", 2);
@@ -23,10 +23,9 @@ int	load_texture(t_game *game, t_texture *texture, char *path)
 		return (0);
 	}
 	texture->data = mlx_get_data_addr(texture->img,
-			&texture->tex_bpp, &texture->tex_line_len, &texture->tex_endian);
+			&texture->bpp, &texture->line_len, &texture->endian);
 	return (1);
 }
-
 
 int	load_wall_textures(t_game *game)
 {
@@ -39,15 +38,16 @@ int	load_wall_textures(t_game *game)
 	total_textures = WEST - NORTH + 1;
 	while (i <= WEST)
 	{
-		err_check = load_texture(game, &game->walltextures[i], game->walltextures[i].path);
+		err_check = load_texture(game, &game->walltextures[i], \
+		game->walltextures[i].path);
 		if (err_check == 0)
 			return (texture_err_message(game));
-		upd_prog_bar(game, i - NORTH + 1, total_textures, "Loading wall textures");
+		upd_prog_bar(game, i - NORTH + 1, total_textures, \
+		"Loading wall textures");
 		i++;
 	}
 	return (0);
 }
-
 
 void	load_bonus_textures(t_game *game)
 {
@@ -77,7 +77,8 @@ void	load_textures(t_game *game)
 		load_bonus_textures(game);
 	if (game->text_err > 0)
 	{
-		printf("Error: Failed to load %d texture sets\n", game->text_err);
+		printf("Error: Failed to load %d texture sets\n", \
+		game->text_err);
 		cleanup(game);
 		return ;
 	}

@@ -21,20 +21,20 @@ int	load_outro_textures(t_game *game)
 	int		i;
 
 	ft_strcpy(path, "textures/outro/outro000.xpm");
-	get_last_three_digit_indexes(path, &f_dig, &s_dig, \
-	&t_dig);
+	get_last_three_digit_indexes(path, &f_dig, &s_dig, &t_dig);
 	i = 0;
 	while (i < MAX_OUTRO_TEXTURES)
 	{
 		path[f_dig] = '0' + (i / 100);
 		path[s_dig] = '0' + ((i / 10) % 10);
 		path[t_dig] = '0' + (i % 10);
-		game->outro_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, \
-		path, &game->outro_texture[i].width, &game->outro_texture[i].height);
-		if (game->outro_texture[i].img == NULL)
+		game->t_outro[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, \
+		&game->t_outro[i].width, &game->t_outro[i].height);
+		if (game->t_outro[i].img == NULL)
 			return (texture_err_message(game));
-		game->outro_texture[i].data = \
-		mlx_get_data_addr(game->outro_texture[i].img, &game->outro_texture[i].tex_bpp, &game->outro_texture[i].tex_line_len, &game->outro_texture[i].tex_endian);
+		game->t_outro[i].data = mlx_get_data_addr(game->t_outro[i].img, \
+		&game->t_outro[i].bpp, &game->t_outro[i].line_len, \
+		&game->t_outro[i].endian);
 		upd_prog_bar(game, i + 1, MAX_OUTRO_TEXTURES, "Loading outro textures");
 		i++;
 	}
@@ -52,15 +52,18 @@ int	load_enemy_textures(t_game *game)
 	ft_strcpy(path, "textures/enemies/000.xpm");
 	get_last_three_digit_indexes(path, &f_dig, &s_dig, &t_dig);
 	i = 0;
-	while (i < NUM_ENEMY_TEXTURES)
+	while (i < E_T_N)
 	{
 		path[f_dig] = '0' + (i / 100);
 		path[s_dig] = '0' + ((i / 10) % 10);
 		path[t_dig] = '0' + (i % 10);
-		game->enemy_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->enemy_textures[i].width, &game->enemy_textures[i].height);
+		game->enemy_textures[i].img = mlx_xpm_file_to_image(game->mlx_ptr, \
+		path, &game->enemy_textures[i].width, &game->enemy_textures[i].height);
 		if (game->enemy_textures[i].img == NULL)
 			return (texture_err_message(game));
-		game->enemy_textures[i].data = mlx_get_data_addr(game->enemy_textures[i].img, &game->enemy_textures[i].tex_bpp, &game->enemy_textures[i].tex_line_len, &game->enemy_textures[i].tex_endian);
+		game->enemy_textures[i].data = mlx_get_data_addr(\
+		game->enemy_textures[i].img, &game->enemy_textures[i].bpp, \
+		&game->enemy_textures[i].line_len, &game->enemy_textures[i].endian);
 		upd_prog_bar(game, i + 1, MAX_ENEMY_TEXTURES, "Loading enemy textures");
 		i++;
 	}
@@ -78,16 +81,19 @@ int	load_opening_textures(t_game *game)
 	ft_strcpy(path, "textures/jump/xpm/jump000.xpm");
 	get_last_three_digit_indexes(path, &f_dig, &s_dig, &t_dig);
 	i = 0;
-	while (i < MAX_OPENING_TEXTURES)
+	while (i < T_N_INTRO1)
 	{
 		path[f_dig] = '0' + (i / 100);
 		path[s_dig] = '0' + ((i / 10) % 10);
 		path[t_dig] = '0' + (i % 10);
-		game->opening_texture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, &game->opening_texture[i].width, &game->opening_texture[i].height);
-		if (game->opening_texture[i].img == NULL)
+		game->t_intro1[i].img = mlx_xpm_file_to_image(game->mlx_ptr, \
+		path, &game->t_intro1[i].width, &game->t_intro1[i].height);
+		if (game->t_intro1[i].img == NULL)
 			return (texture_err_message(game));
-		game->opening_texture[i].data = mlx_get_data_addr(game->opening_texture[i].img, &game->opening_texture[i].tex_bpp, &game->opening_texture[i].tex_line_len, &game->opening_texture[i].tex_endian);
-		upd_prog_bar(game, i + 1, MAX_OPENING_TEXTURES, "Loading opening textures");
+		game->t_intro1[i].data = mlx_get_data_addr(game->t_intro1[i].img, \
+		&game->t_intro1[i].bpp, &game->t_intro1[i].line_len, \
+		&game->t_intro1[i].endian);
+		upd_prog_bar(game, i + 1, T_N_INTRO1, "Loading opening textures");
 		i++;
 	}
 	return (0);
@@ -104,19 +110,19 @@ int	load_land_textures(t_game *game)
 	ft_strcpy(path, "textures/land/land000.xpm");
 	get_last_three_digit_indexes(path, &f_dig, &s_dig, &t_dig);
 	i = 0;
-	while (i < MAX_LAND_TEXTURES)
+	while (i < T_N_INTRO2)
 	{
 		path[f_dig] = '0' + (i / 100);
 		path[s_dig] = '0' + ((i / 10) % 10);
 		path[t_dig] = '0' + (i % 10);
-		game->land_texture[i].img = \
-		mlx_xpm_file_to_image(game->mlx_ptr, path, &game->land_texture[i].width, &game->land_texture[i].height);
-		if (game->land_texture[i].img == NULL)
+		game->t_intro2[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path, \
+		&game->t_intro2[i].width, &game->t_intro2[i].height);
+		if (game->t_intro2[i].img == NULL)
 			return (texture_err_message(game));
-		game->land_texture[i].data = \
-		mlx_get_data_addr(game->land_texture[i].img, \
-		&game->land_texture[i].tex_bpp, &game->land_texture[i].tex_line_len, &game->land_texture[i].tex_endian);
-		upd_prog_bar(game, i + 1, MAX_LAND_TEXTURES, "Loading land textures");
+		game->t_intro2[i].data = mlx_get_data_addr(game->t_intro2[i].img, \
+		&game->t_intro2[i].bpp, &game->t_intro2[i].line_len, \
+		&game->t_intro2[i].endian);
+		upd_prog_bar(game, i + 1, T_N_INTRO2, "Loading land textures");
 		i++;
 	}
 	return (0);
@@ -133,8 +139,8 @@ int	load_collectible_texture(t_game *game)
 	if (!game->coll_texture[0].img)
 		return (texture_err_message(game));
 	game->coll_texture[0].data = mlx_get_data_addr(game->coll_texture[0].img, \
-	&game->coll_texture[0].tex_bpp, &game->coll_texture[0].tex_line_len, \
-	&game->coll_texture[0].tex_endian);
+	&game->coll_texture[0].bpp, &game->coll_texture[0].line_len, \
+	&game->coll_texture[0].endian);
 	upd_prog_bar(game, 1, 1, "Loading collectible texture");
 	return (0);
 }

@@ -24,15 +24,18 @@ MAIN = main.c
 BONUS_MAIN = main_bonus.c
 HELLDIVER_MAIN = main_bonus.c
 
+# Audio file variables
+AUDIO_DUMMY_SRCS = audio_dummy00.c audio_dummy01.c
+AUDIO_BONUS_SRCS = audio_bonus00.c audio_bonus01.c audio_bonus02.c
+
 SHARED_SRCS = \
 check_map_boundaries.c \
 check_map_boundaries_helper.c \
 debug_utils.c \
-enemies_attack_bonus00.c \
-enemies_attack_bonus01.c \
-enemies_attack_bonus02.c \
-enemies_movement_bonus00.c \
-extract_bonus.c \
+gameplay_enemies_bonus00.c \
+gameplay_enemies_bonus01.c \
+gameplay_enemies_bonus02.c \
+gameplay_enemies_bonus03.c \
 gameplay_item_collection_bonus00.c \
 gameplay_movement00.c \
 gameplay_movement_bonus00.c \
@@ -51,47 +54,68 @@ gameplay_scripts_bonus01.c \
 gameplay_scripts_bonus02.c \
 gameplay_scripts_bonus03.c \
 render_effects_strike00_bonus00.c \
+render_effects_strike00_bonus01.c \
 render_effects_strike01_bonus00.c \
+render_effects_strike01_bonus01.c \
 render_effects_strike02_bonus00.c \
 render_effects_strikes_bonus00.c \
 initialization00.c \
 initialization_bonus00.c \
 initialization_bonus01.c \
 initialization_bonus02.c \
-interface_crosshair_bonus.c \
-interface_health_bar_bonus.c \
-intro_bonus00.c \
-intro_bonus01.c \
-intro_bonus02.c \
+render_scenes_bonus00.c \
+render_scenes_bonus01.c \
+render_scenes_bonus02.c \
+render_scenes_bonus03.c \
+render_scenes_bonus04.c \
 map_parse_utility.c \
 map_parse_utility_02.c \
-menu_bonus.c \
-outro_bonus.c \
 parse_map.c \
-pelican_inside_bonus.c \
-randomizer.c \
 randomizer_bonus00.c \
-raycasting.c \
-raycasting_utils.c \
+randomizer_bonus01.c \
+raycasting00.c \
+raycasting01.c \
+raycasting02.c \
+raycasting03.c \
+raycasting04.c \
+raycasting05.c \
+raycasting06.c \
+raycasting07.c \
+raycasting08.c \
+raycasting09.c \
 render.c \
 render_assets_bonus00.c \
+render_assets_bonus01.c \
+render_assets_bonus02.c \
+render_assets_bonus03.c \
+render_assets_bonus04.c \
+render_assets_bonus05.c \
+render_assets_bonus06.c \
+render_assets_bonus07.c \
+render_assets_bonus08.c \
+render_assets_bonus09.c \
+render_assets_bonus10.c \
+render_assets_bonus11.c \
+render_assets_bonus12.c \
+render_assets_bonus13.c \
+render_assets_bonus14.c \
 render_bonus00.c \
 render_bonus01.c \
 render_bonus02.c \
 render_bonus03.c \
 render_bonus04.c \
-render_collectibles.c \
-render_enemies.c \
 render_floor_bonus.c \
-render_gun.c \
-render_objects.c \
 render_sky_floor.c \
 render_sky_bonus00.c \
 render_sky_bonus01.c \
-render_walls.c \
-render_walls_bonus.c \
-respawn_bonus.c \
-supplies_bonus.c \
+render_walls00.c \
+render_walls01.c \
+render_ui_bonus00.c \
+render_ui_bonus01.c \
+render_ui_bonus02.c \
+render_ui_bonus03.c \
+render_ui_bonus04.c \
+render_ui_bonus05.c \
 terminate01.c \
 terminate02.c \
 terminate03.c \
@@ -105,14 +129,12 @@ textures_load_bonus01.c \
 textures_load_bonus02.c \
 textures_load_bonus03.c \
 textures_load_bonus04.c \
-qol_bonus.c
 
 SHARED_SRCS := $(SHARED_SRCS:%=$(SRC_DIR)/%)
 
-# Object files for main, bonus, and helldiver executables
-OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
-BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o)) $(OBJ_DIR)/audio_dummy.o
-HELLDIVER_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(HELLDIVER_MAIN:.c=.o)) $(OBJ_DIR)/audio_bonus00.o
+OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(MAIN:.c=.o)) $(AUDIO_DUMMY_SRCS:%.c=$(OBJ_DIR)/%.o)
+BONUS_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(BONUS_MAIN:.c=.o)) $(AUDIO_DUMMY_SRCS:%.c=$(OBJ_DIR)/%.o)
+HELLDIVER_OBJS = $(SHARED_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(OBJ_DIR)/$(notdir $(HELLDIVER_MAIN:.c=.o)) $(AUDIO_BONUS_SRCS:%.c=$(OBJ_DIR)/%.o)
 
 
 # Include paths

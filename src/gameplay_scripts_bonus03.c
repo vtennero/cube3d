@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 17:08:01 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/20 17:13:51 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:40:22 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	play_random_eagle_call(t_game *game)
 
 	ft_strcpy(audio_file, "audio/eaglec00.mp3");
 	random_call = random_int(game, 6);
-	// char audio_file[] = "audio/eaglec00.mp3";
 	audio_file[12] = '0' + random_call / 10;
 	audio_file[13] = '0' + random_call % 10;
 	play_audio_file(game, audio_file, 0);
@@ -74,7 +73,6 @@ void	barrage_inbound(t_game *game)
 	random_call = random_int(game, 1);
 	ft_strcpy(audio_file, "audio/orbitalbarragecall00.mp3");
 	game->strike[2].is_active = 1;
-	// char audio_file[] = "audio/orbitalbarragecall00.mp3";
 	audio_file[24] = '0' + random_call / 10;
 	audio_file[25] = '0' + random_call % 10;
 	play_audio_file(game, audio_file, 0);
@@ -94,7 +92,6 @@ void	play_barrage_shell(t_game *game)
 
 	random_call = random_int(game, 2);
 	ft_strcpy(audio_file, "audio/orbitalbarrage00.mp3");
-	// char audio_file[] = "audio/orbitalbarrage00.mp3";
 	audio_file[20] = '0' + random_call / 10;
 	audio_file[21] = '0' + random_call % 10;
 	play_audio_file(game, audio_file, 0);

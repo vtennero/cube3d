@@ -22,8 +22,8 @@ int	main(int argc, char **argv)
 		initgame(&game);
 	else
 	{
-		free_texture_array(game->walltextures, MAX_WALL_TEXTURES, game);
-		free_texture_array(game->floortextures, MAX_FLOOR_TEXTURES, game);
+		free_texture_array(game->walltextures, T_N_WALL, game);
+		free_texture_array(game->floortextures, T_N_FLOOR, game);
 		free_floor_texture_map(game);
 		free_wall_texture_map_path(game);
 		if (game->cub_map_array)

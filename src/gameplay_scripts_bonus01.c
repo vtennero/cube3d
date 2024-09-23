@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 17:01:00 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 15:39:51 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:59:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int	get_current_frame(struct timeval *start_time)
 
 	gettimeofday(&current_time, NULL);
 	elapsed_microseconds = get_elapsed_microseconds(start_time, &current_time);
-	return (calculate_frame(elapsed_microseconds, MAX_OPENING_TEXTURES));
+	return (calculate_frame(elapsed_microseconds, T_N_INTRO1));
 }

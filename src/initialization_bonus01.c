@@ -81,8 +81,8 @@ int	calculate_enemy_count(t_game *game)
 	enemy_count = (map_area * base_count) / base_area;
 	if (enemy_count < 1)
 		enemy_count = 1;
-	else if (enemy_count > MAX_ENEMIES)
-		enemy_count = MAX_ENEMIES;
+	else if (enemy_count > E_N)
+		enemy_count = E_N;
 	return (enemy_count);
 }
 
@@ -99,7 +99,7 @@ int	calculate_supplies(t_game *game)
 	supply_count = (map_area * base_count) / base_area;
 	if (supply_count < 1)
 		supply_count = 1;
-	else if (supply_count > MAX_SUPPLIES)
-		supply_count = MAX_SUPPLIES;
+	else if (supply_count > SUPP_N)
+		supply_count = SUPP_N;
 	return (supply_count);
 }

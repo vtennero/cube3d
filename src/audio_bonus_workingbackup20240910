@@ -19,7 +19,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#define MAX_SOURCES 50
+# define MAX_SOURCES 50
 
 ALCdevice		*device = NULL;
 ALCcontext		*context = NULL;

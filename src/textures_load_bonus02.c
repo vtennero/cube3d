@@ -25,8 +25,8 @@ int	load_pelican_inside_texture(t_game *game)
 			&texture->height);
 	if (!texture->img)
 		return (texture_err_message(game));
-	texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp,
-			&texture->tex_line_len, &texture->tex_endian);
+	texture->data = mlx_get_data_addr(texture->img, &texture->bpp,
+			&texture->line_len, &texture->endian);
 	ft_printf("#############################] 100.0%%\n");
 	return (0);
 }
@@ -44,8 +44,8 @@ int	load_supplies_texture(t_game *game)
 			&texture->height);
 	if (!texture->img)
 		return (texture_err_message(game));
-	texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp,
-			&texture->tex_line_len, &texture->tex_endian);
+	texture->data = mlx_get_data_addr(texture->img, &texture->bpp,
+			&texture->line_len, &texture->endian);
 	printf("#############################] 100.0%%\n");
 	return (0);
 }
@@ -64,13 +64,13 @@ int	load_strike_textures(t_game *game)
 	{
 		path[first_digit] = '0' + (i / 10);
 		path[second_digit] = '0' + (i % 10);
-		game->as_txture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
-				&game->as_txture[i].width, &game->as_txture[i].height);
-		if (game->as_txture[i].img == NULL)
+		game->t_eagle[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
+				&game->t_eagle[i].width, &game->t_eagle[i].height);
+		if (game->t_eagle[i].img == NULL)
 			return (texture_err_message(game));
-		game->as_txture[i].data = mlx_get_data_addr(game->as_txture[i].img,
-				&game->as_txture[i].tex_bpp, &game->as_txture[i].tex_line_len,
-				&game->as_txture[i].tex_endian);
+		game->t_eagle[i].data = mlx_get_data_addr(game->t_eagle[i].img,
+				&game->t_eagle[i].bpp, &game->t_eagle[i].line_len,
+				&game->t_eagle[i].endian);
 		upd_prog_bar(game, i + 1, NUM_AIRSTRIKE_FRAMES,
 			"Loading strike textures");
 		i++;
@@ -92,13 +92,13 @@ int	load_napalm_textures(t_game *game)
 	{
 		path[first_digit] = '0' + (i / 10);
 		path[second_digit] = '0' + (i % 10);
-		game->np_txture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
-				&game->np_txture[i].width, &game->np_txture[i].height);
-		if (game->np_txture[i].img == NULL)
+		game->t_napalm[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
+				&game->t_napalm[i].width, &game->t_napalm[i].height);
+		if (game->t_napalm[i].img == NULL)
 			return (texture_err_message(game));
-		game->np_txture[i].data = mlx_get_data_addr(game->np_txture[i].img,
-				&game->np_txture[i].tex_bpp, &game->np_txture[i].tex_line_len,
-				&game->np_txture[i].tex_endian);
+		game->t_napalm[i].data = mlx_get_data_addr(game->t_napalm[i].img,
+				&game->t_napalm[i].bpp, &game->t_napalm[i].line_len,
+				&game->t_napalm[i].endian);
 		upd_prog_bar(game, i + 1, NUM_NAPALM_FRAMES,
 			"Loading napalm textures");
 		i++;
@@ -120,13 +120,13 @@ int	load_shooting_textures(t_game *game)
 	{
 		path[first_digit] = '0' + (i / 10);
 		path[second_digit] = '0' + (i % 10);
-		game->sht_txture[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
-				&game->sht_txture[i].width, &game->sht_txture[i].height);
-		if (game->sht_txture[i].img == NULL)
+		game->t_shoot[i].img = mlx_xpm_file_to_image(game->mlx_ptr, path,
+				&game->t_shoot[i].width, &game->t_shoot[i].height);
+		if (game->t_shoot[i].img == NULL)
 			return (texture_err_message(game));
-		game->sht_txture[i].data = mlx_get_data_addr(game->sht_txture[i].img,
-				&game->sht_txture[i].tex_bpp, &game->sht_txture[i].tex_line_len,
-				&game->sht_txture[i].tex_endian);
+		game->t_shoot[i].data = mlx_get_data_addr(game->t_shoot[i].img,
+				&game->t_shoot[i].bpp, &game->t_shoot[i].line_len,
+				&game->t_shoot[i].endian);
 		upd_prog_bar(game, i + 1, MAX_SHOOTING_TEXTURES,
 			"Loading shooting textures");
 		i++;

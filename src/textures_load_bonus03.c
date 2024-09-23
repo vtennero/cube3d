@@ -50,7 +50,7 @@ void	scale_shooting_textures(t_game *game)
 	i = 0;
 	while (i < game->num_gun_frames)
 	{
-		gun_texture = &game->sht_txture[i];
+		gun_texture = &game->t_shoot[i];
 		gun_texture->height = (int)s_h;
 		gun_texture->width = (int)(gun_texture->width * \
 		(s_h / gun_texture->height));
@@ -81,8 +81,8 @@ int	load_sky_texture(t_game *game)
 	if (!game->sky_texture.img)
 		return (texture_err_message(game));
 	game->sky_texture.data = mlx_get_data_addr(game->sky_texture.img, \
-			&game->sky_texture.tex_bpp, &game->sky_texture.tex_line_len, \
-			&game->sky_texture.tex_endian);
+			&game->sky_texture.bpp, &game->sky_texture.line_len, \
+			&game->sky_texture.endian);
 	printf("#############################] 100.0%%\n");
 	return (0);
 }

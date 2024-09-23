@@ -17,10 +17,10 @@ void	render_sky_pixel(t_game *game, t_vector2d pos, t_vector2d tex)
 	int	pixel_pos;
 	int	color;
 
-	pixel_pos = tex.y * game->sky_texture.tex_line_len + tex.x
-		* (game->sky_texture.tex_bpp / 8);
+	pixel_pos = tex.y * game->sky_texture.line_len + tex.x
+		* (game->sky_texture.bpp / 8);
 	if (pixel_pos >= 0 && pixel_pos < game->sky_texture.height
-		* game->sky_texture.tex_line_len)
+		* game->sky_texture.line_len)
 	{
 		color = *((int *)(game->sky_texture.data + pixel_pos));
 		img_pix_put(&game->img, pos.x, pos.y, color);

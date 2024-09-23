@@ -6,79 +6,11 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:49:42 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 15:35:39 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:21:59 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
-
-int	initialize_eagle_strike(t_game *game)
-{
-	int	min_index;
-	int	current_frame;
-
-	if (!game->strike[0].is_active)
-		return (-1);
-	min_index = get_min_starting_index_eagle(&game->strike[0]);
-	current_frame = get_next_eagle_frame(&game->strike[0], min_index);
-	if (game->strike[0].frame_counts[min_index] >= NUM_AIRSTRIKE_FRAMES * 100)
-	{
-		reset_strike(game);
-		return (-1);
-	}
-	return (current_frame);
-}
-
-int	get_min_starting_index_eagle(t_strike *strike)
-{
-	int	min_index;
-	int	i;
-
-	min_index = 0;
-	i = 1;
-	while (i < NUM_OFFSETS)
-	{
-		if (strike->frame_counts[i] < strike->frame_counts[min_index])
-			min_index = i;
-		i++;
-	}
-	return (min_index);
-}
-
-void	eagle_apply_screen_shake(t_game *game, int current_frame)
-{
-	float	shake_offset;
-
-	shake_offset = calculate_screen_shake(game, current_frame);
-	if (game->player->is_dead == 0)
-		game->player->height = PLAYER_B_HEIGHT + shake_offset;
-}
-
-void	render_eagle_sprites(t_game *game)
-{
-	t_vector2d				offsets[NUM_OFFSETS] = {{0, 0}, {1, 0}, {-1, 0}, {0,
-						1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}, {2, 0},
-						{-2, 0}, {0, 2}, {0, -2}};
-	t_sprite_render_context	ctx;
-	int						offset_frame;
-	int						i;
-
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
-	i = 0;
-	while (i < NUM_OFFSETS)
-	{
-		offset_frame = get_next_eagle_frame(&game->strike[0], i);
-		if (offset_frame == -1)
-		{
-			i++;
-			continue ;
-		}
-		setup_sprite_context(&ctx, game, offsets[i], \
-		&game->as_txture[offset_frame]);
-		render_single_sprite(&ctx);
-		i++;
-	}
-}
 
 int	get_next_eagle_frame(t_strike *strike, int offset_index)
 {

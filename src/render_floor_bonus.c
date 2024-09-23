@@ -23,8 +23,8 @@ int	get_floor_texture_color(t_texture *texture, int x, int y)
 	}
 	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
 		return (0);
-	index = y * texture->tex_line_len + x * (texture->tex_bpp / 8);
-	if (index < 0 || index >= texture->tex_line_len * texture->height)
+	index = y * texture->line_len + x * (texture->bpp / 8);
+	if (index < 0 || index >= texture->line_len * texture->height)
 	{
 		printf("Error: Texture index out of bounds: %d\n", index);
 		return (0);
@@ -71,7 +71,7 @@ void	initialize_floor_texture_weights(t_game *game)
 	weights[5] = 0.05;
 	weights[6] = 0.05;
 	weights[7] = 0.05;
-	game->num_floor_textures = MAX_FLOOR_TEXTURES;
+	game->num_floor_textures = T_N_FLOOR;
 	calculate_total_weight(weights, game->num_floor_textures, &total_weight);
 	set_texture_weights(game, weights, total_weight);
 }
@@ -162,7 +162,7 @@ int	get_floor_texture_index(t_game *game, int cell_x, int cell_y)
 
 t_texture	*get_floor_texture(t_game *game, int texture_index)
 {
-	if (texture_index >= 0 && texture_index < MAX_FLOOR_TEXTURES)
+	if (texture_index >= 0 && texture_index < T_N_FLOOR)
 		return (&game->floortextures[texture_index]);
 	return (NULL);
 }

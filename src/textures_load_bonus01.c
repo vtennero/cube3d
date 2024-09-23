@@ -26,8 +26,8 @@ int	gun_texture_frame_update(t_game *game, int frame, char *digits, char *path)
 	}
 	game->gun_textures[frame
 		- 1].data = mlx_get_data_addr(game->gun_textures[frame - 1].img,
-			&game->gun_textures[frame - 1].tex_bpp, &game->gun_textures[frame
-			- 1].tex_line_len, &game->gun_textures[frame - 1].tex_endian);
+			&game->gun_textures[frame - 1].bpp, &game->gun_textures[frame
+			- 1].line_len, &game->gun_textures[frame - 1].endian);
 	return (0);
 }
 
@@ -39,18 +39,18 @@ int	load_gun_textures(t_game *game)
 
 	digits = &path[18];
 	frame = 1;
-	game->gun_textures = malloc(sizeof(t_texture) * MAX_GUN_TEXTURES);
+	game->gun_textures = malloc(sizeof(t_texture) * T_N_GUN);
 	ft_strcpy(path, "textures/gun/frame00.xpm");
-	while (frame <= MAX_GUN_TEXTURES)
+	while (frame <= T_N_GUN)
 	{
-		upd_prog_bar(game, frame, MAX_GUN_TEXTURES,
+		upd_prog_bar(game, frame, T_N_GUN,
 			"Loading gun textures");
 		if (gun_texture_frame_update(game, frame, digits, path) == -1)
 			break ;
 		frame++;
 	}
-	if (frame > MAX_GUN_TEXTURES)
-		game->num_gun_frames = MAX_GUN_TEXTURES;
+	if (frame > T_N_GUN)
+		game->num_gun_frames = T_N_GUN;
 	return (0);
 }
 
@@ -74,8 +74,8 @@ int	load_extract_textures(t_game *game)
 				&texture->width, &texture->height);
 		if (!texture->img)
 			return (texture_err_message(game));
-		texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp,
-				&texture->tex_line_len, &texture->tex_endian);
+		texture->data = mlx_get_data_addr(texture->img, &texture->bpp,
+				&texture->line_len, &texture->endian);
 		i++;
 	}
 	return (0);
@@ -91,9 +91,9 @@ int	load_floor_textures(t_game *game)
 	ft_strcpy(path, "textures/floor/floor00.xpm");
 	texcount = 0;
 	get_last_two_digit_indexes(path, &f_digit, &s_digit);
-	while (texcount < MAX_FLOOR_TEXTURES)
+	while (texcount < T_N_FLOOR)
 	{
-		upd_prog_bar(game, texcount + 1, MAX_FLOOR_TEXTURES,
+		upd_prog_bar(game, texcount + 1, T_N_FLOOR,
 			"Loading floor textures");
 		load_texture(game, &game->floortextures[texcount], path);
 		texcount++;
@@ -119,7 +119,7 @@ int	load_menu_texture(t_game *game)
 			&texture->height);
 	if (!texture->img)
 		return (texture_err_message(game));
-	texture->data = mlx_get_data_addr(texture->img, &texture->tex_bpp,
-			&texture->tex_line_len, &texture->tex_endian);
+	texture->data = mlx_get_data_addr(texture->img, &texture->bpp,
+			&texture->line_len, &texture->endian);
 	return (0);
 }

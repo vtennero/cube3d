@@ -6,14 +6,14 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/12 16:25:32 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:47:25 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 #include "cube3d_audio_bonus.h"
 
-static int	allocate_audio_manager(t_game *game)
+int	allocate_audio_manager(t_game *game)
 {
 	t_audio_manager	*audio;
 
@@ -27,7 +27,7 @@ static int	allocate_audio_manager(t_game *game)
 	return (0);
 }
 
-static int	initialize_openal(t_audio_manager *audio)
+int	initialize_openal(t_audio_manager *audio)
 {
 	audio->device = alcOpenDevice(NULL);
 	if (!audio->device)
@@ -40,7 +40,7 @@ static int	initialize_openal(t_audio_manager *audio)
 	return (0);
 }
 
-static void	initialize_sources(t_audio_manager *audio)
+void	initialize_sources(t_audio_manager *audio)
 {
 	int	i;
 
@@ -133,7 +133,7 @@ int	find_available_source(t_game *game)
 	return (-1);
 }
 
-static int	find_and_prepare_source(t_game *game, const char *filename)
+int	find_and_prepare_source(t_game *game, const char *filename)
 {
 	int	source_index;
 
@@ -147,7 +147,7 @@ static int	find_and_prepare_source(t_game *game, const char *filename)
 	return (source_index);
 }
 
-static mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
+mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
 						int *channels, int *encoding)
 {
 	mpg123_handle	*mh;
@@ -158,7 +158,7 @@ static mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
 	return (mh);
 }
 
-static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
+char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 {
 	size_t			buffer_size;
 	unsigned char	*buffer_data;
@@ -179,7 +179,7 @@ static char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 	return (total_buffer);
 }
 
-static ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
+ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
 				int channels, long rate)
 {
 	ALuint	buffer;
@@ -194,7 +194,7 @@ static ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
 	return (buffer);
 }
 
-static void	play_and_record_audio(t_audio_manager *audio, int source_index,
+void	play_and_record_audio(t_audio_manager *audio, int source_index,
 				ALuint buffer, const char *filename)
 {
 	alSourcei(audio->sources[source_index], AL_BUFFER, buffer);
@@ -205,33 +205,32 @@ static void	play_and_record_audio(t_audio_manager *audio, int source_index,
 	audio->playing_tracks[source_index].source_index = source_index;
 }
 
-static void	cleanup_mpg123(mpg123_handle *mh)
+void	cleanup_mpg123(mpg123_handle *mh)
 {
 	mpg123_close(mh);
 	mpg123_delete(mh);
 }
 
-static int    process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
-                int source_index, const char *filename)
+int	process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
+				int source_index, const char *filename)
 {
-    size_t    total_size;
-    char    *total_buffer;
-    long    rate;
-    int        channels;
-    int        encoding;
-    ALuint    buffer;
+	size_t			total_size;
+	char			*total_buffer;
+	t_audio_format	format;
+	ALuint			buffer;
 
-    total_buffer = decode_mp3(mh, &total_size);
-    if (!total_buffer)
-    {
-        cleanup_mpg123(mh);
-        return (-1);
-    }
-    mpg123_getformat(mh, &rate, &channels, &encoding);
-    buffer = create_al_buffer(total_buffer, total_size, channels, rate);
-    play_and_record_audio(audio, source_index, buffer, filename);
-    free(total_buffer);
-    return (0);
+	total_buffer = decode_mp3(mh, &total_size);
+	if (!total_buffer)
+	{
+		cleanup_mpg123(mh);
+		return (-1);
+	}
+	mpg123_getformat(mh, &format.rate, &format.channels, &format.encoding);
+	buffer = create_al_buffer(total_buffer, total_size, \
+	format.channels, format.rate);
+	play_and_record_audio(audio, source_index, buffer, filename);
+	free(total_buffer);
+	return (0);
 }
 
 int	play_audio_file(t_game *game, const char *filename, float delay_in_seconds)

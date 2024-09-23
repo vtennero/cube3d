@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 16:38:41 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:18:33 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,112 +27,106 @@
 
 # define DEFAULT_S_WIDTH 800
 # define DEFAULT_S_HEIGHT 600
-# define TEX_WIDTH 64
-# define TEX_HEIGHT 64
-# define MAX_KEY_CODE 65600
-# define TEXTURE_SIZE 245
-#define NUM_ENEMY_TEXTURES 14
-#define MAX_COLLECTIBLES 20
-#define MAX_SUPPLIES 200
-#define MAX_ENEMIES 200
-#define MAX_GUN_TEXTURES 12
+# define KEY_MAX 65600
+# define E_T_N 14
+# define COL_N 20
+# define SUPP_N 200
+# define E_N 200
+# define T_N_GUN 12
 
-#define MAX_WALL_TEXTURES 4
-#define MAX_FLOOR_TEXTURES 8
-#define MAX_ENEMY_TEXTURES 14
-#define MAX_COLLECTIBLE_TEXTURES 1
-#define MAX_SHOOTING_TEXTURES 4
-# define MAX_OPENING_TEXTURES 141
-# define MAX_LAND_TEXTURES 46
-#define FRAMES_PER_SECOND 20
-#define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
-#define MAX_SCRIPTS 500
-#define OBJECT_SIZE 1
-#define MAX_HEALTH 15
-#define MAX_OUTRO_TEXTURES 229
-// #define EXTRACT_CALL_TIME 120
-#define EXTRACT_CALL_TIME 2
-#define MAX_STRIKES 3
+# define T_N_WALL 4
+# define T_N_FLOOR 8
+# define MAX_ENEMY_TEXTURES 14
+# define MAX_COLLECTIBLE_TEXTURES 1
+# define MAX_SHOOTING_TEXTURES 4
+# define T_N_INTRO1 141
+# define T_N_INTRO2 46
+# define FRAMES_PER_SECOND 20
+# define MICROSECONDS_PER_FRAME (1000000 / FRAMES_PER_SECOND)
+# define MAX_SCRIPTS 500
+# define OBJECT_SIZE 1
+# define MAX_HEALTH 15
+# define MAX_OUTRO_TEXTURES 229
+// # define EXTRACT_CALL_TIME 120
+# define EXTRACT_CALL_TIME 2
+# define MAX_STRIKES 3
 
-#define M_PI 3.14159265358979323846
+# define M_PI 3.14159265358979323846
 
 
-#define FIXED_POINT_FACTOR 256
-#define MAX_DISTANCE 1000000.0f
-#define MAX_RENDER_DISTANCE 1000000.0f
+# define FIXED_POINT_FACTOR 256
+# define MAX_DISTANCE 1000000.0f
+# define MAX_RENDER_DISTANCE 1000000.0f
 
-#define NUM_AIRSTRIKE_FRAMES 20
-#define NUM_NAPALM_FRAMES 15
-#define AIRSTRIKE_ANIMATION_INTERVAL 3
-#define NUM_ADJACENT_TILES 3
-#define TOTAL_STRIKE_TILES 4
-#define NUM_TILES 4
-#define NUM_EXPLOSIONS 4
-#define EXPLOSION_DELAY 30
-#define NUM_NAPALM_OFFSETS 37
+# define NUM_AIRSTRIKE_FRAMES 20
+# define NUM_NAPALM_FRAMES 15
+# define AIRSTRIKE_ANIMATION_INTERVAL 3
+# define NUM_ADJACENT_TILES 3
+# define TOTAL_STRIKE_TILES 4
+# define NUM_TILES 4
+# define NUM_EXPLOSIONS 4
+# define EXPLOSION_DELAY 30
+# define NUM_NAPALM_OFFSETS 37
 
-#define NUM_OFFSETS 13
+# define NUM_OFFSETS 13
 
-#define CROSSHAIR_SIZE 40
-#define CROSSHAIR_THICKNESS 1
-#define CROSSHAIR_GAP 20
-#define DOT_RADIUS 2
-#define CROSSHAIR_COLOR 0x00FF00
+# define CROSSHAIR_SIZE 40
+# define CROSSHAIR_THICKNESS 1
+# define CROSSHAIR_GAP 20
+# define DOT_RADIUS 2
+# define CROSSHAIR_COLOR 0x00FF00
 
-#define STOP_DISTANCE 2.0f
-#define HIT_PROBABILITY 5000
+# define STOP_DISTANCE 2.0f
+# define HIT_PROBABILITY 5000
 
-#define HEALTH_BAR_HEIGHT 20
-#define HEALTH_BAR_MARGIN 10
-#define HEALTH_BAR_BORDER 2
+# define HEALTH_BAR_HEIGHT 20
+# define HEALTH_BAR_MARGIN 10
+# define HEALTH_BAR_BORDER 2
 
-#define COLLECTION_DISTANCE 1.0f
+# define COLLECTION_DISTANCE 1.0f
 
-
-
-
-#define FIRST_LOOP_START 0
-#define SECOND_LOOP_START 135
-#define SECOND_LOOP_REPETITIONS 40
+# define FIRST_LOOP_START 0
+# define SECOND_LOOP_START 135
+# define SECOND_LOOP_REPETITIONS 40
 
 
-#define PROGRESS_BAR_WIDTH 30
-#define MAX_TASK_NAME_LENGTH 30
-#define TOTAL_PREFIX_LENGTH 40
+# define PROGRESS_BAR_WIDTH 30
+# define MAX_TASK_NAME_LENGTH 30
+# define TOTAL_PREFIX_LENGTH 40
 
-#define MOUSE_ROT_SPEED 0.005
-#define MOUSE_PITCH_SPEED 0.001
+# define MOUSE_ROT_SPEED 0.005
+# define MOUSE_PITCH_SPEED 0.001
 
-#define PLAYER_M_SPEED 0.1
-#define PLAYER_R_ANGLE 0.0872665
+# define PLAYER_M_SPEED 0.1
+# define PLAYER_R_ANGLE 0.0872665
 
-#define E_N_FRAMES 14
-#define E_ANIM_INT 5
-#define E_JUMP_INT 75
-#define E_MOVE_INT 120
-#define E_MOVEMENT_PROBABILITY 999500
-#define E_MOVEMENT_SPEED 0.04
-#define E_STOP_DISTANCE 2.0f
-#define E_STOP_DURATION 150
-#define E_STOP_PROBABILITY 5000
+# define E_N_FRAMES 14
+# define E_ANIM_INT 5
+# define E_JUMP_INT 75
+# define E_MOVE_INT 120
+# define E_MOVEMENT_PROBABILITY 999500
+# define E_MOVEMENT_SPEED 0.04
+# define E_STOP_DISTANCE 2.0f
+# define E_STOP_DURATION 150
+# define E_STOP_PROBABILITY 5000
 
 
-#define EXTRACT_N_TILES 3
-#define EXTRACT_OFFSET 0.98f
+# define EXTRACT_N_TILES 3
+# define EXTRACT_OFFSET 0.98f
 
-#define PLAYER_B_HEIGHT 0.2f // Base player height
+# define PLAYER_B_HEIGHT 0.2f // Base player height
 
-#define STRIKE_SHAKE_DURATION 30 // Number of frames the shake effect lasts
-#define STRIKE_SHAKE_INTENSITY 0.3f // Maximum shake offset
-#define STRIKE_BARRAGE_SCALE 2.0f // Base player height
-#define BARRAGE_CALL_IN_TIME 8
-#define BARRAGE_DURATION 30
+# define STRIKE_SHAKE_DURATION 30 // Number of frames the shake effect lasts
+# define STRIKE_SHAKE_INTENSITY 0.3f // Maximum shake offset
+# define STRIKE_BARRAGE_SCALE 2.0f // Base player height
+# define BARRAGE_CALL_IN_TIME 8
+# define BARRAGE_DURATION 30
 
-#define SUPP_DIST 2.0f
-#define SUPP_T_EPS 0.5f
+# define SUPP_DIST 2.0f
+# define SUPP_T_EPS 0.5f
 
-#define RAY_EPSILON 1e-6
-#define RAY_MAX_STEPS 100000
+# define RAY_EPSILON 1e-6
+# define RAY_MAX_STEPS 100000
 
 
 /*
@@ -216,9 +210,9 @@ typedef struct s_texture
 	char				*path;
 	void				*img;
 	char *data; 	int width, height;
-	int					tex_bpp;
-	int					tex_line_len;
-	int					tex_endian;
+	int					bpp;
+	int					line_len;
+	int					endian;
 }						t_texture;
 
 
@@ -235,7 +229,7 @@ typedef struct s_rgb
 typedef struct s_opening_state {
 	int current_loop;
 	int second_loop_count;
-	int randomized_frames[MAX_OPENING_TEXTURES - SECOND_LOOP_START];
+	int randomized_frames[T_N_INTRO1 - SECOND_LOOP_START];
 	int randomized_frames_initialized;
 } t_opening_state;
 
@@ -401,8 +395,8 @@ typedef struct s_game
 	void				*win_ptr;
 	t_player			*player;
 	t_map				*map;
-	t_texture 			walltextures[MAX_WALL_TEXTURES];
-	t_texture			floortextures[MAX_FLOOR_TEXTURES];
+	t_texture 			walltextures[T_N_WALL];
+	t_texture			floortextures[T_N_FLOOR];
 	t_texture			enemy_textures[MAX_ENEMY_TEXTURES];
 	t_texture			coll_texture[MAX_COLLECTIBLE_TEXTURES];
 	t_texture			menu_texture[1];
@@ -411,34 +405,34 @@ typedef struct s_game
 	int					screen_width;
 	int					bonus;
 	t_img				img;
-	int					key_state[MAX_KEY_CODE];
+	int					key_state[KEY_MAX];
 	unsigned long long	random_seed;
 	int					**floor_texture_map;
-	t_texture_weight	floor_texture_weights[MAX_FLOOR_TEXTURES];
+	t_texture_weight	floor_texture_weights[T_N_FLOOR];
 	int					num_floor_textures;
 	t_texture			*gun_textures;
 	int					num_gun_frames;
 	int					current_gun_frame;
 	int					current_shooting_frame;
 	t_ray_node			*ray_list;
-	t_collectible		collectibles[MAX_COLLECTIBLES];
-	t_supplies			supplies[MAX_SUPPLIES];
+	t_collectible		collectibles[COL_N];
+	t_supplies			supplies[SUPP_N];
 	int					num_collectibles;
 	int					num_supplies;
-	t_enemy				enemies[MAX_ENEMIES];
+	t_enemy				enemies[E_N];
 	int					num_enemies;
 	int					game_sequence;
 	int					change_seq;
 	int					current_frame;
-	t_texture			land_texture[MAX_LAND_TEXTURES];
+	t_texture			t_intro2[T_N_INTRO2];
 	t_extract			extract[1];
 	t_texture			extract_texture[4];
 	t_texture			supplies_texture[1];
-	t_texture			opening_texture[MAX_OPENING_TEXTURES];
-	t_texture			outro_texture[MAX_OUTRO_TEXTURES];
-	t_texture			sht_txture[MAX_SHOOTING_TEXTURES];
-	t_texture			as_txture[NUM_AIRSTRIKE_FRAMES];
-	t_texture			np_txture[NUM_NAPALM_FRAMES];
+	t_texture			t_intro1[T_N_INTRO1];
+	t_texture			t_outro[MAX_OUTRO_TEXTURES];
+	t_texture			t_shoot[MAX_SHOOTING_TEXTURES];
+	t_texture			t_eagle[NUM_AIRSTRIKE_FRAMES];
+	t_texture			t_napalm[NUM_NAPALM_FRAMES];
 	t_texture			sky_texture;
 	struct timeval		opening_start_time;
 	int					loop_count;

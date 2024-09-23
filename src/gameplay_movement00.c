@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:59:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 15:52:33 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:02:57 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	handle_movement_strafe_right(t_game *game)
 
 int	ft_key_release(int keycode, t_game *game)
 {
-	if (keycode < MAX_KEY_CODE)
+	if (keycode < KEY_MAX)
 	{
 		game->key_state[keycode] = 0;
 		if (keycode != K_E)

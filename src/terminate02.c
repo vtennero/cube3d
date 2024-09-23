@@ -35,7 +35,7 @@ void	free_shooting_textures(t_game *game)
 	i = 0;
 	while (i < MAX_SHOOTING_TEXTURES)
 	{
-		destroy_texture(game, &game->sht_txture[i]);
+		destroy_texture(game, &game->t_shoot[i]);
 		i++;
 	}
 }
@@ -52,20 +52,20 @@ void	free_gun_textures(t_game *game)
 
 void	free_texture_arrays(t_game *game)
 {
-	free_texture_array(game->walltextures, MAX_WALL_TEXTURES, game);
-	free_texture_array(game->floortextures, MAX_FLOOR_TEXTURES, game);
+	free_texture_array(game->walltextures, T_N_WALL, game);
+	free_texture_array(game->floortextures, T_N_FLOOR, game);
 	free_texture_array(game->enemy_textures, MAX_ENEMY_TEXTURES, game);
 	free_texture_array(game->coll_texture, MAX_COLLECTIBLE_TEXTURES, game);
 	free_texture_array(game->menu_texture, 1, game);
 	free_texture_array(game->pelican_inside, 1, game);
-	free_texture_array(game->land_texture, MAX_LAND_TEXTURES, game);
+	free_texture_array(game->t_intro2, T_N_INTRO2, game);
 	free_texture_array(game->extract_texture, 4, game);
 	free_texture_array(game->supplies_texture, 1, game);
-	free_texture_array(game->opening_texture, MAX_OPENING_TEXTURES, game);
-	free_texture_array(game->outro_texture, MAX_OUTRO_TEXTURES, game);
-	free_texture_array(game->sht_txture, MAX_SHOOTING_TEXTURES, game);
-	free_texture_array(game->as_txture, NUM_AIRSTRIKE_FRAMES, game);
-	free_texture_array(game->np_txture, NUM_NAPALM_FRAMES, game);
+	free_texture_array(game->t_intro1, T_N_INTRO1, game);
+	free_texture_array(game->t_outro, MAX_OUTRO_TEXTURES, game);
+	free_texture_array(game->t_shoot, MAX_SHOOTING_TEXTURES, game);
+	free_texture_array(game->t_eagle, NUM_AIRSTRIKE_FRAMES, game);
+	free_texture_array(game->t_napalm, NUM_NAPALM_FRAMES, game);
 	free_gun_textures(game);
 	destroy_texture(game, &game->sky_texture);
 	free_floor_texture_map(game);

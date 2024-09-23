@@ -20,7 +20,8 @@
 		"mlx.h": "c",
 		"stdio.h": "c",
 		"audio_bonus_workingbackup20240912": "c",
-		"x.h": "c"
+		"x.h": "c",
+		"alc.h": "c"
 	},
 	"makefile.configureOnOpen": false
 }
