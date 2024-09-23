@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike02_bonus00.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:48:45 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/21 17:54:51 by cliew            ###   ########.fr       */
+/*   Updated: 2024/09/23 13:11:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,12 +206,12 @@ void	calculate_barrage_sprite_dimensions(t_game *game, float transform_y, t_spri
 	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	ctx.calc.transform.y = transform_y / STRIKE_BARRAGE_SCALE;
 	ctx.calc.sprite_screen_x = calc->sprite_screen_x;
-	calc_sprite_height(&ctx);
-	calc_sprite_width(&ctx);
-	calc->sprite_height = ctx.calc.sprite_height;
+	calc_s_height(&ctx);
+	calc_s_width(&ctx);
+	calc->s_height = ctx.calc.s_height;
 	calc->draw_start_y = ctx.calc.draw_start_y;
 	calc->draw_end_y = ctx.calc.draw_end_y;
-	calc->sprite_width = ctx.calc.sprite_width;
+	calc->s_width = ctx.calc.s_width;
 	calc->draw_start_x = ctx.calc.draw_start_x;
 	calc->draw_end_x = ctx.calc.draw_end_x;
 }
@@ -222,8 +222,8 @@ void	setup_barrage_sprite_context(t_sprite_render_context *ctx, t_game *game, t_
 	calc_sprite_transforms(ctx);
 	calc_sprite_dimensions(ctx);
 	adjust_barrage_sprite_dimensions_for_scaling(&ctx->calc);
-	ctx->calc.sprite_height *= STRIKE_BARRAGE_SCALE;
-	ctx->calc.sprite_width *= STRIKE_BARRAGE_SCALE;
+	ctx->calc.s_height *= STRIKE_BARRAGE_SCALE;
+	ctx->calc.s_width *= STRIKE_BARRAGE_SCALE;
 }
 
 void	render_barrage_sprite(t_game *game, int current_frame)

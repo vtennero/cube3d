@@ -1,5 +1,4 @@
 Error summary:
-render_collectibles.c              :   93 error(s) ( 100 total)
 qol_bonus.c                        :   88 error(s) (  88 total)
 raycasting.c                       :   85 error(s) (  92 total)
 enemies_attack_bonus02.c           :   80 error(s) (  80 total)
@@ -16,6 +15,7 @@ randomizer.c                       :   44 error(s) (  44 total)
 enemies_movement_bonus00.c         :   43 error(s) (  47 total)
 enemies_attack_bonus01.c           :   38 error(s) (  38 total)
 render.c                           :   35 error(s) (  54 total)
+render_collectibles.c              :   34 error(s) (  41 total)
 gameplay_movement00.c              :   32 error(s) (  42 total)
 render_enemies.c                   :   29 error(s) (  38 total)
 render_floor_bonus.c               :   13 error(s) (  23 total)

@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 12:35:37 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:11:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,8 +384,8 @@ typedef struct s_sprite_calc
     t_vector2d sprite;
     t_vector2d transform;
     int sprite_screen_x;
-    int sprite_height;
-    int sprite_width;
+    int s_height;
+    int s_width;
     int draw_start_y;
     int draw_end_y;
     int draw_start_x;
@@ -734,11 +734,11 @@ void	calc_side_dist(t_game *game, t_ray_node *ray);
 void	calc_side_dist_x(t_game *game, t_ray_node *ray);
 void	calc_side_dist_y(t_game *game, t_ray_node *ray);
 void	calc_sprite_dimensions(t_sprite_render_context *ctx);
-void	calc_sprite_height(t_sprite_render_context *ctx);
+void	calc_s_height(t_sprite_render_context *ctx);
 void	calc_sprite_position(t_sprite_render_context *ctx);
 void	calc_sprite_screen_x(t_sprite_render_context *ctx);
 void	calc_sprite_transforms(t_sprite_render_context *ctx);
-void	calc_sprite_width(t_sprite_render_context *ctx);
+void	calc_s_width(t_sprite_render_context *ctx);
 void	calc_texture_x(t_game *game, t_ray_node *ray);
 void	calc_wall_hit(t_game *game, t_ray_node *ray);
 void	calculate_barrage_sprite_dimensions(t_game *game, float transform_y, t_sprite_calc *calc);
