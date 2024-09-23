@@ -37,14 +37,14 @@ t_ray_node *addRay(t_ray_node **head)
 t_vector2d calculate_floor_coordinates(t_game *game, t_ray_node *center_ray)
 {
 	t_vector2d floor_coords;
-	float rayDirX = center_ray->ray.rayDirX;
-	float rayDirY = center_ray->ray.rayDirY;
+	float ray_dir_x = center_ray->ray.ray_dir_x;
+	float ray_dir_y = center_ray->ray.ray_dir_y;
 	float pitch = game->player->pitch;
 	float player_height = game->player->height;
 
 	int p = calculate_center_pixel_position(pitch);
 	float rowDistance = calculate_floor_distance(p, player_height);
-	floor_coords = calculate_raw_floor_coordinates(game, rayDirX, rayDirY, rowDistance);
+	floor_coords = calculate_raw_floor_coordinates(game, ray_dir_x, ray_dir_y, rowDistance);
 	floor_coords = clamp_coordinates_to_map(floor_coords, game->map);
 
 	return floor_coords;
@@ -67,11 +67,11 @@ float calculate_floor_distance(int p, float player_height)
 	return rowDistance;
 }
 
-t_vector2d calculate_raw_floor_coordinates(t_game *game, float rayDirX, float rayDirY, float rowDistance)
+t_vector2d calculate_raw_floor_coordinates(t_game *game, float ray_dir_x, float ray_dir_y, float rowDistance)
 {
 	t_vector2d floor_coords;
-	floor_coords.x = game->player->position.x + rowDistance * rayDirX;
-	floor_coords.y = game->player->position.y + rowDistance * rayDirY;
+	floor_coords.x = game->player->position.x + rowDistance * ray_dir_x;
+	floor_coords.y = game->player->position.y + rowDistance * ray_dir_y;
 	return floor_coords;
 }
 
@@ -87,14 +87,14 @@ void calculate_and_print_center_ray(t_game *game, t_ray_node *center_ray)
 
 	if (center_ray->ray.hit)
 	{
-		float wallDist = center_ray->ray.perpWallDist;
-		floor_coords.x = game->player->position.x + center_ray->ray.rayDirX * wallDist;
-		floor_coords.y = game->player->position.y + center_ray->ray.rayDirY * wallDist;
+		float wallDist = center_ray->ray.perpwalldist;
+		floor_coords.x = game->player->position.x + center_ray->ray.ray_dir_x * wallDist;
+		floor_coords.y = game->player->position.y + center_ray->ray.ray_dir_y * wallDist;
 	}
 	game->center_floor_coords = floor_coords;
 	if (center_ray->ray.hit)
 	{
-		printf("Wall distance: %.2f\n", center_ray->ray.perpWallDist);
+		printf("Wall distance: %.2f\n", center_ray->ray.perpwalldist);
 	}
 }
 t_vector2d get_center_tile_coords(t_game *game)

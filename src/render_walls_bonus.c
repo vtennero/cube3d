@@ -34,39 +34,39 @@ void	update_tex_pos(double *texPos, double step)
 	*texPos += step;
 }
 
-double	calculate_tex_step(t_texture *texture, double lineHeight)
+double	calculate_tex_step(t_texture *texture, double line_h)
 {
-	return (1.0 * texture->height / lineHeight);
+	return (1.0 * texture->height / line_h);
 }
 
 double	calculate_initial_tex_pos(t_ray *ray, t_game *game, double step)
 {
 	return ((ray->draw_start - (int)(game->player->pitch * game->screen_height)
 		- (int)(game->player->height * game->screen_height
-		/ ray->perpWallDist) - game->screen_height / 2 + ray->lineHeight
+		/ ray->perpwalldist) - game->screen_height / 2 + ray->line_h
 			/ 2) * step);
 }
 
 void	render_ray(t_img *img, t_ray ray, t_texture *texture, t_game *game)
 {
 	int	y;
-	int	texY;
+	int	tex_y;
 	int	color;
-	int texX;
+	int tex_x;
 	double step;
 	double texPos;
 
-	step = calculate_tex_step(texture, ray.lineHeight);
+	step = calculate_tex_step(texture, ray.line_h);
 	texPos = calculate_initial_tex_pos(&ray, game, step);
 	y = ray.draw_start;
 	while (y < ray.draw_end)
 	{
-		texY = (int)texPos & (texture->height - 1);
+		tex_y = (int)texPos & (texture->height - 1);
 		texPos += step;
 		// update_tex_pos(&texPos, step);
-		texX = (int)((double)ray.texX * texture->width / 1024) & (texture->width
+		tex_x = (int)((double)ray.tex_x * texture->width / 1024) & (texture->width
 				- 1);
-		color = get_texture_color(texture, texX, texY);
+		color = get_texture_color(texture, tex_x, tex_y);
 		img_pix_put(img, ray.x, y, color);
 		y++;
 	}
