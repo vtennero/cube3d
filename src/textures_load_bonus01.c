@@ -43,7 +43,7 @@ int	load_gun_textures(t_game *game)
 	ft_strcpy(path, "textures/gun/frame00.xpm");
 	while (frame <= MAX_GUN_TEXTURES)
 	{
-		update_progress_bar(game, frame, MAX_GUN_TEXTURES,
+		upd_prog_bar(game, frame, MAX_GUN_TEXTURES,
 			"Loading gun textures");
 		if (gun_texture_frame_update(game, frame, digits, path) == -1)
 			break ;
@@ -66,7 +66,7 @@ int	load_extract_textures(t_game *game)
 	i = 0;
 	while (i < num_textures)
 	{
-		update_progress_bar(game, i + 1, num_textures, \
+		upd_prog_bar(game, i + 1, num_textures, \
 		"Loading extract textures");
 		texture = &game->extract_texture[i];
 		texture->path = file_names[i];
@@ -93,7 +93,7 @@ int	load_floor_textures(t_game *game)
 	get_last_two_digit_indexes(path, &f_digit, &s_digit);
 	while (texcount < MAX_FLOOR_TEXTURES)
 	{
-		update_progress_bar(game, texcount + 1, MAX_FLOOR_TEXTURES,
+		upd_prog_bar(game, texcount + 1, MAX_FLOOR_TEXTURES,
 			"Loading floor textures");
 		load_texture(game, &game->floortextures[texcount], path);
 		texcount++;

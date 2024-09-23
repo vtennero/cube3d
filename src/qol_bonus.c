@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:34:44 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 16:07:09 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:29:33 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	increment_and_update(t_game *game, \
 int *current_task, int total_tasks, const char *task_name)
 {
 	(*current_task)++;
-	update_progress_bar(game, *current_task, total_tasks, task_name);
+	upd_prog_bar(game, *current_task, total_tasks, task_name);
 }
 
 void	clear_previous_output(int last_printed_length)
@@ -62,7 +62,7 @@ int	print_progress_bar(int bar_width)
 	return (printed_length);
 }
 
-void	update_progress_bar(t_game *game, \
+void	upd_prog_bar(t_game *game, \
 int current, int total, const char *task_name)
 {
 	float	progress;

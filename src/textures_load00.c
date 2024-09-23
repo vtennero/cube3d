@@ -42,7 +42,7 @@ int	load_wall_textures(t_game *game)
 		err_check = load_texture(game, &game->walltextures[i], game->walltextures[i].path);
 		if (err_check == 0)
 			return (texture_err_message(game));
-		update_progress_bar(game, i - NORTH + 1, total_textures, "Loading wall textures");
+		upd_prog_bar(game, i - NORTH + 1, total_textures, "Loading wall textures");
 		i++;
 	}
 	return (0);

@@ -71,7 +71,7 @@ int	load_strike_textures(t_game *game)
 		game->as_txture[i].data = mlx_get_data_addr(game->as_txture[i].img,
 				&game->as_txture[i].tex_bpp, &game->as_txture[i].tex_line_len,
 				&game->as_txture[i].tex_endian);
-		update_progress_bar(game, i + 1, NUM_AIRSTRIKE_FRAMES,
+		upd_prog_bar(game, i + 1, NUM_AIRSTRIKE_FRAMES,
 			"Loading strike textures");
 		i++;
 	}
@@ -99,7 +99,7 @@ int	load_napalm_textures(t_game *game)
 		game->np_txture[i].data = mlx_get_data_addr(game->np_txture[i].img,
 				&game->np_txture[i].tex_bpp, &game->np_txture[i].tex_line_len,
 				&game->np_txture[i].tex_endian);
-		update_progress_bar(game, i + 1, NUM_NAPALM_FRAMES,
+		upd_prog_bar(game, i + 1, NUM_NAPALM_FRAMES,
 			"Loading napalm textures");
 		i++;
 	}
@@ -127,7 +127,7 @@ int	load_shooting_textures(t_game *game)
 		game->sht_txture[i].data = mlx_get_data_addr(game->sht_txture[i].img,
 				&game->sht_txture[i].tex_bpp, &game->sht_txture[i].tex_line_len,
 				&game->sht_txture[i].tex_endian);
-		update_progress_bar(game, i + 1, MAX_SHOOTING_TEXTURES,
+		upd_prog_bar(game, i + 1, MAX_SHOOTING_TEXTURES,
 			"Loading shooting textures");
 		i++;
 	}
