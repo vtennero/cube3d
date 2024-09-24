@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio_bonus02.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:44:14 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:30:48 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:32:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ void cleanup_audio(t_game *game)
 {
     t_audio_manager *audio;
 
+	printf("cleanup_audio: cleaning up audio\n");
     audio = game->audio;
     if (!audio)
-        return;
+        return ;
 
-	printf("cleanup_audio: cleaning up audio\n");
     // Stop all sources and delete them
     cleanup_audio_sources(audio);
 
