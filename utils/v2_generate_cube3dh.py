@@ -4,7 +4,6 @@ import subprocess
 
 def extract_function_declarations(directory='../src'):
     output_file = "function_declarations.txt"
-    cube3d_audio_bonus_file = "cube3d_audio_bonus_declarations.txt"
 
     # Regex pattern for matching function declarations
     pattern = re.compile(r'^\s*(\w+(?:\s+\w+)*\s+\**\w+\s*\([^)]*\))\s*$\n\s*{', re.MULTILINE)
@@ -17,10 +16,9 @@ def extract_function_declarations(directory='../src'):
 
     # Set to store unique declarations
     unique_declarations = set()
-    audio_bonus_declarations = set()
 
     for filename in os.listdir(directory):
-        if filename.endswith('.c'):
+        if filename.endswith('.c') and filename != 'audio_bonus00.c':  # Ignore audio_bonus00.c
             with open(os.path.join(directory, filename), 'r') as file:
                 content = file.read()
 
@@ -36,12 +34,7 @@ def extract_function_declarations(directory='../src'):
                     declaration = match.group(1).strip()
                     # Check if declaration starts with 'static', 'if', or 'else'
                     if not any(declaration.startswith(word) for word in ['static', 'if', 'else']):
-                        if filename in ['audio_bonus00.c', 'audio_bonus01.c', 'audio_bonus02.c', 'audio_bonus03.c']:
-                            audio_bonus_declarations.add(declaration)
-                        elif filename == 'audio_dummy00.c':
-                            unique_declarations.add(declaration)
-                        else:
-                            unique_declarations.add(declaration)
+                        unique_declarations.add(declaration)
 
     # Write unique declarations to file
     with open(output_file, 'w') as out_file:
@@ -55,18 +48,7 @@ def extract_function_declarations(directory='../src'):
                 # If we can't split properly, write the original declaration
                 out_file.write(f"{declaration};\n")
 
-    # Write audio bonus declarations to a separate file
-    with open(cube3d_audio_bonus_file, 'w') as out_file:
-        for declaration in sorted(audio_bonus_declarations):
-            parts = declaration.split(maxsplit=1)
-            if len(parts) == 2:
-                return_type, rest = parts
-                out_file.write(f"{return_type}\t{rest};\n")
-            else:
-                out_file.write(f"{declaration};\n")
-
     print(f"Unique, non-static, non-commented function declarations have been extracted to {output_file}")
-    print(f"Audio bonus function declarations have been extracted to {cube3d_audio_bonus_file}")
 
     # Copy the contents of the output file to clipboard using xclip
     try:
@@ -78,12 +60,13 @@ def extract_function_declarations(directory='../src'):
     except FileNotFoundError:
         print("xclip is not installed. Please install it using: sudo apt-get install xclip")
 
-    # Update cube3d.h and cube3d_audio_bonus.h
-    update_header(output_file, "../src/cube3d.h")
-    update_header(cube3d_audio_bonus_file, "../src/cube3d_audio_bonus.h")
+    # Update cube3d.h
+    update_cube3d_header(output_file)
 
-def update_header(declarations_file, header_file):
-    # Read the current content of the header file
+def update_cube3d_header(declarations_file):
+    header_file = "../src/cube3d.h"
+
+    # Read the current content of cube3d.h
     with open(header_file, 'r') as file:
         content = file.read()
 
@@ -99,7 +82,7 @@ def update_header(declarations_file, header_file):
     pattern = re.compile(f"{start_marker}.*?{end_marker}", re.DOTALL)
     new_content = pattern.sub(f"{start_marker}\n{declarations}\n{end_marker}", content)
 
-    # Write the new content to the header file
+    # Write the new content to cube3d.h
     with open(header_file, 'w') as file:
         file.write(new_content)
 

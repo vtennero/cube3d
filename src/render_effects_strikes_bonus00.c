@@ -12,21 +12,6 @@
 
 #include "cube3d.h"
 
-float	calculate_screen_shake(t_game *game, int current_frame)
-{
-	float	random_offset;
-	float	intensity;
-	float	shake;
-
-	if (current_frame >= STRIKE_SHAKE_DURATION || game->player->is_dead == 1)
-		return (0.0f);
-	random_offset = (float)random_int(game, 1000) / 1000.0f;
-	intensity = STRIKE_SHAKE_INTENSITY \
-	* (1.0f - (float)current_frame / STRIKE_SHAKE_DURATION);
-	shake = sinf(current_frame * 0.5f) * intensity;
-	return (shake * random_offset);
-}
-
 int	calculate_color_with_base(int i, int total_width, \
 int white_width, int base_color)
 {
@@ -90,20 +75,6 @@ void	render_call_strike(t_game *game, t_vector2d position)
 	stripe = ctx.calc.sprite_screen_x;
 	if (ctx.calc.transform.y > 0 && stripe > 0 && stripe < game->screen_width)
 		draw_strike_call(game, stripe, ctx.calc.draw_end_y, distance);
-}
-
-void	reset_strike(t_game *game)
-{
-	int	i;
-
-	game->strike[0].is_active = 0;
-	game->strike[0].is_animating = 0;
-	i = 0;
-	while (i < NUM_OFFSETS)
-	{
-		game->strike[0].frame_counts[i] = rand() % (NUM_AIRSTRIKE_FRAMES * 100);
-		i++;
-	}
 }
 
 void	setup_sprite_context(t_sprite_render_context *ctx, \

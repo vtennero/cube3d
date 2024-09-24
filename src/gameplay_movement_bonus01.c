@@ -73,7 +73,7 @@ void	calculate_rotation(t_game *game, float angle)
 	const char	*direction;
 
 	direction = NULL;
-	rotate_player(game, angle);
+	mouse_rotate_player(game, angle);
 	if (game->bonus == 0)
 	{
 		printf("New direction.x = %f, New direction.y = %f\n",

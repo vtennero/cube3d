@@ -1,8 +1,8 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 # CFLAGS = -Wall -Wextra -Werror -g
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 # Audio flags
 AUDIOFLAGS = -lopenal -lmpg123
@@ -25,8 +25,8 @@ BONUS_MAIN = main_bonus.c
 HELLDIVER_MAIN = main_bonus.c
 
 # Audio file variables
-AUDIO_DUMMY_SRCS = audio_dummy00.c audio_dummy01.c
-AUDIO_BONUS_SRCS = audio_bonus00.c audio_bonus01.c audio_bonus02.c
+AUDIO_DUMMY_SRCS = audio_dummy00.c
+AUDIO_BONUS_SRCS = audio_bonus00.c audio_bonus01.c audio_bonus02.c audio_bonus03.c
 
 SHARED_SRCS = \
 debug_utils.c \
@@ -34,45 +34,45 @@ gameplay_enemies_bonus00.c \
 gameplay_enemies_bonus01.c \
 gameplay_enemies_bonus02.c \
 gameplay_enemies_bonus03.c \
+gameplay_enemies_bonus04.c \
 gameplay_item_collection_bonus00.c \
 gameplay_movement00.c \
+gameplay_movement01.c \
+gameplay_movement02.c \
 gameplay_movement_bonus00.c \
 gameplay_movement_bonus01.c \
 gameplay_movement_bonus02.c \
 gameplay_movement_bonus03.c \
 gameplay_movement_bonus04.c \
+gameplay_movement_bonus05.c \
+gameplay_scripts_bonus00.c \
+gameplay_scripts_bonus01.c \
+gameplay_scripts_bonus02.c \
+gameplay_scripts_bonus03.c \
+gameplay_scripts_bonus04.c \
+gameplay_scripts_bonus05.c \
 gameplay_scripts_static_bonus00.c \
 gameplay_scripts_static_bonus01.c \
 gameplay_scripts_static_bonus02.c \
 gameplay_scripts_static_bonus03.c \
 gameplay_scripts_static_bonus04.c \
 gameplay_scripts_static_bonus05.c \
-gameplay_scripts_bonus00.c \
-gameplay_scripts_bonus01.c \
-gameplay_scripts_bonus02.c \
-gameplay_scripts_bonus03.c \
-render_effects_strike00_bonus00.c \
-render_effects_strike00_bonus01.c \
-render_effects_strike01_bonus00.c \
-render_effects_strike01_bonus01.c \
-render_effects_strike02_bonus00.c \
-render_effects_strikes_bonus00.c \
+gameplay_scripts_strikes_bonus00.c \
+gameplay_scripts_strikes_bonus01.c \
+gameplay_scripts_strikes_bonus02.c \
+gameplay_scripts_strikes_bonus03.c \
 initialization00.c \
 initialization_bonus00.c \
 initialization_bonus01.c \
 initialization_bonus02.c \
-render_scenes_bonus00.c \
-render_scenes_bonus01.c \
-render_scenes_bonus02.c \
-render_scenes_bonus03.c \
-render_scenes_bonus04.c \
 parsing_boundaries_01.c \
 parsing_boundaries_02.c \
 parsing_map_00.c \
 parsing_map_01.c \
 parsing_map_texture_01.c \
 parsing_map_texture_02.c \
-parsing_map_utility.c \
+parsing_map_utility00.c \
+parsing_map_utility01.c \
 randomizer_bonus00.c \
 randomizer_bonus01.c \
 raycasting00.c \
@@ -106,18 +106,38 @@ render_bonus01.c \
 render_bonus02.c \
 render_bonus03.c \
 render_bonus04.c \
-render_floor_bonus.c \
-render_sky_floor.c \
+render_effects_bonus00.c \
+render_effects_strike00_bonus00.c \
+render_effects_strike00_bonus01.c \
+render_effects_strike01_bonus00.c \
+render_effects_strike01_bonus01.c \
+render_effects_strike02_bonus00.c \
+render_effects_strike02_bonus01.c \
+render_effects_strike02_bonus02.c \
+render_effects_strike02_bonus03.c \
+render_effects_strikes_bonus00.c \
+render_effects_strikes_bonus01.c \
+render_floor_bonus00.c \
+render_floor_bonus01.c \
+render_floor_bonus02.c \
+render_floor_bonus03.c \
+render_scenes_bonus00.c \
+render_scenes_bonus01.c \
+render_scenes_bonus02.c \
+render_scenes_bonus03.c \
+render_scenes_bonus04.c \
+render_setup.c \
 render_sky_bonus00.c \
 render_sky_bonus01.c \
-render_walls00.c \
-render_walls01.c \
+render_sky_floor.c \
 render_ui_bonus00.c \
 render_ui_bonus01.c \
 render_ui_bonus02.c \
 render_ui_bonus03.c \
 render_ui_bonus04.c \
 render_ui_bonus05.c \
+render_walls00.c \
+render_walls01.c \
 terminate01.c \
 terminate02.c \
 terminate03.c \

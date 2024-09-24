@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:31:51 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 18:36:51 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:43:34 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	is_out_of_bounds(t_game *game, t_ray *ray)
 	else
 		return (0);
 }
+
 void	update_ray_x(t_ray *ray)
 {
 	ray->side_d_x += ray->delta_d_x;

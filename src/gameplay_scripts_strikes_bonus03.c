@@ -1,22 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gameplay_scripts_static_bonus04.c                  :+:      :+:    :+:   */
+/*   gameplay_scripts_srikes_bonus03.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 16:46:31 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:48:58 by vitenner         ###   ########.fr       */
+/*   Created: 2024/09/24 16:35:51 by vitenner          #+#    #+#             */
+/*   Updated: 2024/09/24 16:35:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-void	script_skip_enter(t_game *game)
+void	remove_napalm(t_game *game)
 {
-	if (game->change_seq == 1 && game->game_sequence < 3)
-	{
-		game->game_sequence++;
-		game->change_seq = 0;
-	}
+	game->strike[1].is_active = 0;
+}
+
+void	delay_napalm_hit(t_game *game)
+{
+	game->strike[1].is_active = 1;
+}
+
+void	napalm_bombs(t_game *game)
+{
+	play_random_eagle_call(game);
+	add_script(game, delay_napalm_hit, 1);
+}
+
+void	napalm_inbound(t_game *game)
+{
+	game->strike[1].is_launching = 0;
+	add_script(game, napalm_bombs, 0);
+	play_audio_file(game, "audio/eagles00.mp3", 0);
 }

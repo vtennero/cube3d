@@ -1,0 +1,22 @@
+ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
+				int channels, long rate);
+char	*decode_mp3(mpg123_handle *mh, size_t *total_size);
+int	allocate_audio_manager(t_game *game);
+int	find_and_prepare_source(t_game *game, const char *filename);
+int	find_available_source(t_game *game);
+int	initialize_audio(t_game *game);
+int	initialize_openal(t_audio_manager *audio);
+int	play_audio_file(t_game *game, const char *filename, float delay_in_seconds);
+int	process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
+				int source_index, const char *filename);
+int	stop_audio_file(t_game *game, const char *filename);
+mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
+						int *channels, int *encoding);
+void	cleanup_audio(t_game *game);
+void	cleanup_audio_context(t_audio_manager *audio);
+void	cleanup_audio_device(t_audio_manager *audio);
+void	cleanup_audio_sources(t_audio_manager *audio);
+void	cleanup_mpg123(mpg123_handle *mh);
+void	initialize_sources(t_audio_manager *audio);
+void	play_and_record_audio(t_audio_manager *audio, int source_index,
+				ALuint buffer, const char *filename);

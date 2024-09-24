@@ -68,7 +68,8 @@ void	enemy_hit_attempt(t_game *game, t_enemy *enemy, int index)
 		{
 			game->player->is_hit = 1;
 			add_script(game, get_hit, 1);
-			printf("You got hit by enemy %d; new hp: %d\n", index, game->player->hp);
+			printf("You got hit by enemy %d; \
+			new hp: %d\n", index, game->player->hp);
 			bump_player(game, index);
 		}
 	}

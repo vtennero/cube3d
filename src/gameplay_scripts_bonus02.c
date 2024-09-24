@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 17:01:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 14:45:17 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:38:13 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,34 +63,4 @@ struct timeval *now, int delay_seconds)
 	new_script.func = func;
 	new_script.is_active = 1;
 	return (new_script);
-}
-
-void	add_script_to_manager(t_game *game, t_script *new_script, int slot)
-{
-	game->script_manager.scripts[slot] = *new_script;
-	game->script_manager.active_script_count++;
-}
-
-void	update_scripts(t_game *game)
-{
-	struct timeval	now;
-	t_script		*script;
-	int				i;
-
-	gettimeofday(&now, NULL);
-	i = 0;
-	while (i < game->script_manager.script_count)
-	{
-		script = &game->script_manager.scripts[i];
-		if (script->is_active \
-		&& (now.tv_sec > script->trigger_time.tv_sec \
-		|| (now.tv_sec == script->trigger_time.tv_sec \
-		&& now.tv_usec >= script->trigger_time.tv_usec)))
-		{
-			script->func(game);
-			script->is_active = 0;
-			game->script_manager.active_script_count--;
-		}
-		i++;
-	}
 }

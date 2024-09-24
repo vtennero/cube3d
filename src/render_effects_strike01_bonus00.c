@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:51:06 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 18:23:45 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:44:24 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	render_ongoing_napalm(t_game *game)
 	apply_napalm_screen_shake(game, first_visible_frame);
 	render_napalm_sprites(game, current_frames);
 }
+
 void	render_napalm(t_game *game)
 {
 	if (game->strike[1].is_launching)

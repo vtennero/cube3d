@@ -60,32 +60,3 @@ int	detect_collision(t_game *game, float newX, float newY)
 	}
 	return (0);
 }
-
-void	handle_movement_up(t_game *game)
-{
-	if (game->key_state[K_UP] == 1)
-	{
-		handle_key_up(game);
-	}
-}
-
-void	handle_movement_down(t_game *game)
-{
-	if (game->key_state[K_DOWN] == 1)
-	{
-		handle_key_down(game);
-	}
-}
-
-void	handle_key_up(t_game *game)
-{
-	if (game->player->pitch < 1 && game->bonus && !game->player->is_extracting)
-		game->player->pitch += 0.01;
-}
-
-void	handle_key_down(t_game *game)
-{
-	if (game->player->pitch > -1 && game->bonus
-		&& !game->player->is_extracting)
-		game->player->pitch -= 0.01;
-}

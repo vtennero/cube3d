@@ -6,130 +6,84 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:44:14 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:48:08 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:17:54 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 #include "cube3d_audio_bonus.h"
 
-// void	cleanup_audio_sources(t_audio_manager *audio)
-// {
-// 	int	i;
-
-// 	if (audio->source_count > 0)
-// 	{
-// 		i = 0;
-// 		while (i < audio->source_count)
-// 		{
-// 			alSourceStop(audio->sources[i]);
-// 			alDeleteSources(1, &audio->sources[i]);
-// 			i++;
-// 		}
-// 	}
-// }
-
-void cleanup_audio_sources(t_audio_manager *audio)
+mpg123_handle	*initialize_mpg123(const char *filename, long *rate,
+						int *channels, int *encoding)
 {
-	int i;
-	ALint buffer;
+	mpg123_handle	*mh;
 
-	if (audio->source_count > 0)
-	{
-		for (i = 0; i < audio->source_count; i++)
-		{
-			// Stop the source
-			alSourceStop(audio->sources[i]);
-
-			// Detach the buffer from the source
-			alSourcei(audio->sources[i], AL_BUFFER, 0);
-
-			// Get the buffer attached to the source
-			alGetSourcei(audio->sources[i], AL_BUFFER, &buffer);
-
-			// If there was a buffer attached, delete it
-			if (buffer)
-				alDeleteBuffers(1, (ALuint*)&buffer);
-
-			// Delete the source
-			alDeleteSources(1, &audio->sources[i]);
-		}
-	}
+	mh = mpg123_new(NULL, NULL);
+	mpg123_open(mh, filename);
+	mpg123_getformat(mh, rate, channels, encoding);
+	return (mh);
 }
 
-void	cleanup_audio_context(t_audio_manager *audio)
+char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 {
-	if (audio->context)
+	size_t			buffer_size;
+	unsigned char	*buffer_data;
+	char			*total_buffer;
+	size_t			done;
+
+	buffer_size = mpg123_outblock(mh);
+	buffer_data = malloc(buffer_size * sizeof(unsigned char));
+	total_buffer = NULL;
+	*total_size = 0;
+	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK)
 	{
-		alcMakeContextCurrent(NULL);
-		alcDestroyContext(audio->context);
-		audio->context = NULL;
+		total_buffer = realloc(total_buffer, *total_size + done);
+		ft_memcpy(total_buffer + *total_size, buffer_data, done);
+		*total_size += done;
 	}
+	free(buffer_data);
+	return (total_buffer);
 }
 
-void cleanup_audio_device(t_audio_manager *audio)
+ALuint	create_al_buffer(const char *total_buffer, size_t total_size,
+				int channels, long rate)
 {
-	if (audio->device)
-	{
-		alcMakeContextCurrent(NULL);
-		ALCboolean closed = alcCloseDevice(audio->device);
-		if (!closed)
-			fprintf(stderr, "Failed to close audio device\n");
-		audio->device = NULL;
-	}
+	ALuint	buffer;
+	ALenum	format;
+
+	alGenBuffers(1, &buffer);
+	if (channels == 1)
+		format = AL_FORMAT_MONO16;
+	else
+		format = AL_FORMAT_STEREO16;
+	alBufferData(buffer, format, total_buffer, total_size, rate);
+	return (buffer);
 }
 
-// void	cleanup_audio_device(t_audio_manager *audio)
-// {
-// 	if (audio->device)
-// 		alcCloseDevice(audio->device);
-// }
-
-// void	cleanup_audio(t_game *game)
-// {
-// 	t_audio_manager	*audio;
-
-// 	audio = game->audio;
-// 	if (!audio)
-// 		return ;
-// 	cleanup_audio_sources(audio);
-// 	cleanup_audio_context(audio);
-// 	cleanup_audio_device(audio);
-// 	mpg123_exit();
-// 	free(audio);
-// 	game->audio = NULL;
-// }
-
-void cleanup_audio(t_game *game)
+void	cleanup_mpg123(mpg123_handle *mh)
 {
-	t_audio_manager *audio;
+	mpg123_close(mh);
+	mpg123_delete(mh);
+}
 
-	audio = game->audio;
-	if (!audio)
-		return ;
+int	process_audio_data(mpg123_handle *mh, t_audio_manager *audio,
+				int source_index, const char *filename)
+{
+	size_t			total_size;
+	char			*total_buffer;
+	t_audio_format	format;
+	ALuint			buffer;
 
-	// Stop all sources and delete them
-	cleanup_audio_sources(audio);
-
-	// Destroy the context
-	cleanup_audio_context(audio);
-
-	// Close the device
-	cleanup_audio_device(audio);
-
-	// Shutdown mpg123
-	mpg123_exit();
-
-	// Free the audio manager
-	free(audio);
-	game->audio = NULL;
-
-	// Ensure all OpenAL operations are complete
-	alGetError(); // Clear any existing errors
-	alcMakeContextCurrent(NULL);
-
-	// Instead of waiting in a loop, we'll just ensure the current context is null
-	if (alcGetCurrentContext() != NULL) {
-		fprintf(stderr, "Warning: OpenAL context still exists after cleanup\n");
+	total_buffer = decode_mp3(mh, &total_size);
+	if (!total_buffer)
+	{
+		cleanup_mpg123(mh);
+		return (-1);
 	}
+	mpg123_getformat(mh, &format.rate, &format.channels, &format.encoding);
+	buffer = create_al_buffer(total_buffer, total_size, \
+	format.channels, format.rate);
+	play_and_record_audio(audio, source_index, buffer, filename);
+	free(total_buffer);
+	return (0);
 }
