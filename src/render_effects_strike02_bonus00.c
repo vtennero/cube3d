@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:48:45 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 17:32:08 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:58:32 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	get_next_barrage_frame(t_strike *strike)
 void	handle_frame_specific_actions(t_game *game, int current_frame)
 {
 	if (current_frame == 17)
-		add_script(game, play_barrage_shell, 1);
+		add_script(game, play_barrage_shell, 2);
 	if (current_frame == NUM_AIRSTRIKE_FRAMES - 1)
 	{
 		game->strike[2].is_animating = 0;

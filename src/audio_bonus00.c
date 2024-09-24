@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 14:56:20 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:16:19 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ char	*decode_mp3(mpg123_handle *mh, size_t *total_size)
 	while (mpg123_read(mh, buffer_data, buffer_size, &done) == MPG123_OK)
 	{
 		total_buffer = realloc(total_buffer, *total_size + done);
-		memcpy(total_buffer + *total_size, buffer_data, done);
+		ft_memcpy(total_buffer + *total_size, buffer_data, done);
 		*total_size += done;
 	}
 	free(buffer_data);
