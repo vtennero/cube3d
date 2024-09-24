@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:21:19 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:47:25 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	allocate_audio_manager(t_game *game)
 {
 	t_audio_manager	*audio;
 
-	audio = malloc(sizeof(t_audio_manager));
+	audio = ft_calloc(1, sizeof(t_audio_manager));
 	if (!audio)
 	{
 		printf("Failed to allocate memory for audio manager\n");

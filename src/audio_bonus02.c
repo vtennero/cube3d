@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio_bonus02.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:44:14 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:32:49 by root             ###   ########.fr       */
+/*   Updated: 2024/09/24 15:48:08 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,30 @@
 
 void cleanup_audio_sources(t_audio_manager *audio)
 {
-    int i;
-    ALint buffer;
+	int i;
+	ALint buffer;
 
-    if (audio->source_count > 0)
-    {
-        for (i = 0; i < audio->source_count; i++)
-        {
-            // Stop the source
-            alSourceStop(audio->sources[i]);
+	if (audio->source_count > 0)
+	{
+		for (i = 0; i < audio->source_count; i++)
+		{
+			// Stop the source
+			alSourceStop(audio->sources[i]);
 
-            // Detach the buffer from the source
-            alSourcei(audio->sources[i], AL_BUFFER, 0);
+			// Detach the buffer from the source
+			alSourcei(audio->sources[i], AL_BUFFER, 0);
 
-            // Get the buffer attached to the source
-            alGetSourcei(audio->sources[i], AL_BUFFER, &buffer);
+			// Get the buffer attached to the source
+			alGetSourcei(audio->sources[i], AL_BUFFER, &buffer);
 
-            // If there was a buffer attached, delete it
-            if (buffer)
-                alDeleteBuffers(1, (ALuint*)&buffer);
+			// If there was a buffer attached, delete it
+			if (buffer)
+				alDeleteBuffers(1, (ALuint*)&buffer);
 
-            // Delete the source
-            alDeleteSources(1, &audio->sources[i]);
-        }
-    }
+			// Delete the source
+			alDeleteSources(1, &audio->sources[i]);
+		}
+	}
 }
 
 void	cleanup_audio_context(t_audio_manager *audio)
@@ -71,6 +71,7 @@ void cleanup_audio_device(t_audio_manager *audio)
 {
 	if (audio->device)
 	{
+		alcMakeContextCurrent(NULL);
 		ALCboolean closed = alcCloseDevice(audio->device);
 		if (!closed)
 			fprintf(stderr, "Failed to close audio device\n");
@@ -101,35 +102,34 @@ void cleanup_audio_device(t_audio_manager *audio)
 
 void cleanup_audio(t_game *game)
 {
-    t_audio_manager *audio;
+	t_audio_manager *audio;
 
-	printf("cleanup_audio: cleaning up audio\n");
-    audio = game->audio;
-    if (!audio)
-        return ;
+	audio = game->audio;
+	if (!audio)
+		return ;
 
-    // Stop all sources and delete them
-    cleanup_audio_sources(audio);
+	// Stop all sources and delete them
+	cleanup_audio_sources(audio);
 
-    // Destroy the context
-    cleanup_audio_context(audio);
+	// Destroy the context
+	cleanup_audio_context(audio);
 
-    // Close the device
-    cleanup_audio_device(audio);
+	// Close the device
+	cleanup_audio_device(audio);
 
-    // Shutdown mpg123
-    mpg123_exit();
+	// Shutdown mpg123
+	mpg123_exit();
 
-    // Free the audio manager
-    free(audio);
-    game->audio = NULL;
+	// Free the audio manager
+	free(audio);
+	game->audio = NULL;
 
-    // Ensure all OpenAL operations are complete
-    alGetError(); // Clear any existing errors
-    alcMakeContextCurrent(NULL);
+	// Ensure all OpenAL operations are complete
+	alGetError(); // Clear any existing errors
+	alcMakeContextCurrent(NULL);
 
-    // Instead of waiting in a loop, we'll just ensure the current context is null
-    if (alcGetCurrentContext() != NULL) {
-        fprintf(stderr, "Warning: OpenAL context still exists after cleanup\n");
-    }
+	// Instead of waiting in a loop, we'll just ensure the current context is null
+	if (alcGetCurrentContext() != NULL) {
+		fprintf(stderr, "Warning: OpenAL context still exists after cleanup\n");
+	}
 }
