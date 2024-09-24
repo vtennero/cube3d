@@ -29,8 +29,6 @@ AUDIO_DUMMY_SRCS = audio_dummy00.c audio_dummy01.c
 AUDIO_BONUS_SRCS = audio_bonus00.c audio_bonus01.c audio_bonus02.c
 
 SHARED_SRCS = \
-check_map_boundaries.c \
-check_map_boundaries_helper.c \
 debug_utils.c \
 gameplay_enemies_bonus00.c \
 gameplay_enemies_bonus01.c \
@@ -68,9 +66,13 @@ render_scenes_bonus01.c \
 render_scenes_bonus02.c \
 render_scenes_bonus03.c \
 render_scenes_bonus04.c \
-map_parse_utility.c \
-map_parse_utility_02.c \
-parse_map.c \
+parsing_boundaries_01.c \
+parsing_boundaries_02.c \
+parsing_map_00.c \
+parsing_map_01.c \
+parsing_map_texture_01.c \
+parsing_map_texture_02.c \
+parsing_map_utility.c \
 randomizer_bonus00.c \
 randomizer_bonus01.c \
 raycasting00.c \
@@ -121,8 +123,6 @@ terminate02.c \
 terminate03.c \
 terminate04.c \
 terminate05.c \
-texture_parse.c \
-texture_parse_02.c \
 textures_load00.c \
 textures_load_bonus00.c \
 textures_load_bonus01.c \

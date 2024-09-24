@@ -6,6 +6,12 @@ bash run.sh maps/[mapname].cub
 
 helldivers3D exe is required as well as audio_lib directory. See Build Commands below.
 
+if the mouse is too sensitive (for example if you run it on WSL): try these parameters in cube3d.h
+```
+# define MOUSE_ROT_SPEED 0.0005
+# define MOUSE_PITCH_SPEED 0.0001
+```
+
 ## Build Commands
 
 ### make

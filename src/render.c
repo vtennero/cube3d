@@ -206,9 +206,7 @@ int	render(t_game *game)
 	if (game->win_ptr == NULL)
 		return (1);
 	if (game->bonus == 0)
-	{
 		core_game_loop(game);
-	}
 	else
 		bonus_game_loop(game);
 	return (0);
