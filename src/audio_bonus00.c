@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:16:19 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:21:19 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ int	stop_audio_file(t_game *game, const char *filename)
 	i = 0;
 	while (i < MAX_SOURCES)
 	{
-		if (strcmp(audio->playing_tracks[i].filename, filename) == 0)
+		if (ft_strcmp(audio->playing_tracks[i].filename, filename) == 0)
 		{
 			alSourceStop(audio->sources[audio->playing_tracks[i].source_index]);
 			audio->playing_tracks[i].filename[0] = '\0';
