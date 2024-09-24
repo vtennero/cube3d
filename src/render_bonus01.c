@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 17:01:53 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 17:02:01 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:45:04 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	run_dmg_script(t_game *game)
 	script_napalm_enemies(game, 1, 6);
 	script_napalm_player(game, 1, 6);
 	player_burning(game);
-	player_need_stims(game);
 	script_barrage_enemies(game);
 	script_barrage_player(game);
 	script_die(game);

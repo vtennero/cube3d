@@ -17,6 +17,7 @@ void	get_hit(t_game *game)
 	if (game->player->hp)
 		game->player->hp--;
 	game->player->is_hit = 0;
+	player_need_stims(game);
 }
 
 void	menu_background(t_game *game)
