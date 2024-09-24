@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio_bonus02.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:44:14 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 15:18:07 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:20:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 void cleanup_audio_sources(t_audio_manager *audio)
 {
     int i;
-    ALuint buffer;
+    ALint buffer;
 
     if (audio->source_count > 0)
     {
@@ -40,17 +40,17 @@ void cleanup_audio_sources(t_audio_manager *audio)
         {
             // Stop the source
             alSourceStop(audio->sources[i]);
-
+            
             // Detach the buffer from the source
             alSourcei(audio->sources[i], AL_BUFFER, 0);
-
+            
             // Get the buffer attached to the source
             alGetSourcei(audio->sources[i], AL_BUFFER, &buffer);
-
+            
             // If there was a buffer attached, delete it
             if (buffer)
-                alDeleteBuffers(1, &buffer);
-
+                alDeleteBuffers(1, (ALuint*)&buffer);
+            
             // Delete the source
             alDeleteSources(1, &audio->sources[i]);
         }
