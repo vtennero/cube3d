@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gameplay_scripts_srikes_bonus01.c                  :+:      :+:    :+:   */
+/*   gameplay_scripts_strikes_bonus01.c                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:34:00 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:35:27 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:28:54 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	stop_barrage(t_game *game)
 {
 	game->strike[2].is_active = 0;
 	game->strike[2].is_launching = 0;
-	printf("Barrage over\n");
 }
 
 void	play_barrage_shell(t_game *game)

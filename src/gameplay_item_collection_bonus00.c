@@ -71,7 +71,6 @@ void	handle_key_e(t_game *game)
 		add_script(game, trigger_extract_music, 1);
 		add_script(game, trigger_landing, EXTRACT_CALL_TIME);
 		extract_eta = EXTRACT_CALL_TIME - 10;
-		printf("extract eta %d\n", extract_eta);
 		if (EXTRACT_CALL_TIME - 10 > 0)
 			add_script(game, trigger_prelanding, extract_eta);
 	}

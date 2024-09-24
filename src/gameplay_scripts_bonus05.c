@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:39:25 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:39:39 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:28:32 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,12 @@ void	trigger_landing(t_game *game)
 {
 	game->extract[0].is_landing = 1;
 	game->extract[0].is_activated = 0;
-	printf("landing sequence initiated\n");
 	play_audio_file(game, "audio/pelican00.mp3", 0);
 }
 
 void	trigger_prelanding(t_game *game)
 {
 	(void)game;
-	printf("prelanding warning\n");
 	play_audio_file(game, "audio/eta.mp3", 0);
 }
 
