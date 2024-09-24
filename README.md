@@ -14,6 +14,9 @@ if the mouse is too sensitive (for example if you run it on WSL): try these para
 
 ## Build Commands
 
+### Prerequisites
+clone https://github.com/42Paris/minilibx-linux inside the repo and rename it to 'mlx'
+
 ### make
 Compiles the core 42 cub3D project, meeting all mandatory requirements.
 

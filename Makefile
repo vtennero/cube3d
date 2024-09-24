@@ -155,7 +155,7 @@ all: $(LIBFT) $(MLX_LIB) $(NAME)
 
 bonus: $(LIBFT) $(MLX_LIB) $(BONUS_NAME)
 
-helldivers3d: $(LIBFT) $(MLX_LIB) $(HELLDIVER_NAME)
+helldivers3d: $(LIBFT) $(MLX_LIB) copy_libs $(HELLDIVER_NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
@@ -174,7 +174,12 @@ $(BONUS_NAME): $(BONUS_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h
 
 $(HELLDIVER_NAME): $(HELLDIVER_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -DHELLDIVER $(HELLDIVER_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h -include $(SRC_DIR)/cube3d_audio_bonus00.h
+	$(CC) $(CFLAGS) -DHELLDIVER $(HELLDIVER_OBJS) -o $@ -L$(LIBFT_DIR) -lft $(MLX_FLAGS) $(AUDIOFLAGS) -L$(AUDIO_LIB_DIR) -Wl,-rpath,$(AUDIO_LIB_DIR) -include $(SRC_DIR)/cube3d.h -include $(SRC_DIR)/cube3d_bonus.h -include $(SRC_DIR)/cube3d_audio_bonus00.h
+
+copy_libs:
+	@mkdir -p $(AUDIO_LIB_DIR)
+	@cp /usr/lib/x86_64-linux-gnu/libopenal.so.1 $(AUDIO_LIB_DIR)/ || true
+	@cp /usr/lib/x86_64-linux-gnu/libmpg123.so.0 $(AUDIO_LIB_DIR)/ || true
 
 clean:
 	rm -f $(OBJ_DIR)/*.o
