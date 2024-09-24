@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 15:14:21 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 17:47:25 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:56:20 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,52 +67,6 @@ int	initialize_audio(t_game *game)
 	initialize_sources(game->audio);
 	mpg123_init();
 	return (0);
-}
-
-void	cleanup_audio_sources(t_audio_manager *audio)
-{
-	int	i;
-
-	if (audio->source_count > 0)
-	{
-		i = 0;
-		while (i < audio->source_count)
-		{
-			alSourceStop(audio->sources[i]);
-			alDeleteSources(1, &audio->sources[i]);
-			i++;
-		}
-	}
-}
-
-void	cleanup_audio_context(t_audio_manager *audio)
-{
-	if (audio->context)
-	{
-		alcMakeContextCurrent(NULL);
-		alcDestroyContext(audio->context);
-	}
-}
-
-void	cleanup_audio_device(t_audio_manager *audio)
-{
-	if (audio->device)
-		alcCloseDevice(audio->device);
-}
-
-void	cleanup_audio(t_game *game)
-{
-	t_audio_manager	*audio;
-
-	audio = game->audio;
-	if (!audio)
-		return ;
-	cleanup_audio_sources(audio);
-	cleanup_audio_context(audio);
-	cleanup_audio_device(audio);
-	mpg123_exit();
-	free(audio);
-	game->audio = NULL;
 }
 
 int	find_available_source(t_game *game)

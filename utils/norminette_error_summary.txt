@@ -1,6 +1,6 @@
 Error summary:
 gameplay_movement_bonus03.c        :    2 error(s) (   2 total)
-map_parse_utility_02.c             :    2 error(s) (   3 total)
+parsing_map_utility.c              :    2 error(s) (   3 total)
 audio_bonus01.c                    :    1 error(s) (   1 total)
 gameplay_scripts_static_bonus03.c  :    1 error(s) (   1 total)
 audio_dummy01.c                    :    1 error(s) (   1 total)

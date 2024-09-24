@@ -187,6 +187,10 @@ clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
+	rm -f $(NAME) $(BONUS_NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
+
+fcleanhelldivers3d: clean
 	rm -f $(NAME) $(BONUS_NAME) $(HELLDIVER_NAME)
 	rm -rf $(AUDIO_LIB_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) fclean

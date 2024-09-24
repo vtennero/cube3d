@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 13:30:11 by root             ###   ########.fr       */
+/*   Updated: 2024/09/24 14:00:50 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@
 # define OBJECT_SIZE 1
 # define MAX_HEALTH 15
 # define MAX_OUTRO_TEXTURES 229
-// # define EXTRACT_CALL_TIME 120
-# define EXTRACT_CALL_TIME 2
+# define EXTRACT_CALL_TIME 120
 # define MAX_STRIKES 3
 
 # define M_PI 3.14159265358979323846
