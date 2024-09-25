@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 17:32:32 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:43:37 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_pixel_color(t_sprite_render_context *ctx, t_vector2d tex)
 	unsigned int	color;
 
 	if (!ctx || !ctx->texture || !ctx->texture->data)
-		return -1;
+		return (-1);
 	if (tex.x < 0 || tex.x >= ctx->texture->width \
 	|| tex.y < 0 || tex.y >= ctx->texture->height)
 		return (-1);
