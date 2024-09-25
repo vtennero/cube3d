@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 17:12:59 by cliew            ###   ########.fr       */
+/*   Updated: 2024/09/25 17:41:14 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -893,7 +893,7 @@ void					increment_and_update(t_game *game, int *current_task,
 							int total_tasks, const char *task_name);
 void					init_last_pos(int x, int y, int *last_x, int *last_y);
 void					init_script_manager(t_game *game);
-void					init_sprite_render_context(t_sprite_render_context *ctx,
+int					init_sprite_render_context(t_sprite_render_context *ctx,
 							t_game *game, t_vector2d position,
 							t_texture *texture);
 void					initialize_floor_texture_map(t_game *game);
