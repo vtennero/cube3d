@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 17:21:30 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:25:38 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,50 @@ int get_pixel_color(t_sprite_render_context *ctx, t_vector2d tex)
     char            *pixel;
     unsigned int    color;
 
+    // Debug print
+    printf("Debug: get_pixel_color\n");
+    printf("Context: %p\n", (void*)ctx);
+    if (ctx) {
+        printf("Position: (%.2f, %.2f)\n", ctx->position.x, ctx->position.y);
+        printf("Texture: %p\n", (void*)ctx->texture);
+        if (ctx->texture) {
+            printf("Texture path: %s\n", ctx->texture->path ? ctx->texture->path : "NULL");
+            printf("Texture data: %p\n", (void*)ctx->texture->data);
+            printf("Texture dimensions: %d x %d\n", ctx->texture->width, ctx->texture->height);
+            printf("Texture bpp: %d, line_len: %d, endian: %d\n",
+                   ctx->texture->bpp, ctx->texture->line_len, ctx->texture->endian);
+        }
+    }
+    printf("Texture coordinates: (%.2f, %.2f)\n", tex.x, tex.y);
+
     if (!ctx || !ctx->texture || !ctx->texture->data)
+    {
+        printf("Error: Null pointer detected\n");
         return (-1);
+    }
     if (tex.x < 0 || tex.x >= ctx->texture->width \
     || tex.y < 0 || tex.y >= ctx->texture->height)
+    {
+        printf("Error: Texture coordinates out of bounds\n");
         return (-1);
+    }
 
-    // Calculate the offset
     size_t offset = (size_t)((int)tex.y * ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
-
-    // Check if the offset is within the texture data bounds
     size_t texture_size = (size_t)ctx->texture->width * (size_t)ctx->texture->height * ((size_t)ctx->texture->bpp / 8);
+
     if (offset >= texture_size)
+    {
+        printf("Error: Calculated offset out of bounds\n");
         return (-1);
+    }
 
     pixel = ctx->texture->data + offset;
 
-    // Additional check to ensure we're not reading past the end of the texture data
     if ((uintptr_t)pixel >= (uintptr_t)ctx->texture->data + texture_size)
+    {
+        printf("Error: Pixel pointer out of bounds\n");
         return (-1);
+    }
 
     color = *(unsigned int *)pixel;
     if (color == 0)
