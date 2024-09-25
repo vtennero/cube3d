@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 17:17:56 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:21:30 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,33 @@
 
 int get_pixel_color(t_sprite_render_context *ctx, t_vector2d tex)
 {
-	char            *pixel;
-	unsigned int    color;
+    char            *pixel;
+    unsigned int    color;
 
-	if (!ctx || !ctx->texture || !ctx->texture->data)
-		return (-1);
-	if (tex.x < 0 || tex.x >= ctx->texture->width \
-	|| tex.y < 0 || tex.y >= ctx->texture->height)
-		return (-1);
+    if (!ctx || !ctx->texture || !ctx->texture->data)
+        return (-1);
+    if (tex.x < 0 || tex.x >= ctx->texture->width \
+    || tex.y < 0 || tex.y >= ctx->texture->height)
+        return (-1);
 
-	// Calculate the offset
-	size_t offset = (size_t)((int)tex.y * ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
+    // Calculate the offset
+    size_t offset = (size_t)((int)tex.y * ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
 
-	// Check if the offset is within the texture data bounds
-	if (offset >= ctx->texture->width * ctx->texture->height * (ctx->texture->bpp / 8))
-		return (-1);
+    // Check if the offset is within the texture data bounds
+    size_t texture_size = (size_t)ctx->texture->width * (size_t)ctx->texture->height * ((size_t)ctx->texture->bpp / 8);
+    if (offset >= texture_size)
+        return (-1);
 
-	pixel = ctx->texture->data + offset;
+    pixel = ctx->texture->data + offset;
 
-	// Additional check to ensure we're not reading past the end of the texture data
-	if ((uintptr_t)pixel >= (uintptr_t)ctx->texture->data + ctx->texture->width * ctx->texture->height * (ctx->texture->bpp / 8))
-		return (-1);
+    // Additional check to ensure we're not reading past the end of the texture data
+    if ((uintptr_t)pixel >= (uintptr_t)ctx->texture->data + texture_size)
+        return (-1);
 
-	color = *(unsigned int *)pixel;
-	if (color == 0)
-		return (-1);
-	return (color);
+    color = *(unsigned int *)pixel;
+    if (color == 0)
+        return (-1);
+    return (color);
 }
 
 void	init_sprite_render_context(t_sprite_render_context *ctx, \
