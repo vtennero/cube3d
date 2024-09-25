@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 17:16:43 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:17:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 
 // 	if (!ctx || !ctx->texture || !ctx->texture->data)
 // 		return (-1);
-// 	if (tex.x < 0 || tex.x >= ctx->texture->width \
+// 	if (tex.x < 0 || tex.x >= ctx->texture->width
 // 	|| tex.y < 0 || tex.y >= ctx->texture->height)
 // 		return (-1);
-// 	pixel = ctx->texture->data + ((int)tex.y \
+// 	pixel = ctx->texture->data + ((int)tex.y
 // 	* ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
 // 	color = *(unsigned int *)pixel;
 // 	if (color == 0)
