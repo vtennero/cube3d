@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike02_bonus03.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:54:58 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:56:47 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:46:05 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_game *game, t_vector2d position, t_texture *texture)
 	init_sprite_render_context(ctx, game, position, texture);
 	calc_sprite_transforms(ctx);
 	calc_sprite_dimensions(ctx);
-	adjust_barrage_sprite_dimensions_for_scaling(&ctx->calc);
+	adjust_barrage_sprite_dimensions(&ctx->calc);
 	ctx->calc.s_height *= STRIKE_BARRAGE_SCALE;
 	ctx->calc.s_width *= STRIKE_BARRAGE_SCALE;
 }

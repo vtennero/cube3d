@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike02_bonus02.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:54:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:56:16 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:45:57 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	handle_frame_specific_actions(t_game *game, int current_frame)
 	}
 }
 
-void	adjust_barrage_sprite_dimensions_for_scaling(t_sprite_calc *calc)
+void	adjust_barrage_sprite_dimensions(t_sprite_calc *calc)
 {
 	int	center_y;
 	int	height_diff;

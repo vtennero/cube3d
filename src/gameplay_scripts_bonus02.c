@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameplay_scripts_bonus02.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 17:01:39 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/24 16:38:13 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:57:54 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_script_manager(t_game *game)
 	game->script_manager = (t_script_manager){0};
 }
 
-void	add_script(t_game *game, script_func func, int delay_seconds)
+void	add_script(t_game *game, t_script_func func, int delay_seconds)
 {
 	struct timeval	now;
 	int				slot;
@@ -53,7 +53,7 @@ int	find_available_slot(t_game *game)
 	return (game->script_manager.script_count++);
 }
 
-t_script	create_new_script(script_func func, \
+t_script	create_new_script(t_script_func func, \
 struct timeval *now, int delay_seconds)
 {
 	t_script	new_script;

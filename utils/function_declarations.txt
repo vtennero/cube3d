@@ -169,7 +169,7 @@ long	get_elapsed_microseconds(struct timeval *start, struct timeval *end);
 t_ray_node	*add_ray(t_ray_node **head);
 t_ray_node	*calculate_rays(t_game *game, t_ray_node *list);
 t_ray_node	*find_ray_node(t_game *game, int stripe);
-t_script	create_new_script(script_func func, \
+t_script	create_new_script(t_script_func func, \
 struct timeval *now, int delay_seconds);
 t_texture	*get_floor_texture(t_game *game, int texture_index);
 t_texture	*select_gun_texture(t_game *game);
@@ -188,9 +188,9 @@ t_vector2d	get_center_tile_coords(t_game *game);
 t_vector2d	get_mouse_position(t_game *game);
 unsigned	long long	next_random(t_game *game);
 unsigned	long long	xorshift64(unsigned long long *state);
-void	add_script(t_game *game, script_func func, int delay_seconds);
+void	add_script(t_game *game, t_script_func func, int delay_seconds);
 void	add_script_to_manager(t_game *game, t_script *new_script, int slot);
-void	adjust_barrage_sprite_dimensions_for_scaling(t_sprite_calc *calc);
+void	adjust_barrage_sprite_dimensions(t_sprite_calc *calc);
 void	adjust_momentum(t_enemy *enemy);
 void	adjust_ray_position(t_ray *ray, int *prev_map_x, int *prev_map_y);
 void	apply_barrage_screen_shake(t_game *game, int current_frame);
