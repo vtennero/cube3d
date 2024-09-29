@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_assets_bonus12.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:26:04 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:11:51 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,22 @@ int	get_pixel_color(t_sprite_render_context *ctx, t_vector2d tex)
 
 	if (!ctx || !ctx->texture || !ctx->texture->data)
 		return (-1);
-	if (tex.x < 0 || tex.x >= ctx->texture->width
-	|| tex.y < 0 || tex.y >= ctx->texture->height)
+	// if (tex.x < 0 || tex.x >= ctx->texture->width
+	// || tex.y < 0 || tex.y >= ctx->texture->height)
+	// 	return (-1);
+		
+
+	if (tex.y < 0 || tex.y >= ctx->texture->width
+	|| tex.x < 0 || tex.x >= ctx->texture->height)
 		return (-1);
 	pixel = ctx->texture->data + ((int)tex.y
 	* ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
+
+	   // Ensure that the pixel pointer is valid
+    if (pixel < ctx->texture->data || 
+        pixel >= ctx->texture->data + (ctx->texture->line_len * ctx->texture->height)) {
+        return -1; // Error: pixel address is out of bounds
+    }
 	color = *(unsigned int *)pixel;
 	if (color == 0)
 		return (-1);

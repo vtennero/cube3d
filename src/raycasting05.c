@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:31:26 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 18:35:26 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:12:19 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 int	is_wall(t_game *game, int map_y, int map_x)
 {
-	if (game->map->data[map_y][map_x] == 1)
+	if ((map_y<(game->cub_map_row_count +2)) \
+	&& (map_x < ((game->cub_map_col_count /2)+ 1)) && \
+	(map_y >=0) && (map_x>=0) &&
+	(game->map->data[map_y][map_x] == 1))
+	// if (game->map->data[map_y][map_x] == 1)
 		return (1);
 	else
 		return (0);
