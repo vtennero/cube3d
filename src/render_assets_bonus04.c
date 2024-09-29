@@ -42,7 +42,6 @@ void	render_extract_multi_tile(t_game *game, t_vector2d base)
 
 	calculate_perpendicular(game, &perp.x, &perp.y);
 	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->e_txt[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	i = 0;
 	while (i < EXTRACT_N_TILES)
 	{
