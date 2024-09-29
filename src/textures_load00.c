@@ -61,7 +61,7 @@ void	load_bonus_textures(t_game *game)
 	load_opening_textures(game);
 	load_land_textures(game);
 	load_outro_textures(game);
-	load_extract_textures(game);
+	load_e_txts(game);
 	load_napalm_textures(game);
 	load_strike_textures(game);
 	load_supplies_texture(game);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_assets_bonus05.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:09:12 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 18:09:38 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:19:06 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	calculate_perpendicular(t_game *game, float *perp_x, float *perp_y)
 
 void	render_single_tile(t_game *game, t_vector2d tile_pos, int tex_index)
 {
-	t_texture	*extract_texture;
+	t_texture	*e_txt;
 
-	extract_texture = &game->extract_texture[tex_index];
-	render_sprite_common(game, tile_pos, extract_texture);
+	e_txt = &game->e_txt[tex_index];
+	render_sprite_common(game, tile_pos, e_txt);
 }
 
 void	calculate_widths(t_game *game, float distance, int *total_width, \

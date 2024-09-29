@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:21:34 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:19:06 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define T_N_INTRO1 141
 # define T_N_INTRO2 46
 # define FRAMES_PER_SECOND 20
-# define MICROSECONDS_PER_FRAME (50000)
+# define MICROSECONDS_PER_FRAME 50000
 # define MAX_SCRIPTS 500
 # define OBJECT_SIZE 1
 # define MAX_HEALTH 15
@@ -413,7 +413,7 @@ typedef struct s_game
 	int					current_frame;
 	t_texture			t_intro2[T_N_INTRO2];
 	t_extract			extract[1];
-	t_texture			extract_texture[4];
+	t_texture			e_txt[4];
 	t_texture			supplies_texture[1];
 	t_texture			t_intro1[T_N_INTRO1];
 	t_texture			t_outro[MAX_OUTRO_TEXTURES];
@@ -638,7 +638,7 @@ int						is_wall(t_game *game, int map_y, int map_x);
 int						is_within_map_bounds(t_game *game, int x, int y);
 int						load_collectible_texture(t_game *game);
 int						load_enemy_textures(t_game *game);
-int						load_extract_textures(t_game *game);
+int						load_e_txts(t_game *game);
 int						load_floor_textures(t_game *game);
 int						load_gun_textures(t_game *game);
 int						load_land_textures(t_game *game);
@@ -893,7 +893,7 @@ void					increment_and_update(t_game *game, int *current_task,
 							int total_tasks, const char *task_name);
 void					init_last_pos(int x, int y, int *last_x, int *last_y);
 void					init_script_manager(t_game *game);
-int					init_sprite_render_context(t_sprite_render_context *ctx,
+int						init_sprite_render_context(t_sprite_render_context *ctx,
 							t_game *game, t_vector2d position,
 							t_texture *texture);
 void					initialize_floor_texture_map(t_game *game);

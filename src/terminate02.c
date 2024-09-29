@@ -59,7 +59,7 @@ void	free_texture_arrays(t_game *game)
 	free_texture_array(game->menu_texture, 1, game);
 	free_texture_array(game->pelican_inside, 1, game);
 	free_texture_array(game->t_intro2, T_N_INTRO2, game);
-	free_texture_array(game->extract_texture, 4, game);
+	free_texture_array(game->e_txt, 4, game);
 	free_texture_array(game->supplies_texture, 1, game);
 	free_texture_array(game->t_intro1, T_N_INTRO1, game);
 	free_texture_array(game->t_outro, MAX_OUTRO_TEXTURES, game);

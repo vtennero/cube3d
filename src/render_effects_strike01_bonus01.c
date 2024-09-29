@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike01_bonus01.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:22:15 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:17:40 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:19:06 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	render_napalm_sprites(t_game *game, int current_frames[])
 	offsets = create_napalm_offsets();
 	if (!offsets)
 		return ;
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0},  &game->extract_texture[0]);
+	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0},  &game->e_txt[0]);
 	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	i = 0;
 	while (i < NUM_NAPALM_OFFSETS)

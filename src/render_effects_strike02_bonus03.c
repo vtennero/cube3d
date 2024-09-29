@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_effects_strike02_bonus03.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:54:58 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:18:30 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:19:06 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_vector2d transform, int *sprite_screen_x)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
+	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->e_txt[0]);
 	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	ctx.calc.transform = transform;
 	calc_sprite_screen_x(&ctx);
@@ -29,7 +29,7 @@ float transform_y, t_sprite_calc *calc)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
+	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->e_txt[0]);
 	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
 	ctx.calc.transform.y = transform_y / STRIKE_BARRAGE_SCALE;
 	ctx.calc.sprite_screen_x = calc->sprite_screen_x;

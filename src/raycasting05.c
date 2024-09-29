@@ -6,7 +6,7 @@
 /*   By: cliew <cliew@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:31:26 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/29 16:12:19 by cliew            ###   ########.fr       */
+/*   Updated: 2024/09/29 16:15:05 by cliew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 int	is_wall(t_game *game, int map_y, int map_x)
 {
-	if ((map_y<(game->cub_map_row_count +2)) \
-	&& (map_x < ((game->cub_map_col_count /2)+ 1)) && \
-	(map_y >=0) && (map_x>=0) &&
-	(game->map->data[map_y][map_x] == 1))
-	// if (game->map->data[map_y][map_x] == 1)
+	if ((map_y < (game->cub_map_row_count + 2))
+		&& (map_x < ((game->cub_map_col_count / 2) + 1)) && (map_y >= 0)
+		&& (map_x >= 0) && (game->map->data[map_y][map_x] == 1))
 		return (1);
 	else
 		return (0);
 }
 
-int	is_space_to_wall_transition(t_game *game, t_ray *ray, \
-int prev_map_x, int prev_map_y)
+int	is_space_to_wall_transition(t_game *game, t_ray *ray, int prev_map_x,
+		int prev_map_y)
 {
-	if ((prev_map_x != ray->map_x || prev_map_y != ray->map_y)
-		&& !is_wall(game, prev_map_y, prev_map_x)
-		&& is_wall(game, ray->map_y, ray->map_x))
+	if ((prev_map_x != ray->map_x || prev_map_y != ray->map_y) && !is_wall(game,
+			prev_map_y, prev_map_x) && is_wall(game, ray->map_y, ray->map_x))
 	{
 		return (1);
 	}
