@@ -1,2 +1,5 @@
 Error summary:
-cube3d_audio_bonus.h :   14 error(s) (  14 total)
+cube3d.h                          :    4 error(s) (   4 total)
+render_assets_bonus04.c           :    2 error(s) (   2 total)
+render_assets_bonus12.c           :    2 error(s) (   2 total)
+render_effects_strike00_bonus01.c :    1 error(s) (   1 total)

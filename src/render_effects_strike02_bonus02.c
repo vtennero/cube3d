@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:54:54 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:18:10 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:57:22 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	calc_barr_sprite_pos(t_game *game, t_vector2d *pos, t_vector2d *sprite)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, *pos, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, *pos, NULL);
+	init_sprite_render_context(&ctx, game, *pos, &game->t_extract[0]);
 	calc_sprite_position(&ctx);
 	*sprite = ctx.calc.sprite;
 }
@@ -68,8 +67,8 @@ t_vector2d sprite, t_vector2d *transform)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, \
+	(t_vector2d){0, 0}, &game->t_extract[0]);
 	ctx.calc.sprite = sprite;
 	transf_sprite(&ctx);
 	*transform = ctx.calc.transform;

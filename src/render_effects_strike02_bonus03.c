@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:54:58 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:18:30 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:20:20 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_vector2d transform, int *sprite_screen_x)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, \
+	(t_vector2d){0, 0}, &game->t_extract[0]);
 	ctx.calc.transform = transform;
 	calc_sprite_screen_x(&ctx);
 	*sprite_screen_x = ctx.calc.sprite_screen_x;
@@ -29,8 +29,8 @@ float transform_y, t_sprite_calc *calc)
 {
 	t_sprite_render_context	ctx;
 
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, \
+	(t_vector2d){0, 0}, &game->t_extract[0]);
 	ctx.calc.transform.y = transform_y / STRIKE_BARRAGE_SCALE;
 	ctx.calc.sprite_screen_x = calc->sprite_screen_x;
 	calc_s_height(&ctx);
@@ -63,5 +63,5 @@ void	render_barrage_sprite(t_game *game, int current_frame)
 	position = game->strike[2].position;
 	strike_texture = &game->t_eagle[current_frame];
 	setup_barrage_sprite_context(&ctx, game, position, strike_texture);
-	render_sprite(&ctx);
+	render_single_sprite(&ctx);
 }

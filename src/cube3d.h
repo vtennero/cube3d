@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:47:43 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:21:34 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:06:24 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define T_N_INTRO1 141
 # define T_N_INTRO2 46
 # define FRAMES_PER_SECOND 20
-# define MICROSECONDS_PER_FRAME (50000)
+# define MICROSECONDS_PER_FRAME 50000
 # define MAX_SCRIPTS 500
 # define OBJECT_SIZE 1
 # define MAX_HEALTH 15
@@ -87,7 +87,7 @@
 # define E_JUMP_INT 75
 # define E_MOVE_INT 120
 # define E_MOVEMENT_PROBABILITY 999500
-# define E_MOVEMENT_SPEED 0.04
+# define E_MOVEMENT_SPEED 0.06
 # define E_STOP_DISTANCE 2.0f
 # define E_STOP_DURATION 150
 # define E_STOP_PROBABILITY 5000
@@ -413,7 +413,7 @@ typedef struct s_game
 	int					current_frame;
 	t_texture			t_intro2[T_N_INTRO2];
 	t_extract			extract[1];
-	t_texture			extract_texture[4];
+	t_texture			t_extract[4];
 	t_texture			supplies_texture[1];
 	t_texture			t_intro1[T_N_INTRO1];
 	t_texture			t_outro[MAX_OUTRO_TEXTURES];
@@ -893,7 +893,7 @@ void					increment_and_update(t_game *game, int *current_task,
 							int total_tasks, const char *task_name);
 void					init_last_pos(int x, int y, int *last_x, int *last_y);
 void					init_script_manager(t_game *game);
-int					init_sprite_render_context(t_sprite_render_context *ctx,
+int						init_sprite_render_context(t_sprite_render_context *ctx,
 							t_game *game, t_vector2d position,
 							t_texture *texture);
 void					initialize_floor_texture_map(t_game *game);
@@ -1076,6 +1076,10 @@ void					update_ray_y(t_ray *ray);
 void					update_scripts(t_game *game);
 void					update_shooting_gun_frame(t_game *game);
 void					update_tex_pos(double *tex_pos, double step);
+t_vector2d				calculate_screen_center(t_game *game);
+int						process_enemy(t_game *game, \
+							int enemy_index, t_vector2d center);
+void					handle_enemy_hit(t_game *game, int enemy_index);
 
 // FUNCTION DECLARATIONS END
 

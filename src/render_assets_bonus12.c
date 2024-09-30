@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:15:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:26:04 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:50:56 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,20 @@ int	get_pixel_color(t_sprite_render_context *ctx, t_vector2d tex)
 {
 	char			*pixel;
 	unsigned int	color;
+	unsigned int	max_offset;
+	unsigned int	offset;
 
 	if (!ctx || !ctx->texture || !ctx->texture->data)
 		return (-1);
 	if (tex.x < 0 || tex.x >= ctx->texture->width
-	|| tex.y < 0 || tex.y >= ctx->texture->height)
+		|| tex.y < 0 || tex.y >= ctx->texture->height)
 		return (-1);
-	pixel = ctx->texture->data + ((int)tex.y
-	* ctx->texture->line_len + (int)tex.x * (ctx->texture->bpp / 8));
+	max_offset = ctx->texture->height * ctx->texture->line_len;
+	offset = (unsigned int)tex.y * ctx->texture->line_len
+		+ (unsigned int)tex.x * (ctx->texture->bpp / 8);
+	if (offset >= max_offset || ctx->texture->bpp % 8 != 0)
+		return (-1);
+	pixel = ctx->texture->data + offset;
 	color = *(unsigned int *)pixel;
 	if (color == 0)
 		return (-1);

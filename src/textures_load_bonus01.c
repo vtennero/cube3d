@@ -68,7 +68,7 @@ int	load_extract_textures(t_game *game)
 	{
 		upd_prog_bar(game, i + 1, num_textures, \
 		"Loading extract textures");
-		texture = &game->extract_texture[i];
+		texture = &game->t_extract[i];
 		texture->path = file_names[i];
 		texture->img = mlx_xpm_file_to_image(game->mlx_ptr, texture->path,
 				&texture->width, &texture->height);

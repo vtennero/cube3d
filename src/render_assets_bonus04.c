@@ -17,7 +17,7 @@ void	render_active_extract(t_game *game)
 	t_sprite_render_context	ctx;
 
 	init_sprite_render_context(&ctx, game, \
-	game->extract[0].position, &game->extract_texture[0]);
+	game->extract[0].position, &game->t_extract[0]);
 	render_sprite_common(ctx.game, ctx.position, ctx.texture);
 	if (game->extract[0].is_available == 1)
 		render_extract_ray(&ctx);
@@ -41,13 +41,13 @@ void	render_extract_multi_tile(t_game *game, t_vector2d base)
 	int						i;
 
 	calculate_perpendicular(game, &perp.x, &perp.y);
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, \
+	(t_vector2d){0, 0}, &game->t_extract[0]);
 	i = 0;
 	while (i < EXTRACT_N_TILES)
 	{
 		ctx.position = calculate_tile_position(base, perp, i);
-		ctx.texture = &game->extract_texture[i + 1];
+		ctx.texture = &game->t_extract[i + 1];
 		render_sprite_common(ctx.game, ctx.position, ctx.texture);
 		i++;
 	}

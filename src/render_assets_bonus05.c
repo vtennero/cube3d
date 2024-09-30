@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:09:12 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/23 18:09:38 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:57:22 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	render_single_tile(t_game *game, t_vector2d tile_pos, int tex_index)
 {
 	t_texture	*extract_texture;
 
-	extract_texture = &game->extract_texture[tex_index];
+	extract_texture = &game->t_extract[tex_index];
 	render_sprite_common(game, tile_pos, extract_texture);
 }
 

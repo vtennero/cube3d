@@ -6,7 +6,7 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:21:11 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:17:24 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:03:09 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,26 +81,23 @@ void	render_eagle_sprites(t_game *game)
 {
 	t_vector2d				*offsets;
 	t_sprite_render_context	ctx;
-	int						offset_frame;
+	int						of;
 	int						i;
 
 	offsets = create_eagle_offsets();
 	if (!offsets)
 		return ;
-	init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, &game->extract_texture[0]);
-	// init_sprite_render_context(&ctx, game, (t_vector2d){0, 0}, NULL);
+	init_sprite_render_context(&ctx, game, \
+	(t_vector2d){0, 0}, &game->t_extract[0]);
 	i = 0;
 	while (i < NUM_OFFSETS)
 	{
-		offset_frame = get_next_eagle_frame(&game->strike[0], i);
-		if (offset_frame == -1)
+		of = get_next_eagle_frame(&game->strike[0], i);
+		if (of != -1)
 		{
-			i++;
-			continue ;
+			setup_sprite_context(&ctx, game, offsets[i], &game->t_eagle[of]);
+			render_single_sprite(&ctx);
 		}
-		setup_sprite_context(&ctx, game, offsets[i], \
-		&game->t_eagle[offset_frame]);
-		render_single_sprite(&ctx);
 		i++;
 	}
 	free(offsets);

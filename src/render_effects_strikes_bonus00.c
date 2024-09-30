@@ -19,21 +19,15 @@ int white_width, int base_color)
 	int		color_value;
 
 	if (i == 0 || (i >= -white_width / 2 && i < white_width / 2))
-	{
 		return (0xFFFFFF);
-	}
 	else
 	{
 		gradient = 1.0f - (float)abs(i) / (total_width / 2);
 		color_value = 128 + (int)(127 * gradient);
 		if (base_color == 0xFF0000)
-		{
 			return (color_value << 16);
-		}
 		else
-		{
 			return (color_value);
-		}
 	}
 }
 
@@ -68,8 +62,8 @@ void	render_call_strike(t_game *game, t_vector2d position)
 	float					distance;
 	int						stripe;
 
-	// init_sprite_render_context_call_strike(&ctx, game, position);
-	init_sprite_render_context(&ctx, game, position, NULL);
+	init_sprite_render_context(&ctx, game, \
+	position, &game->t_extract[0]);
 	calc_sprite_transforms(&ctx);
 	calc_sprite_dimensions(&ctx);
 	distance = calculate_distance_to_player(game, position);
@@ -77,8 +71,6 @@ void	render_call_strike(t_game *game, t_vector2d position)
 	if (ctx.calc.transform.y > 0 && stripe > 0 && stripe < game->screen_width)
 		draw_strike_call(game, stripe, ctx.calc.draw_end_y, distance);
 }
-
-
 
 void	setup_sprite_context(t_sprite_render_context *ctx, \
 t_game *game, t_vector2d offset, t_texture *texture)

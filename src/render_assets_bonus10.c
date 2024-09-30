@@ -6,107 +6,46 @@
 /*   By: vitenner <vitenner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:13:02 by vitenner          #+#    #+#             */
-/*   Updated: 2024/09/25 18:20:29 by vitenner         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:06:09 by vitenner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-static int	is_point_in_sprite(float x, float y, const t_sprite_calc *calc)
-{
-	return (x >= calc->draw_start_x && x < calc->draw_end_x \
-	&& y >= calc->draw_start_y && y < calc->draw_end_y);
-}
-
-static void	handle_enemy_hit(t_game *game, int enemy_index)
+void	handle_enemy_hit(t_game *game, int enemy_index)
 {
 	game->enemies[enemy_index].is_alive = 0;
 	add_script(game, play_bug_death, 0);
 }
 
-// void	check_enemy_at_center(t_game *game)
-// {
-// 	float					center_x;
-// 	float					center_y;
-// 	t_sprite_render_context	ctx;
-// 	int						i;
-
-// 	center_x = game->screen_width / 2.0f;
-// 	center_y = game->screen_height / 2.0f;
-// 	i = 0;
-// 	while (i < game->num_enemies)
-// 	{
-// 		if (game->enemies[i].is_alive)
-// 		{
-// 			init_sprite_render_context(&ctx, game,
-// 			game->enemies[i].position, 0);
-// 			calc_sprite_transforms(&ctx);
-// 			calc_sprite_dimensions(&ctx);
-// 			if (is_point_in_sprite(center_x, center_y, &ctx.calc))
-// 			{
-// 				if (game->is_shooting)
-// 					handle_enemy_hit(game, i);
-// 				return ;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
-
-void check_enemy_at_center(t_game *game)
+int	is_game_state_valid(t_game *game)
 {
-    float center_x;
-    float center_y;
-    t_sprite_render_context ctx;
-    int i;
+	if (!game || game->num_enemies <= 0 || !game->enemies)
+	{
+		printf("Error: Invalid game state in check_enemy_at_center\n");
+		return (0);
+	}
+	return (1);
+}
 
-    if (!game || game->num_enemies <= 0 || !game->enemies)
-    {
-        printf("Error: Invalid game state in check_enemy_at_center\n");
-        return;
-    }
+void	check_enemy_at_center(t_game *game)
+{
+	t_vector2d	center;
+	int			i;
 
-    center_x = game->screen_width / 2.0f;
-    center_y = game->screen_height / 2.0f;
-
-    for (i = 0; i < game->num_enemies; i++)
-    {
-        if (game->enemies[i].is_alive)
-        {
-            // Use the current_frame as the texture index
-            int texture_index = game->enemies[i].current_frame;
-            if (texture_index < 0 || texture_index >= MAX_ENEMY_TEXTURES)
-            {
-                printf("Warning: Invalid texture index %d for enemy %d\n", texture_index, i);
-                continue;
-            }
-
-            t_texture *enemy_texture = &game->enemy_textures[texture_index];
-
-            // Check if the texture is valid
-            if (!enemy_texture->data)
-            {
-                printf("Warning: Invalid texture data for enemy %d, frame %d\n", i, texture_index);
-                continue;
-            }
-
-            if (!init_sprite_render_context(&ctx, game, game->enemies[i].position, enemy_texture))
-            {
-                printf("Error: Failed to initialize sprite render context for enemy %d\n", i);
-                continue;
-            }
-
-            calc_sprite_transforms(&ctx);
-            calc_sprite_dimensions(&ctx);
-
-            if (is_point_in_sprite(center_x, center_y, &ctx.calc))
-            {
-                if (game->is_shooting)
-                    handle_enemy_hit(game, i);
-                return;
-            }
-        }
-    }
+	if (!is_game_state_valid(game))
+		return ;
+	center = calculate_screen_center(game);
+	i = 0;
+	while (i < game->num_enemies)
+	{
+		if (game->enemies[i].is_alive)
+		{
+			if (process_enemy(game, i, center))
+				return ;
+		}
+		i++;
+	}
 }
 
 void	reinitialize_enemy(t_enemy *enemy, float x, float y)

@@ -1,8 +1,9 @@
 # Compiler and flags
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -g
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
 # Audio flags
 AUDIOFLAGS = -lopenal -lmpg123
@@ -101,6 +102,7 @@ render_assets_bonus11.c \
 render_assets_bonus12.c \
 render_assets_bonus13.c \
 render_assets_bonus14.c \
+render_assets_bonus15.c \
 render_bonus00.c \
 render_bonus01.c \
 render_bonus02.c \
