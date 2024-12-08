@@ -1,5 +1,9 @@
 # cube3d
 
+## Demo
+
+[Full Gameplay Demo](https://youtu.be/kX3IMoM1J2w)
+
 ## Run
 to run (including on 42 computers):
 bash run.sh maps/[mapname].cub
