@@ -2,7 +2,7 @@
 
 ## Demo
 
-[Full Gameplay Demo](https://youtu.be/kX3IMoM1J2w)
+[![Full Gameplay Demo](https://img.youtube.com/vi/kX3IMoM1J2w/hqdefault.jpg)](https://youtu.be/kX3IMoM1J2w)
 
 ## Run
 to run (including on 42 computers):
